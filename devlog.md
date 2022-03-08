@@ -1,0 +1,2 @@
+# Devlog
+The aim is to package as close to as the same functionality as possible across a range of languages, both as a way to be authoritative about "collatz packages" and as a learning opportunity in several languages I have not worked in before!
