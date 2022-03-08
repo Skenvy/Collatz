@@ -1,2 +1,4 @@
 # Devlog
-The aim is to package as close to as the same functionality as possible across a range of languages, both as a way to be authoritative about "collatz packages" and as a learning opportunity in several languages I have not worked in before!
+The aim is to package as close to as the same functionality as possible across a range of languages, both as a way to be authoritative about "collatz packages" and as a learning opportunity in several languages I have not worked in before, and to serve as a future example for packaging in multiple languages.
+## Starting with python
+At the moment, a [python package already exists on pypi](https://pypi.org/project/collatz/), owned by [NGeorgescu](https://github.com/NGeorgescu/collatz), and there appear to be more recent uploads with more squashed names, such as {[simple-collatz](https://pypi.org/project/simple-collatz/)|[collatzconj](https://pypi.org/project/collatzconj/)|[lychrel](https://pypi.org/project/lychrel/)}. We can follow the [pypi packaging doc](https://packaging.python.org/en/latest/tutorials/packaging-projects/) for the recommended steps to start setting up.
