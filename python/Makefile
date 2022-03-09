@@ -23,7 +23,9 @@ build: clean
 	$(TVE) pip install dist/*-none-any.whl && \
 	echo "RUN: $(TVE)"
 
+# https://twine.readthedocs.io/en/stable/#twine-upload
+upload_test:
+	$(VE) twine upload --config-file ./.pypirc --repository testpypi dist/*
+
 upload:
-	$(VE) twine upload --repository testpypi dist/*
-
-
+	$(VE) twine upload --config-file ./.pypirc --repository pypi dist/*
