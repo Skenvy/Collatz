@@ -94,7 +94,17 @@ def reverse_function(n:int, P:int = 2, a:int = 3, b:int=1):
         a (int): Factor by which to multiply n. Default is 3.
         b (int): Value to add to the scaled value of n. Default is 1.
     """
-    pass #TODO
+    # Every input can be reversed as the result of "n/P" division, which yields
+    # "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
+    # muliplication step was taken instead of the division by the modulus, then
+    # (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we're
+    # not placing restrictions on the parameters yet, although there is a better
+    # way of shortcutting this for the default variables, we need to always
+    # attempt (f(n) - b)/a)
+    pre_values = [P*n]
+    if (n-b)%a == 0 and (n-b)%(P*a) != 0:
+        pre_values += [(n-b)//a]
+    return pre_values
 
 
 def tree_graph(initial_value:int, max_orbit_distance:int,
