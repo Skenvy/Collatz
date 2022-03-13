@@ -7,18 +7,7 @@ tree-graph.
 """
 
 
-def function(n:int):
-    """
-    Returns the output of a single application of the Collatz function. An alias
-    of the parameterised_function(n,P,a,b).
-
-    Args:
-        n (int): The value on which to perform the Collatz function
-    """
-    return parameterised_function(n)
-
-
-def parameterised_function(n:int, P:int = 2, a:int = 3, b:int=1):
+def function(n:int, P:int = 2, a:int = 3, b:int=1):
     """
     Returns the output of a single application of a Collatz-esque function.
 
@@ -34,11 +23,11 @@ def parameterised_function(n:int, P:int = 2, a:int = 3, b:int=1):
     return n//P if n%P == 0 else (a*n+b)
 
 
-def parameterised_hailstone_sequence(initial_value:int, P:int = 2, a:int = 3,
-                                     b:int=1, max_total_stopping_time:int=1000,
-                                     terminate_at_stopping_time:bool=False):
+def hailstone_sequence(initial_value:int, P:int = 2, a:int = 3,
+                       b:int=1, max_total_stopping_time:int=1000,
+                       terminate_at_stopping_time:bool=False):
     """
-    Returns a list of successive values obtained by iterating the Collatz-esque
+    Returns a list of successive values obtained by iterating a Collatz-esque
     function, until either 1 is reached, or the total amount of iterations
     exceeds max_total_stopping_time, unless terminate_at_stopping_time is True,
     which will terminate the hailstone at the "stopping time" value, i.e. the
@@ -62,9 +51,9 @@ def parameterised_hailstone_sequence(initial_value:int, P:int = 2, a:int = 3,
     pass #TODO
 
 
-def parameterised_stopping_time(initial_value:int, P:int = 2, a:int = 3,
-                                b:int=1, max_stopping_time:int=1000,
-                                total_stopping_time:bool=False):
+def stopping_time(initial_value:int, P:int = 2, a:int = 3,
+                  b:int=1, max_stopping_time:int=1000,
+                  total_stopping_time:bool=False):
     """
     Returns the stopping time, the amount of iterations required to reach a
     value less than the initial value, or None if max_stopping_time is exceeded.
@@ -91,7 +80,7 @@ def parameterised_stopping_time(initial_value:int, P:int = 2, a:int = 3,
     pass #TODO
 
 
-def parameterised_reverse_function(n:int, P:int = 2, a:int = 3, b:int=1):
+def reverse_function(n:int, P:int = 2, a:int = 3, b:int=1):
     """
     Returns the output of a single application of a Collatz-esque reverse
     function.
@@ -108,8 +97,8 @@ def parameterised_reverse_function(n:int, P:int = 2, a:int = 3, b:int=1):
     pass #TODO
 
 
-def parameterised_tree_graph(initial_value:int, max_orbit_distance:int,
-                             P:int = 2, a:int = 3, b:int=1):
+def tree_graph(initial_value:int, max_orbit_distance:int,
+               P:int = 2, a:int = 3, b:int=1):
     """
     Returns nested dictionaries that model the directed tree graph up to a
     maximum nesting of max_orbit_distance, with the initial_value as the root.
