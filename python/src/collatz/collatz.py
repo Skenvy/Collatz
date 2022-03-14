@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 """
 Provides the basic functionality to interact with the Collatz conjecture.
 The parameterisation uses the same (P,a,b) notation as Conway's generalisations.
@@ -135,6 +138,7 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
         # Check if the next hailstone is either the stopping time, total
         # stopping time, the same as the initial value, or stuck at zero.
         if terminate(_next) or cyclic(_next) or _next == 0:
+            # TODO: Negative values can get stuck in cycles.
             break
     else:
         print(f'Hailstone for (P,a,b)=({P},{a},{b}) did not terminate by \
@@ -204,8 +208,8 @@ def stopping_time(initial_value:int, P:int=2, a:int=3,
         return None
 
 
-def tree_graph(initial_value:int, max_orbit_distance:int,
-               P:int=2, a:int=3, b:int=1):
+def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3,
+               b:int=1, __cycle_prevention:Optional[set[int]]=None):
     """
     Returns nested dictionaries that model the directed tree graph up to a
     maximum nesting of max_orbit_distance, with the initial_value as the root.
@@ -225,5 +229,24 @@ def tree_graph(initial_value:int, max_orbit_distance:int,
             Default is 2.
         a (int): Factor by which to multiply n. Default is 3.
         b (int): Value to add to the scaled value of n. Default is 1.
+    
+    Internal Kwargs:
+        __cycle_prevention (set[int]): Used to prevent cycles from precipitating
+            by keeping track of all values added across previous nest depths.
     """
-    pass #TODO
+    tgraph = {initial_value:{}}
+    if max(0, max_orbit_distance) == 0:
+        return tgraph
+    # Handle cycle prevention for recursive calls ~
+    # Shouldn't use a mutable object initialiser for a default.
+    if __cycle_prevention is None:
+        __cycle_prevention = set()
+    __cycle_prevention.add(initial_value)
+    for branch_value in reverse_function(initial_value, P=P, a=a, b=b):
+        if branch_value in __cycle_prevention:
+            tgraph[initial_value][branch_value] = {"cycle present"}
+        else:
+            tgraph[initial_value][branch_value] = tree_graph(branch_value,
+                max_orbit_distance-1, P=P, a=a, b=b,
+                __cycle_prevention=__cycle_prevention)[branch_value]
+    return tgraph
