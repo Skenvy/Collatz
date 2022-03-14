@@ -67,13 +67,27 @@ def __initial_value_outside_verified_range(x:int):
     return (__VERIFIED_MAXIMUM < x) or (x < __VERIFIED_MINIMUM)
 
 
+def __stopping_time_terminus(n:int, total_stop:bool):
+    """
+    Provides the appropriate lambda to use to check if iterations on an initial
+    value have reached either the stopping time, or total stopping time.
+
+    Args:
+        n (int): The initial value to confirm against a stopping time check.
+        total_stop (bool): If false, the lambda will confirm that iterations
+            of n have reached the oriented stopping time to reach a value closer
+            to 0. If true, the lambda will simply check equality to 1.
+    """
+    return (lambda x: x == 1) if total_stop else (lambda x: abs(x) < abs(n))
+
+
 def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
                        b:int=1, max_total_stopping_time:int=1000,
-                       terminate_at_stopping_time:bool=False):
+                       total_stopping_time:bool=True):
     """
     Returns a list of successive values obtained by iterating a Collatz-esque
     function, until either 1 is reached, or the total amount of iterations
-    exceeds max_total_stopping_time, unless terminate_at_stopping_time is True,
+    exceeds max_total_stopping_time, unless total_stopping_time is False,
     which will terminate the hailstone at the "stopping time" value, i.e. the
     first value less than the initial value.
 
@@ -87,10 +101,10 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
         b (int): Value to add to the scaled value of n. Default is 1.
         max_total_stopping_time (int): Maximum amount of times to iterate the
             function, if 1 is not reached. Default is 1000.
-        terminate_at_stopping_time (bool): Whether or not to stop iterating once
-            the stopping time has been reached, as opposed to iterating until
-            either the "total stopping time", or max_total_stopping_time.
-            Default is False.
+        total_stopping_time (bool): Whether or not to execute until the "total"
+            stopping time (number of iterations to obtain 1) rather than the
+            regular stopping time (number of iterations to reach a value less
+            than the initial value). Default is True.
     """
     # 0 is always an immediate stop.
     if initial_value == 0:
@@ -112,12 +126,7 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
     else:
         # or just enable cycle detection is not using default values.
         cyclic = (lambda x: x == initial_value)
-    # Decide on the terminating condition.
-    _stopping_time_p = (lambda x: x < initial_value)  # positive, less than init
-    _stopping_time_n = (lambda x: x > initial_value)  # negative, more than init
-    stopping_time = _stopping_time_p if initial_value > 0 else _stopping_time_n
-    is_one = (lambda x: x == 1) # total stopping time
-    terminate = stopping_time if terminate_at_stopping_time else is_one
+    terminate = __stopping_time_terminus(initial_value, total_stopping_time)
     # Now start the hailstone.
     hailstone_sequence = [initial_value]
     for k in range(max_total_stopping_time):
@@ -160,7 +169,39 @@ def stopping_time(initial_value:int, P:int=2, a:int=3,
             regular stopping time (number of iterations to reach a value less
             than the initial value). Default is False.
     """
-    pass #TODO
+    # 0 is always an immediate stop.
+    if initial_value == 0:
+        return 0
+    if (P,a,b) == (2,3,1):
+        if __initial_value_outside_verified_range(initial_value):
+            # Cyclic checks for values outside the the verified range for the
+            # default values is redundant unless on a very optimised system,
+            # as the cycle lengths would need to be so large as to easily run
+            # out of memory, and would not be using a parameterised version.
+            cyclic = (lambda x: x == initial_value)
+        else:
+            cyclic = (lambda x: False)
+    else:
+        # or just enable cycle detection is not using default values.
+        cyclic = (lambda x: x == initial_value)
+    terminate = __stopping_time_terminus(initial_value, total_stopping_time)
+    # Now start the stopping time calc.
+    iter_val = initial_value
+    for k in range(max_stopping_time):
+        iter_val = function(iter_val,P=P,a=a,b=b)
+        # Check if the next value is either the stopping time, total
+        # stopping time, the same as the initial value, or stuck at zero.
+        # For stopping time determinations, a zero will be considered
+        # interchangable with the regular termination at a total stop of 1.
+        # Which is not possible with default values..
+        if terminate(iter_val) or cyclic(iter_val) or iter_val == 0:
+            print(f'Stopping time for (P,a,b)=({P},{a},{b}) ~ {initial_value} \
+                stopping at {iter_val}, is {k+1} iterations.')
+            return k+1
+    else:
+        print(f'Stopping time for (P,a,b)=({P},{a},{b}) did not terminate by \
+            {max_stopping_time}')
+        return None
 
 
 def tree_graph(initial_value:int, max_orbit_distance:int,
