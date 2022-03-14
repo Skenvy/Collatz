@@ -1,4 +1,5 @@
 from typing import Optional
+from math import inf as infinity
 
 
 """
@@ -14,6 +15,12 @@ __KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10],
 [-17,-50,-25,-74,-37,-110,-55,-164,-82,-41,-122,-61,-182,-91,-272,-136,-68,-34]]
 __VERIFIED_MAXIMUM = 295147905179352825856
 __VERIFIED_MINIMUM = -272  #TODO: Check the actual lowest bound.
+__STOPPING_TIME = 'STOPPING_TIME'
+__TOTAL_STOPPING_TIME = 'TOTAL_STOPPING_TIME'
+__CYCLE_INIT = 'CYCLE_INIT'
+__CYCLE_LENGTH = 'CYCLE_LENGTH'
+__MAX_STOP_OOB = 'MAX_STOP_OOB'  # ~ "out of bounds"
+__ZERO_STOP = 'ZERO_STOP'
 
 
 def function(n:int, P:int=2, a:int=3, b:int=1):
@@ -86,7 +93,7 @@ def __stopping_time_terminus(n:int, total_stop:bool):
 
 def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
                        b:int=1, max_total_stopping_time:int=1000,
-                       total_stopping_time:bool=True):
+                       total_stopping_time:bool=True, verbose:bool=True):
     """
     Returns a list of successive values obtained by iterating a Collatz-esque
     function, until either 1 is reached, or the total amount of iterations
@@ -108,10 +115,14 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
             stopping time (number of iterations to obtain 1) rather than the
             regular stopping time (number of iterations to reach a value less
             than the initial value). Default is True.
+        verbose (bool): If set to verbose, the hailstone sequence will include
+            control string sequences to provide information about how the
+            sequence terminated, whether by reaching a stopping time or entering
+            a cycle. Default is True.
     """
     # 0 is always an immediate stop.
     if initial_value == 0:
-        return [0]
+        return [[__ZERO_STOP, 0]] if verbose else [0]
     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
     # Start the hailstone sequence.
     hailstone = [initial_value]
@@ -121,7 +132,10 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
         # Check if the next hailstone is either the stopping time, total
         # stopping time, the same as the initial value, or stuck at zero.
         if terminate(_next):
-            hailstone += [_next, f"Reached stopping time {len(hailstone)}"]
+            hailstone += [_next]
+            if verbose:
+                _msg = __TOTAL_STOPPING_TIME if _next == 1 else __STOPPING_TIME
+                hailstone += [[_msg, len(hailstone)-1]]
             break
         if cyclic(_next):
             cycle_init = 1
@@ -129,19 +143,24 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
                 if hailstone[-j] == _next:
                     cycle_init = j
                     break
-            hailstone = hailstone[:-cycle_init] + ['Cycle initiated', hailstone[-cycle_init:], f"Cycle detected, length {cycle_init}"]
+            if verbose:
+                hailstone = hailstone[:-cycle_init] + [__CYCLE_INIT,
+                    hailstone[-cycle_init:], [__CYCLE_LENGTH, cycle_init]]
+            else:
+                hailstone += [_next]
             break
         if _next == 0:
-            hailstone += [0, "Trapped on zero."]
+            hailstone += [0]
+            if verbose:
+                hailstone += [[__ZERO_STOP, -(len(hailstone)-1)]]
             break
         hailstone += [_next]
     else:
-        hailstone += [f'Hailstone for (P,a,b)=({P},{a},{b}) did not terminate by \
-            {max_total_stopping_time}']
+        if verbose:
+            hailstone += [[__MAX_STOP_OOB, max_total_stopping_time]]
     return hailstone
 
 
-#TODO: Fix the stopping time to keep it up to date with the changes to hailstones.
 def stopping_time(initial_value:int, P:int=2, a:int=3,
                   b:int=1, max_stopping_time:int=1000,
                   total_stopping_time:bool=False):
@@ -149,7 +168,12 @@ def stopping_time(initial_value:int, P:int=2, a:int=3,
     Returns the stopping time, the amount of iterations required to reach a
     value less than the initial value, or None if max_stopping_time is exceeded.
     Alternatively, if total_stopping_time is True, then it will instead count
-    the amount of iterations to reach 1.
+    the amount of iterations to reach 1. If the sequence does not stop, but
+    instead ends in a cycle, the result will be (math.inf). If (P,a,b) are such
+    that it is possible to get stuck on zero, the result will be the negative of
+    what would otherwise be the "total stopping time" to reach 1, where 0 is
+    considered a "total stop" that should not occur as it does form a cycle of
+    length 1.
 
     Args:
         initial_value (int): The value for which to find the stopping time.
@@ -168,28 +192,23 @@ def stopping_time(initial_value:int, P:int=2, a:int=3,
             regular stopping time (number of iterations to reach a value less
             than the initial value). Default is False.
     """
-    # 0 is always an immediate stop.
-    if initial_value == 0:
-        return 0
-    terminate = __stopping_time_terminus(initial_value, total_stopping_time)
-    # Now start the stopping time calc.
-    cyclic = (lambda x: x == initial_value)
-    iter_val = initial_value
-    for k in range(max_stopping_time):
-        iter_val = function(iter_val,P=P,a=a,b=b)
-        # Check if the next value is either the stopping time, total
-        # stopping time, the same as the initial value, or stuck at zero.
-        # For stopping time determinations, a zero will be considered
-        # interchangable with the regular termination at a total stop of 1.
-        # Which is not possible with default values..
-        if terminate(iter_val) or cyclic(iter_val) or iter_val == 0:
-            print(f'Stopping time for (P,a,b)=({P},{a},{b}) ~ {initial_value} \
-                stopping at {iter_val}, is {k+1} iterations.')
-            return k+1
-    else:
-        print(f'Stopping time for (P,a,b)=({P},{a},{b}) did not terminate by \
-            {max_stopping_time}')
-        return None
+    # The information is contained in the verbose form of a hailstone sequence.
+    # Although the "max_~_time" for hailstones is name for "total stopping" time
+    # and the "max_~_time" for this "stopping time" function is _not_ "total",
+    # they are handled the same way, as the default for "total_stopping_time"
+    # for hailstones is true, but for this, is false. Thus the naming difference
+    end_msg = hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=True,
+                                 max_total_stopping_time=max_stopping_time,
+                                 total_stopping_time=total_stopping_time)[-1]
+    # For total/regular/zero stopping time, the value is already the same as
+    # that present, for cycles we report infinity instead of the cycle length,
+    # and for max stop out of bounds, we report None instead of the max stop cap
+    return {__TOTAL_STOPPING_TIME: end_msg[1],
+            __STOPPING_TIME: end_msg[1],
+            __CYCLE_LENGTH: infinity,
+            __ZERO_STOP: end_msg[1],
+            __MAX_STOP_OOB: None,
+            }.get(end_msg[0], None)
 
 
 def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3,
