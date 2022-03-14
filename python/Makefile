@@ -1,27 +1,25 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
-# Test Virtual Environment
-TVE=source .tve/bin/activate && 
 
-.PHONY: venv build clean upload
+.PHONY: venv clean build test upload_test upload
 SHELL:=/bin/bash
 
 venv:
 	python3 -m venv .ve
 	$(VE) pip install --upgrade pip && \
-	pip install --upgrade "build>=0.7.0,<1" twine
+	pip install --upgrade "build>=0.7.0,<1" twine pytest==7.1.0
 
 clean:
 	rm -rf src/*.egg-info/
 	rm -rf dist/
-	rm -rf .tve/
 	rm -rf src/*/__pycache__/
 
 build: clean
 	$(VE) python3 -m build && \
-	python3 -m venv .tve && \
-	$(TVE) pip install dist/*-none-any.whl && \
-	echo "RUN: $(TVE)"
+	$(VE) pip install --upgrade dist/*-none-any.whl
+
+test:
+	$(VE) pytest
 
 # https://twine.readthedocs.io/en/stable/#twine-upload
 upload_test:
