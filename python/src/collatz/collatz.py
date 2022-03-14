@@ -112,41 +112,37 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
     # 0 is always an immediate stop.
     if initial_value == 0:
         return [0]
-    if (P,a,b) == (2,3,1):
-        # If default values we can search the four known cycles
-        for _known_cycle in __KNOWN_CYCLES:
-            if initial_value in _known_cycle:
-                return _known_cycle
-        # otherwise, enable cycle detection if testing values outside range..
-        if __initial_value_outside_verified_range(initial_value):
-            # Cyclic checks for values outside the the verified range for the
-            # default values is redundant unless on a very optimised system,
-            # as the cycle lengths would need to be so large as to easily run
-            # out of memory, and would not be using a parameterised version.
-            cyclic = (lambda x: x == initial_value)
-        else:
-            cyclic = (lambda x: False)
-    else:
-        # or just enable cycle detection is not using default values.
-        cyclic = (lambda x: x == initial_value)
     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
-    # Now start the hailstone.
-    hailstone_sequence = [initial_value]
+    # Start the hailstone sequence.
+    hailstone = [initial_value]
+    cyclic = (lambda x: x in hailstone)
     for k in range(max_total_stopping_time):
-        _next = function(hailstone_sequence[-1],P=P,a=a,b=b)
-        hailstone_sequence += [_next]
+        _next = function(hailstone[-1],P=P,a=a,b=b)
         # Check if the next hailstone is either the stopping time, total
         # stopping time, the same as the initial value, or stuck at zero.
-        if terminate(_next) or cyclic(_next) or _next == 0:
-            # TODO: Negative values can get stuck in cycles.
+        if terminate(_next):
+            hailstone += [_next, f"Reached stopping time {len(hailstone)}"]
             break
+        if cyclic(_next):
+            cycle_init = 1
+            for j in range(len(hailstone)):
+                if hailstone[-j] == _next:
+                    cycle_init = j
+                    break
+            # If the initial value is a value in the cycle it will say the length is 0.
+            hailstone = hailstone[:-cycle_init] + ['Cycle initiated', hailstone[-cycle_init:], f"Cycle detected, length {cycle_init}"]
+            break
+        if _next == 0:
+            hailstone += [0, "Trapped on zero."]
+            break
+        hailstone += [_next]
     else:
-        print(f'Hailstone for (P,a,b)=({P},{a},{b}) did not terminate by \
-            {max_total_stopping_time}')
-    return hailstone_sequence
+        hailstone += [f'Hailstone for (P,a,b)=({P},{a},{b}) did not terminate by \
+            {max_total_stopping_time}']
+    return hailstone
 
 
-
+#TODO: Fix the stopping time to keep it up to date with the changes to hailstones.
 def stopping_time(initial_value:int, P:int=2, a:int=3,
                   b:int=1, max_stopping_time:int=1000,
                   total_stopping_time:bool=False):
@@ -176,20 +172,9 @@ def stopping_time(initial_value:int, P:int=2, a:int=3,
     # 0 is always an immediate stop.
     if initial_value == 0:
         return 0
-    if (P,a,b) == (2,3,1):
-        if __initial_value_outside_verified_range(initial_value):
-            # Cyclic checks for values outside the the verified range for the
-            # default values is redundant unless on a very optimised system,
-            # as the cycle lengths would need to be so large as to easily run
-            # out of memory, and would not be using a parameterised version.
-            cyclic = (lambda x: x == initial_value)
-        else:
-            cyclic = (lambda x: False)
-    else:
-        # or just enable cycle detection is not using default values.
-        cyclic = (lambda x: x == initial_value)
     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
     # Now start the stopping time calc.
+    cyclic = (lambda x: x == initial_value)
     iter_val = initial_value
     for k in range(max_stopping_time):
         iter_val = function(iter_val,P=P,a=a,b=b)
