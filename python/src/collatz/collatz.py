@@ -7,7 +7,13 @@ tree-graph.
 """
 
 
-def function(n:int, P:int = 2, a:int = 3, b:int=1):
+__KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], 
+[-17,-50,-25,-74,-37,-110,-55,-164,-82,-41,-122,-61,-182,-91,-272,-136,-68,-34]]
+__VERIFIED_MAXIMUM = 295147905179352825856
+__VERIFIED_MINIMUM = -272  #TODO: Check the actual lowest bound.
+
+
+def function(n:int, P:int=2, a:int=3, b:int=1):
     """
     Returns the output of a single application of a Collatz-esque function.
 
@@ -23,7 +29,45 @@ def function(n:int, P:int = 2, a:int = 3, b:int=1):
     return n//P if n%P == 0 else (a*n+b)
 
 
-def hailstone_sequence(initial_value:int, P:int = 2, a:int = 3,
+def reverse_function(n:int, P:int=2, a:int=3, b:int=1):
+    """
+    Returns the output of a single application of a Collatz-esque reverse
+    function.
+
+    Args:
+        n (int): The value on which to perform the reverse Collatz function
+    
+    Kwargs:
+        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
+            Default is 2.
+        a (int): Factor by which to multiply n. Default is 3.
+        b (int): Value to add to the scaled value of n. Default is 1.
+    """
+    # Every input can be reversed as the result of "n/P" division, which yields
+    # "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
+    # muliplication step was taken instead of the division by the modulus, then
+    # (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we're
+    # not placing restrictions on the parameters yet, although there is a better
+    # way of shortcutting this for the default variables, we need to always
+    # attempt (f(n) - b)/a)
+    pre_values = [P*n]
+    if (n-b)%a == 0 and (n-b)%(P*a) != 0:
+        pre_values += [(n-b)//a]
+    return pre_values
+
+
+def __initial_value_outside_verified_range(x:int):
+    """
+    Checks if the initial value is greater than __VERIFIED_MAXIMUM or less than
+    __VERIFIED_MINIMUM. Only intended for the default parameterisation.
+
+    Args:
+        x (int): The initial value to check if it is within range or not.
+    """
+    return (__VERIFIED_MAXIMUM < x) or (x < __VERIFIED_MINIMUM)
+
+
+def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
                        b:int=1, max_total_stopping_time:int=1000,
                        terminate_at_stopping_time:bool=False):
     """
@@ -48,10 +92,49 @@ def hailstone_sequence(initial_value:int, P:int = 2, a:int = 3,
             either the "total stopping time", or max_total_stopping_time.
             Default is False.
     """
-    pass #TODO
+    # 0 is always an immediate stop.
+    if initial_value == 0:
+        return [0]
+    if (P,a,b) == (2,3,1):
+        # If default values we can search the four known cycles
+        for _known_cycle in __KNOWN_CYCLES:
+            if initial_value in _known_cycle:
+                return _known_cycle
+        # otherwise, enable cycle detection if testing values outside range..
+        if __initial_value_outside_verified_range(initial_value):
+            # Cyclic checks for values outside the the verified range for the
+            # default values is redundant unless on a very optimised system,
+            # as the cycle lengths would need to be so large as to easily run
+            # out of memory, and would not be using a parameterised version.
+            cyclic = (lambda x: x == initial_value)
+        else:
+            cyclic = (lambda x: False)
+    else:
+        # or just enable cycle detection is not using default values.
+        cyclic = (lambda x: x == initial_value)
+    # Decide on the terminating condition.
+    _stopping_time_p = (lambda x: x < initial_value)  # positive, less than init
+    _stopping_time_n = (lambda x: x > initial_value)  # negative, more than init
+    stopping_time = _stopping_time_p if initial_value > 0 else _stopping_time_n
+    is_one = (lambda x: x == 1) # total stopping time
+    terminate = stopping_time if terminate_at_stopping_time else is_one
+    # Now start the hailstone.
+    hailstone_sequence = [initial_value]
+    for k in range(max_total_stopping_time):
+        _next = function(hailstone_sequence[-1],P=P,a=a,b=b)
+        hailstone_sequence += [_next]
+        # Check if the next hailstone is either the stopping time, total
+        # stopping time, the same as the initial value, or stuck at zero.
+        if terminate(_next) or cyclic(_next) or _next == 0:
+            break
+    else:
+        print(f'Hailstone for (P,a,b)=({P},{a},{b}) did not terminate by \
+            {max_total_stopping_time}')
+    return hailstone_sequence
 
 
-def stopping_time(initial_value:int, P:int = 2, a:int = 3,
+
+def stopping_time(initial_value:int, P:int=2, a:int=3,
                   b:int=1, max_stopping_time:int=1000,
                   total_stopping_time:bool=False):
     """
@@ -80,35 +163,8 @@ def stopping_time(initial_value:int, P:int = 2, a:int = 3,
     pass #TODO
 
 
-def reverse_function(n:int, P:int = 2, a:int = 3, b:int=1):
-    """
-    Returns the output of a single application of a Collatz-esque reverse
-    function.
-
-    Args:
-        n (int): The value on which to perform the reverse Collatz function
-    
-    Kwargs:
-        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
-            Default is 2.
-        a (int): Factor by which to multiply n. Default is 3.
-        b (int): Value to add to the scaled value of n. Default is 1.
-    """
-    # Every input can be reversed as the result of "n/P" division, which yields
-    # "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
-    # muliplication step was taken instead of the division by the modulus, then
-    # (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we're
-    # not placing restrictions on the parameters yet, although there is a better
-    # way of shortcutting this for the default variables, we need to always
-    # attempt (f(n) - b)/a)
-    pre_values = [P*n]
-    if (n-b)%a == 0 and (n-b)%(P*a) != 0:
-        pre_values += [(n-b)//a]
-    return pre_values
-
-
 def tree_graph(initial_value:int, max_orbit_distance:int,
-               P:int = 2, a:int = 3, b:int=1):
+               P:int=2, a:int=3, b:int=1):
     """
     Returns nested dictionaries that model the directed tree graph up to a
     maximum nesting of max_orbit_distance, with the initial_value as the root.
