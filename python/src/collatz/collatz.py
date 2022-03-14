@@ -125,11 +125,10 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
             break
         if cyclic(_next):
             cycle_init = 1
-            for j in range(len(hailstone)):
+            for j in range(1,len(hailstone)+1):
                 if hailstone[-j] == _next:
                     cycle_init = j
                     break
-            # If the initial value is a value in the cycle it will say the length is 0.
             hailstone = hailstone[:-cycle_init] + ['Cycle initiated', hailstone[-cycle_init:], f"Cycle detected, length {cycle_init}"]
             break
         if _next == 0:
