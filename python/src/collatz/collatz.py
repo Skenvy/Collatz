@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Set
 from math import inf as infinity
 
 
@@ -212,7 +212,7 @@ def stopping_time(initial_value:int, P:int=2, a:int=3,
 
 
 def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3,
-               b:int=1, __cycle_prevention:Optional[set[int]]=None):
+               b:int=1, __cycle_prevention:Optional[Set[int]]=None):
     """
     Returns nested dictionaries that model the directed tree graph up to a
     maximum nesting of max_orbit_distance, with the initial_value as the root.
@@ -247,7 +247,7 @@ def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3,
     __cycle_prevention.add(initial_value)
     for branch_value in reverse_function(initial_value, P=P, a=a, b=b):
         if branch_value in __cycle_prevention:
-            tgraph[initial_value][branch_value] = {"cycle present"}
+            tgraph[initial_value][branch_value] = {__CYCLE_INIT}
         else:
             tgraph[initial_value][branch_value] = tree_graph(branch_value,
                 max_orbit_distance-1, P=P, a=a, b=b,

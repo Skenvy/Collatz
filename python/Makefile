@@ -15,7 +15,7 @@ clean:
 	rm -rf src/*/__pycache__/
 
 build: clean
-	$(VE) python3 -m build && \
+	$(VE) python3 -m build
 	$(VE) pip install --upgrade dist/*-none-any.whl
 
 test:
