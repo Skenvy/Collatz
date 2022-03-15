@@ -23,6 +23,33 @@ __MAX_STOP_OOB = 'MAX_STOP_OOB'  # ~ "out of bounds"
 __ZERO_STOP = 'ZERO_STOP'
 
 
+def __assert_sane_parameterisation(P:int, a:int, b:int):
+    """
+    Handles the sanity check for the parameterisation (P,a,b) required by both
+    the function and reverse function.
+
+    Args:
+        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+        a (int): Factor by which to multiply n.
+        b (int): Value to add to the scaled value of n.
+    """
+    # Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
+    # theoretically, although would violate the reversability (if ~a is 0 then a
+    # value of "b" as the input to the reverse function would have a pre-emptive
+    # value of every number not divisible by P). The function doesn't _have_ to
+    # be reversable, but we are only interested in dealing with the class of
+    # functions that exhibit behaviour consistant with the collatz function. If
+    # _every_ input not divisable by P went straight to "b", it would simply
+    # cause a cycle consisting of "b" and every b/P^z that is an integer. While
+    # P in [-1, 1] could also be a reasonable check, as it makes every value
+    # either a 1 or 2 length cycle, it's not strictly an illegal operation.
+    # "b" being zero would cause behaviour not consistant with the collatz
+    # function, but would not violate the reversability, so no check either.
+    # " != 0" is redundant for python assertions.
+    assert P, "Parameter 'P' should not be 0 ~ violates modulo being non-zero."
+    assert a, "Parameter 'a' should not be 0 ~ violates the reversability."
+
+
 def function(n:int, P:int=2, a:int=3, b:int=1):
     """
     Returns the output of a single application of a Collatz-esque function.
@@ -36,6 +63,7 @@ def function(n:int, P:int=2, a:int=3, b:int=1):
         a (int): Factor by which to multiply n. Default is 3.
         b (int): Value to add to the scaled value of n. Default is 1.
     """
+    __assert_sane_parameterisation(P,a,b)
     return n//P if n%P == 0 else (a*n+b)
 
 
@@ -53,6 +81,7 @@ def reverse_function(n:int, P:int=2, a:int=3, b:int=1):
         a (int): Factor by which to multiply n. Default is 3.
         b (int): Value to add to the scaled value of n. Default is 1.
     """
+    __assert_sane_parameterisation(P,a,b)
     # Every input can be reversed as the result of "n/P" division, which yields
     # "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
     # muliplication step was taken instead of the division by the modulus, then
