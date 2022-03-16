@@ -1,2 +1,5 @@
 from .__version__ import __version__
-from .collatz import *
+from .parameterised import *
+from .parameterised import _ErrMsg
+from .parameterised import _CC
+from .parameterised import _KNOWN_CYCLES

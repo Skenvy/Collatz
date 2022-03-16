@@ -1,9 +1,6 @@
+import pytest
 from src import collatz
 
-
-# Test __assert_sane_parameterisation(P:int, a:int, b:int):
-def test___assert_sane_parameterisation():
-    pass
 
 
 # Test def function(n:int, P:int=2, a:int=3, b:int=1)
@@ -30,7 +27,15 @@ def test_function():
     assert collatz.function(1, P=-3, a=-2, b=-5) == -7
     assert collatz.function(2, P=-3, a=-2, b=-5) == -9
     assert collatz.function(3, P=-3, a=-2, b=-5) == -1
-
+    # Set P and a to 0 to assert on __assert_sane_parameterisation
+    regex_err_P_is_zero = f"^{collatz._ErrMsg.SANE_PARAMS_P.value}$"
+    regex_err_A_is_zero = f"^{collatz._ErrMsg.SANE_PARAMS_A.value}$"
+    with pytest.raises(AssertionError, match=regex_err_P_is_zero):
+        collatz.function(1, P=0, a=2, b=3)
+    with pytest.raises(AssertionError, match=regex_err_P_is_zero):
+        collatz.function(1, P=0, a=0, b=3)
+    with pytest.raises(AssertionError, match=regex_err_A_is_zero):
+        collatz.function(1, P=1, a=0, b=3)
 
 # Test reverse_function(n:int, P:int=2, a:int=3, b:int=1):
 def test_reverse_function():

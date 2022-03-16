@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional, Set
 from math import inf as infinity
 
@@ -11,16 +12,31 @@ tree-graph.
 """
 
 
-__KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], 
+_KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], 
 [-17,-50,-25,-74,-37,-110,-55,-164,-82,-41,-122,-61,-182,-91,-272,-136,-68,-34]]
 __VERIFIED_MAXIMUM = 295147905179352825856
 __VERIFIED_MINIMUM = -272  #TODO: Check the actual lowest bound.
-__STOPPING_TIME = 'STOPPING_TIME'
-__TOTAL_STOPPING_TIME = 'TOTAL_STOPPING_TIME'
-__CYCLE_INIT = 'CYCLE_INIT'
-__CYCLE_LENGTH = 'CYCLE_LENGTH'
-__MAX_STOP_OOB = 'MAX_STOP_OOB'  # ~ "out of bounds"
-__ZERO_STOP = 'ZERO_STOP'
+
+
+"""
+Error message constant.
+"""
+class _ErrMsg(Enum):
+    SANE_PARAMS_P = "'P' should not be 0 ~ violates modulo being non-zero."
+    SANE_PARAMS_A = "'a' should not be 0 ~ violates the reversability."
+
+
+"""
+Cycle Control: Descriptive flags to indicate when some event occurs in the
+hailstone sequences, when set to verbose, or stopping time check.
+"""
+class _CC(Enum):
+    STOPPING_TIME = 'STOPPING_TIME'
+    TOTAL_STOPPING_TIME = 'TOTAL_STOPPING_TIME'
+    CYCLE_INIT = 'CYCLE_INIT'
+    CYCLE_LENGTH = 'CYCLE_LENGTH'
+    MAX_STOP_OOB = 'MAX_STOP_OOB'  # ~ "out of bounds"
+    ZERO_STOP = 'ZERO_STOP'
 
 
 def __assert_sane_parameterisation(P:int, a:int, b:int):
@@ -46,8 +62,8 @@ def __assert_sane_parameterisation(P:int, a:int, b:int):
     # "b" being zero would cause behaviour not consistant with the collatz
     # function, but would not violate the reversability, so no check either.
     # " != 0" is redundant for python assertions.
-    assert P, "Parameter 'P' should not be 0 ~ violates modulo being non-zero."
-    assert a, "Parameter 'a' should not be 0 ~ violates the reversability."
+    assert P, _ErrMsg.SANE_PARAMS_P.value
+    assert a, _ErrMsg.SANE_PARAMS_A.value
 
 
 def function(n:int, P:int=2, a:int=3, b:int=1):
@@ -117,7 +133,8 @@ def __stopping_time_terminus(n:int, total_stop:bool):
             of n have reached the oriented stopping time to reach a value closer
             to 0. If true, the lambda will simply check equality to 1.
     """
-    return (lambda x: x == 1) if total_stop else (lambda x: abs(x) < abs(n))
+    return (lambda x: x == 1) if total_stop else ((lambda x: x < n and x > 0)
+                                   if n >= 0 else (lambda x: x > n and x < 0))
 
 
 def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
@@ -151,7 +168,7 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
     """
     # 0 is always an immediate stop.
     if initial_value == 0:
-        return [[__ZERO_STOP, 0]] if verbose else [0]
+        return [[_CC.ZERO_STOP.value, 0]] if verbose else [0]
     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
     # Start the hailstone sequence.
     hailstone = [initial_value]
@@ -163,8 +180,8 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
         if terminate(_next):
             hailstone += [_next]
             if verbose:
-                _msg = __TOTAL_STOPPING_TIME if _next == 1 else __STOPPING_TIME
-                hailstone += [[_msg, len(hailstone)-1]]
+                m = _CC.TOTAL_STOPPING_TIME if _next == 1 else _CC.STOPPING_TIME
+                hailstone += [[m.value, len(hailstone)-1]]
             break
         if cyclic(_next):
             cycle_init = 1
@@ -173,20 +190,20 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
                     cycle_init = j
                     break
             if verbose:
-                hailstone = hailstone[:-cycle_init] + [__CYCLE_INIT,
-                    hailstone[-cycle_init:], [__CYCLE_LENGTH, cycle_init]]
+                hailstone = hailstone[:-cycle_init] + [_CC.CYCLE_INIT.value,
+                    hailstone[-cycle_init:],[_CC.CYCLE_LENGTH.value,cycle_init]]
             else:
                 hailstone += [_next]
             break
         if _next == 0:
             hailstone += [0]
             if verbose:
-                hailstone += [[__ZERO_STOP, -(len(hailstone)-1)]]
+                hailstone += [[_CC.ZERO_STOP.value, -(len(hailstone)-1)]]
             break
         hailstone += [_next]
     else:
         if verbose:
-            hailstone += [[__MAX_STOP_OOB, max_total_stopping_time]]
+            hailstone += [[_CC.MAX_STOP_OOB.value, max_total_stopping_time]]
     return hailstone
 
 
@@ -232,11 +249,11 @@ def stopping_time(initial_value:int, P:int=2, a:int=3,
     # For total/regular/zero stopping time, the value is already the same as
     # that present, for cycles we report infinity instead of the cycle length,
     # and for max stop out of bounds, we report None instead of the max stop cap
-    return {__TOTAL_STOPPING_TIME: end_msg[1],
-            __STOPPING_TIME: end_msg[1],
-            __CYCLE_LENGTH: infinity,
-            __ZERO_STOP: end_msg[1],
-            __MAX_STOP_OOB: None,
+    return {_CC.TOTAL_STOPPING_TIME.value: end_msg[1],
+            _CC.STOPPING_TIME.value: end_msg[1],
+            _CC.CYCLE_LENGTH.value: infinity,
+            _CC.ZERO_STOP.value: end_msg[1],
+            _CC.MAX_STOP_OOB.value: None,
             }.get(end_msg[0], None)
 
 
@@ -276,7 +293,7 @@ def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3,
     __cycle_prevention.add(initial_value)
     for branch_value in reverse_function(initial_value, P=P, a=a, b=b):
         if branch_value in __cycle_prevention:
-            tgraph[initial_value][branch_value] = {__CYCLE_INIT}
+            tgraph[initial_value][branch_value] = {_CC.CYCLE_INIT.value}
         else:
             tgraph[initial_value][branch_value] = tree_graph(branch_value,
                 max_orbit_distance-1, P=P, a=a, b=b,
