@@ -174,7 +174,7 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
     # Start the hailstone sequence.
     hailstone = [initial_value]
     cyclic = (lambda x: x in hailstone)
-    for k in range(max_total_stopping_time):
+    for k in range(max(abs(max_total_stopping_time), 1)):
         _next = function(hailstone[-1],P=P,a=a,b=b)
         # Check if the next hailstone is either the stopping time, total
         # stopping time, the same as the initial value, or stuck at zero.
