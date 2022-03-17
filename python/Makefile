@@ -14,7 +14,7 @@ SHELL:=/bin/bash
 venv:
 	python3 -m venv .ve
 	$(VE) pip install --upgrade pip
-	$(VE) pip install --upgrade "build>=0.7.0,<1" twine pytest==7.1.0
+	$(VE) pip install --upgrade -r requirements-venv.txt
 
 clean clean_again:
 	rm -rf src/*.egg-info/

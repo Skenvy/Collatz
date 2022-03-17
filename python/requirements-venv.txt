@@ -1,0 +1,13 @@
+# https://packaging.python.org/en/latest/guides/making-a-pypi-friendly-readme/
+
+# The version of build should be major version locked but minor version
+# permissive. The most recent verified working for `make build` is 0.7.0
+build>=0.7.0,<1
+# Twine in general, for uploading to pypi, with minimum version lock by the PyPi
+# friendly README doc above, although the current tip used is 3.8.0
+twine>=1.11.0
+# pytest breaks heavily between minor versions, so only allow patch drift.
+pytest>=7.1.0,<7.2
+# Other version mins specd by the PyPi friendly README doc.
+setuptools>=38.6.0
+wheel>=0.31.0
