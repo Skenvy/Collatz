@@ -122,6 +122,11 @@ def test_hailstone_sequence():
     # Test the zero stop mid hailing. This wont happen with default params tho.
     assert collatz.hailstone_sequence(3, P=2, a=3, b=-9) == [3, 0,
                             [_CC.ZERO_STOP.value, -1]]
+    # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
+    # still allowed, although they will generate immediate 1 or 2 length cycles
+    # respectively, so confirm the behaviour of each of these hailstones.
+    assert collatz.hailstone_sequence(3, P=1, verbose=False) == [3, 3]
+    assert collatz.hailstone_sequence(3, P=-1, verbose=False) == [3, -3, 3]
 
 
 # Test def stopping_time(initial_value:int, P:int=2, a:int=3, b:int=1,
