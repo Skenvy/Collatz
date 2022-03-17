@@ -2,7 +2,6 @@ import pytest
 from src import collatz
 
 
-
 # Test def function(n:int, P:int=2, a:int=3, b:int=1)
 def test_function():
     # Default/Any (P,a,b); 0 trap
@@ -37,18 +36,9 @@ def test_function():
     with pytest.raises(AssertionError, match=regex_err_A_is_zero):
         collatz.function(1, P=1, a=0, b=3)
 
+
 # Test reverse_function(n:int, P:int=2, a:int=3, b:int=1):
 def test_reverse_function():
-    pass
-
-
-# Test __initial_value_outside_verified_range(x:int)
-def test___initial_value_outside_verified_range():
-    pass
-
-
-# Test __stopping_time_terminus(n:int, total_stop:bool)
-def test___stopping_time_terminus():
     pass
 
 
