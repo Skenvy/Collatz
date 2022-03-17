@@ -146,7 +146,10 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
     function, until either 1 is reached, or the total amount of iterations
     exceeds max_total_stopping_time, unless total_stopping_time is False,
     which will terminate the hailstone at the "stopping time" value, i.e. the
-    first value less than the initial value.
+    first value less than the initial value. While the sequence has the
+    capability to determine that it has encountered a cycle, the cycle from "1"
+    wont be attempted or reported as part of a cycle, regardless of default or
+    custom parameterisation, as "1" is considered a "total stop".
 
     Args:
         initial_value (int): The value to begin the hailstone sequence from.
@@ -170,11 +173,15 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
     # 0 is always an immediate stop.
     if initial_value == 0:
         return [[_CC.ZERO_STOP.value, 0]] if verbose else [0]
+    # 1 is always an immediate stop, with 0 stopping time.
+    if initial_value == 1:
+        return [[_CC.TOTAL_STOPPING_TIME.value, 0]] if verbose else [1]
     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
     # Start the hailstone sequence.
+    _max_total_stopping_time = max(max_total_stopping_time, 1)
     hailstone = [initial_value]
     cyclic = (lambda x: x in hailstone)
-    for k in range(max(abs(max_total_stopping_time), 1)):
+    for k in range(_max_total_stopping_time):
         _next = function(hailstone[-1],P=P,a=a,b=b)
         # Check if the next hailstone is either the stopping time, total
         # stopping time, the same as the initial value, or stuck at zero.
@@ -204,7 +211,7 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
         hailstone += [_next]
     else:
         if verbose:
-            hailstone += [[_CC.MAX_STOP_OOB.value, max_total_stopping_time]]
+            hailstone += [[_CC.MAX_STOP_OOB.value, _max_total_stopping_time]]
     return hailstone
 
 
