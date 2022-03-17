@@ -1,7 +1,6 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
-WVE=.\.ve\Scripts\Activate.ps1 && 
-.PHONY: venv clean build test upload_test upload
+.PHONY: venv clean clean_again test build upload_test upload
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -14,24 +13,32 @@ SHELL:=/bin/bash
 # Despite being in a venv pip install --upgrade pip still needs admin on windows
 venv:
 	python3 -m venv .ve
-	$(VE) pip install --upgrade pip && \
-	pip install --upgrade "build>=0.7.0,<1" twine pytest==7.1.0
+	$(VE) pip install --upgrade pip
+	$(VE) pip install --upgrade "build>=0.7.0,<1" twine pytest==7.1.0
 
-clean:
+clean clean_again:
 	rm -rf src/*.egg-info/
 	rm -rf dist/
-	rm -rf src/*/__pycache__/
+	rm -rf */__pycache__/
+	rm -rf */*/__pycache__/
+	rm -rf .pytest_cache/
 
-build: clean
-	$(VE) python3 -m build
-	$(VE) pip install --upgrade dist/*-none-any.whl
-
-test:
+test: clean
 	$(VE) pytest
 
+# build will automatically include an adjacent "LICENSE*" ~ but if it's
+# referenced as ../LICENSE in either manifest or [metadate]license_files then
+# it will result in being added outside the built wheel? So just shuffle it
+# around here and remove it after to always use the top level one.
+build: test clean_again
+	cp ../LICENSE LICENSE
+	$(VE) python3 -m build
+	rm LICENSE
+	$(VE) pip install --force-reinstall dist/*-none-any.whl
+
 # https://twine.readthedocs.io/en/stable/#twine-upload
-upload_test:
+upload_test: build
 	$(VE) twine upload --config-file ./.pypirc --repository testpypi dist/*
 
-upload:
+upload: upload_test
 	$(VE) twine upload --config-file ./.pypirc --repository pypi dist/*
