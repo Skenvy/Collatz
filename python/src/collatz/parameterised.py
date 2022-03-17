@@ -108,6 +108,7 @@ def reverse_function(n:int, P:int=2, a:int=3, b:int=1):
     pre_values = [P*n]
     if (n-b)%a == 0 and (n-b)%(P*a) != 0:
         pre_values += [(n-b)//a]
+        pre_values.sort()
     return pre_values
 
 
