@@ -165,7 +165,6 @@ def test_stopping_time():
     assert collatz.stopping_time(3, P=-1) == infinity
     # One last one for the fun of it..
     assert collatz.stopping_time(27, total_stopping_time=True) == 111
-    assert collatz.stopping_time(27) == 96
     # And for a bit more fun, common trajectories on
     for x in range(5):
         assert collatz.stopping_time(27+576460752303423488*x) == 96
