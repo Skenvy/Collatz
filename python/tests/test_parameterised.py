@@ -43,13 +43,13 @@ def test_function():
 
 # Test reverse_function(n:int, P:int=2, a:int=3, b:int=1):
 def test_reverse_function():
-    # Default/Any (P,a,b); 0 trap
+    # Default (P,a,b); 0 trap [as b is not a multiple of a]
     assert collatz.reverse_function(0) == [0]
-    # Default/Any (P,a,b); 1 cycle; positives
+    # Default (P,a,b); 1 cycle; positives
     assert collatz.reverse_function(1) == [2]
     assert collatz.reverse_function(4) == [1, 8]
     assert collatz.reverse_function(2) == [4]
-    # Default/Any (P,a,b); -1 cycle; negatives
+    # Default (P,a,b); -1 cycle; negatives
     assert collatz.reverse_function(-1) == [-2]
     assert collatz.reverse_function(-2) == [-4, -1]
     # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
@@ -72,7 +72,9 @@ def test_reverse_function():
         collatz.reverse_function(1, P=0, a=0, b=3)
     with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
         collatz.reverse_function(1, P=1, a=0, b=3)
-
+    # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+    assert collatz.reverse_function(0, P=17, a=2, b=-6) == [0, 3]
+    assert collatz.reverse_function(0, P=17, a=2, b=102) == [0]
 
 # Test def hailstone_sequence(initial_value:int, P:int=2, 
 # a:int=3, b:int=1, max_total_stopping_time:int=1000,
@@ -128,6 +130,13 @@ def test_hailstone_sequence():
     # respectively, so confirm the behaviour of each of these hailstones.
     assert collatz.hailstone_sequence(3, P=1, verbose=False) == [3, 3]
     assert collatz.hailstone_sequence(3, P=-1, verbose=False) == [3, -3, 3]
+    # Set P and a to 0 to assert on __assert_sane_parameterisation
+    with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
+        collatz.hailstone_sequence(1, P=0, a=2, b=3)
+    with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
+        collatz.hailstone_sequence(1, P=0, a=0, b=3)
+    with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
+        collatz.hailstone_sequence(1, P=1, a=0, b=3)
 
 
 # Test def stopping_time(initial_value:int, P:int=2, a:int=3, b:int=1,
@@ -168,9 +177,59 @@ def test_stopping_time():
     # And for a bit more fun, common trajectories on
     for x in range(5):
         assert collatz.stopping_time(27+576460752303423488*x) == 96
+    # Set P and a to 0 to assert on __assert_sane_parameterisation
+    with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
+        collatz.stopping_time(1, P=0, a=2, b=3)
+    with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
+        collatz.stopping_time(1, P=0, a=0, b=3)
+    with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
+        collatz.stopping_time(1, P=1, a=0, b=3)
 
 
 # Test def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2,
 # a:int=3, b:int=1, __cycle_prevention:Optional[Set[int]]=None)
 def test_tree_graph():
-    pass
+    C = _CC.CYCLE_INIT.value  # Shorthand the cycle terminus
+    D = {}  # Just to colourise the below in the editor..
+    # The default zero trap
+    assert collatz.tree_graph(0, 0) == {0:D}
+    assert collatz.tree_graph(0, 1) == {0:{C:0}}
+    assert collatz.tree_graph(0, 2) == {0:{C:0}}
+    # The roundings of the 1 cycle.
+    assert collatz.tree_graph(1, 1) == {1:{2:D}}
+    assert collatz.tree_graph(1, 0) == {1:D}
+    assert collatz.tree_graph(1, 1) == {1:{2:D}}
+    assert collatz.tree_graph(1, 2) == {1:{2:{4:D}}}
+    assert collatz.tree_graph(1, 3) == {1:{2:{4:{C:1,8:D}}}}
+    assert collatz.tree_graph(2, 3) == {2:{4:{1:{C:2},8:{16:D}}}}
+    assert collatz.tree_graph(4, 3) == {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
+    # The roundings of the -1 cycle
+    assert collatz.tree_graph(-1, 1) == {-1:{-2:D}}
+    assert collatz.tree_graph(-1, 2) == {-1:{-2:{-4:D,C:-1}}}
+    # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+    T = lambda x,y: {1:{-1:x,5:y}}
+    orb_1 = T(D,D)
+    orb_2 = T({-5:D,-2:D},{C:1,25:D})
+    T = lambda x,y,z: {1:{-1:{-5:x,-2:y},5:{C:1,25:z}}}
+    orb_3 = T({-25:D,-4:D},{-10:D},{11:D,125:D})
+    assert collatz.tree_graph(1, 1, P=5, a=2, b=3) == orb_1
+    assert collatz.tree_graph(1, 2, P=5, a=2, b=3) == orb_2
+    assert collatz.tree_graph(1, 3, P=5, a=2, b=3) == orb_3
+    # Test negative P, a and b.
+    orb_1 = {1:{-3:D}}
+    T = lambda x,y: {1:{-3:{-1:x,9:y}}}
+    orb_2 = T(D,D)
+    orb_3 = T({-2:D,3:D},{-27:D,-7:D})
+    assert collatz.tree_graph(1, 1, P=-3, a=-2, b=-5) == orb_1
+    assert collatz.tree_graph(1, 2, P=-3, a=-2, b=-5) == orb_2
+    assert collatz.tree_graph(1, 3, P=-3, a=-2, b=-5) == orb_3
+    # Set P and a to 0 to assert on __assert_sane_parameterisation
+    with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
+        collatz.tree_graph(1, 1, P=0, a=2, b=3)
+    with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
+        collatz.tree_graph(1, 1, P=0, a=0, b=3)
+    with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
+        collatz.tree_graph(1, 1, P=1, a=0, b=3)
+    # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+    assert collatz.tree_graph(0, 1, P=17, a=2, b=-6) == {0:{C:0,3:D}}
+    assert collatz.tree_graph(0, 1, P=17, a=2, b=102) == {0:{C:0}}

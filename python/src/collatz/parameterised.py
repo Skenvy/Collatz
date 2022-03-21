@@ -170,6 +170,8 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
             sequence terminated, whether by reaching a stopping time or entering
             a cycle. Default is True.
     """
+    # Call out the function before any magic returns to trap bad values.
+    _ = function(initial_value,P=P,a=a,b=b)
     # 0 is always an immediate stop.
     if initial_value == 0:
         return [[_CC.ZERO_STOP.value, 0]] if verbose else [0]
@@ -291,6 +293,8 @@ def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3,
         __cycle_prevention (set[int]): Used to prevent cycles from precipitating
             by keeping track of all values added across previous nest depths.
     """
+    # Call out the reverse_function before any magic returns to trap bad values.
+    _ = reverse_function(initial_value,P=P,a=a,b=b)
     tgraph = {initial_value:{}}
     if max(0, max_orbit_distance) == 0:
         return tgraph
@@ -301,7 +305,7 @@ def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3,
     __cycle_prevention.add(initial_value)
     for branch_value in reverse_function(initial_value, P=P, a=a, b=b):
         if branch_value in __cycle_prevention:
-            tgraph[initial_value][branch_value] = {_CC.CYCLE_INIT.value}
+            tgraph[initial_value][_CC.CYCLE_INIT.value] = branch_value
         else:
             tgraph[initial_value][branch_value] = tree_graph(branch_value,
                 max_orbit_distance-1, P=P, a=a, b=b,
