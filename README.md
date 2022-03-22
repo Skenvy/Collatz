@@ -5,6 +5,7 @@ Each language's implementation should share the same functionality, or as close 
 ## Implementations
 * [go](#TODO)
 * [java](#TODO)
+* [javascript](#TODO)
 * [julia](#TODO)
 * [LaTeX](#TODO)
 * [python](#TODO)
