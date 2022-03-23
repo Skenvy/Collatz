@@ -1,10 +1,13 @@
 name: Python 🐍 Build and Publish 📦 to PyPI and TestPyPI
 on:
-  release:
   push:
+    branches:    
+    - 'main'
     paths:
-    - 'python/**'
-    - '.github/workflows/python-*'
+    - 'python/src/collatz/__version__.py'
+  push:
+    tags:
+    - release-python
 jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
