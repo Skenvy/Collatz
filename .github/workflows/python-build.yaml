@@ -5,7 +5,6 @@ on:
     - 'main'
     paths:
     - 'python/src/collatz/__version__.py'
-  push:
     tags:
     - release-python
 jobs:
