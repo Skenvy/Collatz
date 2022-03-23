@@ -1,13 +1,14 @@
-name: Python 🐍 Build and Publish 📦 to PyPI and TestPyPI
+name: Python 🐍 Build, Release, and Publish 📦 to PyPI and TestPyPI
 on:
   push:
     branches:    
-    - '*'
-    # paths:
-    # - 'python/src/collatz/__version__.py'
+    - 'main'
+    paths:
+    - 'python/src/collatz/__version__.py'
+  workflow_dispatch: # manual, rather than tag triggering
 jobs:
   build-n-publish:
-    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    name: Build, Release, and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-latest
     defaults:
       run:
