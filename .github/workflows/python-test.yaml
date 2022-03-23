@@ -1,5 +1,9 @@
-name: Python 🐍 Tox 
+name: Python 🐍 Tox 🦂 Pytest
 on:
+  push:
+    paths:
+    - 'python/**'
+    - '.github/workflows/python-*'
   pull_request:
     types: [opened, reopened]
     branches:
@@ -8,7 +12,7 @@ on:
     - 'python/**'
     - '.github/workflows/python-*'
 jobs:
-  tox:
+  tox-pytest:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -17,15 +21,15 @@ jobs:
       matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
     steps:
-    - name: Checkout
+    - name: 🏁 Checkout
       uses: actions/checkout@v1
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: 🍑 Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install tox tox-gh-actions
-    - name: Test with tox
+    - name: 🦂 Test with tox
       run: tox
