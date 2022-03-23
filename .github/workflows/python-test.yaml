@@ -13,13 +13,14 @@ on:
     - '.github/workflows/python-*'
 jobs:
   tox-pytest:
-    runs-on: ubuntu-latest
+    runs-on: '${{ matrix.os }}'
     defaults:
       run:
         working-directory: python
     strategy:
       matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
