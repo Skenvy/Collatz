@@ -28,6 +28,8 @@ jobs:
       run: |
         make build
     - name: 🦏 Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >-
         gh release create
         python-v$(cut -d \" -f 2 src/collatz/__version__.py)
