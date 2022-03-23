@@ -1,5 +1,4 @@
 name: Python 🐍 Tox 
-
 on:
   pull_request:
     types: [opened, reopened]
@@ -8,9 +7,8 @@ on:
     paths:
     - 'python/**'
     - '.github/workflow/python-*'
-
 jobs:
-  build:
+  tox:
     runs-on: ubuntu-latest
     defaults:
       run:

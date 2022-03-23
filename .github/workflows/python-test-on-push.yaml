@@ -1,13 +1,11 @@
 name: Python 🐍 Pytest 
-
 on:
   push:
     paths:
     - 'python/**'
     - '.github/workflow/python-*'
-
 jobs:
-  build:
+  pytest:
     runs-on: ubuntu-latest
     defaults:
       run:
