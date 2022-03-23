@@ -4,6 +4,7 @@ on:
   push:
     paths:
     - 'python/**'
+    - '.github/workflow/python-*'
 
 jobs:
   build:
