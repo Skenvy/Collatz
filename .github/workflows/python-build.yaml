@@ -3,8 +3,8 @@ on:
   push:
     branches:    
     - '*'
-    paths:
-    - 'python/src/collatz/__version__.py'
+    # paths:
+    # - 'python/src/collatz/__version__.py'
 jobs:
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
