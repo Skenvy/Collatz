@@ -6,7 +6,7 @@ on:
     - 'main'
     paths:
     - 'python/**'
-    - '.github/workflow/python-*'
+    - '.github/workflows/python-*'
 jobs:
   tox:
     runs-on: ubuntu-latest

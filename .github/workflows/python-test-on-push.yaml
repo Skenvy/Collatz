@@ -3,7 +3,7 @@ on:
   push:
     paths:
     - 'python/**'
-    - '.github/workflow/python-*'
+    - '.github/workflows/python-*'
 jobs:
   pytest:
     runs-on: ubuntu-latest
