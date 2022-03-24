@@ -9,11 +9,11 @@ on:
     # but then the steps in one file would get too verbose, so chosing to keep the build and test in distinct workflows.
     - 'python/src/collatz/__version__.py'
   workflow_dispatch: # manual, rather than tag triggering
+defaults:
+  run:
+    shell: bash
+    working-directory: python
 jobs:
-  defaults:
-    run:
-      shell: bash
-      working-directory: python
   test:
     name: Python 🐍 Test 🦂
     uses: ./.github/workflows/python-test.yaml

@@ -12,11 +12,11 @@ on:
     - 'python/**'
     - '.github/workflows/python-*'
   workflow_call: # To be called by build, on a push to main that ups the version
+defaults:
+  run:
+    shell: bash
+    working-directory: python
 jobs:
-  defaults:
-    run:
-      shell: bash
-      working-directory: python
   quick-test:
     name: Python 🐍 Pytest 🦂
     if: ${{ github.event_name == 'push' }}
