@@ -1,4 +1,4 @@
-name: Get GitHub Context Payload
+name: GitHub 🐱‍👤 Context Payload
 on:
   # If you need to use this to test a payload for some event/condition.
   # Then change this from workflow_dispatch to whatever you need.
@@ -8,7 +8,7 @@ defaults:
     shell: bash
 jobs:
   echo-payload:
-    name: Echo GitHub context
+    name: Echo 🐱‍💻 GitHub 🐱‍👤 context
     runs-on: ubuntu-latest
     steps:
     - name: Echo GitHub context
