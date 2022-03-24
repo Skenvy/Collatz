@@ -12,6 +12,8 @@ on:
     - 'python/**'
     - '.github/workflows/python-*'
   workflow_call: # To be called by build, on a push to main that ups the version
+  # Although this is an event itself - and the event payload is the same as the callee,
+  # the "event_name" is _also_ the same. The event's in the callee are push and workflow_dispatch.
 defaults:
   run:
     shell: bash
@@ -19,7 +21,9 @@ defaults:
 jobs:
   quick-test:
     name: Python 🐍 Pytest 🦂
-    if: ${{ github.event_name == 'push'  || github.event_name == 'workflow_dispatch' }}
+    if: >-
+      ${{ github.event_name == 'push' && !(git.event.push.ref == refs/heads/main &&
+      contains(github.event.push.commits[][modified], 'python/src/collatz/__version__.py'))}}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -36,7 +40,11 @@ jobs:
         make test
   full-test:
     name: Python 🐍 Tox 🦂
-    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_call' }}
+    if: >- 
+      ${{ github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && git.event.push.ref == refs/heads/main &&
+      contains(github.event.push.commits[][modified], 'python/src/collatz/__version__.py')) }}
     runs-on: '${{ matrix.os }}'
     strategy:
       matrix:
