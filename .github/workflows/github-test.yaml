@@ -1,0 +1,17 @@
+name: Get GitHub Context Payload
+on:
+  # If you need to use this to test a payload for some event/condition.
+  # Then change this from workflow_dispatch to whatever you need.
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+jobs:
+  echo-payload:
+    name: Echo GitHub context
+    runs-on: ubuntu-latest
+    steps:
+    - name: Echo GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"

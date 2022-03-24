@@ -20,9 +20,7 @@ defaults:
 jobs:
   quick-test:
     name: Python 🐍 Pytest 🦂
-    if: >-
-      ${{ github.event_name == 'push' && !(github.event.push.ref == 'refs/heads/main' &&
-      contains(github.event.push.commits[0][modified], 'python/src/collatz/__version__.py'))}}
+    if: ${{ github.event_name == 'push' && !(github.event.push.ref == 'refs/heads/main')}}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -42,8 +40,7 @@ jobs:
     if: >- 
       ${{ github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'push' && github.event.push.ref == 'refs/heads/main' &&
-      contains(github.event.push.commits[0][modified], 'python/src/collatz/__version__.py')) }}
+      (github.event_name == 'push' && github.event.push.ref == 'refs/heads/main') }}
     runs-on: '${{ matrix.os }}'
     strategy:
       matrix:
