@@ -1,4 +1,4 @@
-name: Python 🐍 Tox 🦂 Pytest
+name: Python 🐍 Tests 🦂
 on:
   push:
     paths:
@@ -11,11 +11,14 @@ on:
     paths:
     - 'python/**'
     - '.github/workflows/python-*'
+  workflow_call: # To be called by build, on a push to main that ups the version
 jobs:
   defaults:
     run:
+      shell: bash
       working-directory: python
-  pytest:
+  quick-test:
+    name: Python 🐍 Pytest 🦂
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
@@ -31,8 +34,9 @@ jobs:
     - name: 🦂 Test with pytest
       run: |
         make test
-  tox:
-    if: ${{ github.event_name == 'pull_request' }}
+  full-test:
+    name: Python 🐍 Tox 🦂
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_call' }}
     runs-on: '${{ matrix.os }}'
     strategy:
       matrix:

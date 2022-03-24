@@ -1,23 +1,26 @@
-name: Python 🐍 Build, Release, and Publish 📦 to PyPI and TestPyPI
+name: Python 🐍 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
 on:
   push:
     branches:    
+    # We could use git.event.push.ref == refs/heads/main
     - 'main'
     paths:
-    # We could use contains(github.event.push.commits[][modified], ~), but
-    # then the steps in one file would get too verbose, so chosing to keep
-    # the build and test in distinct workflows.
+    # We could use contains(github.event.push.commits[][modified], 'python/src/collatz/__version__.py'),
+    # but then the steps in one file would get too verbose, so chosing to keep the build and test in distinct workflows.
     - 'python/src/collatz/__version__.py'
   workflow_dispatch: # manual, rather than tag triggering
 jobs:
+  defaults:
+    run:
+      shell: bash
+      working-directory: python
   test:
-  build-n-publish:
-    name: Build, Release, and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    name: Python 🐍 Test 🦂
+    uses: ./.github/workflows/python-test.yaml
+  build:
+    name: Python 🐍 Build 🧱
+    needs: [test]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: python
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -31,7 +34,25 @@ jobs:
     - name: 🎡 Build wheel and source
       run: |
         make build
-    - name: 🦏 Release
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@v3
+      with:
+        name: built-dists
+        path: python/dist/
+        if-no-files-found: error
+  release:
+    name: Python 🐍 Release 🚰
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@v3
+      with:
+        name: built-dists
+        path: python/dist
+    - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >-
@@ -42,14 +63,28 @@ jobs:
         "$(find dist | grep \\.tar\\.gz)#Tarball"
         --generate-notes
         -t "Python: Version $VER"
-    - name: 📦 Publish distribution to Test PyPI
+  publish:
+    name: Python 🐍 Publish 📦
+    needs: [test, build, release]
+    runs-on: ubuntu-latest
+    steps:
+    # Although the dists are built uses checkout to satisfy refs/tags existence
+    # which were created by the release, prior to uploading to pypi.
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@v3
+      with:
+        name: built-dists
+        path: python/dist
+    - name: 📦 Publish to Test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1.5
       with:
         packages_dir: python/dist
         skip_existing: true
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
-    - name: 📦 Publish distribution to PyPI
+    - name: 📦 Publish to PyPI
       if: startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1.5
       with:
