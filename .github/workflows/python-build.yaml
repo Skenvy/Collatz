@@ -5,7 +5,7 @@ on:
     # github.event.push.ref == refs/heads/main
     - 'main'
     paths:
-    # contains(github.event.push.commits[][modified], 'python/src/collatz/__version__.py')
+    # contains(github.event.push.commits[modified], 'python/src/collatz/__version__.py')
     - 'python/src/collatz/__version__.py'
   workflow_dispatch: # manual, rather than tag triggering
 defaults:
