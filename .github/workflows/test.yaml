@@ -1,0 +1,10 @@
+name: Test payload
+on:
+  push:
+defaults:
+  run:
+    shell: bash
+jobs:
+  dump-payload:
+    steps:
+    - run: echo "$GITHUB_CONTEXT"
