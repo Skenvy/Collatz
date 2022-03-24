@@ -8,4 +8,7 @@ jobs:
   dump-payload:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "$GITHUB_CONTEXT"
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
