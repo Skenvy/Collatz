@@ -42,7 +42,7 @@ jobs:
         if-no-files-found: error
   release:
     name: Python 🐍 Release 🚰
-    needs: [test, build]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -65,7 +65,7 @@ jobs:
         -t "Python: Version $VER"
   publish:
     name: Python 🐍 Publish 📦
-    needs: [test, build, release]
+    needs: [release]
     runs-on: ubuntu-latest
     steps:
     # Although the dists are built uses checkout to satisfy refs/tags existence
