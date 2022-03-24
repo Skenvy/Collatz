@@ -6,5 +6,6 @@ defaults:
     shell: bash
 jobs:
   dump-payload:
+    runs-on: ubuntu-latest
     steps:
     - run: echo "$GITHUB_CONTEXT"
