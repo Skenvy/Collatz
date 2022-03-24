@@ -12,11 +12,28 @@ on:
     - 'python/**'
     - '.github/workflows/python-*'
 jobs:
-  tox-pytest:
+  defaults:
+    run:
+      working-directory: python
+  pytest:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🐍 Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: 🧱 Install build dependencies
+      run: |
+        make venv
+    - name: 🦂 Test with pytest
+      run: |
+        make test
+  tox:
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: '${{ matrix.os }}'
-    defaults:
-      run:
-        working-directory: python
     strategy:
       matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
