@@ -3,13 +3,15 @@ Functions related to the Collatz/Syracuse/3N+1 problem, prospectively implemente
 ## The gist
 Each language's implementation should share the same functionality, or as close to it as possible, such that a consistent usability is delivered across all languages' implementations.
 ## Implementations
-* [go](#TODO)
-* [java](#TODO)
-* [javascript](#TODO)
-* [julia](#TODO)
+* [C#](#TODO)
+* [Go](#TODO)
+* [Java](#TODO)
+* [Julia](#TODO)
 * [LaTeX](#TODO)
-* [python](#TODO)
+* [Node.JS](#TODO)
+* [Python](#TODO)
 * [R](#TODO)
+* [Ruby](#TODO)
 ## Basic functionality.
 ### Core functionality for v1
 * The **function**, _optionally_ parameterisable.
