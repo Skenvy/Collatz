@@ -71,6 +71,10 @@ jobs:
         "$(find dist | grep \\.tar\\.gz)#Tarball"
         --generate-notes
         -t "Python: Version $VER"
+  context-after-release:
+    name: GitHub 🐱‍👤 Context 📑 AFTER Release 🚰
+    needs: [release]
+    uses: ./.github/workflows/github-context.yaml
   publish:
     name: Python 🐍 Publish 📦
     needs: [release]
