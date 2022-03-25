@@ -1,19 +1,34 @@
-name: Python 🐍 Build, Release, and Publish 📦 to PyPI and TestPyPI
+name: Python 🐍 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
 on:
   push:
     branches:    
+    # github.event.push.ref == refs/heads/main
     - 'main'
     paths:
+    # contains(github.event.push.commits[][modified], 'python/src/collatz/__version__.py')
+    # ^ although it would be easy to git diff between the before and after commits on the event
+    # it appears the above "commits[][modified]"" syntax doesn't actually work ~ causing a
+    # "The workflow is not valid." ... "Unexpected symbol: ']'", and 'if' can only use contexts
+    # https://github.blog/changelog/2019-10-16-changes-in-github-actions-push-event-payload/
+    # Without this condition in the test workflow though, the test run there and triggered
+    # from this' test step will run twice for any commit to version file.
     - 'python/src/collatz/__version__.py'
   workflow_dispatch: # manual, rather than tag triggering
+defaults:
+  run:
+    shell: bash
+    working-directory: python
 jobs:
-  build-n-publish:
-    name: Build, Release, and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+  context:
+    name: GitHub 🐱‍👤 Context 📑
+    uses: ./.github/workflows/github-context.yaml
+  test:
+    name: Python 🐍 Test 🦂
+    uses: ./.github/workflows/python-test.yaml
+  build:
+    name: Python 🐍 Build 🧱
+    needs: [test]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: python
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -27,7 +42,25 @@ jobs:
     - name: 🎡 Build wheel and source
       run: |
         make build
-    - name: 🦏 Release
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@v3
+      with:
+        name: built-dists
+        path: python/dist/
+        if-no-files-found: error
+  release:
+    name: Python 🐍 Release 🚰
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@v3
+      with:
+        name: built-dists
+        path: python/dist
+    - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >-
@@ -38,14 +71,28 @@ jobs:
         "$(find dist | grep \\.tar\\.gz)#Tarball"
         --generate-notes
         -t "Python: Version $VER"
-    - name: 📦 Publish distribution to Test PyPI
+  publish:
+    name: Python 🐍 Publish 📦
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+    # Although the dists are built uses checkout to satisfy refs/tags existence
+    # which were created by the release, prior to uploading to pypi.
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@v3
+      with:
+        name: built-dists
+        path: python/dist
+    - name: 📦 Publish to Test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1.5
       with:
         packages_dir: python/dist
         skip_existing: true
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
-    - name: 📦 Publish distribution to PyPI
+    - name: 📦 Publish to PyPI
       if: startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1.5
       with:
