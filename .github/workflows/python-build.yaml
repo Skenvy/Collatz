@@ -19,6 +19,9 @@ defaults:
     shell: bash
     working-directory: python
 jobs:
+  context:
+    name: GitHub 🐱‍👤 Context 📑
+    uses: ./.github/workflows/github-context.yaml
   test:
     name: Python 🐍 Test 🦂
     uses: ./.github/workflows/python-test.yaml
