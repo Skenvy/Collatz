@@ -1,6 +1,11 @@
 name: Python 🐍 Tests 🦂
 on:
   push:
+    branches-ignore:
+    - 'main'
+    # Ignoring the only branch that triggers the build which calls this with it's own push
+    # context via workflow call below will stop double runs of the tox step. But we do still
+    # need conditions on main's HEAD ref for each job as the callee workflow sends a puch event.
     paths:
     - 'python/**'
     - '.github/workflows/python-*'
@@ -20,7 +25,7 @@ defaults:
 jobs:
   quick-test:
     name: Python 🐍 Pytest 🦂
-    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main')}}
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
