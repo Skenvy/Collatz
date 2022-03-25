@@ -8,7 +8,7 @@ Each language's implementation should share the same functionality, or as close 
 * [javascript](#TODO)
 * [julia](#TODO)
 * [LaTeX](#TODO)
-* [python](#TODO)
+* [python](#TODO: Update to the pypi release)
 * [R](#TODO)
 ## Basic functionality.
 ### Core functionality for v1
