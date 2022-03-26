@@ -31,7 +31,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
     - name: 🚥 Set up Julia
-      uses: julia-actions/setup-julia@v1
+      uses: julia-actions/setup-julia@v1.6
       with:
         version: '1.2.0' # The compat version
         arch: 'x64'
@@ -52,14 +52,15 @@ jobs:
       fail-fast: false
       matrix:
         # From versions in https://julialang-s3.julialang.org/bin/versions.json
-        version: ['1.0', '1', 'nightly', '1.2.0'] # '1.2.0' is the compat version
+        # Does NOT support 1.0
+        version: ['1', 'nightly', '1.2.0'] # '1.2.0' is the compat version
         os: [ubuntu-latest, macOS-latest, windows-latest]
         arch: [x64]
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
     - name: 🚥 Set up Julia ${{ matrix.version }}
-      uses: julia-actions/setup-julia@v1
+      uses: julia-actions/setup-julia@v1.6
       with:
         version: ${{ matrix.version }}
         arch: ${{ matrix.arch }}
@@ -76,12 +77,12 @@ jobs:
           ${{ runner.os }}-
     # https://github.com/julia-actions/julia-buildpkg
     - name: 🧱 Build
-      uses: julia-actions/julia-buildpkg@v1
+      uses: julia-actions/julia-buildpkg@v1.2
       with:
         project: julia
     # https://github.com/julia-actions/julia-runtest
     - name: 🦂 Test
-      uses: julia-actions/julia-runtest@v1
+      uses: julia-actions/julia-runtest@v1.7
       with:
         project: julia
     # https://github.com/julia-actions/julia-processcoverage
@@ -89,30 +90,31 @@ jobs:
       uses: julia-actions/julia-processcoverage@v1
       with:
         directories: julia/src
-    # - name: 👓 CodeCov
-    #   uses: codecov/codecov-action@v1
-    #   with:
-    #     file: lcov.info
-
-  # docs:
-  #   name: Documentation
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: julia-actions/setup-julia@v1
-  #       with:
-  #         version: '1'
-  #     - run: |
-  #         julia --project=docs -e '
-  #           using Pkg
-  #           Pkg.develop(PackageSpec(path=pwd()))
-  #           Pkg.instantiate()'
-  #     - run: |
-  #         julia --project=docs -e '
-  #           using Documenter: doctest
-  #           using MYPACKAGE
-  #           doctest(MYPACKAGE)' # change MYPACKAGE to the name of your package
-  #     - run: julia --project=docs docs/make.jl
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+    - name: 👓 CodeCov
+      uses: codecov/codecov-action@v2
+      with:
+        file: lcov.info
+        name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
+        verbose: true
+  docs:
+    name: Julia 🚥 Docs 📄
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: julia-actions/setup-julia@v1.6
+      with:
+        version: '1'
+    - run: |
+        julia --project=docs -e '
+          using Pkg
+          Pkg.develop(PackageSpec(path=pwd()))
+          Pkg.instantiate()'
+    - run: |
+        julia --project=docs -e '
+          using Documenter: doctest
+          using Collatz
+          doctest(Collatz)'
+    # - run: julia --project=docs docs/make.jl
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
