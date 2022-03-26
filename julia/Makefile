@@ -10,6 +10,7 @@ SHELL:=/bin/bash
 deps:
 	julia --project=. -E "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 	julia --project=test -E "import Pkg; Pkg.resolve(); Pkg.instantiate();"
+	julia --project=docs -E "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 
 test:
 	julia --project=. -E "import Pkg; Pkg.test();"
