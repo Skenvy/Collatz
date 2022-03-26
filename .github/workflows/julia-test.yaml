@@ -104,16 +104,9 @@ jobs:
     - uses: julia-actions/setup-julia@v1.6
       with:
         version: '1'
-    - run: |
-        julia --project=docs -e '
-          using Pkg
-          Pkg.develop(PackageSpec(path=pwd()))
-          Pkg.instantiate()'
-    - run: |
-        julia --project=docs -e '
-          using Documenter: doctest
-          using Collatz
-          doctest(Collatz)'
+    - run: make docs_test
+    # https://juliadocs.github.io/Documenter.jl/stable/man/hosting/#The-deploydocs-Function
+    # See the above for what this expects to use the DOCUMENTER_KEY for to deploy.
     # - run: julia --project=docs docs/make.jl
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
