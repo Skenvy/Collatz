@@ -1,0 +1,113 @@
+name: Julia 🚥 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    # Ignoring the only branch that triggers the build which calls this with it's own push
+    # context via workflow call below will stop double runs of the tox step. But we do still
+    # need conditions on main's HEAD ref for each job as the callee workflow sends a puch event.
+    paths:
+    - 'julia/**'
+    - '.github/workflows/julia-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'julia/**'
+    - '.github/workflows/julia-*'
+  workflow_call: # To be called by build, on a push to main that ups the version
+  # Although this is an event itself - and the event payload is the same as the callee,
+  # the "event_name" is _also_ the same. The event's in the callee are push and workflow_dispatch.
+defaults:
+  run:
+    shell: bash
+    working-directory: julia
+jobs:
+  quick-test:
+    name: Julia 🚥 Quick Test 🦂
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🚥 Set up Julia
+      uses: julia-actions/setup-julia@v1.6
+      with:
+        version: '1.2.0' # The compat version
+        arch: 'x64'
+    - name: 🧱 Install build dependencies
+      run: |
+        make deps
+    - name: 🦂 Test
+      run: |
+        make test
+  full-test:
+    name: Julia 🚥 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        # From versions in https://julialang-s3.julialang.org/bin/versions.json
+        # Does NOT support 1.0
+        version: ['1', 'nightly', '1.2.0'] # '1.2.0' is the compat version
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        arch: [x64]
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🚥 Set up Julia ${{ matrix.version }}
+      uses: julia-actions/setup-julia@v1.6
+      with:
+        version: ${{ matrix.version }}
+        arch: ${{ matrix.arch }}
+    - name: 🧰 Cache
+      uses: actions/cache@v1
+      env:
+        cache-name: cache-artifacts
+      with:
+        path: ~/.julia/artifacts
+        key: ${{ runner.os }}-test-${{ env.cache-name }}-${{ hashFiles('**/Project.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-test-${{ env.cache-name }}-
+          ${{ runner.os }}-test-
+          ${{ runner.os }}-
+    # https://github.com/julia-actions/julia-buildpkg
+    - name: 🧱 Build
+      uses: julia-actions/julia-buildpkg@v1.2
+      with:
+        project: julia
+    # https://github.com/julia-actions/julia-runtest
+    - name: 🦂 Test
+      uses: julia-actions/julia-runtest@v1.7
+      with:
+        project: julia
+    # https://github.com/julia-actions/julia-processcoverage
+    - name: 🧱 Build
+      uses: julia-actions/julia-processcoverage@v1
+      with:
+        directories: julia/src
+    - name: 👓 CodeCov
+      uses: codecov/codecov-action@v2
+      with:
+        file: lcov.info
+        name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
+        verbose: true
+  docs:
+    name: Julia 🚥 Docs 📄
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: julia-actions/setup-julia@v1.6
+      with:
+        version: '1'
+    - run: make docs_test
+    # https://juliadocs.github.io/Documenter.jl/stable/man/hosting/#The-deploydocs-Function
+    # See the above for what this expects to use the DOCUMENTER_KEY for to deploy.
+    # - run: julia --project=docs docs/make.jl
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #     DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}

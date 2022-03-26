@@ -1,0 +1,9 @@
+name = "Collatz"
+uuid = "93a6299e-2ed6-4a7f-9f14-000d52f8d402"
+authors = ["Skenvy <nathan.a.z.levett@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+
+[compat]
+julia = "1.2.0"
