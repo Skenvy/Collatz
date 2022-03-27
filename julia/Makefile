@@ -20,16 +20,17 @@ deps: clean
 	julia --project=. -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 	julia --project=test -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 	julia --project=docs -e "import Pkg; Pkg.develop(Pkg.PackageSpec(path=pwd())); Pkg.resolve(); Pkg.instantiate();"
+	julia --project=docs/viewer -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 
 docs: clean_docs
-	julia --project=docs -e "using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()"
+	julia --project=docs -e "using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.resolve(); Pkg.instantiate()"
 	julia --project=docs docs/make.jl
 
 docs_test: docs
 	julia --project=docs -e "using Documenter: doctest; using Collatz; doctest(Collatz)"
 
-docs_view: docs_test
-	julia --project=docs -e "using LiveServer; serve(dir=\"docs/build\")"
+docs_viewer: docs_test
+	julia --project=docs/viewer -e "using LiveServer; serve(dir=\"docs/build\")"
 
 test:
 	julia --project=. -e "import Pkg; Pkg.test();"
