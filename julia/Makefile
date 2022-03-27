@@ -1,9 +1,19 @@
-.PHONY: clean_docs clean deps docs docs_test test build
+.PHONY: clean_docs clean deps docs docs_test docs_viewer test build
 SHELL:=/bin/bash
-# Stop Pkg funcs from printing "nothing", and add a line
-# SHH= 1> /dev/null && echo
-# The redirect doesn't block prints from julia locally, but does appear to
-# prevent the output from appearing in github actions, so removing $(SHH)
+
+### These are just the CLI way of doing the common REPL commands to create a new project,
+### although _all that's needed_ for a project is to create a blank `~/path/to/Project.toml`
+# "Generate" will create a new project and src in `~/d/`
+# $> julia --project=a/b/c -e "using Pkg; Pkg.generate(\"d\");"
+# A _single_ "instantiate" will create only `~/a/b/c/Manifest.toml`
+# $> julia --project=a/b/c -e "using Pkg; Pkg.instantiate();"
+# _Two_ "instantiate"'s, or a resolve as well, will generate the project along with the manifest.
+# $> julia --project=a/b/c -e "using Pkg; Pkg.instantiate(); Pkg.instantiate();"
+# $> julia --project=a/b/c -e "using Pkg; Pkg.resolve(); Pkg.instantiate();"
+# To _add_ a package ~
+# $> julia --project=a/b/c -e "using Pkg; Pkg.add(\"PkgName\")"
+# To _see_ the packages (and their versions, for compat) ~
+# $> julia --project=a/b/c -e "using Pkg; Pkg.status()"
 
 clean_docs:
 	rm -rf docs/build/
@@ -16,6 +26,7 @@ clean: clean_docs
 
 # This includes Pkg.resolve() ~ which is ideologically mutually exclusive with
 # committing the manifest, as resolve rebuilds the manifest from the project.
+# Pkg.develop(Pkg.PackageSpec(path=pwd())) included in docs to add 'this' to it.
 deps: clean
 	julia --project=. -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 	julia --project=test -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
