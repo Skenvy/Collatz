@@ -30,6 +30,7 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
+    # https://github.com/julia-actions/setup-juliahttps://github.com/julia-actions/setup-julia
     - name: 🚥 Set up Julia
       uses: julia-actions/setup-julia@v1.6
       with:
@@ -59,6 +60,7 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
+    # https://github.com/julia-actions/setup-juliahttps://github.com/julia-actions/setup-julia
     - name: 🚥 Set up Julia ${{ matrix.version }}
       uses: julia-actions/setup-julia@v1.6
       with:
@@ -86,16 +88,16 @@ jobs:
       with:
         project: julia
     # https://github.com/julia-actions/julia-processcoverage
-    - name: 🧱 Build
-      uses: julia-actions/julia-processcoverage@v1
-      with:
-        directories: julia/src
-    - name: 👓 CodeCov
-      uses: codecov/codecov-action@v2
-      with:
-        file: lcov.info
-        name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
-        verbose: true
+    # - name: 👓 Pre CodeCov; Generate coverage.
+    #   uses: julia-actions/julia-processcoverage@v1
+    #   with:
+    #     directories: julia/src
+    # - name: 👓 CodeCov
+    #   uses: codecov/codecov-action@v2
+    #   with:
+    #     file: lcov.info
+    #     name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
+    #     verbose: true
   docs:
     name: Julia 🚥 Docs 📄
     runs-on: ubuntu-latest
