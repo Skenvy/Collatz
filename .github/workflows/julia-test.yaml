@@ -1,4 +1,4 @@
-name: Julia 🚥 Tests 🦂
+name: Julia 🔴🟢🟣 Tests 🦂
 on:
   push:
     branches-ignore:
@@ -24,13 +24,14 @@ defaults:
     working-directory: julia
 jobs:
   quick-test:
-    name: Julia 🚥 Quick Test 🦂
+    name: Julia 🔴🟢🟣 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    - name: 🚥 Set up Julia
+    # https://github.com/julia-actions/setup-juliahttps://github.com/julia-actions/setup-julia
+    - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@v1.6
       with:
         version: '1.2.0' # The compat version
@@ -42,7 +43,7 @@ jobs:
       run: |
         make test
   full-test:
-    name: Julia 🚥 Full Test 🦂
+    name: Julia 🔴🟢🟣 Full Test 🦂
     if: >- 
       ${{ github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
@@ -59,7 +60,8 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    - name: 🚥 Set up Julia ${{ matrix.version }}
+    # https://github.com/julia-actions/setup-juliahttps://github.com/julia-actions/setup-julia
+    - name: 🔴🟢🟣 Set up Julia ${{ matrix.version }}
       uses: julia-actions/setup-julia@v1.6
       with:
         version: ${{ matrix.version }}
@@ -86,18 +88,18 @@ jobs:
       with:
         project: julia
     # https://github.com/julia-actions/julia-processcoverage
-    - name: 🧱 Build
-      uses: julia-actions/julia-processcoverage@v1
-      with:
-        directories: julia/src
-    - name: 👓 CodeCov
-      uses: codecov/codecov-action@v2
-      with:
-        file: lcov.info
-        name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
-        verbose: true
+    # - name: 👓 Pre CodeCov; Generate coverage.
+    #   uses: julia-actions/julia-processcoverage@v1
+    #   with:
+    #     directories: julia/src
+    # - name: 👓 CodeCov
+    #   uses: codecov/codecov-action@v2
+    #   with:
+    #     file: lcov.info
+    #     name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
+    #     verbose: true
   docs:
-    name: Julia 🚥 Docs 📄
+    name: Julia 🔴🟢🟣 Docs 📄
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
