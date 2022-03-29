@@ -1,4 +1,4 @@
-name: Julia 🚥 Test 🦂 Release 🚰 and Publish 📦
+name: Julia 🔴🟢🟣 Test 🦂 Release 🚰 and Register 📦
 on:
   push:
     branches:    
@@ -23,34 +23,22 @@ jobs:
     name: GitHub 🐱‍👤 Context 📑
     uses: ./.github/workflows/github-context.yaml
   test:
-    name: Julia 🚥 Test 🦂
+    name: Julia 🔴🟢🟣 Test 🦂
     uses: ./.github/workflows/julia-test.yaml
   # It seems that the typical "build" step is not
   # part of uploading a package in Julia.
   release:
-    name: Julia 🚥 Release 🚰
+    name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
     needs: [test]
     runs-on: ubuntu-latest
     steps:
-    - name: 🏁 Checkout
-      uses: actions/checkout@v3
-    - name: 🚰 Release
+    - name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
+      uses: Skenvy/julia-release@v1
+      id: release_step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: >-
-        export VERSION=$(grep version Project.toml | cut -d \" -f 2) && 
-        gh release create
-        julia-v$VERSION
-        --generate-notes
-        -t "Julia: Version $VERSION"
-  context-after-release:
-    name: GitHub 🐱‍👤 Context 📑 AFTER Release 🚰
-    needs: [release]
-    uses: ./.github/workflows/github-context.yaml
-  publish:
-    name: Julia 🚥 Publish 📦
-    needs: [release]
-    runs-on: ubuntu-latest
-    steps:
-    - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      with:
+        deployment_branch: 'main'
+        subdirectory: "julia"
+        release_tag_template: "julia-v<NEW_VERSION>"
+        release_name_template: "Julia: Version <NEW_VERSION>"
