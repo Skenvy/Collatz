@@ -1,4 +1,4 @@
-.PHONY: clean_docs clean deps docs docs_test docs_viewer test build
+.PHONY: repl clean_docs clean deps docs docs_test docs_viewer test build
 SHELL:=/bin/bash
 
 ### These are just the CLI way of doing the common REPL commands to create a new project,
@@ -14,6 +14,9 @@ SHELL:=/bin/bash
 # $> julia --project=a/b/c -e "using Pkg; Pkg.add(\"PkgName\")"
 # To _see_ the packages (and their versions, for compat) ~
 # $> julia --project=a/b/c -e "using Pkg; Pkg.status()"
+
+repl:
+	julia --project=. -e "import Pkg; Pkg.resolve(); Pkg.instantiate(); import Collatz" -i
 
 clean_docs:
 	rm -rf docs/build/
