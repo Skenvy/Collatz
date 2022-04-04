@@ -170,38 +170,38 @@ end
 @testset verbose = true "tree_graph" begin
     C = _CC.CYCLE_INIT  # Shorthand the cycle terminus
     D = Dict()  # Just to colourise the below in the editor..
-    # # The default zero trap
-    # @test Collatz.tree_graph(0, 0) == {0:D}
-    # @test Collatz.tree_graph(0, 1) == {0:{C:0}}
-    # @test Collatz.tree_graph(0, 2) == {0:{C:0}}
-    # # The roundings of the 1 cycle.
-    # @test Collatz.tree_graph(1, 1) == {1:{2:D}}
-    # @test Collatz.tree_graph(1, 0) == {1:D}
-    # @test Collatz.tree_graph(1, 1) == {1:{2:D}}
-    # @test Collatz.tree_graph(1, 2) == {1:{2:{4:D}}}
-    # @test Collatz.tree_graph(1, 3) == {1:{2:{4:{C:1,8:D}}}}
-    # @test Collatz.tree_graph(2, 3) == {2:{4:{1:{C:2},8:{16:D}}}}
-    # @test Collatz.tree_graph(4, 3) == {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
-    # # The roundings of the -1 cycle
-    # @test Collatz.tree_graph(-1, 1) == {-1:{-2:D}}
-    # @test Collatz.tree_graph(-1, 2) == {-1:{-2:{-4:D,C:-1}}}
-    # # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
-    # T = lambda x,y: {1:{-1:x,5:y}}
-    # orb_1 = T(D,D)
-    # orb_2 = T({-5:D,-2:D},{C:1,25:D})
-    # T = lambda x,y,z: {1:{-1:{-5:x,-2:y},5:{C:1,25:z}}}
-    # orb_3 = T({-25:D,-4:D},{-10:D},{11:D,125:D})
-    # @test Collatz.tree_graph(1, 1, P=5, a=2, b=3) == orb_1
-    # @test Collatz.tree_graph(1, 2, P=5, a=2, b=3) == orb_2
-    # @test Collatz.tree_graph(1, 3, P=5, a=2, b=3) == orb_3
-    # # Test negative P, a and b.
-    # orb_1 = {1:{-3:D}}
-    # T = lambda x,y: {1:{-3:{-1:x,9:y}}}
-    # orb_2 = T(D,D)
-    # orb_3 = T({-2:D,3:D},{-27:D,-7:D})
-    # @test Collatz.tree_graph(1, 1, P=-3, a=-2, b=-5) == orb_1
-    # @test Collatz.tree_graph(1, 2, P=-3, a=-2, b=-5) == orb_2
-    # @test Collatz.tree_graph(1, 3, P=-3, a=-2, b=-5) == orb_3
+    # The default zero trap
+    @test Collatz.tree_graph(0, 0) == Dict(0=>D)
+    @test Collatz.tree_graph(0, 1) == Dict(0=>Dict(C=>0))
+    @test Collatz.tree_graph(0, 2) == Dict(0=>Dict(C=>0))
+    # The roundings of the 1 cycle.
+    @test Collatz.tree_graph(1, 1) == Dict(1=>Dict(2=>D))
+    @test Collatz.tree_graph(1, 0) == Dict(1=>D)
+    @test Collatz.tree_graph(1, 1) == Dict(1=>Dict(2=>D))
+    @test Collatz.tree_graph(1, 2) == Dict(1=>Dict(2=>Dict(4=>D)))
+    @test Collatz.tree_graph(1, 3) == Dict(1=>Dict(2=>Dict(4=>Dict(C=>1,8=>D))))
+    @test Collatz.tree_graph(2, 3) == Dict(2=>Dict(4=>Dict(1=>Dict(C=>2),8=>Dict(16=>D))))
+    @test Collatz.tree_graph(4, 3) == Dict(4=>Dict(1=>Dict(2=>Dict(C=>4)),8=>Dict(16=>Dict(5=>D,32=>D))))
+    # The roundings of the -1 cycle
+    @test Collatz.tree_graph(-1, 1) == Dict(-1=>Dict(-2=>D))
+    @test Collatz.tree_graph(-1, 2) == Dict(-1=>Dict(-2=>Dict(-4=>D,C=>-1)))
+    # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+    T = function (x,y) Dict(1=>Dict(-1=>x,5=>y)) end
+    orb_1 = T(D,D)
+    orb_2 = T(Dict(-5=>D,-2=>D),Dict(C=>1,25=>D))
+    T = function (x,y,z) Dict(1=>Dict(-1=>Dict(-5=>x,-2=>y),5=>Dict(C=>1,25=>z))) end
+    orb_3 = T(Dict(-25=>D,-4=>D),Dict(-10=>D),Dict(11=>D,125=>D))
+    @test Collatz.tree_graph(1, 1, P=5, a=2, b=3) == orb_1
+    @test Collatz.tree_graph(1, 2, P=5, a=2, b=3) == orb_2
+    @test Collatz.tree_graph(1, 3, P=5, a=2, b=3) == orb_3
+    # Test negative P, a and b.
+    orb_1 = Dict(1=>Dict(-3=>D))
+    T = function (x,y) Dict(1=>Dict(-3=>Dict(-1=>x,9=>y))) end
+    orb_2 = T(D,D)
+    orb_3 = T(Dict(-2=>D,3=>D),Dict(-27=>D,-7=>D))
+    @test Collatz.tree_graph(1, 1, P=-3, a=-2, b=-5) == orb_1
+    @test Collatz.tree_graph(1, 2, P=-3, a=-2, b=-5) == orb_2
+    @test Collatz.tree_graph(1, 3, P=-3, a=-2, b=-5) == orb_3
     # Set P and a to 0 to @test on __assert_sane_parameterisation
     @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.tree_graph(1, 1, P=0, a=2, b=3)
     @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.tree_graph(1, 1, P=0, a=0, b=3)
