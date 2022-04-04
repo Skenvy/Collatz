@@ -196,8 +196,8 @@ Kwargs:
         a cycle. Default is True.
 """
 function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=True, verbose::Bool=True) #TODO:
-#     # Call out the function before any magic returns to trap bad values.
-#     _ = function(initial_value,P=P,a=a,b=b)
+#     # Call out the collatz_function before any magic returns to trap bad values.
+#     _ = collatz_function(initial_value,P=P,a=a,b=b)
 #     # 0 is always an immediate stop.
 #     if initial_value == 0:
 #         return [[_CC.ZERO_STOP.value, 0]] if verbose else [0]
@@ -210,7 +210,7 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
 #     hailstone = [initial_value]
 #     cyclic = (lambda x: x in hailstone)
 #     for k in range(_max_total_stopping_time):
-#         _next = function(hailstone[-1],P=P,a=a,b=b)
+#         _next = collatz_function(hailstone[-1],P=P,a=a,b=b)
 #         # Check if the next hailstone is either the stopping time, total
 #         # stopping time, the same as the initial value, or stuck at zero.
 #         if terminate(_next):
@@ -321,8 +321,8 @@ Internal Kwargs:
         by keeping track of all values added across previous nest depths.
 """
 function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing) #TODO:
-#     # Call out the reverse_function before any magic returns to trap bad values.
-#     _ = reverse_function(initial_value,P=P,a=a,b=b)
+#     # Call out the reverse_collatz_function before any magic returns to trap bad values.
+#     _ = reverse_collatz_function(initial_value,P=P,a=a,b=b)
 #     tgraph = {initial_value:{}}
 #     if max(0, max_orbit_distance) == 0:
 #         return tgraph
@@ -331,7 +331,7 @@ function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Inte
 #     if __cycle_prevention is None:
 #         __cycle_prevention = set()
 #     __cycle_prevention.add(initial_value)
-#     for branch_value in reverse_function(initial_value, P=P, a=a, b=b):
+#     for branch_value in reverse_collatz_function(initial_value, P=P, a=a, b=b):
 #         if branch_value in __cycle_prevention:
 #             tgraph[initial_value][_CC.CYCLE_INIT.value] = branch_value
 #         else:
