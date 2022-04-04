@@ -10,7 +10,7 @@ module Collatz
 export _ErrMsg, _CC, _KNOWN_CYCLES
 export collatz, reverse_collatz, hailstone_sequence, stopping_time, tree_graph
 
-#TODO: from typing import Optional, Set,from math import inf as infinity
+#TODO: from math import inf as infinity
 
 
 const _KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], [-17,-50,-25,-74,-37,-110,-55,-164,-82,-41,-122,-61,-182,-91,-272,-136,-68,-34]]
@@ -315,7 +315,7 @@ Internal Kwargs:
     __cycle_prevention (set[int]): Used to prevent cycles from precipitating
         by keeping track of all values added across previous nest depths.
 """
-function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1) #TODO: | , __cycle_prevention:Optional[Set[int]]=None
+function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
 #     # Call out the reverse_function before any magic returns to trap bad values.
 #     _ = reverse_function(initial_value,P=P,a=a,b=b)
 #     tgraph = {initial_value:{}}
