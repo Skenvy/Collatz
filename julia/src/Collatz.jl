@@ -7,8 +7,10 @@ tree-graph.
 """
 module Collatz
 
-#TODO: from typing import Optional, Set
-#TODO: from math import inf as infinity
+export _ErrMsg, _CC, _KNOWN_CYCLES
+export collatz, reverse_collatz, hailstone_sequence, stopping_time, tree_graph
+
+#TODO: from typing import Optional, Set,from math import inf as infinity
 
 
 const _KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], [-17,-50,-25,-74,-37,-110,-55,-164,-82,-41,-122,-61,-182,-91,-272,-136,-68,-34]]
@@ -84,10 +86,15 @@ Kwargs:
     a (int): Factor by which to multiply n. Default is 3.
     b (int): Value to add to the scaled value of n. Default is 1.
 """
-function _function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
+function collatz(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
     __assert_sane_parameterisation(P,a,b)
     if n%P == 0
-        return n//P
+        # In Julia, "Integer//Integer" creates a "Rational{Int64}" type, rather
+        # than strict integer division (which is done instead with "÷"). See;
+        # https://docs.julialang.org/en/v1/manual/mathematical-operations/
+        # https://docs.julialang.org/en/v1/manual/complex-and-rational-numbers/
+        # So we can either "n÷P", or "numerator(n//P)"
+        return n÷P
     else
         return (a*n+b)
     end
@@ -107,7 +114,7 @@ Kwargs:
     a (int): Factor by which to multiply n. Default is 3.
     b (int): Value to add to the scaled value of n. Default is 1.
 """
-function reverse_function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
+function reverse_collatz(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
     __assert_sane_parameterisation(P,a,b)
     # Every input can be reversed as the result of "n/P" division, which yields
     # "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
@@ -331,9 +338,3 @@ function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Inte
 end
 
 end # module
-
-#TODO: < the exports similar to python
-# from .parameterised import *
-# from .parameterised import _ErrMsg
-# from .parameterised import _CC
-# from .parameterised import _KNOWN_CYCLES

@@ -5,10 +5,8 @@ using Test
 
 # A copy of the python tests to make in-situ additions here
 
-# import pytest
-# from math import inf as infinity
-# from src import collatz
-# from src.collatz import _CC, _ErrMsg, _KNOWN_CYCLES
+# import pytest, from math import inf as infinity
+# from src import collatz, from src.collatz import _CC, _ErrMsg, _KNOWN_CYCLES
 
 
 # _REGEX_ERR_P_IS_ZERO = f"^{_ErrMsg.SANE_PARAMS_P.value}$"
