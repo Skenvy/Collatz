@@ -34,7 +34,7 @@ jobs:
     - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@v1.6
       with:
-        version: '1.2.0' # The compat version
+        version: '1.7.2' # The current local version -- to use the same recipes as local
         arch: 'x64'
     - name: 🧱 Install build dependencies
       run: |
