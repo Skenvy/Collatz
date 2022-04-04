@@ -10,12 +10,9 @@ module Collatz
 export _ErrMsg, _CC, _KNOWN_CYCLES
 export collatz, reverse_collatz, hailstone_sequence, stopping_time, tree_graph
 
-#TODO: from math import inf as infinity
-
-
-const _KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], [-17,-50,-25,-74,-37,-110,-55,-164,-82,-41,-122,-61,-182,-91,-272,-136,-68,-34]]
+const _KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], [-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34]]
 const __VERIFIED_MAXIMUM = 295147905179352825856
-const __VERIFIED_MINIMUM = -272  #TODO: Check the actual lowest bound.
+const __VERIFIED_MINIMUM = -272  #&TODO: Check the actual lowest bound.
 
 
 """
@@ -33,7 +30,8 @@ Cycle Control: Descriptive flags to indicate when some event occurs in the
 hailstone sequences, when set to verbose, or stopping time check.
 """
 module _CC
-#TODO: Access as string(ABC::CC) or just string(ABC)
+# The elements of an enum are accessed as string(ABC::CC) or just string(ABC) so
+# wrap the enum in a module so they can be referenced as string(_CC.ABC)
 @enum CC begin
     STOPPING_TIME
     TOTAL_STOPPING_TIME
@@ -123,13 +121,12 @@ function reverse_collatz(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
     # not placing restrictions on the parameters yet, although there is a better
     # way of shortcutting this for the default variables, we need to always
     # attempt (f(n) - b)/a)
-#TODO:
-#     pre_values = [P*n]
-#     if (n-b)%a == 0 and (n-b)%(P*a) != 0:
-#         pre_values += [(n-b)//a]
-#         pre_values.sort()
-#     return pre_values
-    return 1
+    pre_values = [P*n]
+    if (n-b)%a == 0 && (n-b)%(P*a) != 0
+        pre_values += [(n-b)÷a]
+        pre_values.sort()
+    end
+    return pre_values
 end
 
 
@@ -141,8 +138,7 @@ Args:
     x (int): The initial value to check if it is within range or not.
 """
 function __initial_value_outside_verified_range(x::Integer) #TODO:
-    # return (__VERIFIED_MAXIMUM < x) or (x < __VERIFIED_MINIMUM)
-    return 1
+    return (__VERIFIED_MAXIMUM < x) || (x < __VERIFIED_MINIMUM)
 end
 
 
@@ -156,9 +152,15 @@ Args:
         of n have reached the oriented stopping time to reach a value closer
         to 0. If true, the lambda will simply check equality to 1.
 """
-function __stopping_time_terminus(n::Integer, total_stop::Bool) #TODO:
-    # return (lambda x: x == 1) if total_stop else ((lambda x: x < n and x > 0) if n >= 0 else (lambda x: x > n and x < 0))
-    return 1
+function __stopping_time_terminus(n::Integer, total_stop::Bool)
+    # https://docs.julialang.org/en/v1/manual/functions/#man-anonymous-functions
+    if total_stop
+        return (function (x) x == 1 end)
+    elseif n >= 0
+        return (function (x) x < n && x > 0 end)
+    else
+        return (function (x) x > n && x < 0 end)
+    end
 end
 
 
@@ -241,6 +243,7 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
 end
 
 
+#TODO: from math import inf as infinity
 """
 Returns the stopping time, the amount of iterations required to reach a
 value less than the initial value, or None if max_stopping_time is exceeded.
