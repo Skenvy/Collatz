@@ -75,11 +75,11 @@ end
 # Test function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=True, verbose::Bool=True)
 @testset verbose = true "hailstone_sequence" begin
 #     # Test 0's immediated termination.
-#     @test Collatz.hailstone_sequence(0) == [[_CC.ZERO_STOP.value, 0]]
+#     @test Collatz.hailstone_sequence(0) == [[_CC.ZERO_STOP, 0]]
 #     @test Collatz.hailstone_sequence(0, verbose=False) == [0]
 #     # The cycle containing 1 wont yield a cycle termination, as 1 is considered
 #     # the "total stop" that is the special case termination.
-#     @test Collatz.hailstone_sequence(1) == [[_CC.TOTAL_STOPPING_TIME.value, 0]]
+#     @test Collatz.hailstone_sequence(1) == [[_CC.TOTAL_STOPPING_TIME, 0]]
 #     @test Collatz.hailstone_sequence(1, verbose=False) == [1]
 #     # Test the 3 known default parameter's cycles (ignoring [1,4,2])
 #     # If not verbose, then the result will be the cycle plus the final value
@@ -87,38 +87,38 @@ end
 #     # values not in the cycle, a CC flag, then the cycle and another CC flag.
 #     for kc in [kc for kc in _KNOWN_CYCLES if 1 not in kc]:
 #         @test Collatz.hailstone_sequence(kc[0], verbose=False) == kc + [kc[0]]
-#         @test Collatz.hailstone_sequence(kc[0]) == [_CC.CYCLE_INIT.value, kc,
-#                                             [_CC.CYCLE_LENGTH.value, len(kc)]]
+#         @test Collatz.hailstone_sequence(kc[0]) == [_CC.CYCLE_INIT, kc,
+#                                             [_CC.CYCLE_LENGTH, len(kc)]]
 #     # Test the lead into a cycle by entering two of the cycles.
 #     seq = [kc for kc in _KNOWN_CYCLES if -5 in kc][0]
 #     seq = [seq[1]*4, seq[1]*2] + seq[1:] + [seq[0]]
 #     @test Collatz.hailstone_sequence(-56, verbose=False) == seq + [seq[2]]
-#     @test Collatz.hailstone_sequence(-56) == seq[:2] + [_CC.CYCLE_INIT.value,
-#                             seq[2:], [_CC.CYCLE_LENGTH.value, len(seq[2:])]]
+#     @test Collatz.hailstone_sequence(-56) == seq[:2] + [_CC.CYCLE_INIT,
+#                             seq[2:], [_CC.CYCLE_LENGTH, len(seq[2:])]]
 #     seq = [kc for kc in _KNOWN_CYCLES if -17 in kc][0]
 #     seq = [seq[1]*4, seq[1]*2] + seq[1:] + [seq[0]]
 #     @test Collatz.hailstone_sequence(-200, verbose=False) == seq + [seq[2]]
-#     @test Collatz.hailstone_sequence(-200) == seq[:2] + [_CC.CYCLE_INIT.value,
-#                             seq[2:], [_CC.CYCLE_LENGTH.value, len(seq[2:])]]
+#     @test Collatz.hailstone_sequence(-200) == seq[:2] + [_CC.CYCLE_INIT,
+#                             seq[2:], [_CC.CYCLE_LENGTH, len(seq[2:])]]
 #     # 1's cycle wont yield a description of it being a "cycle" as far as the
 #     # hailstones are concerned, which is to be expected, so..
 #     @test Collatz.hailstone_sequence(4, verbose=False) == [4, 2, 1]
 #     @test Collatz.hailstone_sequence(4) == [4, 2, 1,
-#                             [_CC.TOTAL_STOPPING_TIME.value, 2]]
+#                             [_CC.TOTAL_STOPPING_TIME, 2]]
 #     @test Collatz.hailstone_sequence(16, verbose=False) == [16, 8, 4, 2, 1]
 #     @test Collatz.hailstone_sequence(16) == [16, 8, 4, 2, 1,
-#                             [_CC.TOTAL_STOPPING_TIME.value, 4]]
+#                             [_CC.TOTAL_STOPPING_TIME, 4]]
 #     # Test the regular stopping time check.
 #     @test Collatz.hailstone_sequence(4, total_stopping_time=False) == [4, 2,
-#                             [_CC.STOPPING_TIME.value, 1]]
+#                             [_CC.STOPPING_TIME, 1]]
 #     @test Collatz.hailstone_sequence(5, total_stopping_time=False) == [5, 16,
-#                             8, 4, [_CC.STOPPING_TIME.value, 3]]
+#                             8, 4, [_CC.STOPPING_TIME, 3]]
 #     # Test small max_total_stopping_time: (minimum internal value is one)
 #     @test Collatz.hailstone_sequence(4, max_total_stopping_time=-100) == [4, 2,
-#                             [_CC.MAX_STOP_OOB.value, 1]]
+#                             [_CC.MAX_STOP_OOB, 1]]
 #     # Test the zero stop mid hailing. This wont happen with default params tho.
 #     @test Collatz.hailstone_sequence(3, P=2, a=3, b=-9) == [3, 0,
-#                             [_CC.ZERO_STOP.value, -1]]
+#                             [_CC.ZERO_STOP, -1]]
 #     # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
 #     # still allowed, although they will generate immediate 1 or 2 length cycles
 #     # respectively, so confirm the behaviour of each of these hailstones.
@@ -183,7 +183,7 @@ end
 
 # Test function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
 @testset verbose = true "tree_graph" begin
-#     C = _CC.CYCLE_INIT.value  # Shorthand the cycle terminus
+#     C = _CC.CYCLE_INIT  # Shorthand the cycle terminus
 #     D = {}  # Just to colourise the below in the editor..
 #     # The default zero trap
 #     @test Collatz.tree_graph(0, 0) == {0:D}

@@ -139,7 +139,7 @@ __VERIFIED_MINIMUM. Only intended for the default parameterisation.
 Args:
     x (int): The initial value to check if it is within range or not.
 """
-function __initial_value_outside_verified_range(x::Integer) #TODO:
+function __initial_value_outside_verified_range(x::Integer)
     return (__VERIFIED_MAXIMUM < x) || (x < __VERIFIED_MINIMUM)
 end
 
@@ -196,52 +196,64 @@ Kwargs:
         a cycle. Default is True.
 """
 function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=True, verbose::Bool=True) #TODO:
-#     # Call out the collatz_function before any magic returns to trap bad values.
-#     _ = collatz_function(initial_value,P=P,a=a,b=b)
-#     # 0 is always an immediate stop.
-#     if initial_value == 0:
-#         return [[_CC.ZERO_STOP.value, 0]] if verbose else [0]
-#     # 1 is always an immediate stop, with 0 stopping time.
-#     if initial_value == 1:
-#         return [[_CC.TOTAL_STOPPING_TIME.value, 0]] if verbose else [1]
-#     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
-#     # Start the hailstone sequence.
-#     _max_total_stopping_time = max(max_total_stopping_time, 1)
-#     hailstone = [initial_value]
-#     cyclic = (lambda x: x in hailstone)
-#     for k in range(_max_total_stopping_time):
-#         _next = collatz_function(hailstone[-1],P=P,a=a,b=b)
-#         # Check if the next hailstone is either the stopping time, total
-#         # stopping time, the same as the initial value, or stuck at zero.
-#         if terminate(_next):
-#             hailstone += [_next]
-#             if verbose:
-#                 m = _CC.TOTAL_STOPPING_TIME if _next == 1 else _CC.STOPPING_TIME
-#                 hailstone += [[m.value, len(hailstone)-1]]
-#             break
-#         if cyclic(_next):
-#             cycle_init = 1
-#             for j in range(1,len(hailstone)+1):
-#                 if hailstone[-j] == _next:
-#                     cycle_init = j
-#                     break
-#             if verbose:
-#                 hailstone = hailstone[:-cycle_init] + [_CC.CYCLE_INIT.value,
-#                     hailstone[-cycle_init:],[_CC.CYCLE_LENGTH.value,cycle_init]]
-#             else:
-#                 hailstone += [_next]
-#             break
-#         if _next == 0:
-#             hailstone += [0]
-#             if verbose:
-#                 hailstone += [[_CC.ZERO_STOP.value, -(len(hailstone)-1)]]
-#             break
-#         hailstone += [_next]
-#     else:
-#         if verbose:
-#             hailstone += [[_CC.MAX_STOP_OOB.value, _max_total_stopping_time]]
-#     return hailstone
-    return 1
+    # Call out the collatz_function before any magic returns to trap bad values.
+    _ = collatz_function(initial_value,P=P,a=a,b=b)
+    # 0 is always an immediate stop.
+    if initial_value == 0; if verbose; return [[_CC.ZERO_STOP, 0]]; else; return [0]; end; end
+    # 1 is always an immediate stop, with 0 stopping time.
+    if initial_value == 1; if verbose; return [[_CC.TOTAL_STOPPING_TIME, 0]]; else; return [1]; end; end
+    terminate = __stopping_time_terminus(initial_value, total_stopping_time)
+    # Start the hailstone sequence.
+    _max_total_stopping_time = max(max_total_stopping_time, 1)
+    hailstone = [initial_value]
+    cyclic = (function (x) x in hailstone end)
+    for k in 1:_max_total_stopping_time
+        _next = collatz_function(last(hailstone),P=P,a=a,b=b)
+        # Check if the next hailstone is either the stopping time, total
+        # stopping time, the same as the initial value, or stuck at zero.
+        if terminate(_next)
+            push!(hailstone, _next)
+            if verbose
+                if _next == 1
+                    m = _CC.TOTAL_STOPPING_TIME 
+                else
+                    m = _CC.STOPPING_TIME
+                end
+                push!(hailstone, [m, length(hailstone)-1])
+            end
+            break
+        end
+        if cyclic(_next)
+            cycle_init = 1
+            for j in 0:(length(hailstone)-1)
+                if hailstone[length(hailstone)-j] == _next
+                    cycle_init = j
+                    break
+                end
+            end
+            if verbose
+                hailstone = hailstone[1:(length(hailstone)-cycle_init)] + [_CC.CYCLE_INIT, hailstone[(length(hailstone)-cycle_init):length(hailstone)], [_CC.CYCLE_LENGTH, cycle_init]]
+            else
+                push!(hailstone, _next)
+            end
+            break
+        end
+        if _next == 0
+            push!(hailstone, 0)
+            if verbose
+                push!(hailstone, [_CC.ZERO_STOP, -(length(hailstone)-1)])
+            end
+            break
+        end
+        push!(hailstone, _next)
+    end
+    # Julia has no for ~ else yet https://github.com/JuliaLang/julia/issues/1289
+    if length(hailstone) >= max_total_stopping_time
+        if verbose
+            push!(hailstone, [_CC.MAX_STOP_OOB, _max_total_stopping_time])
+        end
+    end
+    return hailstone
 end
 
 
@@ -280,17 +292,15 @@ function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::In
     # and the "max_~_time" for this "stopping time" function is _not_ "total",
     # they are handled the same way, as the default for "total_stopping_time"
     # for hailstones is true, but for this, is false. Thus the naming difference
-#     end_msg = hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=True,
-#                                  max_total_stopping_time=max_stopping_time,
-#                                  total_stopping_time=total_stopping_time)[-1]
+#     end_msg = last(hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=True, max_total_stopping_time=max_stopping_time, total_stopping_time=total_stopping_time))
     # For total/regular/zero stopping time, the value is already the same as
     # that present, for cycles we report infinity instead of the cycle length,
     # and for max stop out of bounds, we report None instead of the max stop cap
-#     return {_CC.TOTAL_STOPPING_TIME.value: end_msg[1],
-#             _CC.STOPPING_TIME.value: end_msg[1],
-#             _CC.CYCLE_LENGTH.value: infinity,
-#             _CC.ZERO_STOP.value: end_msg[1],
-#             _CC.MAX_STOP_OOB.value: None,
+#     return {_CC.TOTAL_STOPPING_TIME: end_msg[1],
+#             _CC.STOPPING_TIME: end_msg[1],
+#             _CC.CYCLE_LENGTH: infinity,
+#             _CC.ZERO_STOP: end_msg[1],
+#             _CC.MAX_STOP_OOB: None,
 #             }.get(end_msg[0], None)
     return 1
 end
@@ -333,7 +343,7 @@ function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Inte
 #     __cycle_prevention.add(initial_value)
 #     for branch_value in reverse_collatz_function(initial_value, P=P, a=a, b=b):
 #         if branch_value in __cycle_prevention:
-#             tgraph[initial_value][_CC.CYCLE_INIT.value] = branch_value
+#             tgraph[initial_value][_CC.CYCLE_INIT] = branch_value
 #         else:
 #             tgraph[initial_value][branch_value] = tree_graph(branch_value,
 #                 max_orbit_distance-1, P=P, a=a, b=b,
