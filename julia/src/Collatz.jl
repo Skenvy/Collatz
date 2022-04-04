@@ -84,7 +84,7 @@ Kwargs:
     a (int): Factor by which to multiply n. Default is 3.
     b (int): Value to add to the scaled value of n. Default is 1.
 """
-function collatz(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
+function collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
     __assert_sane_parameterisation(P,a,b)
     if n%P == 0
         # In Julia, "Integer//Integer" creates a "Rational{Int64}" type, rather
@@ -112,7 +112,7 @@ Kwargs:
     a (int): Factor by which to multiply n. Default is 3.
     b (int): Value to add to the scaled value of n. Default is 1.
 """
-function reverse_collatz(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
+function reverse_collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
     __assert_sane_parameterisation(P,a,b)
     # Every input can be reversed as the result of "n/P" division, which yields
     # "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
