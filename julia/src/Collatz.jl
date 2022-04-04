@@ -195,7 +195,7 @@ Kwargs:
         sequence terminated, whether by reaching a stopping time or entering
         a cycle. Default is True.
 """
-function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=True, verbose::Bool=True) #TODO:
+function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=true, verbose::Bool=true) #TODO:
     # Call out the collatz_function before any magic returns to trap bad values.
     _ = collatz_function(initial_value,P=P,a=a,b=b)
     # 0 is always an immediate stop.
@@ -205,7 +205,8 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
     # Start the hailstone sequence.
     _max_total_stopping_time = max(max_total_stopping_time, 1)
-    hailstone = [initial_value]
+    hailstone = [initial_value] # Initialises as Vector{Integer}
+    if verbose; hailstone = Vector{Any}(hailstone); end
     cyclic = (function (x) x in hailstone end)
     for k in 1:_max_total_stopping_time
         _next = collatz_function(last(hailstone),P=P,a=a,b=b)
@@ -224,15 +225,16 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
             break
         end
         if cyclic(_next)
-            cycle_init = 1
+            cycle_init = 0
             for j in 0:(length(hailstone)-1)
                 if hailstone[length(hailstone)-j] == _next
-                    cycle_init = j
+                    # Because Julia is 1-based indexed, add 1 to the J
+                    cycle_init = j+1
                     break
                 end
             end
             if verbose
-                hailstone = hailstone[1:(length(hailstone)-cycle_init)] + [_CC.CYCLE_INIT, hailstone[(length(hailstone)-cycle_init):length(hailstone)], [_CC.CYCLE_LENGTH, cycle_init]]
+                hailstone = append!(hailstone[1:(length(hailstone)-cycle_init)], [_CC.CYCLE_INIT, hailstone[(length(hailstone)-cycle_init+1):length(hailstone)], [_CC.CYCLE_LENGTH, cycle_init]])
             else
                 push!(hailstone, _next)
             end
@@ -286,22 +288,22 @@ Kwargs:
         regular stopping time (number of iterations to reach a value less
         than the initial value). Default is False.
 """
-function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_stopping_time::Integer=1000, total_stopping_time::Bool=False) #TODO:
+function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_stopping_time::Integer=1000, total_stopping_time::Bool=false) #TODO:
     # The information is contained in the verbose form of a hailstone sequence.
     # Although the "max_~_time" for hailstones is name for "total stopping" time
     # and the "max_~_time" for this "stopping time" function is _not_ "total",
     # they are handled the same way, as the default for "total_stopping_time"
     # for hailstones is true, but for this, is false. Thus the naming difference
-#     end_msg = last(hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=True, max_total_stopping_time=max_stopping_time, total_stopping_time=total_stopping_time))
+#     end_msg = last(hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=true, max_total_stopping_time=max_stopping_time, total_stopping_time=total_stopping_time))
     # For total/regular/zero stopping time, the value is already the same as
     # that present, for cycles we report infinity instead of the cycle length,
     # and for max stop out of bounds, we report None instead of the max stop cap
-#     return {_CC.TOTAL_STOPPING_TIME: end_msg[1],
-#             _CC.STOPPING_TIME: end_msg[1],
+#     return {_CC.TOTAL_STOPPING_TIME: end_msg[2],
+#             _CC.STOPPING_TIME: end_msg[2],
 #             _CC.CYCLE_LENGTH: infinity,
-#             _CC.ZERO_STOP: end_msg[1],
+#             _CC.ZERO_STOP: end_msg[2],
 #             _CC.MAX_STOP_OOB: None,
-#             }.get(end_msg[0], None)
+#             }.get(end_msg[1], None)
     return 1
 end
 
