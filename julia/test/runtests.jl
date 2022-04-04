@@ -148,7 +148,7 @@ end
 #     @test Collatz.stopping_time(4) == 1
 #     @test Collatz.stopping_time(5) == 3
 #     # Test small max_total_stopping_time: (minimum internal value is one)
-#     @test Collatz.stopping_time(5, max_stopping_time=-100) == None
+#     @test Collatz.stopping_time(5, max_stopping_time=-100) == nothing
 #     # Test the zero stop mid hailing. This wont happen with default params tho.
 #     @test Collatz.stopping_time(3, P=2, a=3, b=-9) == -1
 #     # Lastly, while the function wont let you use a P value of 0, 1 and -1 are

@@ -195,7 +195,7 @@ Kwargs:
         sequence terminated, whether by reaching a stopping time or entering
         a cycle. Default is True.
 """
-function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=true, verbose::Bool=true) #TODO:
+function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=true, verbose::Bool=true)
     # Call out the collatz_function before any magic returns to trap bad values.
     _ = collatz_function(initial_value,P=P,a=a,b=b)
     # 0 is always an immediate stop.
@@ -259,10 +259,9 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
 end
 
 
-#TODO: from math import inf as infinity
 """
 Returns the stopping time, the amount of iterations required to reach a
-value less than the initial value, or None if max_stopping_time is exceeded.
+value less than the initial value, or nothing if max_stopping_time is exceeded.
 Alternatively, if total_stopping_time is True, then it will instead count
 the amount of iterations to reach 1. If the sequence does not stop, but
 instead ends in a cycle, the result will be (math.inf). If (P,a,b) are such
@@ -281,7 +280,7 @@ Kwargs:
     b (int): Value to add to the scaled value of n. Default is 1.
     max_stopping_time (int): Maximum amount of times to iterate the
         function, if the stopping time is not reached. IF the
-        max_stopping_time is reached, the function will return None.
+        max_stopping_time is reached, the function will return nothing.
         Default is 1000.
     total_stopping_time (bool): Whether or not to execute until the "total"
         stopping time (number of iterations to obtain 1) rather than the
@@ -294,17 +293,16 @@ function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::In
     # and the "max_~_time" for this "stopping time" function is _not_ "total",
     # they are handled the same way, as the default for "total_stopping_time"
     # for hailstones is true, but for this, is false. Thus the naming difference
-#     end_msg = last(hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=true, max_total_stopping_time=max_stopping_time, total_stopping_time=total_stopping_time))
+    end_msg = last(hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=true, max_total_stopping_time=max_stopping_time, total_stopping_time=total_stopping_time))
     # For total/regular/zero stopping time, the value is already the same as
     # that present, for cycles we report infinity instead of the cycle length,
-    # and for max stop out of bounds, we report None instead of the max stop cap
-#     return {_CC.TOTAL_STOPPING_TIME: end_msg[2],
-#             _CC.STOPPING_TIME: end_msg[2],
-#             _CC.CYCLE_LENGTH: infinity,
-#             _CC.ZERO_STOP: end_msg[2],
-#             _CC.MAX_STOP_OOB: None,
-#             }.get(end_msg[1], None)
-    return 1
+    # and for max stop out of bounds, we report nothing instead of the max stop cap
+    return get(Dict(_CC.TOTAL_STOPPING_TIME => end_msg[2],
+                    _CC.STOPPING_TIME => end_msg[2],
+                    _CC.CYCLE_LENGTH => Inf, # infinity
+                    _CC.ZERO_STOP => end_msg[2],
+                    _CC.MAX_STOP_OOB => nothing,
+                    ), end_msg[1], nothing)
 end
 
 
@@ -340,7 +338,7 @@ function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Inte
 #         return tgraph
 #     # Handle cycle prevention for recursive calls ~
 #     # Shouldn't use a mutable object initialiser for a default.
-#     if __cycle_prevention is None:
+#     if __cycle_prevention is nothing:
 #         __cycle_prevention = set()
 #     __cycle_prevention.add(initial_value)
 #     for branch_value in reverse_collatz_function(initial_value, P=P, a=a, b=b):
