@@ -47,7 +47,7 @@ docs_viewer: docs_test
 	julia --project=docs/viewer -e "using LiveServer; serve(dir=\"docs/build\")"
 
 test:
-	julia --project=. -e "import Pkg; Pkg.test();"
+	julia --project=. -e "import Pkg; Pkg.precompile(); Pkg.test();"
 
 build: test docs_test
 	julia --project=. -e "import Pkg; Pkg.build();"
