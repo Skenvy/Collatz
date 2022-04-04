@@ -195,6 +195,7 @@ Kwargs:
         sequence terminated, whether by reaching a stopping time or entering
         a cycle. Default is True.
 """
+ #TODO: Make arbitrary integer safe!
 function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=true, verbose::Bool=true)
     # Call out the collatz_function before any magic returns to trap bad values.
     _ = collatz_function(initial_value,P=P,a=a,b=b)
@@ -287,7 +288,7 @@ Kwargs:
         regular stopping time (number of iterations to reach a value less
         than the initial value). Default is False.
 """
-function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_stopping_time::Integer=1000, total_stopping_time::Bool=false) #TODO:
+function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_stopping_time::Integer=1000, total_stopping_time::Bool=false)
     # The information is contained in the verbose form of a hailstone sequence.
     # Although the "max_~_time" for hailstones is name for "total stopping" time
     # and the "max_~_time" for this "stopping time" function is _not_ "total",
