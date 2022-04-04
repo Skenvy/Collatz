@@ -123,8 +123,10 @@ function reverse_collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Int
     # attempt (f(n) - b)/a)
     pre_values = [P*n]
     if (n-b)%a == 0 && (n-b)%(P*a) != 0
-        pre_values += [(n-b)÷a]
-        pre_values.sort()
+        # https://docs.julialang.org/en/v1/base/collections/#Base.push!
+        push!(pre_values, ((n-b)÷a))
+        # https://docs.julialang.org/en/v1/base/sort/
+        sort!(pre_values)
     end
     return pre_values
 end
@@ -318,7 +320,7 @@ Internal Kwargs:
     __cycle_prevention (set[int]): Used to prevent cycles from precipitating
         by keeping track of all values added across previous nest depths.
 """
-function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
+function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing) #TODO:
 #     # Call out the reverse_function before any magic returns to trap bad values.
 #     _ = reverse_function(initial_value,P=P,a=a,b=b)
 #     tgraph = {initial_value:{}}

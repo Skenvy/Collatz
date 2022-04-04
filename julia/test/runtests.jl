@@ -3,9 +3,9 @@ println("#######################################################################
 using Test
 @test 1 == 1
 using Collatz
+# import inf as infinity
+# collatz import _CC, _KNOWN_CYCLES
 
-# from math import inf as infinity
-# from src.collatz import _CC, _ErrMsg, _KNOWN_CYCLES
 
 # Test function collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
 @testset verbose = true "collatz_function" begin
@@ -38,45 +38,42 @@ using Collatz
 end
 
 
-# # Test reverse_function(n:int, P:int=2, a:int=3, b:int=1):
-# def test_reverse_function():
-#     # Default (P,a,b); 0 trap [as b is not a multiple of a]
-#     @test Collatz.reverse_collatz_function(0) == [0]
-#     # Default (P,a,b); 1 cycle; positives
-#     @test Collatz.reverse_collatz_function(1) == [2]
-#     @test Collatz.reverse_collatz_function(4) == [1, 8]
-#     @test Collatz.reverse_collatz_function(2) == [4]
-#     # Default (P,a,b); -1 cycle; negatives
-#     @test Collatz.reverse_collatz_function(-1) == [-2]
-#     @test Collatz.reverse_collatz_function(-2) == [-4, -1]
-#     # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
-#     @test Collatz.reverse_collatz_function(1, P=5, a=2, b=3) == [-1, 5]
-#     @test Collatz.reverse_collatz_function(2, P=5, a=2, b=3) == [10]
-#     @test Collatz.reverse_collatz_function(3, P=5, a=2, b=3) == [15]  # also tests !0
-#     @test Collatz.reverse_collatz_function(4, P=5, a=2, b=3) == [20]
-#     @test Collatz.reverse_collatz_function(5, P=5, a=2, b=3) == [1, 25]
-#     # Test negative P, a and b. %, used in the function, is "floor" in python
-#     # rather than the more reasonable euclidean, but we only use it's (0 mod P)
-#     # conjugacy class to determine functionality, so the flooring for negative P
-#     # doesn't cause any issue.
-#     @test Collatz.reverse_collatz_function(1, P=-3, a=-2, b=-5) == [-3]  # != [-3, -3]
-#     @test Collatz.reverse_collatz_function(2, P=-3, a=-2, b=-5) == [-6]
-#     @test Collatz.reverse_collatz_function(3, P=-3, a=-2, b=-5) == [-9, -4]
-#     # Set P and a to 0 to @test on __assert_sane_parameterisation
-#     with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
-#         Collatz.reverse_collatz_function(1, P=0, a=2, b=3)
-#     with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
-#         Collatz.reverse_collatz_function(1, P=0, a=0, b=3)
-#     with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
-#         Collatz.reverse_collatz_function(1, P=1, a=0, b=3)
-#     # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
-#     @test Collatz.reverse_collatz_function(0, P=17, a=2, b=-6) == [0, 3]
-#     @test Collatz.reverse_collatz_function(0, P=17, a=2, b=102) == [0]
+# Test function reverse_collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
+@testset verbose = true "reverse_collatz_function" begin
+    # Default (P,a,b); 0 trap [as b is not a multiple of a]
+    @test Collatz.reverse_collatz_function(0) == [0]
+    # Default (P,a,b); 1 cycle; positives
+    @test Collatz.reverse_collatz_function(1) == [2]
+    @test Collatz.reverse_collatz_function(4) == [1, 8]
+    @test Collatz.reverse_collatz_function(2) == [4]
+    # Default (P,a,b); -1 cycle; negatives
+    @test Collatz.reverse_collatz_function(-1) == [-2]
+    @test Collatz.reverse_collatz_function(-2) == [-4, -1]
+    # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+    @test Collatz.reverse_collatz_function(1, P=5, a=2, b=3) == [-1, 5]
+    @test Collatz.reverse_collatz_function(2, P=5, a=2, b=3) == [10]
+    @test Collatz.reverse_collatz_function(3, P=5, a=2, b=3) == [15]  # also tests !0
+    @test Collatz.reverse_collatz_function(4, P=5, a=2, b=3) == [20]
+    @test Collatz.reverse_collatz_function(5, P=5, a=2, b=3) == [1, 25]
+    # Test negative P, a and b. %, used in the function, is "floor" in python
+    # rather than the more reasonable euclidean, but we only use it's (0 mod P)
+    # conjugacy class to determine functionality, so the flooring for negative P
+    # doesn't cause any issue.
+    @test Collatz.reverse_collatz_function(1, P=-3, a=-2, b=-5) == [-3]  # != [-3, -3]
+    @test Collatz.reverse_collatz_function(2, P=-3, a=-2, b=-5) == [-6]
+    @test Collatz.reverse_collatz_function(3, P=-3, a=-2, b=-5) == [-9, -4]
+    # Set P and a to 0 to @test on __assert_sane_parameterisation
+    @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.reverse_collatz_function(1, P=0, a=2, b=3)
+    @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.reverse_collatz_function(1, P=0, a=0, b=3)
+    @test_throws AssertionError(_ErrMsg.SANE_PARAMS_A) Collatz.reverse_collatz_function(1, P=1, a=0, b=3)
+    # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+    @test Collatz.reverse_collatz_function(0, P=17, a=2, b=-6) == [0, 3]
+    @test Collatz.reverse_collatz_function(0, P=17, a=2, b=102) == [0]
+end
 
-# # Test def hailstone_sequence(initial_value:int, P:int=2, 
-# # a:int=3, b:int=1, max_total_stopping_time:int=1000,
-# # total_stopping_time:bool=True, verbose:bool=True)
-# def test_hailstone_sequence():
+
+# Test function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=True, verbose::Bool=True)
+@testset verbose = true "hailstone_sequence" begin
 #     # Test 0's immediated termination.
 #     @test Collatz.hailstone_sequence(0) == [[_CC.ZERO_STOP.value, 0]]
 #     @test Collatz.hailstone_sequence(0, verbose=False) == [0]
@@ -134,11 +131,11 @@ end
 #         Collatz.hailstone_sequence(1, P=0, a=0, b=3)
 #     with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
 #         Collatz.hailstone_sequence(1, P=1, a=0, b=3)
+end
 
 
-# # Test def stopping_time(initial_value:int, P:int=2, a:int=3, b:int=1,
-# # max_stopping_time:int=1000, total_stopping_time:bool=False)
-# def test_stopping_time():
+# Test function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_stopping_time::Integer=1000, total_stopping_time::Bool=False)
+@testset verbose = true "stopping_time" begin
 #     # Test 0's immediated termination.
 #     @test Collatz.stopping_time(0) == 0
 #     # The cycle containing 1 wont yield a cycle termination, as 1 is considered
@@ -181,11 +178,11 @@ end
 #         Collatz.stopping_time(1, P=0, a=0, b=3)
 #     with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
 #         Collatz.stopping_time(1, P=1, a=0, b=3)
+end
 
 
-# # Test def tree_graph(initial_value:int, max_orbit_distance:int, P:int=2,
-# # a:int=3, b:int=1, __cycle_prevention:Optional[Set[int]]=None)
-# def test_tree_graph():
+# Test function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
+@testset verbose = true "tree_graph" begin
 #     C = _CC.CYCLE_INIT.value  # Shorthand the cycle terminus
 #     D = {}  # Just to colourise the below in the editor..
 #     # The default zero trap
@@ -230,5 +227,6 @@ end
 #     # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
 #     @test Collatz.tree_graph(0, 1, P=17, a=2, b=-6) == {0:{C:0,3:D}}
 #     @test Collatz.tree_graph(0, 1, P=17, a=2, b=102) == {0:{C:0}}
+end
 
 println("################################################################################")
