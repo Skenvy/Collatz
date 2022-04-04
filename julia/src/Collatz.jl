@@ -338,8 +338,8 @@ function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Inte
     if max(0, max_orbit_distance) == 0; return tgraph; end
     # Handle cycle prevention for recursive calls ~
     # Shouldn't use a mutable object initialiser for a default.
-    if __cycle_prevention == nothing; __cycle_prevention = Set(); end
-    __cycle_prevention.add(initial_value)
+    if __cycle_prevention == nothing; __cycle_prevention = Set{Integer}(); end
+    push!(__cycle_prevention, initial_value)
     for branch_value in reverse_collatz_function(initial_value, P=P, a=a, b=b)
         if branch_value in __cycle_prevention
             tgraph[initial_value][_CC.CYCLE_INIT] = branch_value

@@ -168,8 +168,8 @@ end
 
 # Test function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
 @testset verbose = true "tree_graph" begin
-    # C = _CC.CYCLE_INIT  # Shorthand the cycle terminus
-    # D = {}  # Just to colourise the below in the editor..
+    C = _CC.CYCLE_INIT  # Shorthand the cycle terminus
+    D = Dict()  # Just to colourise the below in the editor..
     # # The default zero trap
     # @test Collatz.tree_graph(0, 0) == {0:D}
     # @test Collatz.tree_graph(0, 1) == {0:{C:0}}
@@ -202,13 +202,13 @@ end
     # @test Collatz.tree_graph(1, 1, P=-3, a=-2, b=-5) == orb_1
     # @test Collatz.tree_graph(1, 2, P=-3, a=-2, b=-5) == orb_2
     # @test Collatz.tree_graph(1, 3, P=-3, a=-2, b=-5) == orb_3
-    # # Set P and a to 0 to @test on __assert_sane_parameterisation
-    # @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.tree_graph(1, 1, P=0, a=2, b=3)
-    # @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.tree_graph(1, 1, P=0, a=0, b=3)
-    # @test_throws AssertionError(_ErrMsg.SANE_PARAMS_A) Collatz.tree_graph(1, 1, P=1, a=0, b=3)
-    # # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
-    # @test Collatz.tree_graph(0, 1, P=17, a=2, b=-6) == {0:{C:0,3:D}}
-    # @test Collatz.tree_graph(0, 1, P=17, a=2, b=102) == {0:{C:0}}
+    # Set P and a to 0 to @test on __assert_sane_parameterisation
+    @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.tree_graph(1, 1, P=0, a=2, b=3)
+    @test_throws AssertionError(_ErrMsg.SANE_PARAMS_P) Collatz.tree_graph(1, 1, P=0, a=0, b=3)
+    @test_throws AssertionError(_ErrMsg.SANE_PARAMS_A) Collatz.tree_graph(1, 1, P=1, a=0, b=3)
+    # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+    @test Collatz.tree_graph(0, 1, P=17, a=2, b=-6) == Dict(0=>Dict(C=>0,3=>D))
+    @test Collatz.tree_graph(0, 1, P=17, a=2, b=102) == Dict(0=>Dict(C=>0))
 end
 
 println("################################################################################")
