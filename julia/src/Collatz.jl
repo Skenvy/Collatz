@@ -332,25 +332,22 @@ Internal Kwargs:
         by keeping track of all values added across previous nest depths.
 """
 function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing) #TODO:
-#     # Call out the reverse_collatz_function before any magic returns to trap bad values.
-#     _ = reverse_collatz_function(initial_value,P=P,a=a,b=b)
-#     tgraph = {initial_value:{}}
-#     if max(0, max_orbit_distance) == 0:
-#         return tgraph
-#     # Handle cycle prevention for recursive calls ~
-#     # Shouldn't use a mutable object initialiser for a default.
-#     if __cycle_prevention is nothing:
-#         __cycle_prevention = set()
-#     __cycle_prevention.add(initial_value)
-#     for branch_value in reverse_collatz_function(initial_value, P=P, a=a, b=b):
-#         if branch_value in __cycle_prevention:
-#             tgraph[initial_value][_CC.CYCLE_INIT] = branch_value
-#         else:
-#             tgraph[initial_value][branch_value] = tree_graph(branch_value,
-#                 max_orbit_distance-1, P=P, a=a, b=b,
-#                 __cycle_prevention=__cycle_prevention)[branch_value]
-#     return tgraph
-    return 1
+    # Call out the reverse_collatz_function before any magic returns to trap bad values.
+    _ = reverse_collatz_function(initial_value,P=P,a=a,b=b)
+    tgraph = Dict(initial_value=>Dict())
+    if max(0, max_orbit_distance) == 0; return tgraph; end
+    # Handle cycle prevention for recursive calls ~
+    # Shouldn't use a mutable object initialiser for a default.
+    if __cycle_prevention == nothing; __cycle_prevention = Set(); end
+    __cycle_prevention.add(initial_value)
+    for branch_value in reverse_collatz_function(initial_value, P=P, a=a, b=b)
+        if branch_value in __cycle_prevention
+            tgraph[initial_value][_CC.CYCLE_INIT] = branch_value
+        else
+            tgraph[initial_value][branch_value] = tree_graph(branch_value, max_orbit_distance-1, P=P, a=a, b=b, __cycle_prevention=__cycle_prevention)[branch_value]
+        end
+    end
+    return tgraph
 end
 
 end # module
