@@ -331,7 +331,7 @@ Internal Kwargs:
     __cycle_prevention (set[int]): Used to prevent cycles from precipitating
         by keeping track of all values added across previous nest depths.
 """
-function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing) #TODO:
+function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
     # Call out the reverse_collatz_function before any magic returns to trap bad values.
     _ = reverse_collatz_function(initial_value,P=P,a=a,b=b)
     tgraph = Dict(initial_value=>Dict())
