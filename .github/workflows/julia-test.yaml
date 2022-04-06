@@ -54,7 +54,7 @@ jobs:
       matrix:
         # From versions in https://julialang-s3.julialang.org/bin/versions.json
         # Does NOT support 1.0
-        version: ['1', 'nightly', '1.2.0'] # '1.2.0' is the compat version
+        version: ['1', 'nightly', '1.6.0'] # '1.2.0' is the compat version, but 1.6 for @testset verbose
         os: [ubuntu-latest, macOS-latest, windows-latest]
         arch: [x64]
     steps:

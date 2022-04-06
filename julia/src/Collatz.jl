@@ -400,6 +400,8 @@ end
 # TODO: Determine why the output of print(tree_graph(1, 3)) in the example in the below
 # yields a "Dict{Any, Any}(Collatz._CC.CYCLE_INIT => 1, 8 => Dict{Any, Any}())" in jldoctest
 # but a "Dict{Any, Any}(8 => Dict{Any, Any}(), Collatz._CC.CYCLE_INIT => 1)" from REPL?
+# Both examples are covered in tests, which doesn't appear to care about order, but jldoctest
+# is just a stringy parser?? so can't jldoctest these two.
 """
     tree_graph(initial_value, max_orbit_distance; P=2, a=3, b=1, __cycle_prevention=nothing)
 
@@ -424,9 +426,11 @@ maximum nesting of max_orbit_distance, with the initial_value as the root.
     from precipitatingby keeping track of all values added across previous nest depths.
 
 # Examples
-```jldoctest
+```
 julia> print(tree_graph(1, 3))
 Dict{Int64, Dict{Any, Any}}(1 => Dict(2 => Dict{Any, Any}(4 => Dict{Any, Any}(Collatz._CC.CYCLE_INIT => 1, 8 => Dict{Any, Any}()))))
+```
+```
 julia> print(tree_graph(4, 3))
 Dict{Int64, Dict{Any, Any}}(4 => Dict(8 => Dict{Any, Any}(16 => Dict{Any, Any}(5 => Dict{Any, Any}(), 32 => Dict{Any, Any}())), 1 => Dict{Any, Any}(2 => Dict{Any, Any}(Collatz._CC.CYCLE_INIT => 4))))
 ```
