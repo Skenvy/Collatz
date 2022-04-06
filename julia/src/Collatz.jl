@@ -261,7 +261,7 @@ julia> print(hailstone_sequence(16, verbose=false))
 ```
 ```jldoctest
 julia> print(hailstone_sequence(16))
-Any[16, 8, 4, 2, 1, Any["TOTAL_STOPPING_TIME", 4]]
+Any[16, 8, 4, 2, 1, Any[Collatz._CC.TOTAL_STOPPING_TIME, 4]]
 ```
 ```jldoctest
 julia> print(hailstone_sequence(761, P=5, a=2, b=3, verbose=false))
@@ -270,7 +270,7 @@ julia> print(hailstone_sequence(761, P=5, a=2, b=3, verbose=false))
 # Example cycle!
 ```jldoctest
 julia> print(hailstone_sequence(-56))
-Any[-56, -28, "CYCLE_INIT", Any[-14, -7, -20, -10, -5], Any["CYCLE_LENGTH", 5]]
+Any[-56, -28, Collatz._CC.CYCLE_INIT, Any[-14, -7, -20, -10, -5], Any[Collatz._CC.CYCLE_LENGTH, 5]]
 ```
 ```jldoctest
 julia> print(hailstone_sequence(-56, verbose=false))
@@ -281,9 +281,9 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
     # Call out the collatz_function before any magic returns to trap bad values.
     _ = collatz_function(initial_value,P=P,a=a,b=b)
     # 0 is always an immediate stop.
-    if initial_value == 0; if verbose; return [[string(_CC.ZERO_STOP), 0]]; else; return [0]; end; end
+    if initial_value == 0; if verbose; return [[_CC.ZERO_STOP, 0]]; else; return [0]; end; end
     # 1 is always an immediate stop, with 0 stopping time.
-    if initial_value == 1; if verbose; return [[string(_CC.TOTAL_STOPPING_TIME), 0]]; else; return [1]; end; end
+    if initial_value == 1; if verbose; return [[_CC.TOTAL_STOPPING_TIME, 0]]; else; return [1]; end; end
     terminate = __stopping_time_terminus(initial_value, total_stopping_time)
     # Start the hailstone sequence.
     _max_total_stopping_time = max(max_total_stopping_time, 1)
@@ -298,9 +298,9 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
             push!(hailstone, _next)
             if verbose
                 if _next == 1
-                    m = string(_CC.TOTAL_STOPPING_TIME)
+                    m = _CC.TOTAL_STOPPING_TIME 
                 else
-                    m = string(_CC.STOPPING_TIME)
+                    m = _CC.STOPPING_TIME
                 end
                 push!(hailstone, [m, length(hailstone)-1])
             end
@@ -316,7 +316,7 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
                 end
             end
             if verbose
-                hailstone = append!(hailstone[1:(length(hailstone)-cycle_init)], [string(_CC.CYCLE_INIT), hailstone[(length(hailstone)-cycle_init+1):length(hailstone)], [string(_CC.CYCLE_LENGTH), cycle_init]])
+                hailstone = append!(hailstone[1:(length(hailstone)-cycle_init)], [_CC.CYCLE_INIT, hailstone[(length(hailstone)-cycle_init+1):length(hailstone)], [_CC.CYCLE_LENGTH, cycle_init]])
             else
                 push!(hailstone, _next)
             end
@@ -325,7 +325,7 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
         if _next == 0
             push!(hailstone, 0)
             if verbose
-                push!(hailstone, [string(_CC.ZERO_STOP), -(length(hailstone)-1)])
+                push!(hailstone, [_CC.ZERO_STOP, -(length(hailstone)-1)])
             end
             break
         end
@@ -334,7 +334,7 @@ function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, 
     # Julia has no for ~ else yet https://github.com/JuliaLang/julia/issues/1289
     if length(hailstone) >= max_total_stopping_time
         if verbose
-            push!(hailstone, [string(_CC.MAX_STOP_OOB), _max_total_stopping_time])
+            push!(hailstone, [_CC.MAX_STOP_OOB, _max_total_stopping_time])
         end
     end
     return hailstone
@@ -388,15 +388,18 @@ function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::In
     # For total/regular/zero stopping time, the value is already the same as
     # that present, for cycles we report infinity instead of the cycle length,
     # and for max stop out of bounds, we report nothing instead of the max stop cap
-    return get(Dict(string(_CC.TOTAL_STOPPING_TIME) => end_msg[2],
-                    string(_CC.STOPPING_TIME) => end_msg[2],
-                    string(_CC.CYCLE_LENGTH) => Inf, # infinity
-                    string(_CC.ZERO_STOP) => end_msg[2],
-                    string(_CC.MAX_STOP_OOB) => nothing,
+    return get(Dict(_CC.TOTAL_STOPPING_TIME => end_msg[2],
+                    _CC.STOPPING_TIME => end_msg[2],
+                    _CC.CYCLE_LENGTH => Inf, # infinity
+                    _CC.ZERO_STOP => end_msg[2],
+                    _CC.MAX_STOP_OOB => nothing,
                     ), end_msg[1], nothing)
 end
 
 
+# TODO: Determine why the output of print(tree_graph(1, 3)) in the example in the below
+# yields a "Dict{Any, Any}(Collatz._CC.CYCLE_INIT => 1, 8 => Dict{Any, Any}())" in jldoctest
+# but a "Dict{Any, Any}(8 => Dict{Any, Any}(), Collatz._CC.CYCLE_INIT => 1)" from REPL?
 """
     tree_graph(initial_value, max_orbit_distance; P=2, a=3, b=1, __cycle_prevention=nothing)
 
@@ -423,9 +426,9 @@ maximum nesting of max_orbit_distance, with the initial_value as the root.
 # Examples
 ```jldoctest
 julia> print(tree_graph(1, 3))
-Dict{Int64, Dict{Any, Any}}(1 => Dict(2 => Dict{Any, Any}(4 => Dict{Any, Any}("CYCLE_INIT" => 1, 8 => Dict{Any, Any}()))))
+Dict{Int64, Dict{Any, Any}}(1 => Dict(2 => Dict{Any, Any}(4 => Dict{Any, Any}(Collatz._CC.CYCLE_INIT => 1, 8 => Dict{Any, Any}()))))
 julia> print(tree_graph(4, 3))
-Dict{Int64, Dict{Any, Any}}(4 => Dict(8 => Dict{Any, Any}(16 => Dict{Any, Any}(5 => Dict{Any, Any}(), 32 => Dict{Any, Any}())), 1 => Dict{Any, Any}(2 => Dict{Any, Any}("CYCLE_INIT" => 4))))
+Dict{Int64, Dict{Any, Any}}(4 => Dict(8 => Dict{Any, Any}(16 => Dict{Any, Any}(5 => Dict{Any, Any}(), 32 => Dict{Any, Any}())), 1 => Dict{Any, Any}(2 => Dict{Any, Any}(Collatz._CC.CYCLE_INIT => 4))))
 ```
 """
 function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
@@ -439,7 +442,7 @@ function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Inte
     push!(__cycle_prevention, initial_value)
     for branch_value in reverse_collatz_function(initial_value, P=P, a=a, b=b)
         if branch_value in __cycle_prevention
-            tgraph[initial_value][string(_CC.CYCLE_INIT)] = branch_value
+            tgraph[initial_value][_CC.CYCLE_INIT] = branch_value
         else
             tgraph[initial_value][branch_value] = tree_graph(branch_value, max_orbit_distance-1, P=P, a=a, b=b, __cycle_prevention=__cycle_prevention)[branch_value]
         end
