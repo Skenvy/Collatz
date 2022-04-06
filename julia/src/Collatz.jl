@@ -48,8 +48,11 @@ import ._CC
 
 
 """
+    __assert_sane_parameterisation(P, a, b)
+
 Handles the sanity check for the parameterisation (P,a,b) required by both
 the function and reverse function.
+
 # Args
 - `P::Integer`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer`: Factor by which to multiply n.
@@ -75,9 +78,13 @@ end
 
 
 """
+    collatz_function(n; P=2, a=3, b=1)
+
 Returns the output of a single application of a Collatz-esque function.
+
 # Args
 - `n::Integer`: The value on which to perform the Collatz-esque function
+
 # Kwargs
 - `P::Integer=2`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer=3`: Factor by which to multiply n.
@@ -99,9 +106,13 @@ end
 
 
 """
+    reverse_collatz_function(n; P=2, a=3, b=1)
+
 Returns the output of a single application of a Collatz-esque reverse function.
+
 # Args
 - `n::Integer`: The value on which to perform the reverse Collatz function
+
 # Kwargs
 - `P::Integer=2`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer=3`: Factor by which to multiply n.
@@ -118,9 +129,7 @@ function reverse_collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Int
     # attempt (f(n) - b)/a)
     pre_values = [P*n]
     if (n-b)%a == 0 && (n-b)%(P*a) != 0
-        # https://docs.julialang.org/en/v1/base/collections/#Base.push!
         push!(pre_values, ((n-b)÷a))
-        # https://docs.julialang.org/en/v1/base/sort/
         sort!(pre_values)
     end
     return pre_values
@@ -128,8 +137,11 @@ end
 
 
 """
+    __initial_value_outside_verified_range(x)
+
 Checks if the initial value is greater than __VERIFIED_MAXIMUM or less than
 __VERIFIED_MINIMUM. Only intended for the default parameterisation.
+
 # Args
 - `x::Integer`: The initial value to check if it is within range or not.
 """
@@ -139,8 +151,11 @@ end
 
 
 """
+    __stopping_time_terminus(n, total_stop)
+
 Provides the appropriate lambda to use to check if iterations on an initial
 value have reached either the stopping time, or total stopping time.
+
 # Args
 - `n::Integer`: The initial value to confirm against a stopping time check.
 - `total_stop::Bool`: If false, the lambda will confirm that iterations
@@ -161,16 +176,21 @@ end
 
 #TODO: Make the hailstone calc arbitrary integer safe!
 """
-Returns a list of successive values obtained by iterating a Collatz-esque
-function, until either 1 is reached, or the total amount of iterations
-exceeds max_total_stopping_time, unless total_stopping_time is False,
+    hailstone_sequence(initial_value; P=2, a=3, b=1, max_total_stopping_time=1000, total_stopping_time=true, verbose=true)
+
+Returns a list of successive values obtained by iterating a Collatz-esque function.
+    
+Until either 1 is reached, or the total amount of iterations
+exceeds max_total_stopping_time. Unless total_stopping_time is False,
 which will terminate the hailstone at the "stopping time" value, i.e. the
 first value less than the initial value. While the sequence has the
 capability to determine that it has encountered a cycle, the cycle from "1"
 wont be attempted or reported as part of a cycle, regardless of default or
 custom parameterisation, as "1" is considered a "total stop".
+
 # Args
 - `initial_value::Integer`: The value to begin the hailstone sequence from.
+
 # Kwargs
 - `P::Integer=2`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer=3`: Factor by which to multiply n.
@@ -249,17 +269,22 @@ end
 
 
 """
+    stopping_time(initial_value; P=2, a=3, b=1, max_stopping_time=1000, total_stopping_time=false)
+
 Returns the stopping time, the amount of iterations required to reach a
 value less than the initial value, or nothing if max_stopping_time is exceeded.
+
 Alternatively, if total_stopping_time is True, then it will instead count
 the amount of iterations to reach 1. If the sequence does not stop, but
-instead ends in a cycle, the result will be (math.inf). If (P,a,b) are such
+instead ends in a cycle, the result will be infinity. If (P,a,b) are such
 that it is possible to get stuck on zero, the result will be the negative of
 what would otherwise be the "total stopping time" to reach 1, where 0 is
 considered a "total stop" that should not occur as it does form a cycle of
 length 1.
+
 # Args
 - `initial_value::Integer`: The value for which to find the stopping time.
+
 # Kwargs
 - `P::Integer=2`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer=3`: Factor by which to multiply n.
@@ -290,8 +315,11 @@ end
 
 
 """
+    tree_graph(initial_value, max_orbit_distance; P=2, a=3, b=1, __cycle_prevention=nothing)
+
 Returns nested dictionaries that model the directed tree graph up to a
 maximum nesting of max_orbit_distance, with the initial_value as the root.
+
 # Args
 - `initial_value::Integer`: The root value of the directed tree graph.
 - `max_orbit_distance::Integer`: Maximum amount of times to iterate the reverse
@@ -299,10 +327,12 @@ maximum nesting of max_orbit_distance, with the initial_value as the root.
     to the termination of hailstone sequences or stopping time attempts, so this is not
     an optional argument like max_stopping_time / max_total_stopping_time, as it is the
     intended target of orbits to obtain, rather than a limit to avoid uncapped computation.
+
 # Kwargs
 - `P::Integer=2`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer=3`: Factor by which to multiply n.
 - `b::Integer=1`: Value to add to the scaled value of n.
+
 # Internal Kwargs
 - `__cycle_prevention::Union{Set{Integer},Nothing}=nothing`: Used to prevent cycles
     from precipitatingby keeping track of all values added across previous nest depths.
