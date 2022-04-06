@@ -77,11 +77,6 @@ jobs:
           ${{ runner.os }}-test-${{ env.cache-name }}-
           ${{ runner.os }}-test-
           ${{ runner.os }}-
-    # https://github.com/julia-actions/julia-buildpkg
-    - name: 🧱 Build
-      uses: julia-actions/julia-buildpkg@v1.2
-      with:
-        project: julia
     # https://github.com/julia-actions/julia-runtest
     - name: 🦂 Test
       uses: julia-actions/julia-runtest@v1.7
@@ -102,14 +97,13 @@ jobs:
     name: Julia 🔴🟢🟣 Docs 📄
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: julia-actions/setup-julia@v1.6
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔴🟢🟣 Set up Julia
+      uses: julia-actions/setup-julia@v1.6
       with:
-        version: '1'
-    - run: make docs
-    # https://juliadocs.github.io/Documenter.jl/stable/man/hosting/#The-deploydocs-Function
-    # See the above for what this expects to use the DOCUMENTER_KEY for to deploy.
-    # - run: julia --project=docs docs/make.jl
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+        version: '1.7.2'
+    - name: 📄 Docs
+      run: make docs_deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

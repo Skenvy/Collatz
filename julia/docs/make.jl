@@ -18,8 +18,3 @@ DocMeta.setdocmeta!(Collatz, :DocTestSetup, :(using Collatz); recursive=true)
         ]
     ],
 )
-
-# @time deploydocs(
-#     repo = "github.com/Skenvy/Collatz.git",
-#     push_preview = true,
-# )

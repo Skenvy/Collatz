@@ -1,4 +1,4 @@
-.PHONY: repl clean_docs clean deps docs docs_test docs_viewer test build
+.PHONY: repl clean_docs clean deps docs docs_deploy docs_view test build
 SHELL:=/bin/bash
 
 ### These are just the CLI way of doing the common REPL commands to create a new project,
@@ -34,20 +34,24 @@ deps: clean
 	julia --project=. -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 	julia --project=test -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 	julia --project=docs -e "import Pkg; Pkg.develop(Pkg.PackageSpec(path=pwd())); Pkg.resolve(); Pkg.instantiate();"
-	julia --project=docs/viewer -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
+	julia --project=docs/view -e "import Pkg; Pkg.resolve(); Pkg.instantiate();"
 
 docs: clean_docs
 	julia --project=docs -e "using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.resolve(); Pkg.instantiate()"
-	julia --project=docs docs/make.jl
+	julia --project=docs --code-coverage=user docs/make.jl
+
+docs_deploy: docs
+	julia --project=docs --code-coverage=user docs/deploy.jl
 
 # The docs_test is already a step in docs, and can yield an error forcefully by setting strict to true
 # in makedocs so docs_test is only useful as a test step if wanting to not rebuild with makedocs.
 # doctest is simply asserting the truth of ```jldoctest blocks in the `~/docs/src/*.md` files.
-docs_test:
-	julia --project=docs -e "using Documenter: doctest; using Collatz; @time doctest(Collatz)"
+# docs_test:
+# 	julia --project=docs -e "using Documenter: doctest; using Collatz; @time doctest(Collatz)"
+# < However, it's now problematic to maintain both, as makedocs uses the setdocmeta! to `using Collatz`
 
-docs_viewer: docs
-	julia --project=docs/viewer -e "using LiveServer; serve(dir=\"docs/build\")"
+docs_view: docs
+	julia --project=docs/view -e "using LiveServer; serve(dir=\"docs/build\")"
 
 test:
 	julia --project=. -e "import Pkg; @time Pkg.precompile(); @time Pkg.test();"
