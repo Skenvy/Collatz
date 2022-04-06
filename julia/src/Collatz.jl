@@ -10,8 +10,11 @@ module Collatz
 export _ErrMsg, _CC, _KNOWN_CYCLES
 export collatz, reverse_collatz, hailstone_sequence, stopping_time, tree_graph
 
+"The four known cycles (besides 0->0), for the default parameterisation."
 const _KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], [-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34]]
+"The value up to which has been proven numerically, for the default parameterisation."
 const __VERIFIED_MAXIMUM = 295147905179352825856
+"The value down to which has been proven numerically, for the default parameterisation."
 const __VERIFIED_MINIMUM = -272  #&TODO: Check the actual lowest bound.
 
 
@@ -27,7 +30,8 @@ import ._ErrMsg
 
 """
 Cycle Control: Descriptive flags to indicate when some event occurs in the
-hailstone sequences, when set to verbose, or stopping time check.
+hailstone sequences, when set to verbose, or stopping time check. A module used
+to wrap an enum to reference the values as `_CC.ABC` rather than `ABC::CC`
 """
 module _CC
 # The elements of an enum are accessed as string(ABC::CC) or just string(ABC) so
@@ -166,6 +170,7 @@ function __stopping_time_terminus(n::Integer, total_stop::Bool)
 end
 
 
+ #TODO: Make the hailstone calc arbitrary integer safe!
 """
 Returns a list of successive values obtained by iterating a Collatz-esque
 function, until either 1 is reached, or the total amount of iterations
@@ -195,7 +200,6 @@ Kwargs:
         sequence terminated, whether by reaching a stopping time or entering
         a cycle. Default is True.
 """
- #TODO: Make arbitrary integer safe!
 function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=true, verbose::Bool=true)
     # Call out the collatz_function before any magic returns to trap bad values.
     _ = collatz_function(initial_value,P=P,a=a,b=b)
