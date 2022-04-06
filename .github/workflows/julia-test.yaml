@@ -106,7 +106,7 @@ jobs:
     - uses: julia-actions/setup-julia@v1.6
       with:
         version: '1'
-    - run: make docs_test
+    - run: make docs
     # https://juliadocs.github.io/Documenter.jl/stable/man/hosting/#The-deploydocs-Function
     # See the above for what this expects to use the DOCUMENTER_KEY for to deploy.
     # - run: julia --project=docs docs/make.jl
