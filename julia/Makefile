@@ -41,7 +41,7 @@ docs: clean_docs
 	julia --project=docs docs/make.jl
 
 docs_test: docs
-	julia --project=docs -e "using Documenter: doctest; using Collatz; doctest(Collatz)"
+	julia --project=docs -e "using Documenter: doctest; using Collatz; @time doctest(Collatz)"
 
 docs_viewer: docs_test
 	julia --project=docs/viewer -e "using LiveServer; serve(dir=\"docs/build\")"

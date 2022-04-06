@@ -1,35 +1,20 @@
-# Collatz Documentation
-```@contents
+```@meta
+# TODO: Add a logo ~ of the collatz coral
+# https://juliadocs.github.io/Documenter.jl/stable/man/guide/#Adding-a-logo-or-icon
 ```
-## Top level Module
+# Collatz
+```@meta
+# Without ordering the files in the Pages list below, they all get alphabetically
+# sorted, which is more gross than just manually adding each file to this list.
+```
+```@contents
+Pages = ["index.md", "functions.md", "constants.md", "internal_functions.md", "internal_modules.md"]
+Depth = 2
+```
+# Top level Module
 ```@docs
 Collatz.Collatz
 ```
-## Functions
-```@docs
-Collatz.collatz_function
-Collatz.reverse_collatz_function
-Collatz.hailstone_sequence
-Collatz.stopping_time
-Collatz.tree_graph
-```
-## Internal Modules
-```@docs
-Collatz._CC
-Collatz._ErrMsg
-```
-## Constants
-```@docs
-Collatz._KNOWN_CYCLES
-Collatz.__VERIFIED_MAXIMUM
-Collatz.__VERIFIED_MINIMUM
-```
-## Internal functions
-```@docs
-Collatz.__assert_sane_parameterisation
-Collatz.__initial_value_outside_verified_range
-Collatz.__stopping_time_terminus
-```
-## Index
+# Index
 ```@index
 ```
