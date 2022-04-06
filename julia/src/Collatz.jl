@@ -3,8 +3,14 @@ Provides the basic functionality to interact with the Collatz conjecture. The
 parameterisation uses the same (P,a,b) notation as Conway's generalisations.
 Besides the function and reverse function, there is also functionality to retrieve
 the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph.
+
+# Examples
+```
+julia> import Pkg; Pkg.add("Collatz"); using Collatz
+```
 """
 module Collatz
+#TODO: ^ add jldoctest back to the above example when this is in general
 
 export _ErrMsg, _CC, _KNOWN_CYCLES
 export collatz_function, reverse_collatz_function, hailstone_sequence, stopping_time, tree_graph
@@ -31,6 +37,22 @@ import ._ErrMsg
 Cycle Control: Descriptive flags to indicate when some event occurs in the
 hailstone sequences, when set to verbose, or stopping time check. A module used
 to wrap an enum to reference the values as `_CC.ABC` rather than `ABC::CC`
+
+# Examples
+```jldoctest
+julia> string(_CC.STOPPING_TIME)
+"STOPPING_TIME"
+julia> string(_CC.TOTAL_STOPPING_TIME)
+"TOTAL_STOPPING_TIME"
+julia> string(_CC.CYCLE_INIT)
+"CYCLE_INIT"
+julia> string(_CC.CYCLE_LENGTH)
+"CYCLE_LENGTH"
+julia> string(_CC.MAX_STOP_OOB)
+"MAX_STOP_OOB"
+julia> string(_CC.ZERO_STOP)
+"ZERO_STOP"
+```
 """
 module _CC
 # The elements of an enum are accessed as string(ABC::CC) or just string(ABC) so
@@ -89,6 +111,20 @@ Returns the output of a single application of a Collatz-esque function.
 - `P::Integer=2`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer=3`: Factor by which to multiply n.
 - `b::Integer=1`: Value to add to the scaled value of n.
+
+# Examples
+```jldoctest
+julia> collatz_function(5)
+16
+```
+```jldoctest
+julia> collatz_function(14, P=7)
+2
+```
+```jldoctest
+julia> collatz_function(15, P=7, a=5, b=3)
+78
+```
 """
 function collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
     __assert_sane_parameterisation(P,a,b)
@@ -117,6 +153,20 @@ Returns the output of a single application of a Collatz-esque reverse function.
 - `P::Integer=2`: Modulus used to devide n, iff n is equivalent to (0 mod P).
 - `a::Integer=3`: Factor by which to multiply n.
 - `b::Integer=1`: Value to add to the scaled value of n.
+
+# Examples
+```jldoctest
+julia> print(reverse_collatz_function(1))
+[2]
+```
+```jldoctest
+julia> print(reverse_collatz_function(4))
+[1, 8]
+```
+```jldoctest
+julia> print(reverse_collatz_function(3, P=-3, a=-2, b=-5))
+[-9, -4]
+```
 """
 function reverse_collatz_function(n::Integer; P::Integer=2, a::Integer=3, b::Integer=1)
     __assert_sane_parameterisation(P,a,b)
@@ -203,6 +253,21 @@ custom parameterisation, as "1" is considered a "total stop".
 - `verbose::Bool=true`: If set to verbose, the hailstone sequence will include
     control string sequences to provide information about how the sequence
     terminated, whether by reaching a stopping time or entering a cycle.
+
+# Examples
+```jldoctest
+julia> print(hailstone_sequence(16, verbose=false))
+[16, 8, 4, 2, 1]
+```
+```jldoctest
+julia> print(hailstone_sequence(16))
+Any[16, 8, 4, 2, 1, Any[Collatz._CC.TOTAL_STOPPING_TIME, 4]]
+```
+# Example cycle!
+```jldoctest
+julia> print(hailstone_sequence(-56))
+Any[-56, -28, Collatz._CC.CYCLE_INIT, Any[-14, -7, -20, -10, -5], Any[Collatz._CC.CYCLE_LENGTH, 5]]
+```
 """
 function hailstone_sequence(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_total_stopping_time::Integer=1000, total_stopping_time::Bool=true, verbose::Bool=true)
     # Call out the collatz_function before any magic returns to trap bad values.
@@ -294,6 +359,12 @@ length 1.
 - `total_stopping_time::Bool=false`: Whether or not to execute until the "total"
     stopping time (number of iterations to obtain 1) rather than the regular
     stopping time (number of iterations to reach a value less than the initial value).
+
+# Examples
+```jldoctest
+julia> a = 1
+1
+```
 """
 function stopping_time(initial_value::Integer; P::Integer=2, a::Integer=3, b::Integer=1, max_stopping_time::Integer=1000, total_stopping_time::Bool=false)
     # The information is contained in the verbose form of a hailstone sequence.
@@ -336,6 +407,12 @@ maximum nesting of max_orbit_distance, with the initial_value as the root.
 # Internal Kwargs
 - `__cycle_prevention::Union{Set{Integer},Nothing}=nothing`: Used to prevent cycles
     from precipitatingby keeping track of all values added across previous nest depths.
+
+# Examples
+```jldoctest
+julia> a = 1
+1
+```
 """
 function tree_graph(initial_value::Integer, max_orbit_distance::Integer; P::Integer=2, a::Integer=3, b::Integer=1, __cycle_prevention::Union{Set{Integer},Nothing}=nothing)
     # Call out the reverse_collatz_function before any magic returns to trap bad values.

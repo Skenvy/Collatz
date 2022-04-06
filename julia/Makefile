@@ -16,7 +16,7 @@ SHELL:=/bin/bash
 # $> julia --project=a/b/c -e "using Pkg; Pkg.status()"
 
 repl:
-	julia --project=. -e "import Pkg; Pkg.resolve(); Pkg.instantiate(); import Collatz" -i
+	julia --project=. -e "import Pkg; Pkg.resolve(); Pkg.instantiate(); using Collatz" -i
 
 clean_docs:
 	rm -rf docs/build/

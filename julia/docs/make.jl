@@ -1,5 +1,7 @@
 # push!(LOAD_PATH,"../src/")
 using Documenter, Collatz
+# ~ Frob the operational context of jldoctest blocks with a using <this>
+DocMeta.setdocmeta!(Collatz, :DocTestSetup, :(using Collatz); recursive=true)
 @time makedocs(
     sitename="Collatz",
     modules=[Collatz],
@@ -12,7 +14,7 @@ using Documenter, Collatz
         "Extra" => [
             "Internal Modules" => "internal_modules.md",
             "Constants" => "constants.md",
-            "Internal functions" => "internal_functions.md"
+            "Internal Functions" => "internal_functions.md"
         ]
     ],
 )
