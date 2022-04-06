@@ -4,7 +4,7 @@ using Documenter, Collatz
     sitename="Collatz",
     modules=[Collatz],
     checkdocs = :exports,
-    # strict = true,
+    strict = true,
     format = Documenter.HTML(collapselevel = 1),
     pages = [
         "Introduction" => "index.md",

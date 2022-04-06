@@ -40,14 +40,17 @@ docs: clean_docs
 	julia --project=docs -e "using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.resolve(); Pkg.instantiate()"
 	julia --project=docs docs/make.jl
 
-docs_test: docs
+# The docs_test is already a step in docs, and can yield an error forcefully by setting strict to true
+# in makedocs so docs_test is only useful as a test step if wanting to not rebuild with makedocs.
+# doctest is simply asserting the truth of ```jldoctest blocks in the `~/docs/src/*.md` files.
+docs_test:
 	julia --project=docs -e "using Documenter: doctest; using Collatz; @time doctest(Collatz)"
 
-docs_viewer: docs_test
+docs_viewer: docs
 	julia --project=docs/viewer -e "using LiveServer; serve(dir=\"docs/build\")"
 
 test:
-	julia --project=. -e "import Pkg; Pkg.precompile(); Pkg.test();"
+	julia --project=. -e "import Pkg; @time Pkg.precompile(); @time Pkg.test();"
 
-build: test docs_test
-	julia --project=. -e "import Pkg; Pkg.build();"
+build: test docs
+	julia --project=. -e "import Pkg; @time Pkg.build();"
