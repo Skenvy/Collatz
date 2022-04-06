@@ -34,7 +34,7 @@ jobs:
     - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@v1.6
       with:
-        version: '1.2.0' # The compat version
+        version: '1.7.2' # The current local version -- to use the same recipes as local
         arch: 'x64'
     - name: 🧱 Install build dependencies
       run: |
@@ -54,7 +54,7 @@ jobs:
       matrix:
         # From versions in https://julialang-s3.julialang.org/bin/versions.json
         # Does NOT support 1.0
-        version: ['1', 'nightly', '1.2.0'] # '1.2.0' is the compat version
+        version: ['1', 'nightly', '1.6.0'] # '1.2.0' is the compat version, but 1.6 for @testset verbose
         os: [ubuntu-latest, macOS-latest, windows-latest]
         arch: [x64]
     steps:
@@ -77,11 +77,6 @@ jobs:
           ${{ runner.os }}-test-${{ env.cache-name }}-
           ${{ runner.os }}-test-
           ${{ runner.os }}-
-    # https://github.com/julia-actions/julia-buildpkg
-    - name: 🧱 Build
-      uses: julia-actions/julia-buildpkg@v1.2
-      with:
-        project: julia
     # https://github.com/julia-actions/julia-runtest
     - name: 🦂 Test
       uses: julia-actions/julia-runtest@v1.7
@@ -102,14 +97,13 @@ jobs:
     name: Julia 🔴🟢🟣 Docs 📄
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: julia-actions/setup-julia@v1.6
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔴🟢🟣 Set up Julia
+      uses: julia-actions/setup-julia@v1.6
       with:
-        version: '1'
-    - run: make docs_test
-    # https://juliadocs.github.io/Documenter.jl/stable/man/hosting/#The-deploydocs-Function
-    # See the above for what this expects to use the DOCUMENTER_KEY for to deploy.
-    # - run: julia --project=docs docs/make.jl
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #     DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+        version: '1.7.2'
+    - name: 📄 Docs
+      run: make docs_deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

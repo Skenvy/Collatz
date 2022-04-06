@@ -46,3 +46,18 @@ jobs:
         subdirectory: "julia"
         release_tag_template: "julia-v<NEW_VERSION>"
         release_name_template: "Julia: Version <NEW_VERSION>"
+  docs:
+    name: Julia 🔴🟢🟣 Docs 📄
+    needs: [test, release-and-register]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔴🟢🟣 Set up Julia
+      uses: julia-actions/setup-julia@v1.6
+      with:
+        version: '1.7.2'
+    - name: 📄 Docs
+      run: make docs_deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
