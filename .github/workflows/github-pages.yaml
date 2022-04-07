@@ -1,0 +1,24 @@
+name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+on:
+  push:
+    branches:
+    - 'gh-pages-*'
+defaults:
+  run:
+    shell: bash
+jobs:
+  merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: Merge 🧬${GITHUB_REF##*/}🧬 into 🐱‍👤 gh-pages 📄
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        git fetch --unshallow
+        git checkout gh-pages
+        git pull
+        git merge --squash ${GITHUB_REF##*/} --allow-unrelated-histories -m "Auto-merge ${GITHUB_REF##*/} to gh-pages"
+        git push

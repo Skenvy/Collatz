@@ -6,7 +6,7 @@ const _devurl = "dev"
     repo = "github.com/Skenvy/Collatz.git",
     deploy_config = Documenter.GitHubActions(),
     # A special branch for hosting the built docs
-    branch = "gh-pages-julia-docs-test-dirname",
+    branch = "gh-pages-julia",
     dirname = "julia",
     # Where to deploy to from a non-tagged commit?
     devurl = _devurl,
