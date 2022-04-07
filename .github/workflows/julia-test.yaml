@@ -94,7 +94,21 @@ jobs:
     #     name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
     #     verbose: true
   docs:
-    name: Julia 🔴🟢🟣 Docs 📄
+    name: Julia 🔴🟢🟣 Docs 📄 Quick Test 🦂
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔴🟢🟣 Set up Julia
+      uses: julia-actions/setup-julia@v1.6
+      with:
+        version: '1.7.2'
+    - name: 📄 Docs
+      run: make docs
+  docs-deploy-from-pr:
+    name: Julia 🔴🟢🟣 Docs 📄 Deploy 📚
+    if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -107,3 +121,15 @@ jobs:
       run: make docs_deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs-deploy-from-pr]
+    # Needs to only be on pull requests. Unlike the "full-test" that expects to
+    # be called on workflow_dispatch or a push to main, those docs deploys are
+    # after the build, not before it like those tests are. The above docs step
+    # that this requires will only create additional content to be merged from
+    # if this is running on a pull request.
+    if: ${{ github.event_name == 'pull_request' }}
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-julia'
