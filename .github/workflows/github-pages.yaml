@@ -1,0 +1,34 @@
+name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+on:
+  push:
+    branches:
+    - 'gh-pages-*'
+  # But pushes from other workflows that use the GITHUB_TOKEN wont
+  # trigger this workflow, so it will need to be manually called.
+  workflow_call:
+    inputs:
+      merge_from:
+        description: 'The gh-pages-* branch to merge from into gh-pages.'
+        required: true
+        type: string
+defaults:
+  run:
+    shell: bash
+jobs:
+  merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: Merge 🧬${{ inputs.merge_from }}🧬 into 🐱‍👤 gh-pages 📄
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        git fetch --unshallow
+        export FROM_SHA=$(git rev-parse --short=8 origin/${{ inputs.merge_from }})
+        export TO_SHA=$(git rev-parse --short=8 origin/gh-pages)
+        git checkout gh-pages && git pull
+        git merge --squash origin/${{ inputs.merge_from }} --allow-unrelated-histories
+        git commit -m "Auto-merge ${{ inputs.merge_from }}@($FROM_SHA) to gh-pages@($TO_SHA)"
+        git push

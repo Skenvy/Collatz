@@ -55,7 +55,7 @@ jobs:
         # From versions in https://julialang-s3.julialang.org/bin/versions.json
         # Does NOT support 1.0
         version: ['1', 'nightly', '1.6.0'] # '1.2.0' is the compat version, but 1.6 for @testset verbose
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe
         arch: [x64]
     steps:
     - name: 🏁 Checkout
@@ -94,7 +94,7 @@ jobs:
     #     name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
     #     verbose: true
   docs:
-    name: Julia 🔴🟢🟣 Docs 📄
+    name: Julia 🔴🟢🟣 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -104,6 +104,4 @@ jobs:
       with:
         version: '1.7.2'
     - name: 📄 Docs
-      run: make docs_deploy
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: make docs

@@ -61,3 +61,9 @@ jobs:
       run: make docs_deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-julia'
