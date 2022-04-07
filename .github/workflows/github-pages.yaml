@@ -15,10 +15,11 @@ jobs:
       uses: actions/checkout@v3
     - name: Merge 🧬${GITHUB_REF##*/}🧬 into 🐱‍👤 gh-pages 📄
       run: |
+        export MERGE_FROM=${GITHUB_REF##*/}
+        export FROM_SHA=$(git rev-parse --short=8 $GITHUB_SHA)
+        export TO_SHA=$(git rev-parse --short=8 gh-pages)
         git config --local user.email "actions@github.com"
         git config --local user.name "Github Actions"
-        git fetch --unshallow
-        git checkout gh-pages
-        git pull
-        git merge --squash ${GITHUB_REF##*/} --allow-unrelated-histories -m "Auto-merge ${GITHUB_REF##*/} to gh-pages"
+        git fetch --unshallow && git checkout gh-pages && git pull
+        git merge --squash $MERGE_FROM --allow-unrelated-histories -m "Auto-merge $MERGE_FROM@($FROM_SHA) to gh-pages@($TO_SHA)"
         git push
