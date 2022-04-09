@@ -79,7 +79,8 @@ jobs:
       run: export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}" && echo $GITHUB_REF && make docs_deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REF: 'refs/tags/v${{ needs.release-and-register.outputs.new_version }}'
+        # Setting GITHUB_REF in this env doesn't work, but exporting it in the run above does.
+        # GITHUB_REF: 'refs/tags/v${{ needs.release-and-register.outputs.new_version }}'
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
