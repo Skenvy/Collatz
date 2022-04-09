@@ -31,6 +31,8 @@ jobs:
     name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
     needs: [test]
     runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.release_step.outputs.new_version }}
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -46,9 +48,25 @@ jobs:
         subdirectory: "julia"
         release_tag_template: "julia-v<NEW_VERSION>"
         release_name_template: "Julia: Version <NEW_VERSION>"
+        # DOCS # >>>
+        ######################################################################################
+        # If a docs deployment fails, because this only runs on a push to the project file   #
+        # but deploydocs is designed around a push of a tag, and we've chosen to frob the    #
+        # GITHUB_REF to make it a tag for deploydocs, then we need to uncomment the disallow #
+        # on both release and register, and swap the version in the project. If doing that   #
+        # though, keep in mind that the test step doesn't trigger on pushes to main, because #
+        # it assumes this will trigger on any required build push to main after a PR. So be  #
+        # careful not to change any actual ./julia/ code when debugging the deploydocs.      #
+        # Change the version with "disposable-build-info" in vX.Y.Z+disposable-build-info    #
+        ######################################################################################
+        # auto_release: false
+        # auto_register: false
+        # DOCS # <<<
   docs:
     name: Julia 🔴🟢🟣 Docs 📄
     needs: [test, release-and-register]
+    # Couldn't find whether an unset value becomes null or empty. Be safe. Stay hydrated.
+    if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != '' }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -58,9 +76,11 @@ jobs:
       with:
         version: '1.7.2'
     - name: 📄 Docs
-      run: make docs_deploy
+      run: export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}" && echo $GITHUB_REF && make docs_deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Setting GITHUB_REF in this env doesn't work, but exporting it in the run above does.
+        # GITHUB_REF: 'refs/tags/v${{ needs.release-and-register.outputs.new_version }}'
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
