@@ -56,7 +56,7 @@ jobs:
     name: Julia 🔴🟢🟣 Docs 📄
     needs: [test, release-and-register]
     # Couldn't find whether an unset value becomes null or empty. Be safe. Stay hydrated.
-    if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != "" }}
+    if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != '' }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
