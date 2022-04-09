@@ -31,6 +31,8 @@ jobs:
     name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
     needs: [test]
     runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.release_step.outputs.new_version }}
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -49,6 +51,8 @@ jobs:
   docs:
     name: Julia 🔴🟢🟣 Docs 📄
     needs: [test, release-and-register]
+    # Couldn't find whether an unset value becomes null or empty. Be safe. Stay hydrated.
+    # if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != "" }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -61,6 +65,7 @@ jobs:
       run: make docs_deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # GITHUB_REF: 'refs/tags/v${{ needs.release-and-register.outputs.new_version }}'
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
