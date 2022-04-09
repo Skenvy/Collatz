@@ -9,7 +9,7 @@ Each language's implementation should share the same functionality, or as close 
 * [Julia](#TODO)
 * [LaTeX](#TODO)
 * [Node.JS](#TODO)
-* [python](#TODO: Update to the pypi release)
+* [python](https://pypi.org/project/collatz/)
 * [R](#TODO)
 * [Ruby](#TODO)
 ## Basic functionality.

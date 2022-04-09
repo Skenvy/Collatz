@@ -1,9 +1,9 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [Python](https://github.com/Skenvy/Collatz/tree/main/python)
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in Python.
 ## Getting Started
-To [install the latest](https://test.pypi.org/project/collatz-skenvy/);  #TODO: UPDATE to PyPi address
+To [install the latest](https://pypi.org/project/collatz/);
 ```
-pip install -i https://test.pypi.org/simple/ collatz-skenvy  #TODO: UPDATE
+pip install collatz
 ```
 ### Developing
 #### The first time virtual env
