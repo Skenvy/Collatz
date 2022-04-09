@@ -76,7 +76,7 @@ jobs:
       with:
         version: '1.7.2'
     - name: 📄 Docs
-      run: echo $GITHUB_REF && make docs_deploy
+      run: export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}" && echo $GITHUB_REF && make docs_deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REF: 'refs/tags/v${{ needs.release-and-register.outputs.new_version }}'
