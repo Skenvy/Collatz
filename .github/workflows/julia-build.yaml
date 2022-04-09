@@ -48,11 +48,15 @@ jobs:
         subdirectory: "julia"
         release_tag_template: "julia-v<NEW_VERSION>"
         release_name_template: "Julia: Version <NEW_VERSION>"
+        # TEMP # >>>
+        auto_release: false
+        auto_register: false
+        # TEMP # <<<
   docs:
     name: Julia 🔴🟢🟣 Docs 📄
     needs: [test, release-and-register]
     # Couldn't find whether an unset value becomes null or empty. Be safe. Stay hydrated.
-    # if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != "" }}
+    if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != "" }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -65,7 +69,7 @@ jobs:
       run: make docs_deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # GITHUB_REF: 'refs/tags/v${{ needs.release-and-register.outputs.new_version }}'
+        GITHUB_REF: 'refs/tags/v${{ needs.release-and-register.outputs.new_version }}'
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
