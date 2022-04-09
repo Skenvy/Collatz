@@ -1,0 +1,5 @@
+[deps]
+Collatz = "93a6299e-2ed6-4a7f-9f14-000d52f8d402"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+[compat]
+Documenter = "~0.27.15"
