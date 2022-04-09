@@ -59,8 +59,8 @@ jobs:
         # careful not to change any actual ./julia/ code when debugging the deploydocs.      #
         # Change the version with "disposable-build-info" in vX.Y.Z+disposable-build-info    #
         ######################################################################################
-        auto_release: false
-        auto_register: false
+        # auto_release: false
+        # auto_register: false
         # DOCS # <<<
   docs:
     name: Julia 🔴🟢🟣 Docs 📄
