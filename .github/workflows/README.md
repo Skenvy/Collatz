@@ -4,7 +4,7 @@ To achieve clustering for shared relevance to the same release target (per langu
 To achieve prescriptivity over the intended uniformity of each workflow as it pertains to "what it does" for (per that language's release target) each workflow will be named `<language>-<process>.yaml`.
 
 Some restrictions that immediately apply to this, because it relies on [GitHub Actions](https://docs.github.com/en/actions) are related to the `workflow_call` event, and performing operations with the `GITHUB_TOKEN`.
-While workflows are designed with the intent of being [modularisable / reusable](https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow) via the [`workflow_call`](https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/events-that-trigger-workflows#workflow_call) event, a workflow that is initiated via a `workflow_call` can not only not initiate another workflow via `workflow_call`, but even more than that cannot include an invocation to initiate another workflow via `workflow_call`, whether it runs or not! (It appears that the check for whether a chained `workflow_call` exists is shallow, and does not even parse the [`jobs.<job_id>.if`](https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idif) to check if that chained invocation will be initiated).
+While workflows are designed with the intent of being [modularisable / reusable](https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/reusing-workflows#calling-a-reusable-workflow) via the [`workflow_call`](https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/events-that-trigger-workflows#workflow_call) event, a workflow that is initiated via a `workflow_call` can not only not initiate another workflow via `workflow_call`, but even more than that cannot include an invocation to initiate another workflow via `workflow_call`, whether it runs or not! (It appears that the check for whether a chained `workflow_call` exists is shallow, and does not even parse the [`jobs.<job_id>.if`](https://docs.github.com/en/enterprise-cloud@latest/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idif) to check if that chained invocation will be initiated). This is also coupled with the called workflow inheriting the entire "github context" from the callee, so a workflow with triggering actions `[<X>, workflow_call]` called by another workflow triggered by an `<X>` action, will pass the entire `<X>` context. For instance, a comparison can not be used such as `jobs.<job_id>.if: ${{ github.event_name == 'workflow_call' }}`, although the workflow call can bootstrap this condition with inputs.
 Parallel to this is that any operation performed during an "action", if performed with the [`GITHUB_TOKEN`](https://docs.github.com/en/github-ae@latest/actions/security-guides/automatic-token-authentication) won't "trigger" any other workflows, regardless of if they are set up to only trigger on such an anticipated action, to minimise recursive workflow instantiations. The typical method to circumvent this is to utilise a "Personal Access Token" key to perform actions during a workflow that you do want to trigger another workflow, but this is looser security. All in all, both these issues with `workflow_call` and `GITHUB_TOKEN` make [GitHub Actions](https://docs.github.com/en/actions) feel very much like riding a bike with training wheels that can't be taken off.
 # The "per that language's release target" processes
 ## CI
@@ -37,6 +37,72 @@ _All_ pushes to _the **main**_ branch **that changes files relevant to** _some_ 
         * `{CI verification} => (build?) => release => (distribute?::(documentation?))`
     * A **release** may or may not contain **build artefacts**.
     * A **release** may or may not subsequently need to be "deployed"/"distributed"
+## Workflow triggers
+```mermaid
+flowchart TD
+    A1(Any Push) --> |Trigger| B1{Relevant changes?}
+    B1 --> |yes| C1{Branch}
+    B1 --> |no| D1(Nothing to do)
+    C1 --> |not main| E1[Limited Scope CI]
+    C1 --> |main| F1[Entire Scope CI]
+    F1 -->  G1{Release changes?}
+    G1 --> |yes| H1[CD Process]
+    G1 --> |no| D1(Nothing to do)
+    A2(PR against main) --> |Trigger| B2{Relevant changes?}
+    B2 --> |yes| C2[Entire Scope CI]
+    B2 --> |no| D2(Nothing to do)
+```
+We want different processes for the workflows across four essential categories.
+1. A push to main that changes the idiomatic release versioning.
+    ```
+    on:
+      push:
+        branches:
+        - 'main'
+        paths:
+        - 'some_lang/some_version_files'
+    ```
+    * Entire Scope CI
+    * CD Process
+1. A push to main that doesn't change the idiomatic release versioning.
+    ```
+    on:
+      push:
+        branches:
+        - 'main'
+        paths:
+        - 'some_lang/**'
+        - '!some_lang/some_version_files'
+        - '.github/workflows/some_lang-*'
+    ```
+    * Entire Scope CI
+1. A push to any other branch
+    ```
+    on:
+      push:
+        branches-ignore:
+        - 'main'
+        paths:
+        - 'some_lang/**'
+        - '.github/workflows/some_lang-*'
+    ```
+    * Limited Scope CI
+1. A PR against main
+    ```
+    on:
+      pull_request:
+        branches:
+        - 'main'
+        paths:
+        - 'some_lang/**'
+        - '.github/workflows/some_lang-*'
+    ```
+    * Entire Scope CI
+
+It is challenging to find a way to compress these four categories into less than four workflows, although this leads to an issue of how to share the internal processes for each workflow without duplicating code across them, and without having to have a `workflow_call` workflow for each process that gets invoked by each category. The `on.push.paths` field is not inconsequential to access as a field that could be used to `if` a job, so it's best if that category gets it's own workflow, especially being the only one to invoke the CD process. But it utilises the "entire scope CI", which it could access by `workflow_call` on a second workflow dedicated to the CI. The PR trigger is easy to integrate parallel to the push trigger and conditionalise the workflow on it.
+The problem comes from trying to simultaneously include _"A push to main that doesn't change the idiomatic release versioning"_ and _"A push to any other branch"_ in the same workflow. If the "branches"/"branches-ignore" fields are removed, and the CI workflow is allowed to run without branch limiting, then a push to main that triggers the CD workflow will also invoke the entire scope testing in the CI workflow, essentially doubling the work done.
+Realistically, the best middle ground approach is to have three workflows, one for the CD process with the trigger for _"A push to main that changes the idiomatic release versioning"_, one for the "entire scope" CI process triggered by the the _"A push to main that doesn't change the idiomatic release versioning"_ and _"A PR against main"_, and one for the "limited scope" CI process triggered by _"A push to any other branch"_.
+An alternative approach would be to set up a way to establish the aboves categories as contexts in which a single workflow would run via each of the above categories having their own workflow that simply invokes a shared workflow via `workflow_call` and passes the context to it via inputs. This is the best way to circumvent the lack (or removal of) the capacity to check the list of changed files in a push's event payload (with which it'd be possible to just keep only two workflows).
 ## `<language>-test.yaml`
 ```
 Example
