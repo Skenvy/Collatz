@@ -93,6 +93,7 @@ jobs:
     #     name: some-artefacts
     #     path: java/some-artefacts
     - name: 📦 Publish
+      run: make build
     # TODO: run: or uses: something depending on the languges
   docs:
     name: Java ☕🦆🌞 Docs 📄

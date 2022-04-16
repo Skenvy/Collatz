@@ -59,6 +59,7 @@ jobs:
         java-version: '11'
     # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
+      run: make test
     # TODO: run: or uses: something depending on the languges
   # Docs step is optional depending on language
   # docs:
