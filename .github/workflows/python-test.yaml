@@ -34,9 +34,9 @@ jobs:
     - name: Check if version files changed
       run: |
         export VERSION_FILE="python/src/collatz/__version__.py"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=create-release::true" || echo "::set-output name=create-release::false"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=create-release::${{toJSON(true)}}" || echo "::set-output name=create-release::${{toJSON(false)}}"
     - name: Notify of conditions
-      run: echo "::Notice::create-release is ${{ steps.version-file-check.outputs.create-release }}"
+      run: echo "::Notice::create-release is ${{ fromJSON(steps.version-file-check.outputs.create-release) }}"
   # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
   # Which will yield the condition check "if: ${{ needs.workflow-conditions.outputs.create-release == 'true' }}"
   quick-test:
@@ -60,10 +60,9 @@ jobs:
     name: Python 🐍🐍🐍 Tox 🦂
     needs: [workflow-conditions]
     if: >- 
-      ${{ github.event_name == 'pull_request' ||
-      github.event_name == 'workflow_dispatch' ||
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main' &&
-      needs.workflow-conditions.outputs.create-release == 'false') }}
+      fromJSON(needs.workflow-conditions.outputs.create-release) == false) }}
     runs-on: '${{ matrix.os }}'
     strategy:
       matrix:
