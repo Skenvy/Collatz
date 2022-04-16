@@ -1,0 +1,77 @@
+name: Java ☕🦆🌞 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - 'java/**'
+    - '.github/workflows/java-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'java/**'
+    - '.github/workflows/java-*'
+  workflow_call:
+defaults:
+  run:
+    shell: bash
+    working-directory: java
+jobs:
+  quick-test:
+    name: Java ☕🦆🌞 Quick Test 🦂
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    # https://github.com/actions/setup-java
+    - name: ☕🦆🌞 Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+    - name: 🧱 Install build dependencies
+      run: make deps
+    - name: 🦂 Test
+      run: make test
+  full-test:
+    name: Java ☕🦆🌞 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['1', '2', '3']
+        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe.
+        arch: [x64]
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    # https://github.com/actions/setup-java
+    - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+    # TODO: Maybe another step to install test dependencies
+    - name: 🦂 Test
+    # TODO: run: or uses: something depending on the languges
+  # Docs step is optional depending on language
+  # docs:
+  #   name: Java ☕🦆🌞 Docs 📄 Quick Test 🦂
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@v3
+  #   # https://github.com/actions/setup-java
+  #   - name: ☕🦆🌞 Set up Java
+  #     uses: actions/setup-java@v3
+  #     with:
+  #       distribution: 'adopt'
+  #       java-version: '11'
+  #   - name: 📄 Docs
+  #     run: make docs
