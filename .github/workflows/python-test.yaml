@@ -24,6 +24,8 @@ jobs:
   workflow-conditions:
     name: Python 🐍🐍🐍 Release 🚰 Pre-check; 
     runs-on: ubuntu-latest
+    outputs:
+      create-release: ${{ steps.version-file-check.outputs.create-release }}
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -32,7 +34,7 @@ jobs:
     - name: Check if version files changed
       run: |
         export VERSION_FILE="python/src/collatz/__version__.py"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=create-release::true" || echo echo "::set-output name=create-release::false"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=create-release::true" || echo "::set-output name=create-release::false"
   # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
   # Which will yield the condition check "if: ${{ needs.workflow-conditions.outputs.create-release == 'true' }}"
   quick-test:
