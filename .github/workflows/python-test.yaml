@@ -32,6 +32,7 @@ jobs:
       with:
         fetch-depth: 2
     - name: Check if version files changed
+      id: version-file-check
       run: |
         export VERSION_FILE="python/src/collatz/__version__.py"
         [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=create-release::${{toJSON(true)}}" || echo "::set-output name=create-release::${{toJSON(false)}}"
