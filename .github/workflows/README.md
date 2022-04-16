@@ -98,14 +98,212 @@ We want different processes for the workflows across four essential categories.
         - '.github/workflows/some_lang-*'
     ```
     * Entire Scope CI
+## Templates for workflows; `*-test.yaml` and `*-build.yaml`
+Can be search+replace'd on
+* `<Language>` + `<language>` + `<language-emojis>`
+* `<gh-action-setup-language@semver>` + `<language-version>`
+* `<make-environment-dependencies>`
+* `<version-file>` (appears as `export VERSION_FILE="<language>/<version-file>"`)
+
+The caveat on the lowercase `<language>` is that it is replacing the value in `working-directory: <language>`, so is synonymous with the subfolder that contains that language, and might not always actually be replaced with something in lower case. It's also required that this uses the same capitalisation as the `.github/workflows/<language>-*` files.
 ## `<language>-test.yaml`
 ```
-Example
+name: <Language> <language-emojis> Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - '<language>/**'
+    - '.github/workflows/<language>-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - '<language>/**'
+    - '.github/workflows/<language>-*'
+  workflow_call:
+defaults:
+  run:
+    shell: bash
+    working-directory: <language>
+jobs:
+  quick-test:
+    name: <Language> <language-emojis> Quick Test 🦂
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: <language-version>
+        arch: 'x64'
+    - name: 🧱 Install build dependencies
+      run: make <make-environment-dependencies>
+    - name: 🦂 Test
+      run: make test
+  full-test:
+    name: <Language> <language-emojis> Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['1', '2', '3']
+        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe.
+        arch: [x64]
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: <language-emojis> Set up <Language> ${{ matrix.version }}
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ matrix.version }}
+        arch: ${{ matrix.arch }}
+    # TODO: Maybe another step to install test dependencies
+    - name: 🦂 Test
+    # TODO: run: or uses: something depending on the languges
+  # Docs step is optional depending on language
+  # docs:
+  #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@v3
+  #   - name: <language-emojis> Set up <Language>
+  #     uses: <gh-action-setup-language@semver>
+  #     with:
+  #       version: <language-version>
+  #   - name: 📄 Docs
+  #     run: make docs
 ```
 ## `<language>-build.yaml`
 ```
-Example
+name: <Language> <language-emojis> Test 🦂 Build 🧱 Release 🚰 and Publish 📦
+on:
+  push:
+    branches:
+    - 'main'
+    paths:
+    - '<language>/**'
+    - '.github/workflows/<language>-*'
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+    working-directory: <language>
+jobs:
+  context:
+    name: GitHub 🐱‍👤 Context 📑
+    uses: ./.github/workflows/github-context.yaml
+  test:
+    name: <Language> <language-emojis> Test 🦂
+    uses: ./.github/workflows/<language>-test.yaml
+  workflow-conditions:
+    name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
+    runs-on: ubuntu-latest
+    outputs:
+      version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Check if version files changed
+      id: version-file-check
+      run: |
+        export VERSION_FILE="<language>/<version-file>"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+    - name: Notify of conditions
+      run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
+  # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
+  # Which will yield the condition check "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}"
+  build:
+    name: <Language> <language-emojis> Build 🧱
+    needs: [test, workflow-conditions]
+    if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: <language-version>
+    - name: 🧱 Install build dependencies
+      run: make <make-environment-dependencies>
+    # Some step that uses `make build`
+    # - name: 🆙 Upload dists
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: some-artefacts
+    #     path: <language>/some-artefacts/
+    #     if-no-files-found: error
+  release:
+    name: <Language> <language-emojis> Release 🚰
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    # - name: 🆒 Download dists
+    #   uses: actions/download-artifact@v3
+    #   with:
+    #     name: some-artefacts
+    #     path: <language>/some-artefacts
+    - name: 🚰 Release
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        export VER=$(some-version-obtaining-call)
+        gh release create <language>-v$VER --generate-notes -t "<Language>: Version $VER"
+  publish:
+    name: <Language> <language-emojis> Publish 📦
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+    # Although the dists are built uses checkout to satisfy refs/tags existence
+    # which were created by the release, prior to uploading to pypi.
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    # - name: 🆒 Download dists
+    #   uses: actions/download-artifact@v3
+    #   with:
+    #     name: some-artefacts
+    #     path: <language>/some-artefacts
+    - name: 📦 Publish
+    # TODO: run: or uses: something depending on the languges
+  docs:
+    name: <Language> <language-emojis> Docs 📄
+    needs: [release, publish]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: <language-version>
+    - name: 📄 Docs
+      run: |
+        export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
+        # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-<language>'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-<language>'
 ```
 # The meta-processes: `github-<metaprocess>.yaml`
 ## [`github-context.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-context.yaml)
+Wraps echoing the [github context](https://docs.github.com/en/actions/learn-github-actions/contexts)
 ## [`github-pages.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-pages.yaml)
+Unambiguously merges from some `gh-pages-*` branch into the `gh-pages` branch, with the assumed expectation that the `gh-pages-*` branch will be a `gh-pages-<language>` branch that only contains anything in a `<language>` subdirectory, and so only merge on top of its own previous merges.

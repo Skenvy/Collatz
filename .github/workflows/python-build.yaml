@@ -1,4 +1,4 @@
-name: Python 🐍🐍🐍 CD 🦂 Build 🧱 Release 🚰 and Publish 📦
+name: Python 🐍🐍🐍 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
 on:
   push:
     branches:
@@ -22,7 +22,7 @@ jobs:
     name: GitHub 🐱‍👤 Context 📑
     uses: ./.github/workflows/github-context.yaml
   test:
-    name: Python 🐍🐍🐍 CI 🦂
+    name: Python 🐍🐍🐍 Test 🦂
     uses: ./.github/workflows/python-test.yaml
   workflow-conditions:
     name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
@@ -56,11 +56,9 @@ jobs:
       with:
         python-version: '3.10'
     - name: 🧱 Install build dependencies
-      run: |
-        make venv
+      run: make venv
     - name: 🎡 Build wheel and source
-      run: |
-        make build
+      run: make build
     - name: 🆙 Upload dists
       uses: actions/upload-artifact@v3
       with:

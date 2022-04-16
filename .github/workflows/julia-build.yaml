@@ -1,19 +1,12 @@
 name: Julia 🔴🟢🟣 Test 🦂 Release 🚰 and Register 📦
 on:
   push:
-    branches:    
-    # github.event.ref == refs/heads/main
+    branches:
     - 'main'
     paths:
-    # contains(github.event.commits[][modified], 'julia/Project.toml')
-    # ^ although it would be easy to git diff between the before and after commits on the event
-    # it appears the above "commits[][modified]"" syntax doesn't actually work ~ causing a
-    # "The workflow is not valid." ... "Unexpected symbol: ']'", and 'if' can only use contexts
-    # https://github.blog/changelog/2019-10-16-changes-in-github-actions-push-event-payload/
-    - 'julia/Project.toml'
-    # The project toml contains _more_ than _just_ the version, but updating it would reflect
-    # a logical update to the project which semantically _should_ include a version update.
-  workflow_dispatch: # manual, rather than tag triggering
+    - 'julia/**'
+    - '.github/workflows/julia-*'
+  workflow_dispatch:
 defaults:
   run:
     shell: bash
@@ -25,11 +18,32 @@ jobs:
   test:
     name: Julia 🔴🟢🟣 Test 🦂
     uses: ./.github/workflows/julia-test.yaml
-  # It seems that the typical "build" step is not
-  # part of uploading a package in Julia.
+  workflow-conditions:
+    name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
+    runs-on: ubuntu-latest
+    outputs:
+      version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Check if version files changed
+      id: version-file-check
+      # The project toml contains _more_ than _just_ the version, but updating it would reflect
+      # a logical update to the project which semantically _should_ include a version update.
+      run: |
+        export VERSION_FILE="julia/Project.toml"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+    - name: Notify of conditions
+      run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
+  # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
+  # Which will yield the condition check "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}"
+  # It seems that the typical "build" step is not part of uploading a package in Julia.
   release-and-register:
     name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
-    needs: [test]
+    needs: [test, workflow-conditions]
+    if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}
     runs-on: ubuntu-latest
     outputs:
       new_version: ${{ steps.release_step.outputs.new_version }}
@@ -64,7 +78,7 @@ jobs:
         # DOCS # <<<
   docs:
     name: Julia 🔴🟢🟣 Docs 📄
-    needs: [test, release-and-register]
+    needs: [release-and-register]
     # Couldn't find whether an unset value becomes null or empty. Be safe. Stay hydrated.
     if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != '' }}
     runs-on: ubuntu-latest
