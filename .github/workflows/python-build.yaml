@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/github-context.yaml
   test:
     name: Python 🐍🐍🐍 CI 🦂
-    uses: ./.github/workflows/python-ci.yaml
+    uses: ./.github/workflows/python-test.yaml
   build:
     name: Python 🐍🐍🐍 Build 🧱
     needs: [test]
