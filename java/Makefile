@@ -1,14 +1,19 @@
-.PHONY: clean deps test build
+.PHONY: clean docs test build
 SHELL:=/bin/bash
 
 clean:
-	echo clean
+	mvn clean
 
-deps: clean
-	echo deps
+docs:
+	mvn site
 
-test: clean
-	echo test
+# the clean phase can be included in a single invocation
+test:
+	mvn clean test
 
-build: test
-	echo build
+# package > test in mvn phases, so no need for test to be a prerequisite
+build:
+	mvn clean package
+
+run:
+	java -cp target/Collatz-1.0-SNAPSHOT.jar org.skenvy.collatz.App
