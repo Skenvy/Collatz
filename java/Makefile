@@ -15,5 +15,9 @@ test:
 build:
 	mvn clean package
 
+# Something like the actual java invocation; (for the default gen'd)
+# java -cp target/Collatz-1.0-SNAPSHOT.jar org.skenvy.collatz.App
+# would be usable if it could discover the jar by name. Instead use
+# https://www.mojohaus.org/exec-maven-plugin/java-mojo.html
 run:
-	java -cp target/Collatz-1.0-SNAPSHOT.jar org.skenvy.collatz.App
+	mvn clean compile exec:java -Dexec.mainClass="org.skenvy.collatz.Collatz"
