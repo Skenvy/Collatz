@@ -1,5 +1,5 @@
 # Devlog
-Java is obviously a pretty mature language, which unfortunately means there's a bit of an oversaturation of content. These links aren't in the order that they are inherently relevant to deciding how to choose which jdk version or release. They try to be a mix of "how to java" and "how to maven".
+Java is obviously a pretty mature language, which unfortunately means there's a bit of an oversaturation of content. These links aren't in the order that they are inherently relevant to deciding how to choose which jdk version or release. They try to be a mix of "how to java" and "how to maven", to coalesce the best way of actually publishing a java project onto maven central. For such a ubiquitous language that's impossible to not find guides on how to _use_ it, because the language, the primary tool for deployment, and the hosting of packages, are all managed by distinct entities, it is surprisingly unintuitive and anti-cohesive an experienve compared to something like python.
 * [OpenJDK](https://openjdk.java.net/) | [Sonatype publishing](https://central.sonatype.org/publish/publish-guide/) | 
 * [gh-actions: build and test](https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven) | [gh-actions: publishing with mvn](https://docs.github.com/en/actions/publishing-packages/publishing-java-packages-with-maven) | [gh-packages:mvn](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry) |
 * [gh-actions: setup-java action](https://github.com/marketplace/actions/setup-java-jdk) | [vs-code:java](https://code.visualstudio.com/docs/java/java-tutorial) |
@@ -10,3 +10,10 @@ Although I'm trying to keep consistently versioned installations across both my 
 mvn archetype:generate -DgroupId=org.skenvy.collatz -DartifactId=Collatz -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false -e
 ```
 Which will have created a `~/java/Collatz/` folder, but we want to bring that down one (after the above created the pom using that artifact ID), so we'll just `mv Collatz/* .` and ` rmdir Collatz/`.  
+
+It turns out though that to [set up a project on sonatype](https://central.sonatype.org/publish/publish-guide/#introduction) to host the repository that gets synced with [maven central](https://mvnrepository.com/repos/central), the java-esque style of naming a project/package in reverse DNS order is strongly enforced, so we'll have to immediately recreate the project to [follow these groupID naming requirements](https://central.sonatype.org/publish/requirements/coordinates/) which suggests for instance naming the groupID according to the hosting platform along the lines of `io.github.myusername`.
+```
+mvn archetype:generate -DgroupId=io.github.skenvy -DartifactId=Collatz -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false -e
+```
+To acquire the rights to use the `io.github.myusername`-eqsue groupID on sonatype, there's also the additional required step, after having made a ticket to request the registration, to;
+* _if you want to use io.github.myusername you must create the public repository OSSRH-TICKETNUMBER like this github.com/myusername/OSSRH-TICKETNUMBER_

@@ -1,4 +1,4 @@
-package org.skenvy.collatz;
+package io.github.skenvy;
 
 /**
  * Hello world!

@@ -31,8 +31,6 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-    - name: 🧱 Install build dependencies
-      run: make deps
     - name: 🦂 Test
       run: make test
   full-test:
@@ -57,7 +55,6 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-    # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
       run: make test
     # TODO: run: or uses: something depending on the languges

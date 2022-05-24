@@ -31,7 +31,7 @@ jobs:
     - name: Check if version files changed
       id: version-file-check
       run: |
-        export VERSION_FILE="java/<version-file>"
+        export VERSION_FILE="java/pom.xml"
         [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
     - name: Notify of conditions
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
@@ -51,8 +51,6 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-    - name: 🧱 Install build dependencies
-      run: make deps
     # Some step that uses `make build`
     # - name: 🆙 Upload dists
     #   uses: actions/upload-artifact@v3

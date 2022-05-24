@@ -20,4 +20,4 @@ build:
 # would be usable if it could discover the jar by name. Instead use
 # https://www.mojohaus.org/exec-maven-plugin/java-mojo.html
 run:
-	mvn clean compile exec:java -Dexec.mainClass="org.skenvy.collatz.Collatz"
+	mvn clean compile exec:java -Dexec.mainClass="io.github.skenvy.Collatz"
