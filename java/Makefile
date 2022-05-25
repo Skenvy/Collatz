@@ -11,9 +11,15 @@ docs:
 test:
 	mvn clean test
 
+test_noninteractive:
+	mvn -B -U clean test
+
 # package > test in mvn phases, so no need for test to be a prerequisite
 build:
 	mvn clean package
+
+build_noninteractive:
+	mvn -B -U clean package
 
 # Something like the actual java invocation; (for the default gen'd)
 # java -cp target/Collatz-1.0-SNAPSHOT.jar org.skenvy.collatz.App

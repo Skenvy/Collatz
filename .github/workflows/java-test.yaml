@@ -31,8 +31,10 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
+        architecture: x64
+        cache: maven
     - name: 🦂 Test
-      run: make test
+      run: make test_noninteractive
   full-test:
     name: Java ☕🦆🌞 Full Test 🦂
     if: >- 
@@ -43,8 +45,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['1', '2', '3']
-        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe.
+        java-distribution: ['adopt']
+        java-version: ['11', '13']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         arch: [x64]
     steps:
     - name: 🏁 Checkout
@@ -53,11 +56,12 @@ jobs:
     - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
       uses: actions/setup-java@v3
       with:
-        distribution: 'adopt'
-        java-version: '11'
+        distribution: ${{ matrix.java-distribution }}
+        java-version: ${{ matrix.java-version }}
+        architecture: ${{ matrix.arch }}
+        cache: maven
     - name: 🦂 Test
-      run: make test
-    # TODO: run: or uses: something depending on the languges
+      run: make test_noninteractive
   # Docs step is optional depending on language
   # docs:
   #   name: Java ☕🦆🌞 Docs 📄 Quick Test 🦂
@@ -71,5 +75,7 @@ jobs:
   #     with:
   #       distribution: 'adopt'
   #       java-version: '11'
+  #       architecture: ${{ matrix.arch }}
+  #       cache: maven
   #   - name: 📄 Docs
   #     run: make docs

@@ -51,13 +51,16 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-    # Some step that uses `make build`
-    # - name: 🆙 Upload dists
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: some-artefacts
-    #     path: java/some-artefacts/
-    #     if-no-files-found: error
+        architecture: x64
+        cache: maven
+    - name: 🏺 Build jar and source
+      run: make build_noninteractive
+    - name: 🆙 Upload jar
+      uses: actions/upload-artifact@v3
+      with:
+        name: Package
+        path: java/target/*.jar
+        if-no-files-found: error
   release:
     name: Java ☕🦆🌞 Release 🚰
     needs: [build]
@@ -65,56 +68,58 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@v3
-    #   with:
-    #     name: some-artefacts
-    #     path: java/some-artefacts
-    - name: 🚰 Release
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        export VER=$(some-version-obtaining-call)
-        gh release create java-v$VER --generate-notes -t "Java: Version $VER"
-  publish:
-    name: Java ☕🦆🌞 Publish 📦
-    needs: [release]
-    runs-on: ubuntu-latest
-    steps:
-    # Although the dists are built uses checkout to satisfy refs/tags existence
-    # which were created by the release, prior to uploading to pypi.
-    - name: 🏁 Checkout
-      uses: actions/checkout@v3
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@v3
-    #   with:
-    #     name: some-artefacts
-    #     path: java/some-artefacts
-    - name: 📦 Publish
-      run: make build
-    # TODO: run: or uses: something depending on the languges
-  docs:
-    name: Java ☕🦆🌞 Docs 📄
-    needs: [release, publish]
-    runs-on: ubuntu-latest
-    steps:
-    - name: 🏁 Checkout
-      uses: actions/checkout@v3
-    # https://github.com/actions/setup-java
-    - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@v3
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@v3
       with:
-        distribution: 'adopt'
-        java-version: '11'
-    - name: 📄 Docs
-      run: |
-        export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
-        # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-java'
+        name: Package
+        path: java/target
+    - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  docs-merge:
-    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
-    needs: [docs]
-    uses: ./.github/workflows/github-pages.yaml
-    with:
-      merge_from: 'gh-pages-java'
+      run: |
+        export VER=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout)
+        gh release create java-v$VER --generate-notes -t "Java: Version $VER"
+  # publish:
+  #   name: Java ☕🦆🌞 Publish 📦
+  #   needs: [release]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   # Although the dists are built uses checkout to satisfy refs/tags existence
+  #   # which were created by the release, prior to uploading to pypi.
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@v3
+  #   # - name: 🆒 Download dists
+  #   #   uses: actions/download-artifact@v3
+  #   #   with:
+  #   #     name: some-artefacts
+  #   #     path: java/some-artefacts
+  #   - name: 📦 Publish
+  #     run: make build_noninteractive
+  #   # TODO: run: or uses: something depending on the languges
+  # docs:
+  #   name: Java ☕🦆🌞 Docs 📄
+  #   needs: [release, publish]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@v3
+  #   # https://github.com/actions/setup-java
+  #   - name: ☕🦆🌞 Set up Java
+  #     uses: actions/setup-java@v3
+  #     with:
+  #       distribution: 'adopt'
+  #       java-version: '11'
+  #       architecture: x64
+  #       cache: maven
+  #   - name: 📄 Docs
+  #     run: |
+  #       export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
+  #       # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-java'
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # docs-merge:
+  #   name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+  #   needs: [docs]
+  #   uses: ./.github/workflows/github-pages.yaml
+  #   with:
+  #     merge_from: 'gh-pages-java'
