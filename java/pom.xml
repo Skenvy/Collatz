@@ -9,8 +9,30 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>Collatz</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <description>Functions related to the Collatz/Syracuse/3N+1 problem.</description>
+  <url>https://github.com/Skenvy/Collatz/tree/main/java</url>
+
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Nathan Levett</name>
+      <email>nathan.a.z.levett@gmail.com</email>
+      <organization>Skenvy</organization>
+      <organizationUrl>http://github.com/Skenvy</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/Skenvy/Collatz.git</connection>
+    <developerConnection>scm:git:ssh://github.com:Skenvy/Collatz.git</developerConnection>
+    <url>http://github.com/Skenvy/Collatz/tree/master</url>
+  </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

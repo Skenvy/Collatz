@@ -18,4 +18,6 @@ mvn archetype:generate -DgroupId=io.github.skenvy -DartifactId=Collatz -Darchety
 To acquire the rights to use the `io.github.myusername`-eqsue groupID on sonatype, there's also the additional required step, after having made a ticket to request the registration, to;
 * _if you want to use io.github.myusername you must create the public repository OSSRH-TICKETNUMBER like this github.com/myusername/OSSRH-TICKETNUMBER_
 
-I've created [the ticket](https://issues.sonatype.org/browse/OSSRH-81108), but the [Bot Central-OSSRH](https://issues.sonatype.org/secure/ViewProfile.jspa?name=central-ossrh) hasn't yet automatically commented requesting the existence of `github.com/myusername/OSSRH-TICKETNUMBER` yet, so I'll just got create it anyway I guess.
+I've created [the ticket](https://issues.sonatype.org/browse/OSSRH-81108), but the [Bot Central-OSSRH](https://issues.sonatype.org/secure/ViewProfile.jspa?name=central-ossrh) hasn't yet automatically commented requesting the existence of `github.com/myusername/OSSRH-TICKETNUMBER` yet, so I'll just go create it anyway I guess.
+
+A day later, the ticket has been sorted out, so we can start addressing the  additional [publishing requirements](https://central.sonatype.org/publish/requirements/). 
