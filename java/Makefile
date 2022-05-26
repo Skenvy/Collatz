@@ -32,4 +32,4 @@ deploy_noninteractive_ossrh:
 	mvn -B -U deploy -P deploy-ossrh,release,gpg
 
 deploy_noninteractive_github:
-	mvn -B -U deploy -P deploy-github,release,gpg
+	mvn -B -U deploy -P deploy-github,release,gpg -X
