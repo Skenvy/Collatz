@@ -1,4 +1,4 @@
-.PHONY: clean docs test build
+.PHONY: clean docs test test_noninteractive build build_noninteractive run
 SHELL:=/bin/bash
 
 clean:
@@ -27,3 +27,9 @@ build_noninteractive:
 # https://www.mojohaus.org/exec-maven-plugin/java-mojo.html
 run:
 	mvn clean compile exec:java -Dexec.mainClass="io.github.skenvy.Collatz"
+
+deploy_noninteractive_ossrh:
+	mvn -B -U deploy -P deploy-ossrh,release,gpg
+
+deploy_noninteractive_github:
+	mvn -B -U deploy -P deploy-github,release,gpg

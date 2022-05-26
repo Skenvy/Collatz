@@ -79,23 +79,39 @@ jobs:
       run: |
         export VER=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout)
         gh release create java-v$VER --generate-notes -t "Java: Version $VER"
-  # publish:
-  #   name: Java ☕🦆🌞 Publish 📦
-  #   needs: [release]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   # Although the dists are built uses checkout to satisfy refs/tags existence
-  #   # which were created by the release, prior to uploading to pypi.
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@v3
-  #   # - name: 🆒 Download dists
-  #   #   uses: actions/download-artifact@v3
-  #   #   with:
-  #   #     name: some-artefacts
-  #   #     path: java/some-artefacts
-  #   - name: 📦 Publish
-  #     run: make build_noninteractive
-  #   # TODO: run: or uses: something depending on the languges
+  publish:
+    name: Java ☕🦆🌞 Publish 📦
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: ☕🦆🌞 Set up Java; for publishing to Maven Central Repository
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        server-id: ossrh
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
+        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+        gpg-passphrase: MAVEN_GPG_PASSPHRASE
+    - name: 📦 Publish to the Maven Central Repository
+      run: make deploy_noninteractive_ossrh
+      env:
+        MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+    - name: ☕🦆🌞 Set up Java; for publishing to GitHub Packages
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        server-id: github
+    - name: 📦 Publish to GitHub Packages
+      run: make deploy_noninteractive_github
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # docs:
   #   name: Java ☕🦆🌞 Docs 📄
   #   needs: [release, publish]
