@@ -6,7 +6,7 @@
 
   <groupId>io.github.skenvy</groupId>
   <artifactId>Collatz</artifactId>
-  <version>0.2.0--SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
 
   <name>Collatz</name>
   <description>Functions related to the Collatz/Syracuse/3N+1 problem.</description>
@@ -120,8 +120,14 @@
       <properties>
         <repo-id>ossrh</repo-id>
         <repo-name>Central Repository OSSRH</repo-name>
-        <repo-url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</repo-url>
+        <repo-url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</repo-url>
       </properties>
+      <distributionManagement>
+        <snapshotRepository>
+          <id>ossrh</id>
+          <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+      </distributionManagement>
     </profile>
     <profile>
       <id>gpg</id>
