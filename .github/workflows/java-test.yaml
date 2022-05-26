@@ -1,0 +1,81 @@
+name: Java ☕🦆🌞 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - 'java/**'
+    - '.github/workflows/java-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'java/**'
+    - '.github/workflows/java-*'
+  workflow_call:
+defaults:
+  run:
+    shell: bash
+    working-directory: java
+jobs:
+  quick-test:
+    name: Java ☕🦆🌞 Quick Test 🦂
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    # https://github.com/actions/setup-java
+    - name: ☕🦆🌞 Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        architecture: x64
+        cache: maven
+    - name: 🦂 Test
+      run: make test_noninteractive
+  full-test:
+    name: Java ☕🦆🌞 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        java-distribution: ['adopt']
+        java-version: ['11', '13']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        arch: [x64]
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    # https://github.com/actions/setup-java
+    - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
+      uses: actions/setup-java@v3
+      with:
+        distribution: ${{ matrix.java-distribution }}
+        java-version: ${{ matrix.java-version }}
+        architecture: ${{ matrix.arch }}
+        cache: maven
+    - name: 🦂 Test
+      run: make test_noninteractive
+  # Docs step is optional depending on language
+  # docs:
+  #   name: Java ☕🦆🌞 Docs 📄 Quick Test 🦂
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@v3
+  #   # https://github.com/actions/setup-java
+  #   - name: ☕🦆🌞 Set up Java
+  #     uses: actions/setup-java@v3
+  #     with:
+  #       distribution: 'adopt'
+  #       java-version: '11'
+  #       architecture: ${{ matrix.arch }}
+  #       cache: maven
+  #   - name: 📄 Docs
+  #     run: make docs
