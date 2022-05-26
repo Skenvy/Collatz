@@ -31,3 +31,5 @@ Now we'll want to set up the release and deployment of the built JAR to OSSRH an
 With the key sent to the 3 servers the central repository uses, we can `gpg --armor --export-secret-keys F398EA6448A7708EAABBB0DEC203EA8449D06C1B > private.gpg`, and upload the `MAVEN_GPG_PASSPHRASE`, `MAVEN_GPG_PRIVATE_KEY` (the exported key from the last step), `OSSRH_USERNAME`, and `OSSRH_TOKEN` (account password) to github secrets.
 
 Frustratingly, there's a few pieces of this setup that aren't in either the GitHub example, or in any sonatype example, and if you encounter any of a handful of bugs, the only places answers appear to be readily available without digging deeper are in several personal blogs, like the options and profile wrapping of gpg in the pom, and the gpg key phrasing and passing to the github actions. Although that could obviously be gleaned from the setup-java action, it's frustrating that where other github quickstarts to deployment generally work much more out of the box, the maven deployment feels only half baked.
+
+Snapshots on OSSRH are uploaded to [here](https://s01.oss.sonatype.org/content/repositories/snapshots/io/github/skenvy/Collatz/).
