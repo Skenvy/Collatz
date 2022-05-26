@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - 'main'
+    - 'java'
     paths:
     - 'java/**'
     - '.github/workflows/java-*'
@@ -76,9 +77,13 @@ jobs:
     - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        export VER=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout)
-        gh release create java-v$VER --generate-notes -t "Java: Version $VER"
+      run: >-
+        export VER=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout) &&
+        gh release create
+        java-v$VER
+        "$(find java/target | grep \\.jar)#JAR"
+        --generate-notes
+        -t "Java: Version $VER"
   publish:
     name: Java ☕🦆🌞 Publish 📦
     needs: [release]
