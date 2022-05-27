@@ -32,4 +32,17 @@ With the key sent to the 3 servers the central repository uses, we can `gpg --ar
 
 Frustratingly, there's a few pieces of this setup that aren't in either the GitHub example, or in any sonatype example, and if you encounter any of a handful of bugs, the only places answers appear to be readily available without digging deeper are in several personal blogs, like the options and profile wrapping of gpg in the pom, and the gpg key phrasing and passing to the github actions. Although that could obviously be gleaned from the setup-java action, it's frustrating that where other github quickstarts to deployment generally work much more out of the box, the maven deployment feels only half baked.
 
-Snapshots on OSSRH are uploaded to [here](https://s01.oss.sonatype.org/content/repositories/snapshots/io/github/skenvy/Collatz/).
+Snapshots on OSSRH are uploaded to [here](https://s01.oss.sonatype.org/content/repositories/snapshots/io/github/skenvy/collatz/), and releases [here](https://s01.oss.sonatype.org/content/repositories/releases/io/github/skenvy/collatz/).
+
+By this stage, I've pushed a `0.1.0` version to ossrh and github, but [nexus-search;collatz](https://s01.oss.sonatype.org/#nexus-search;quick~collatz) shows only the snapshots. And visiting [the ossrh upload destination](https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/io/github/skenvy/collatz) yields;
+```
+<nexus-error>
+  <errors>
+    <error>
+      <id>*</id>
+      <msg>Staging of Repository within profile ID='{some profile ID}' is not yet started!</msg>
+    </error>
+  </errors>
+</nexus-error>
+```
+It took several attempts of logging in and logging out amid error messages every time I clicked anything on nexus showing 5xx or 4xx errors (perhaps from slow internet), but eventually the [Staging Repositories](https://s01.oss.sonatype.org/#stagingRepositories) showed more than a blank screen. It shows my automatically generated staging repository and the content within that staging repository shows the `0.1.0` version uploaded last night. So now we need to have a look at [sonatype releasing](https://central.sonatype.org/publish/release/). It appears that we must manually "close" the staging area, which will trigger a test against its contents. If everything was done right up to this point, all the tests should pass, and option to "Release" will be available. I'm not sure how long the "SBOM report" will be available for, so this link but expire, but the "closing" stage emailed me [this report](https://sbom.lift.sonatype.com/report/T1-a0368c8f29fdaa555824-9040f98e50aa54-1653640676-298e7ba4b7434494879cb1fb6c8f8dd1). With that done, we've finally deployed the packaged jar to the sonatype release page [here](https://s01.oss.sonatype.org/content/repositories/releases/io/github/skenvy/collatz/), which will eventually sync with the maven central repository.
