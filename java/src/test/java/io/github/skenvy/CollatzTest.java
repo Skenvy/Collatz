@@ -1,5 +1,6 @@
 package io.github.skenvy;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -53,39 +54,58 @@ public class CollatzTest
         assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_A.getLabel()));
     }
 
+    private static long[] wrapReverseFunctionInner(BigInteger[] revs){
+        long[] wraps = new long[revs.length];
+        for(int k = 0; k < wraps.length; k++){
+            wraps[k] = revs[k].longValue();
+        }
+        return wraps;
+    }
+
+    private static long[] wrapReverseFunction(long n){
+        BigInteger[] revs = Collatz.reverseFunction(BigInteger.valueOf(n));
+        return wrapReverseFunctionInner(revs);
+    }
+
+    private static long[] wrapReverseFunction(long n, long P, long a, long b){
+        BigInteger[] revs = Collatz.reverseFunction(BigInteger.valueOf(n), BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b));
+        return wrapReverseFunctionInner(revs);
+    }
+
     @Test
     public void testReverseFunction(){
-        // # Default (P,a,b); 0 trap [as b is not a multiple of a]
-        // assert collatz.reverse_function(0) == [0]
-        // # Default (P,a,b); 1 cycle; positives
-        // assert collatz.reverse_function(1) == [2]
-        // assert collatz.reverse_function(4) == [1, 8]
-        // assert collatz.reverse_function(2) == [4]
-        // # Default (P,a,b); -1 cycle; negatives
-        // assert collatz.reverse_function(-1) == [-2]
-        // assert collatz.reverse_function(-2) == [-4, -1]
-        // # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
-        // assert collatz.reverse_function(1, P=5, a=2, b=3) == [-1, 5]
-        // assert collatz.reverse_function(2, P=5, a=2, b=3) == [10]
-        // assert collatz.reverse_function(3, P=5, a=2, b=3) == [15]  # also tests !0
-        // assert collatz.reverse_function(4, P=5, a=2, b=3) == [20]
-        // assert collatz.reverse_function(5, P=5, a=2, b=3) == [1, 25]
-        // # Test negative P, a and b. %, used in the function, is "floor" in python
-        // # rather than the more reasonable euclidean, but we only use it's (0 mod P)
-        // # conjugacy class to determine functionality, so the flooring for negative P
-        // # doesn't cause any issue.
-        // assert collatz.reverse_function(1, P=-3, a=-2, b=-5) == [-3]  # != [-3, -3]
-        // assert collatz.reverse_function(2, P=-3, a=-2, b=-5) == [-6]
-        // assert collatz.reverse_function(3, P=-3, a=-2, b=-5) == [-9, -4]
-        // # Set P and a to 0 to assert on __assert_sane_parameterisation
-        // with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
-        //     collatz.reverse_function(1, P=0, a=2, b=3)
-        // with pytest.raises(AssertionError, match=_REGEX_ERR_P_IS_ZERO):
-        //     collatz.reverse_function(1, P=0, a=0, b=3)
-        // with pytest.raises(AssertionError, match=_REGEX_ERR_A_IS_ZERO):
-        //     collatz.reverse_function(1, P=1, a=0, b=3)
-        // # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
-        // assert collatz.reverse_function(0, P=17, a=2, b=-6) == [0, 3]
-        // assert collatz.reverse_function(0, P=17, a=2, b=102) == [0]
+        // Default (P,a,b); 0 trap [as b is not a multiple of a]
+        assertArrayEquals(wrapReverseFunction(0), new long[]{0});
+        // Default (P,a,b); 1 cycle; positives
+        assertArrayEquals(wrapReverseFunction(1), new long[]{2});
+        assertArrayEquals(wrapReverseFunction(4), new long[]{1, 8});
+        assertArrayEquals(wrapReverseFunction(2), new long[]{4});
+        // Default (P,a,b); -1 cycle; negatives
+        assertArrayEquals(wrapReverseFunction(-1), new long[]{-2});
+        assertArrayEquals(wrapReverseFunction(-2), new long[]{-4, -1});
+        // Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+        assertArrayEquals(wrapReverseFunction(1, 5, 2, 3), new long[]{-1, 5});
+        assertArrayEquals(wrapReverseFunction(2, 5, 2, 3), new long[]{10});
+        assertArrayEquals(wrapReverseFunction(3, 5, 2, 3), new long[]{15}); // also tests !0
+        assertArrayEquals(wrapReverseFunction(4, 5, 2, 3), new long[]{20});
+        assertArrayEquals(wrapReverseFunction(5, 5, 2, 3), new long[]{1, 25});
+        // Test negative P, a and b. %, used in the function, is "floor" in python
+        // rather than the more reasonable euclidean, but we only use it's (0 mod P)
+        // conjugacy class to determine functionality, so the flooring for negative P
+        // doesn't cause any issue.
+        assertArrayEquals(wrapReverseFunction(1, -3, -2, -5), new long[]{-3}); // != [-3, -3]
+        assertArrayEquals(wrapReverseFunction(2, -3, -2, -5), new long[]{-6});
+        assertArrayEquals(wrapReverseFunction(3, -3, -2, -5), new long[]{-9, -4});
+        // Set P and a to 0 to assert on __assert_sane_parameterisation
+        Exception exception;
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapReverseFunction(1, 0, 2, 3);});
+        assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_P.getLabel()));
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapReverseFunction(1, 0, 0, 3);});
+        assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_P.getLabel()));
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapReverseFunction(1, 1, 0, 3);});
+        assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_A.getLabel()));
+        // If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+        assertArrayEquals(wrapReverseFunction(0, 17, 2, -6), new long[]{0, 3});
+        assertArrayEquals(wrapReverseFunction(0, 17, 2, 102), new long[]{0});
     }
 }
