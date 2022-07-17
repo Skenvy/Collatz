@@ -336,4 +336,55 @@ public final class Collatz
         return hailstoneSequence(initialValue, DEFAULT_P, DEFAULT_A, DEFAULT_B, 1000, true);
     }
 
+    /**
+     * Returns the stopping time, the amount of iterations required to reach a
+     * value less than the initial value, or None if maxStoppingTime is exceeded.
+     * Alternatively, if totalStoppingTime is True, then it will instead count
+     * the amount of iterations to reach 1. If the sequence does not stop, but
+     * instead ends in a cycle, the result will be (math.inf). If (P,a,b) are such
+     * that it is possible to get stuck on zero, the result will be the negative of
+     * what would otherwise be the "total stopping time" to reach 1, where 0 is
+     * considered a "total stop" that should not occur as it does form a cycle of
+     * length 1.
+     * @param initialValue (BigInteger): The value for which to find the stopping time.
+     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a (BigInteger): Factor by which to multiply n.
+     * @param b (BigInteger): Value to add to the scaled value of n.
+     * @param maxStoppingTime (int): Maximum amount of times to iterate the function, if
+     *              the stopping time is not reached. IF the maxStoppingTime is reached,
+     *              the function will return None.
+     * @param totalStoppingTime (bool): Whether or not to execute until the "total" stopping
+     *              time (number of iterations to obtain 1) rather than the regular stopping
+     *              time (number of iterations to reach a value less than the initial value).
+     * @return
+     */
+    public static Double stoppingTime(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxStoppingTime, boolean totalStoppingTime){
+        /* The information is contained in the hailstone sequence. Although the "max~time"
+         * for hailstones is named for "total stopping" time and the "max~time" for this
+         * "stopping time" function is _not_ "total", they are handled the same way, as
+         * the default for "totalStoppingTime" for hailstones is true, but for this, is
+         * false. Thus the naming difference. */
+        HailstoneSequence hail = hailstoneSequence(initialValue, P, a, b, maxStoppingTime, totalStoppingTime);
+        // For total/regular/zero stopping time, the value is already the same as
+        // that present, for cycles we report infinity instead of the cycle length,
+        // and for max stop out of bounds, we report null instead of the max stop cap
+        switch(hail.terminalCondition) {
+            case TOTAL_STOPPING_TIME:
+                return (double) hail.terminalStatus;
+            case STOPPING_TIME:
+                return (double) hail.terminalStatus;
+            case CYCLE_LENGTH:
+                return Double.POSITIVE_INFINITY;
+            case ZERO_STOP:
+                return (double) hail.terminalStatus;
+            case MAX_STOP_OOB:
+                return null;
+            default:
+                return null;
+        }
+    }
+
+    public static Double stoppingTime(BigInteger initialValue){
+        return stoppingTime(initialValue, DEFAULT_P, DEFAULT_A, DEFAULT_B, 1000, false);
+    }
 }

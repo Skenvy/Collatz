@@ -205,11 +205,75 @@ public class CollatzTest
         assertHailstoneSequence(hail, new long[]{3, -3, 3}, Collatz._CC.CYCLE_LENGTH, 2);
         // Set P and a to 0 to assert on __assert_sane_parameterisation
         Exception exception;
-        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 0, 2, 3, 1, true);});
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 0, 2, 3, 1000, true);});
         assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_P.getLabel()));
-        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 0, 0, 3, 1, true);});
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 0, 0, 3, 1000, true);});
         assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_P.getLabel()));
-        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 1, 0, 3, 1, true);});
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 1, 0, 3, 1000, true);});
+        assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_A.getLabel()));
+    }
+
+    private static Double wrapStoppingTime(long n){
+        return Collatz.stoppingTime(BigInteger.valueOf(n));
+    }
+
+    private static Double wrapStoppingTime(long n, int maxStoppingTime, boolean totalStoppingTime){
+        return wrapStoppingTime(n, Collatz.DEFAULT_P.longValue(), Collatz.DEFAULT_A.longValue(), Collatz.DEFAULT_B.longValue(), maxStoppingTime, totalStoppingTime);
+    }
+
+    private static Double wrapStoppingTime(long n, long P, long a, long b, int maxStoppingTime, boolean totalStoppingTime){
+        return Collatz.stoppingTime(BigInteger.valueOf(n), BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b), maxStoppingTime, totalStoppingTime);
+    }
+
+    @Test
+    public void testStoppingTime(){
+        // Test 0's immediated termination.
+        assertEquals(Double.valueOf(0), wrapStoppingTime(0));
+        // The cycle containing 1 wont yield a cycle termination, as 1 is considered
+        // the "total stop" that is the special case termination.
+        assertEquals(Double.valueOf(0), wrapStoppingTime(1));
+        // Test the 3 known default parameter's cycles (ignoring [1,4,2])
+        for(BigInteger[] kc : Collatz._KNOWN_CYCLES){
+            if(!Arrays.asList(kc).contains(BigInteger.ONE)){
+                for(BigInteger c : kc){
+                    assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(c.longValue(), 100, true));
+                }
+            }
+        }
+        // Test the lead into a cycle by entering two of the cycles. -56;-5, -200;-17
+        assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(-56, 100, true));
+        assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(-200, 100, true));
+        // 1's cycle wont yield a description of it being a "cycle" as far as the
+        // hailstones are concerned, which is to be expected, so..
+        assertEquals(Double.valueOf(2), wrapStoppingTime(4, 100, true));
+        assertEquals(Double.valueOf(4), wrapStoppingTime(16, 100, true));
+        // Test the regular stopping time check.
+        assertEquals(Double.valueOf(1), wrapStoppingTime(4));
+        assertEquals(Double.valueOf(3), wrapStoppingTime(5));
+        // Test small max_total_stopping_time: (minimum internal value is one)
+        assertEquals(null, wrapStoppingTime(5, -100, true));
+        // Test the zero stop mid hailing. This wont happen with default params tho.
+        assertEquals(Double.valueOf(-1), wrapStoppingTime(3, 2, 3, -9, 100, false));
+        // Lastly, while the function wont let you use a P value of 0, 1 and -1 are
+        // still allowed, although they will generate immediate 1 or 2 length cycles
+        // respectively, so confirm the behaviour of each of these stopping times.
+        assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(3, 1, 3, 1, 100, false));
+        assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(3, -1, 3, 1, 100, false));
+        // One last one for the fun of it..
+        assertEquals(Double.valueOf(111), wrapStoppingTime(27, 1000, true));
+        // # And for a bit more fun, common trajectories on
+        for(int k = 0; k < 5; k++){
+            BigInteger input = BigInteger.valueOf(27).add(BigInteger.valueOf(k).multiply(new BigInteger("576460752303423488")));
+            Double stop = Collatz.stoppingTime(input, Collatz.DEFAULT_P, Collatz.DEFAULT_A, Collatz.DEFAULT_B, 1000, false);
+            assertEquals(Double.valueOf(96), stop);
+        }
+        // Set P and a to 0 to assert on __assert_sane_parameterisation
+        Exception exception;
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapStoppingTime(1, 0, 2, 3, 1000, false);});
+        assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_P.getLabel()));
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapStoppingTime(1, 0, 0, 3, 1000, false);});
+        assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_P.getLabel()));
+        exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapStoppingTime(1, 1, 0, 3, 1000, false);});
         assertTrue(exception.getMessage().contains(Collatz._ErrMsg.SANE_PARAMS_A.getLabel()));
     }
 }
