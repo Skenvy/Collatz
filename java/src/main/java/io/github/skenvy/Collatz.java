@@ -244,7 +244,7 @@ public final class Collatz
                 terminalStatus = 0;
             } else {
                 // Otherwise prepare the expected hailstone length
-                values = new BigInteger[maxTotalStoppingTime];
+                values = new BigInteger[maxTotalStoppingTime+1];
                 values[0] = initialValue;
             }
         }
@@ -283,7 +283,7 @@ public final class Collatz
         // Otherwise, run through the hailstones.
         BigInteger _next;
         int _finalK = 0;
-        for(int k = 1; k < _maxTotalStoppingTime; k++){
+        for(int k = 1; k <= _maxTotalStoppingTime; k++){
              _next = function(hailstones.values[k-1], P, a, b);
             // Check if the next hailstone is either the stopping time, total
             // stopping time, the same as the initial value, or stuck at zero.
@@ -294,7 +294,7 @@ public final class Collatz
                 } else {
                     hailstones.terminalCondition = _CC.STOPPING_TIME;
                 }
-                hailstones.terminalStatus = k-1;
+                hailstones.terminalStatus = k;
                 _finalK = k;
                 break;
             }
@@ -315,7 +315,7 @@ public final class Collatz
             if(_next.equals(BigInteger.ZERO)){
                 hailstones.values[k] = BigInteger.ZERO;
                 hailstones.terminalCondition = _CC.ZERO_STOP;
-                hailstones.terminalStatus = k-1;
+                hailstones.terminalStatus = -k;
                 _finalK = k;
                 break;
             }
