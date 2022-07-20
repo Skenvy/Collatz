@@ -298,24 +298,27 @@ public class CollatzTest
 
     @Test
     public void testTreeGraph(){
-        // C = _CC.CYCLE_INIT.value  # Shorthand the cycle terminus
-        // D = {}  # Just to colourise the below in the editor..
+        // ":D" for terminal, "C:" for cyclic end
         TreeGraph expected;
-        // # The default zero trap
-        expected = new TreeGraph(wrapTerminalTreeGraphNode(0));
+        // The default zero trap
+        /*{0:D}*/ expected = new TreeGraph(wrapTerminalTreeGraphNode(0));
         assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(0), 0));
-        expected = new TreeGraph(wrapCyclicStartTreeGraphNode(0, wrapCyclicTerminalTreeGraphNode(0), null));
+        /*{0:{C:0}}*/ expected = new TreeGraph(wrapCyclicStartTreeGraphNode(0, wrapCyclicTerminalTreeGraphNode(0), null));
         assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(0), 1));
         assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(0), 2));
-        
-        // # The roundings of the 1 cycle.
-        // assert collatz.tree_graph(1, 1) == {1:{2:D}}
-        // assert collatz.tree_graph(1, 0) == {1:D}
-        // assert collatz.tree_graph(1, 1) == {1:{2:D}}
-        // assert collatz.tree_graph(1, 2) == {1:{2:{4:D}}}
-        // assert collatz.tree_graph(1, 3) == {1:{2:{4:{C:1,8:D}}}}
-        // assert collatz.tree_graph(2, 3) == {2:{4:{1:{C:2},8:{16:D}}}}
-        // assert collatz.tree_graph(4, 3) == {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
+        // The roundings of the 1 cycle.
+        /*{1:D}*/ expected = new TreeGraph(wrapTerminalTreeGraphNode(1));
+        assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(1), 0));
+        /*{1:{2:D}}*/ expected = new TreeGraph(wrapGenericTreeGraphNode(1, wrapTerminalTreeGraphNode(2), null));
+        assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(1), 1));
+        /*{1:{2:{4:D}}}*/ expected = new TreeGraph(wrapGenericTreeGraphNode(1, wrapGenericTreeGraphNode(2, wrapTerminalTreeGraphNode(4), null), null));
+        assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(1), 2));
+        /*{1:{2:{4:{C:1,8:D}}}}*/ expected = new TreeGraph(wrapCyclicStartTreeGraphNode(1, wrapGenericTreeGraphNode(2, wrapGenericTreeGraphNode(4, wrapTerminalTreeGraphNode(8), wrapCyclicTerminalTreeGraphNode(1)), null), null));
+        assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(1), 3));
+        /*{2:{4:{1:{C:2},8:{16:D}}}}*/ expected = new TreeGraph(wrapCyclicStartTreeGraphNode(2, wrapGenericTreeGraphNode(4, wrapGenericTreeGraphNode(8, wrapTerminalTreeGraphNode(16), null), wrapGenericTreeGraphNode(1, wrapCyclicTerminalTreeGraphNode(2), null)), null));
+        assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(2), 3));
+        /*{4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}*/ expected = new TreeGraph(wrapCyclicStartTreeGraphNode(4, wrapGenericTreeGraphNode(8, wrapGenericTreeGraphNode(16, wrapTerminalTreeGraphNode(32), wrapTerminalTreeGraphNode(5)), null), wrapGenericTreeGraphNode(1, wrapGenericTreeGraphNode(2, wrapCyclicTerminalTreeGraphNode(4), null), null)));
+        assertEquals(expected, Collatz.treeGraph(BigInteger.valueOf(4), 3));
         // # The roundings of the -1 cycle
         // assert collatz.tree_graph(-1, 1) == {-1:{-2:D}}
         // assert collatz.tree_graph(-1, 2) == {-1:{-2:{-4:D,C:-1}}}
