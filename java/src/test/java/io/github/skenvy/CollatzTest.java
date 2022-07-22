@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import io.github.skenvy.Collatz.HailState;
+import io.github.skenvy.Collatz.SequenceState;
 import io.github.skenvy.Collatz.HailstoneSequence;
 import io.github.skenvy.Collatz.TreeGraph;
 import io.github.skenvy.Collatz.TreeGraphNode;
@@ -56,11 +56,11 @@ public class CollatzTest
         // Set P and a to 0 to assert on assertSaneParameterisation
         Exception exception;
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapFunction(1, 0, 2, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapFunction(1, 0, 0, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapFunction(1, 1, 0, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getErrorMessage()));
     }
 
     private static long[] wrapBigIntArr(BigInteger[] revs){
@@ -108,18 +108,18 @@ public class CollatzTest
         // Set P and a to 0 to assert on __assert_sane_parameterisation
         Exception exception;
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapReverseFunction(1, 0, 2, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapReverseFunction(1, 0, 0, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapReverseFunction(1, 1, 0, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getErrorMessage()));
         // If b is a multiple of a, but not of Pa, then 0 can have a reverse.
         assertArrayEquals(new long[]{0, 3}, wrapReverseFunction(0, 17, 2, -6));
         assertArrayEquals(new long[]{0}, wrapReverseFunction(0, 17, 2, 102));
     }
 
     private static HailstoneSequence wrapHailstoneSequence(long n){
-        return Collatz.hailstoneSequence(BigInteger.valueOf(n));
+        return Collatz.hailstoneSequence(BigInteger.valueOf(n), 1000);
     }
 
     private static HailstoneSequence wrapHailstoneSequence(long n, int maxTotalStoppingTime, boolean totalStoppingTime){
@@ -130,7 +130,7 @@ public class CollatzTest
         return Collatz.hailstoneSequence(BigInteger.valueOf(n), BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b), maxTotalStoppingTime, totalStoppingTime);
     }
 
-    private static void assertHailstoneSequence(HailstoneSequence hail, long[] expectedSequence, Collatz.HailState terminalCondition, long terminalStatus){
+    private static void assertHailstoneSequence(HailstoneSequence hail, long[] expectedSequence, Collatz.SequenceState terminalCondition, long terminalStatus){
         assertArrayEquals(expectedSequence, wrapBigIntArr(hail.values));
         assertEquals(terminalCondition, hail.terminalCondition);
         assertEquals(terminalStatus, hail.terminalStatus);
@@ -141,21 +141,21 @@ public class CollatzTest
         HailstoneSequence hail;
         // Test 0's immediated termination.
         hail = wrapHailstoneSequence(0);
-        assertHailstoneSequence(hail, new long[]{0}, Collatz.HailState.ZERO_STOP, 0);
+        assertHailstoneSequence(hail, new long[]{0}, Collatz.SequenceState.ZERO_STOP, 0);
         // The cycle containing 1 wont yield a cycle termination, as 1 is considered
         // the "total stop" that is the special case termination.
         hail = wrapHailstoneSequence(1);
-        assertHailstoneSequence(hail, new long[]{1}, Collatz.HailState.TOTAL_STOPPING_TIME, 0);
+        assertHailstoneSequence(hail, new long[]{1}, Collatz.SequenceState.TOTAL_STOPPING_TIME, 0);
         // Test the 3 known default parameter's cycles (ignoring [1,4,2])
         for(BigInteger[] kc : Collatz.KNOWN_CYCLES){
             if(!Arrays.asList(kc).contains(BigInteger.ONE)){
-                hail = Collatz.hailstoneSequence(kc[0]);
+                hail = Collatz.hailstoneSequence(kc[0], 1000);
                 BigInteger[] expected = new BigInteger[kc.length+1];
                 for(int k = 0; k < kc.length; k++){
                     expected[k] = kc[k];
                 }
                 expected[kc.length] = kc[0];
-                assertHailstoneSequence(hail, wrapBigIntArr(expected), Collatz.HailState.CYCLE_LENGTH, kc.length);
+                assertHailstoneSequence(hail, wrapBigIntArr(expected), Collatz.SequenceState.CYCLE_LENGTH, kc.length);
             }
         }
         // Test the lead into a cycle by entering two of the cycles; -5
@@ -169,7 +169,7 @@ public class CollatzTest
         _seq.add(seq[0]); // The rotate also acts on seq, so we add [0] instead of [1]
         long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new));
         hail = wrapHailstoneSequence(-56);
-        assertHailstoneSequence(hail, expected, Collatz.HailState.CYCLE_LENGTH, seq.length);
+        assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, seq.length);
         // Test the lead into a cycle by entering two of the cycles; -17
         seq = Collatz.KNOWN_CYCLES[3].clone();
         _seq = new ArrayList<BigInteger>();
@@ -181,39 +181,39 @@ public class CollatzTest
         _seq.add(seq[0]); // The rotate also acts on seq, so we add [0] instead of [1]
         expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new));
         hail = wrapHailstoneSequence(-200);
-        assertHailstoneSequence(hail, expected, Collatz.HailState.CYCLE_LENGTH, seq.length);
+        assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, seq.length);
         // 1's cycle wont yield a description of it being a "cycle" as far as the
         // hailstones are concerned, which is to be expected, so..
         hail = wrapHailstoneSequence(4);
-        assertHailstoneSequence(hail, new long[]{4, 2, 1}, Collatz.HailState.TOTAL_STOPPING_TIME, 2);
+        assertHailstoneSequence(hail, new long[]{4, 2, 1}, Collatz.SequenceState.TOTAL_STOPPING_TIME, 2);
         hail = wrapHailstoneSequence(16);
-        assertHailstoneSequence(hail, new long[]{16, 8, 4, 2, 1}, Collatz.HailState.TOTAL_STOPPING_TIME, 4);
+        assertHailstoneSequence(hail, new long[]{16, 8, 4, 2, 1}, Collatz.SequenceState.TOTAL_STOPPING_TIME, 4);
         // Test the regular stopping time check.
         hail = wrapHailstoneSequence(4, 1000, false);
-        assertHailstoneSequence(hail, new long[]{4, 2}, Collatz.HailState.STOPPING_TIME, 1);
+        assertHailstoneSequence(hail, new long[]{4, 2}, Collatz.SequenceState.STOPPING_TIME, 1);
         hail = wrapHailstoneSequence(5, 1000, false);
-        assertHailstoneSequence(hail, new long[]{5, 16, 8, 4}, Collatz.HailState.STOPPING_TIME, 3);
+        assertHailstoneSequence(hail, new long[]{5, 16, 8, 4}, Collatz.SequenceState.STOPPING_TIME, 3);
         // Test small max_total_stopping_time: (minimum internal value is one)
         hail = wrapHailstoneSequence(4, -100, true);
-        assertHailstoneSequence(hail, new long[]{4, 2}, Collatz.HailState.MAX_STOP_OUT_OF_BOUNDS, 1);
+        assertHailstoneSequence(hail, new long[]{4, 2}, Collatz.SequenceState.MAX_STOP_OUT_OF_BOUNDS, 1);
         // Test the zero stop mid hailing. This wont happen with default params tho.
         hail = wrapHailstoneSequence(3, 2, 3, -9, 100, true);
-        assertHailstoneSequence(hail, new long[]{3, 0}, Collatz.HailState.ZERO_STOP, -1);
+        assertHailstoneSequence(hail, new long[]{3, 0}, Collatz.SequenceState.ZERO_STOP, -1);
         // Lastly, while the function wont let you use a P value of 0, 1 and -1 are
         // still allowed, although they will generate immediate 1 or 2 length cycles
         // respectively, so confirm the behaviour of each of these hailstones.
         hail = wrapHailstoneSequence(3, 1, 3, 1, 100, true);
-        assertHailstoneSequence(hail, new long[]{3, 3}, Collatz.HailState.CYCLE_LENGTH, 1);
+        assertHailstoneSequence(hail, new long[]{3, 3}, Collatz.SequenceState.CYCLE_LENGTH, 1);
         hail = wrapHailstoneSequence(3, -1, 3, 1, 100, true);
-        assertHailstoneSequence(hail, new long[]{3, -3, 3}, Collatz.HailState.CYCLE_LENGTH, 2);
+        assertHailstoneSequence(hail, new long[]{3, -3, 3}, Collatz.SequenceState.CYCLE_LENGTH, 2);
         // Set P and a to 0 to assert on __assert_sane_parameterisation
         Exception exception;
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 0, 2, 3, 1000, true);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 0, 0, 3, 1000, true);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapHailstoneSequence(1, 1, 0, 3, 1000, true);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getErrorMessage()));
     }
 
     private static Double wrapStoppingTime(long n){
@@ -273,11 +273,11 @@ public class CollatzTest
         // Set P and a to 0 to assert on __assert_sane_parameterisation
         Exception exception;
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapStoppingTime(1, 0, 2, 3, 1000, false);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapStoppingTime(1, 0, 0, 3, 1000, false);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapStoppingTime(1, 1, 0, 3, 1000, false);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getErrorMessage()));
     }
 
     private static TreeGraph wrapTreeGraph(long nodeValue, int maxOrbitDistance, long P, long a, long b){
@@ -295,7 +295,7 @@ public class CollatzTest
      * @return
      */
     private static TreeGraphNode wrapTGN_TerminalNode(long n){
-        return new TreeGraphNode(BigInteger.valueOf(n), HailState.MAX_STOP_OUT_OF_BOUNDS, null, null, null);
+        return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.MAX_STOP_OUT_OF_BOUNDS, null, null);
     }
 
     /**
@@ -304,7 +304,7 @@ public class CollatzTest
      * @return
      */
     private static TreeGraphNode wrapTGN_CyclicTerminal(long n){
-        return new TreeGraphNode(BigInteger.valueOf(n), HailState.CYCLE_LENGTH, null, null, null);
+        return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.CYCLE_LENGTH, null, null);
     }
 
     /**
@@ -315,7 +315,7 @@ public class CollatzTest
      * @return
      */
     private static TreeGraphNode wrapTGN_CyclicStart(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode){
-        return new TreeGraphNode(BigInteger.valueOf(n), HailState.CYCLE_INIT, preNDivPNode, preANplusBNode, null);
+        return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.CYCLE_INIT, preNDivPNode, preANplusBNode);
     }
 
     /**
@@ -326,7 +326,7 @@ public class CollatzTest
      * @return
      */
     private static TreeGraphNode wrapTGN_Generic(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode){
-        return new TreeGraphNode(BigInteger.valueOf(n), null, preNDivPNode, preANplusBNode, null);
+        return new TreeGraphNode(BigInteger.valueOf(n), null, preNDivPNode, preANplusBNode);
     }
 
     @Test
@@ -395,11 +395,11 @@ public class CollatzTest
         // Set P and a to 0 to assert on __assert_sane_parameterisation
         Exception exception;
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapTreeGraph(1, 1, 0, 2, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapTreeGraph(1, 1, 0, 0, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_P.getErrorMessage()));
         exception = assertThrows(Collatz.FailedSaneParameterCheck.class, () -> {wrapTreeGraph(1, 1, 1, 0, 3);});
-        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getLabel()));
+        assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getErrorMessage()));
         // If b is a multiple of a, but not of Pa, then 0 can have a reverse.
         // {0:{C:0,3:D}}
         expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), wrapTGN_TerminalNode(3));
