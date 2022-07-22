@@ -74,7 +74,7 @@ jobs:
       with:
         distribution: 'adopt'
         java-version: '11'
-        architecture: ${{ matrix.arch }}
+        architecture: x64
         cache: maven
     - name: 📄 Docs
       run: make docs
