@@ -1,6 +1,7 @@
 package io.github.skenvy;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -239,26 +240,35 @@ public final class Collatz {
     public static final class HailstoneSequence {
 
         /** The set of values that comprise the hailstone sequence. */
-        BigInteger[] values;
+        final BigInteger[] values;
+
+        final private Function<BigInteger, Boolean> terminate;
 
         /** A terminal condition that reflects the final state of the hailstone sequencing,
          *  whether than be that it succeeded at determining the stopping time, the total
          *  stopping time, found a cycle, or got stuck on zero (or surpassed the max total). */
-        SequenceState terminalCondition = null;
+        final SequenceState terminalCondition;
 
         /** A status value that has different meanings depending on what the terminal condition
          *  was. If the sequence completed either via reaching the stopping or total stopping time,
          *  or getting stuck on zero, then this value is the stopping/terminal time. If the sequence
          *  got stuck on a cycle, then this value is the cycle length. If the sequencing passes the
          *  maximum stopping time then this is the value that was provided as that maximum. */
-        int terminalStatus = 0;
+        final int terminalStatus;
 
         /**
-         * Initialise a new Hailstone Sequence with an initial value and the maximum total stopping time.
+         * Initialise and compute a new Hailstone Sequence.
          * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
+         * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
+         * @param a (BigInteger): Factor by which to multiply n.
+         * @param b (BigInteger): Value to add to the scaled value of n.
          * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
+         * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+         *          (number of iterations to obtain 1) rather than the regular stopping time (number
+         *          of iterations to reach a value less than the initial value).
          */
-        public HailstoneSequence(BigInteger initialValue, int maxTotalStoppingTime){
+        public HailstoneSequence(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime){
+            terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
             if(initialValue.equals(BigInteger.ZERO)){
                 // 0 is always an immediate stop.
                 values = new BigInteger[]{BigInteger.ZERO};
@@ -270,9 +280,56 @@ public final class Collatz {
                 terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
                 terminalStatus = 0;
             } else {
-                // Otherwise prepare the expected hailstone length
-                values = new BigInteger[maxTotalStoppingTime+1];
-                values[0] = initialValue;
+                // Otherwise, hail!
+                int minMaxTotalStoppingTime = Math.max(maxTotalStoppingTime, 1);
+                ArrayList<BigInteger> preValues = new ArrayList<BigInteger>(minMaxTotalStoppingTime+1);
+                preValues.add(initialValue);
+                BigInteger next;
+                for(int k = 1; k <= minMaxTotalStoppingTime; k++){
+                    next = function(preValues.get(k-1), P, a, b);
+                    // Check if the next hailstone is either the stopping time, total
+                    // stopping time, the same as the initial value, or stuck at zero.
+                    if(terminate.apply(next)){
+                        preValues.add(next);
+                        if(next.equals(BigInteger.ONE)){
+                            terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
+                        } else {
+                            terminalCondition = SequenceState.STOPPING_TIME;
+                        }
+                        terminalStatus = k;
+                        values = new BigInteger[preValues.size()];
+                        preValues.toArray(values);
+                        return;
+                    }
+                    if(preValues.contains(next)){
+                        preValues.add(next);
+                        int cycle_init = 1;
+                        for(int j = 1; j <= k; j++){
+                            if(preValues.get(k-j).equals(next)){
+                                cycle_init = j;
+                                break;
+                            }
+                        }
+                        terminalCondition = SequenceState.CYCLE_LENGTH;
+                        terminalStatus = cycle_init;
+                        values = new BigInteger[preValues.size()];
+                        preValues.toArray(values);
+                        return;
+                    }
+                    if(next.equals(BigInteger.ZERO)){
+                        preValues.add(BigInteger.ZERO);
+                        terminalCondition = SequenceState.ZERO_STOP;
+                        terminalStatus = -k;
+                        values = new BigInteger[preValues.size()];
+                        preValues.toArray(values);
+                        return;
+                    }
+                    preValues.add(next);
+                }
+                terminalCondition = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
+                terminalStatus = minMaxTotalStoppingTime;
+                values = new BigInteger[preValues.size()];
+                preValues.toArray(values);
             }
         }
     }
@@ -300,64 +357,8 @@ public final class Collatz {
         // Call out the function before any magic returns to trap bad values.
         @SuppressWarnings("unused")
         final BigInteger _throwaway = function(initialValue, P, a, b);
-        // Start the hailstone sequence.
-        Function<BigInteger, Boolean> terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
-        int _maxTotalStoppingTime = Math.max(maxTotalStoppingTime, 1);
-        HailstoneSequence hailstones = new HailstoneSequence(initialValue, _maxTotalStoppingTime);
-        // If the initial value was 0 or 1, then the sequence would have already ended
-        if(initialValue.equals(BigInteger.ZERO) || initialValue.equals(BigInteger.ONE)){
-            return hailstones;
-        }
-        // Otherwise, run through the hailstones.
-        BigInteger _next;
-        int _finalK = 0;
-        for(int k = 1; k <= _maxTotalStoppingTime; k++){
-             _next = function(hailstones.values[k-1], P, a, b);
-            // Check if the next hailstone is either the stopping time, total
-            // stopping time, the same as the initial value, or stuck at zero.
-            if(terminate.apply(_next)){
-                hailstones.values[k] = _next;
-                if(_next.equals(BigInteger.ONE)){
-                    hailstones.terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
-                } else {
-                    hailstones.terminalCondition = SequenceState.STOPPING_TIME;
-                }
-                hailstones.terminalStatus = k;
-                _finalK = k;
-                break;
-            }
-            if(Arrays.asList(hailstones.values).contains(_next)){
-                hailstones.values[k] = _next;
-                int cycle_init = 1;
-                for(int j = 1; j <= k; j++){
-                    if(hailstones.values[k-j].equals(_next)){
-                        cycle_init = j;
-                        break;
-                    }
-                }
-                hailstones.terminalCondition = SequenceState.CYCLE_LENGTH;
-                hailstones.terminalStatus = cycle_init;
-                _finalK = k;
-                break;
-            }
-            if(_next.equals(BigInteger.ZERO)){
-                hailstones.values[k] = BigInteger.ZERO;
-                hailstones.terminalCondition = SequenceState.ZERO_STOP;
-                hailstones.terminalStatus = -k;
-                _finalK = k;
-                break;
-            }
-            hailstones.values[k] = _next;
-        }
-        if(hailstones.terminalCondition == null){
-            hailstones.terminalCondition = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
-            hailstones.terminalStatus = _maxTotalStoppingTime;
-        } else {
-            BigInteger[] filledValues = new BigInteger[_finalK+1];
-            System.arraycopy(hailstones.values, 0, filledValues, 0, filledValues.length);
-            hailstones.values = filledValues;
-        }
-        return hailstones;
+        // Return the hailstone sequence.
+        return new HailstoneSequence(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime);
     }
 
     /**
