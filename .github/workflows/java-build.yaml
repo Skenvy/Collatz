@@ -128,9 +128,7 @@ jobs:
   #       architecture: x64
   #       cache: maven
   #   - name: 📄 Docs
-  #     run: |
-  #       export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
-  #       # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-java'
+  #     run: make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-java'
   #     env:
   #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # docs-merge:
