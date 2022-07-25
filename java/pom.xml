@@ -6,7 +6,7 @@
 
   <groupId>io.github.skenvy</groupId>
   <artifactId>collatz</artifactId>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
 
   <name>Collatz</name>
   <description>Functions related to the Collatz/Syracuse/3N+1 problem.</description>

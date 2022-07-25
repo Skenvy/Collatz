@@ -12,7 +12,7 @@ For a v1.0.0 release, handling arbitrary integers is a nice to have, but not req
 | [Julia](https://github.com/Skenvy/Collatz/tree/main/julia) | [juliahub](https://juliahub.com/ui/Packages/Collatz/UmeZE) | [Documenter](https://skenvy.github.io/Collatz/julia/) | _N/A_ |
 | [LaTeX](https://github.com/Skenvy/Collatz/tree/main/LaTeX) | _N/A_ | **#TODO** | _N/A_ |
 | [Node.JS](https://github.com/Skenvy/Collatz/tree/main/node.js) | **#TODO** | **#TODO** | **#TODO** |
-| [python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | **#TODO** | _N/A_ |
+| [Python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | **#TODO** | _N/A_ |
 | [R](https://github.com/Skenvy/Collatz/tree/main/R) | **#TODO** | **#TODO** | _N/A_ |
 | [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) | **#TODO** | **#TODO** | **#TODO** |
 ## Basic functionality.
