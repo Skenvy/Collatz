@@ -4,15 +4,17 @@ Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.or
 Each language's implementation should share the same functionality, or as close to it as possible, such that a consistent usability is delivered across all languages' implementations.
 For a v1.0.0 release, handling arbitrary integers is a nice to have, but not required. Alternatively, all implementations in a language might use that languages arbitrary integer implementation, as speed / performance is specifically not a focus of this, in favour of generalisability or parameterisability.
 ## Implementations
-* [C#](#TODO)
-* [Go](#TODO)
-* [Java](https://search.maven.org/artifact/io.github.skenvy/collatz)
-* [Julia](https://juliahub.com/ui/Packages/Collatz/UmeZE)
-* [LaTeX](#TODO)
-* [Node.JS](#TODO)
-* [python](https://pypi.org/project/collatz/)
-* [R](#TODO)
-* [Ruby](#TODO)
+| Code | External Pkg | GitHub Pages | Internal Pkg |
+| :--- | :---         | :---         | :---         |
+| [C#](https://github.com/Skenvy/Collatz/tree/main/C%23) | **#TODO** | **#TODO** | **#TODO** |
+| [Go](https://github.com/Skenvy/Collatz/tree/main/go) | **#TODO** | **#TODO** | _N/A_ |
+| [Java](https://github.com/Skenvy/Collatz/tree/main/java) | [mvn-central](https://search.maven.org/artifact/io.github.skenvy/collatz) | [Site](https://skenvy.github.io/Collatz/java/)+[JavaDoc](https://skenvy.github.io/Collatz/java/apidocs/io/github/skenvy/package-summary.html) | [mvn-gh](https://github.com/Skenvy/Collatz/packages/1445255) |
+| [Julia](https://github.com/Skenvy/Collatz/tree/main/julia) | [juliahub](https://juliahub.com/ui/Packages/Collatz/UmeZE) | [Documenter](https://skenvy.github.io/Collatz/julia/) | _N/A_ |
+| [LaTeX](https://github.com/Skenvy/Collatz/tree/main/LaTeX) | _N/A_ | **#TODO** | _N/A_ |
+| [Node.JS](https://github.com/Skenvy/Collatz/tree/main/node.js) | **#TODO** | **#TODO** | **#TODO** |
+| [python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | **#TODO** | _N/A_ |
+| [R](https://github.com/Skenvy/Collatz/tree/main/R) | **#TODO** | **#TODO** | _N/A_ |
+| [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) | **#TODO** | **#TODO** | **#TODO** |
 ## Basic functionality.
 ### Core functionality for v1
 * The **function**, _optionally_ parameterisable.

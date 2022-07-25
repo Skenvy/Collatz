@@ -8,7 +8,7 @@ clean:
 	$(MVN)
 
 docs:
-	$(MVN) site:site site:run
+	$(MVN) site:site site:run -P deploy-ossrh
 
 # the clean phase can be included in a single invocation
 test:
@@ -28,10 +28,10 @@ run:
 # The use of maven in GitHub Actions benefits from the batch mode options in
 # $(MVN_NONINTERACTIVE) and removing the "downloading" info output via $(HUSH)
 docs_noninteractive:
-	$(MVN_NONINTERACTIVE) site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="build based on $(SHORTSHA)" $(HUSH) -Dscmpublish.dryRun=true
+	$(MVN_NONINTERACTIVE) site:site site:stage scm-publish:publish-scm -P deploy-ossrh -Dscmpublish.checkinComment="build based on $(SHORTSHA)" $(HUSH) -Dscmpublish.dryRun=true
 
 docs_deploy:
-	$(MVN_NONINTERACTIVE) site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="build based on $(SHORTSHA)" $(HUSH) -Dpassword=$(PASSWORD)
+	$(MVN_NONINTERACTIVE) site:site site:stage scm-publish:publish-scm -P deploy-ossrh -Dscmpublish.checkinComment="build based on $(SHORTSHA)" $(HUSH) -Dpassword=$(PASSWORD)
 
 test_noninteractive:
 	$(MVN_NONINTERACTIVE) test $(HUSH)

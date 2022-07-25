@@ -656,8 +656,8 @@ public final class Collatz {
      * @param a (BigInteger): Factor by which to multiply n.
      * @param b (BigInteger): Value to add to the scaled value of n.
      */
-    public static TreeGraph treeGraph(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b){
-        return new TreeGraph(nodeValue, maxOrbitDistance, P, a, b);
+    public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b){
+        return new TreeGraph(initialValue, maxOrbitDistance, P, a, b);
     }
 
     /**
@@ -671,7 +671,7 @@ public final class Collatz {
      *          maxStoppingTime / maxTotalStoppingTime, as it is the intended target
      *          of orbits to obtain, rather than a limit to avoid uncapped computation.
      */
-    public static TreeGraph treeGraph(BigInteger nodeValue, int maxOrbitDistance){
-        return treeGraph(nodeValue, maxOrbitDistance, DEFAULT_P, DEFAULT_A, DEFAULT_B);
+    public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance){
+        return treeGraph(initialValue, maxOrbitDistance, DEFAULT_P, DEFAULT_A, DEFAULT_B);
     }
 }
