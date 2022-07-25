@@ -10,10 +10,10 @@ docs:
 	mvn site:site site:run
 
 docs_noninteractive:
-	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" -Dpassword=$(PASSWORD) $(HUSH)
+	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" $(HUSH) -Dscmpublish.dryRun=true
 
 docs_deploy:
-	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" -Dpassword=$(PASSWORD) $(HUSH)
+	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" $(HUSH) -Dpassword=$(PASSWORD)
 
 # the clean phase can be included in a single invocation
 test:
