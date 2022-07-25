@@ -29,8 +29,8 @@
   </developers>
 
   <scm>
-    <connection>scm:git:ssh://git@github.com/Skenvy/Collatz.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/Skenvy/Collatz.git</developerConnection>
+    <connection>scm:git:git://github.com/Skenvy/Collatz.git</connection>
+    <developerConnection>scm:git:ssh://github.com:Skenvy/Collatz.git</developerConnection>
     <url>http://github.com/Skenvy/Collatz/tree/master</url>
   </scm>
 
@@ -116,7 +116,7 @@
     </repository>
     <site>
       <id>github</id>
-      <url>scm:git:ssh://git@github.com/Skenvy/Collatz.git</url>
+      <url>scm:git:git@github.com:Skenvy/Collatz.git</url>
     </site>
   </distributionManagement>
 
