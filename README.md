@@ -6,7 +6,7 @@ For a v1.0.0 release, handling arbitrary integers is a nice to have, but not req
 ## Implementations
 * [C#](#TODO)
 * [Go](#TODO)
-* [Java](#TODO)
+* [Java](https://search.maven.org/artifact/io.github.skenvy/collatz)
 * [Julia](https://juliahub.com/ui/Packages/Collatz/UmeZE)
 * [LaTeX](#TODO)
 * [Node.JS](#TODO)

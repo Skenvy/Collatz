@@ -91,6 +91,15 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <scmBranch>gh-pages-java</scmBranch>
+            <subDirectory>java</subDirectory>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -105,6 +114,10 @@
       <name>${repo-name}</name>
       <url>${repo-url}</url>
     </repository>
+    <site>
+      <id>github</id>
+      <url>scm:git:ssh://git@github.com/Skenvy/Collatz.git</url>
+    </site>
   </distributionManagement>
 
   <profiles>
