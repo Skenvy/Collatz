@@ -63,3 +63,9 @@ Following on from the way we published docs in the julia iteration, we want to b
   * User property: scmpublish.subDirectory
 
 Knowing this, we can try setting `scmpublish.subDirectory` to `"java"`, use the [tips](https://maven.apache.org/plugins/maven-scm-publish-plugin/various-tips.html) on the plugin for setting the `project.distributionManagement.site.url` which is used as the default for `scmpublish.pubScmUrl`, and add a `plugin.configuration.scmBranch` on the `maven-scm-publish-plugin` plugin, despite that being different from the "User property" `scmpublish.scm.branch`? The only thing that will likely need to be added on the command line in the make recipe that is run by the CI step will be the value passed to `checkinComment` so as to mimic the same behaviour provided by the julia docs generating, which is to add the short sha of the commit from which the docs were built in the checkin comment.
+
+Once again we create an empty orphan branch;
+1. `git checkout --orphan gh-pages-java`
+1. `rm .git/index ; git clean -fdx`
+1. `git commit -m "Initial empty orphan" --allow-empty`
+1. `git push --set-upstream origin gh-pages-java`
