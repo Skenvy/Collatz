@@ -6,7 +6,7 @@
 
   <groupId>io.github.skenvy</groupId>
   <artifactId>collatz</artifactId>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
 
   <name>Collatz</name>
   <description>Functions related to the Collatz/Syracuse/3N+1 problem.</description>
@@ -44,7 +44,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -91,6 +91,15 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <scmBranch>gh-pages-java</scmBranch>
+            <subDirectory>java</subDirectory>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
@@ -105,7 +114,21 @@
       <name>${repo-name}</name>
       <url>${repo-url}</url>
     </repository>
+    <site>
+      <id>github</id>
+      <url>scm:git:https://git@github.com/Skenvy/Collatz.git</url>
+    </site>
   </distributionManagement>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.3.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 
   <profiles>
     <profile>
@@ -179,7 +202,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>3.3.1</version>
             <executions>
               <execution>
                 <id>attach-javadocs</id>

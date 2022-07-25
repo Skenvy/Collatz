@@ -62,20 +62,19 @@ jobs:
         cache: maven
     - name: 🦂 Test
       run: make test_noninteractive
-  # Docs step is optional depending on language
-  # docs:
-  #   name: Java ☕🦆🌞 Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@v3
-  #   # https://github.com/actions/setup-java
-  #   - name: ☕🦆🌞 Set up Java
-  #     uses: actions/setup-java@v3
-  #     with:
-  #       distribution: 'adopt'
-  #       java-version: '11'
-  #       architecture: ${{ matrix.arch }}
-  #       cache: maven
-  #   - name: 📄 Docs
-  #     run: make docs
+  docs:
+    name: Java ☕🦆🌞 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    # https://github.com/actions/setup-java
+    - name: ☕🦆🌞 Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        architecture: x64
+        cache: maven
+    - name: 📄 Docs
+      run: make docs_noninteractive SHORTSHA=$(git rev-parse --short HEAD) PASSWORD=NA
