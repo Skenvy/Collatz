@@ -116,7 +116,7 @@
     </repository>
     <site>
       <id>github</id>
-      <url>scm:git:git@github.com:Skenvy/Collatz.git</url>
+      <url>scm:git:https://git@github.com/Skenvy/Collatz.git</url>
     </site>
   </distributionManagement>
 
