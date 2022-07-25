@@ -10,7 +10,7 @@ docs:
 	mvn site:site site:run
 
 docs_noninteractive:
-	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.dryRun=true -Dscmpublish.checkinComment="built from $(SHORTSHA)" $(HUSH)
+	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" $(HUSH)
 
 docs_deploy:
 	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" $(HUSH)
