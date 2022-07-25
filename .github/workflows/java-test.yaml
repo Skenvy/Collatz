@@ -78,5 +78,5 @@ jobs:
         cache: maven
     - name: 📄 Docs
       run: make docs_noninteractive SHORTSHA=$(git rev-parse --short HEAD) PASSWORD=$GITHUB_TOKEN
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # env:
+      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

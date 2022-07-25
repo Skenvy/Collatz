@@ -1,43 +1,46 @@
 HUSH=-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+MVN=mvn clean
+MVN_NONINTERACTIVE=mvn -B -U clean
 .PHONY: clean docs docs_noninteractive docs_deploy test test_noninteractive build build_noninteractive run deploy_noninteractive_ossrh deploy_noninteractive_github
 SHELL:=/bin/bash
 
-
 clean:
-	mvn clean
+	$(MVN)
 
 docs:
-	mvn site:site site:run
-
-docs_noninteractive:
-	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" $(HUSH) -Dscmpublish.dryRun=true
-
-docs_deploy:
-	mvn -B -U clean site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="built from $(SHORTSHA)" $(HUSH) -Dpassword=$(PASSWORD)
+	$(MVN) site:site site:run
 
 # the clean phase can be included in a single invocation
 test:
-	mvn clean test
-
-test_noninteractive:
-	mvn -B -U clean test $(HUSH)
+	$(MVN) test
 
 # package > test in mvn phases, so no need for test to be a prerequisite
 build:
-	mvn clean package
-
-build_noninteractive:
-	mvn -B -U clean package $(HUSH)
+	$(MVN) package
 
 # Something like the actual java invocation; (for the default gen'd)
 # java -cp target/Collatz-1.0-SNAPSHOT.jar org.skenvy.collatz.App
 # would be usable if it could discover the jar by name. Instead use
 # https://www.mojohaus.org/exec-maven-plugin/java-mojo.html
 run:
-	mvn clean compile exec:java -Dexec.mainClass="io.github.skenvy.Collatz"
+	$(MVN) compile exec:java -Dexec.mainClass="io.github.skenvy.Collatz"
+
+# The use of maven in GitHub Actions benefits from the batch mode options in
+# $(MVN_NONINTERACTIVE) and removing the "downloading" info output via $(HUSH)
+docs_noninteractive:
+	$(MVN_NONINTERACTIVE) site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="build based on $(SHORTSHA)" $(HUSH) -Dscmpublish.dryRun=true
+
+docs_deploy:
+	$(MVN_NONINTERACTIVE) site:site site:stage scm-publish:publish-scm -Dscmpublish.checkinComment="build based on $(SHORTSHA)" $(HUSH) -Dpassword=$(PASSWORD)
+
+test_noninteractive:
+	$(MVN_NONINTERACTIVE) test $(HUSH)
+
+build_noninteractive:
+	$(MVN_NONINTERACTIVE) package $(HUSH)
 
 deploy_noninteractive_ossrh:
-	mvn -B -U deploy -P deploy-ossrh,release,gpg $(HUSH)
+	$(MVN_NONINTERACTIVE) deploy -P deploy-ossrh,release,gpg $(HUSH)
 
 deploy_noninteractive_github:
-	mvn -B -U deploy -P deploy-github,release,gpg $(HUSH)
+	$(MVN_NONINTERACTIVE) deploy -P deploy-github,release,gpg $(HUSH)
