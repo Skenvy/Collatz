@@ -31,8 +31,6 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: '1.18'
-    - name: 🧱 Install build dependencies
-      run: make <make-environment-dependencies>
     - name: 🦂 Test
       run: make test
   full-test:
@@ -54,9 +52,8 @@ jobs:
       uses: actions/setup-go@v3
       with:
         go-version: ${{ matrix.go-version }}
-    # TODO: Maybe another step to install test dependencies
-    # - name: 🦂 Test
-    # TODO: run: or uses: something depending on the languges
+    - name: 🦂 Test
+      run: make test
   # Docs step is optional depending on language
   # docs:
   #   name: Go 🔷🐀🔷 Docs 📄 Quick Test 🦂
