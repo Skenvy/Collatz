@@ -1,0 +1,72 @@
+name: Go 🔷🐀🔷 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - 'go/**'
+    - '!go/**.md'
+    - '.github/workflows/go-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'go/**'
+    - '!go/**.md'
+    - '.github/workflows/go-*'
+  workflow_call:
+defaults:
+  run:
+    shell: bash
+    working-directory: go
+jobs:
+  quick-test:
+    name: Go 🔷🐀🔷 Quick Test 🦂
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔷🐀🔷 Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.18'
+    - name: 🧱 Install build dependencies
+      run: make <make-environment-dependencies>
+    - name: 🦂 Test
+      run: make test
+  full-test:
+    name: Go 🔷🐀🔷 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        go-version: ['1.13', '1.14', '1.15', '1.16', '1.17', '1.18']
+        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe.
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔷🐀🔷 Set up Go ${{ matrix.version }}
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.go-version }}
+    # TODO: Maybe another step to install test dependencies
+    # - name: 🦂 Test
+    # TODO: run: or uses: something depending on the languges
+  # Docs step is optional depending on language
+  # docs:
+  #   name: Go 🔷🐀🔷 Docs 📄 Quick Test 🦂
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@v3
+  #   - name: 🔷🐀🔷 Set up Go
+  #     uses: actions/setup-go@v3
+  #     with:
+  #       go-version: '1.18'
+  #   - name: 📄 Docs
+  #     run: make docs
