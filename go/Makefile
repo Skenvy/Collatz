@@ -1,12 +1,15 @@
-.PHONY: clean test build
+.PHONY: clean test build run
 SHELL:=/bin/bash
 
 clean:
-	go clean ./src
+	go clean .
 	go clean ./collatz
 
 test: clean
-	go test -v ./src
+	go test -v .
 
 build: test
 	go build -o collatz ./collatz
+
+run: build
+	./collatz/collatz

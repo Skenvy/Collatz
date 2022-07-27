@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	collatz "github.com/Skenvy/Collatz/go/src"
+	collatz "github.com/Skenvy/Collatz/go"
 )
 
 func main() {
