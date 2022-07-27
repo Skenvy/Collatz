@@ -16,7 +16,7 @@ pkgsite:
 # Relies on but expects godoc to have been run independently as a project setup to not require its rebuilding constantly
 docs:
 	~/go/bin/godoc -http=:6060 -goroot $$(pwd) &>/dev/null & echo $$! > KILL_PID
-	wget -r -np -N -E -p -k http://localhost:6060/pkg/github.com/Skenvy/Collatz/go/
+	wget -r -np -N -E -p -k http://127.0.0.1:6060/pkg/github.com/Skenvy/Collatz/go/
 	ls -liath
 	kill $$(cat KILL_PID) && rm KILL_PID
 
