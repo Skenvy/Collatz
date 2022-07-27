@@ -44,7 +44,7 @@ jobs:
       fail-fast: false
       matrix:
         go-version: ['1.13', '1.14', '1.15', '1.16', '1.17', '1.18']
-        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe.
+        os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -55,15 +55,15 @@ jobs:
     - name: 🦂 Test
       run: make test
   # Docs step is optional depending on language
-  # docs:
-  #   name: Go 🔷🐀🔷 Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@v3
-  #   - name: 🔷🐀🔷 Set up Go
-  #     uses: actions/setup-go@v3
-  #     with:
-  #       go-version: '1.18'
-  #   - name: 📄 Docs
-  #     run: make docs
+  docs:
+    name: Go 🔷🐀🔷 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔷🐀🔷 Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.18'
+    - name: 📄 Docs
+      run: make docs

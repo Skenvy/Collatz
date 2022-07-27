@@ -72,22 +72,15 @@ jobs:
       run: |
         export VER=$(cat go.ver)
         gh release create go-v$VER --generate-notes -t "Go: Version $VER"
-#   publish:
-#     name: Go 🔷🐀🔷 Publish 📦
-#     needs: [release]
-#     runs-on: ubuntu-latest
-#     steps:
-#     # Although the dists are built uses checkout to satisfy refs/tags existence
-#     # which were created by the release, prior to uploading to pypi.
-#     - name: 🏁 Checkout
-#       uses: actions/checkout@v3
-#     # - name: 🆒 Download dists
-#     #   uses: actions/download-artifact@v3
-#     #   with:
-#     #     name: some-artefacts
-#     #     path: go/some-artefacts
-#     - name: 📦 Publish
-#     # TODO: run: or uses: something depending on the languges
+  publish:
+    name: Go 🔷🐀🔷 Publish 📦
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 📦 Publish
+      run: make publish
 #   docs:
 #     name: Go 🔷🐀🔷 Docs 📄
 #     needs: [release, publish]
