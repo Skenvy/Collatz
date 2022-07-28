@@ -69,12 +69,12 @@ jobs:
       run: |
         make godoc
         make docs
-        echo why
         git config --local user.email "actions@github.com"
         git config --local user.name "Github Actions"
         export SHORTSHA=$(git rev-parse --short HEAD)
-        echo isnt
         git symbolic-ref HEAD refs/heads/gh-pages-go
+        echo why isnt
+        git fetch --unshallow
         echo this
         git branch --set-upstream-to=origin/gh-pages-go gh-pages-go
         echo finding the branch
