@@ -79,7 +79,3 @@ jobs:
         shopt -s dotglob && mkdir go && mv ../MERGE_TARGET/* go/ && rm go/main.go && rm go/.gitignore
         git add .
         git commit -m "Build based on $SHORTSHA" --allow-empty
-        git diff HEAD~1..
-        git push --set-upstream origin gh-pages-go
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
