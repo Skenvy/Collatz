@@ -74,9 +74,9 @@ jobs:
         export SHORTSHA=$(git rev-parse --short HEAD)
         git fetch origin gh-pages-go:gh-pages-go
         git symbolic-ref HEAD refs/heads/gh-pages-go
-        git branch --set-upstream-to=origin/gh-pages-go
         cd .. && mv go/docs ../MERGE_TARGET
         git rm -rf . && git clean -fxd && git reset
         shopt -s dotglob && mkdir go && mv ../MERGE_TARGET/* go/ && rm go/main.go && rm go/.gitignore
         git add .
         git commit -m "Build based on $SHORTSHA"
+        git diff HEAD~1.. --stat
