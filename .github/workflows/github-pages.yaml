@@ -1,5 +1,6 @@
 name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
 on:
+  # The input in the call event is required so pushes don't actually trigger this.
   push:
     branches:
     - 'gh-pages-*'

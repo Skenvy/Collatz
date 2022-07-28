@@ -72,12 +72,9 @@ jobs:
         git config --local user.email "actions@github.com"
         git config --local user.name "Github Actions"
         export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch --unshallow
         git symbolic-ref HEAD refs/heads/gh-pages-go
-        echo why isnt
-        git fetch
-        echo this
-        git branch --set-upstream-to=origin/gh-pages-go gh-pages-go
-        echo finding the branch
+        git branch --set-upstream-to=origin/gh-pages-go
         cd .. && mv go/docs ../MERGE_TARGET
         git rm -rf . && git clean -fxd && git reset
         shopt -s dotglob && mkdir go && mv ../MERGE_TARGET/* go/ && rm go/main.go && rm go/.gitignore
