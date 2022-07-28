@@ -79,4 +79,7 @@ jobs:
         shopt -s dotglob && mkdir go && mv ../MERGE_TARGET/* go/ && rm go/main.go && rm go/.gitignore
         git add .
         git commit -m "Build based on $SHORTSHA"
-        git diff HEAD~1.. --stat
+        git diff HEAD~1..
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
