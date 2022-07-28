@@ -1,0 +1,118 @@
+name: Go 🔷🐀🔷 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
+on:
+  push:
+    branches:
+    - 'main'
+    paths:
+    - 'go/**'
+    - '!go/**.md'
+    - '.github/workflows/go-*'
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+    working-directory: go
+jobs:
+  context:
+    name: GitHub 🐱‍👤 Context 📑
+    uses: ./.github/workflows/github-context.yaml
+  test:
+    name: Go 🔷🐀🔷 Test 🦂
+    uses: ./.github/workflows/go-test.yaml
+  workflow-conditions:
+    name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
+    runs-on: ubuntu-latest
+    outputs:
+      version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Check if version files changed
+      id: version-file-check
+      run: |
+        export VERSION_FILE="go/go.ver"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+    - name: Notify of conditions
+      run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
+  # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
+  # Which will yield the condition check "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}"
+  build:
+    name: Go 🔷🐀🔷 Build 🧱
+    needs: [test, workflow-conditions]
+    if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔷🐀🔷 Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.18'
+    - name: 🧱 Install build dependencies
+      run: make build
+    # Some step that uses `make build`
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@v3
+      with:
+        name: Collatz
+        path: go/collatz/collatz
+        if-no-files-found: error
+  release:
+    name: Go 🔷🐀🔷 Release 🚰
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🚰 Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        export VER=$(cat go.ver)
+        gh release create go-v$VER --generate-notes -t "Go: Version $VER"
+  publish:
+    name: Go 🔷🐀🔷 Publish 📦
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 📦 Publish
+      run: make publish
+  docs:
+    name: Go 🔷🐀🔷 Docs 📄
+    needs: [release, publish]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🔷🐀🔷 Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: '1.18'
+    - name: 📄 Docs
+      run: |
+        make godoc
+        make docs
+        git config --global user.email "actions@github.com"
+        git config --global user.name "Github Actions"
+        git fetch --unshallow
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git symbolic-ref HEAD refs/heads/gh-pages-go
+        git branch --set-upstream-to=origin/gh-pages-go gh-pages-go
+        cd .. && mv go/docs ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir go && mv ../MERGE_TARGET/* go/ && rm go/main.go && rm go/.gitignore
+        git add .
+        git commit -m "Build based on $SHORTSHA"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-go'

@@ -115,12 +115,14 @@ on:
     - 'main'
     paths:
     - '<language>/**'
+    - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   pull_request:
     branches:
     - 'main'
     paths:
     - '<language>/**'
+    - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_call:
 defaults:
@@ -191,6 +193,7 @@ on:
     - 'main'
     paths:
     - '<language>/**'
+    - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_dispatch:
 defaults:
