@@ -91,7 +91,7 @@ jobs:
     - name: 🔷🐀🔷 Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: '1.18'
+        go-version: '1.13'
     - name: 📄 Docs
       run: |
         make godoc
@@ -105,8 +105,8 @@ jobs:
         git rm -rf . && git clean -fxd && git reset
         shopt -s dotglob && mkdir go && mv ../MERGE_TARGET/* go/ && rm go/main.go && rm go/.gitignore
         git add .
-        git commit -m "Build based on $SHORTSHA"
-        git push
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-go
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   docs-merge:

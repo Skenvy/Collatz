@@ -31,5 +31,5 @@ jobs:
         export TO_SHA=$(git rev-parse --short=8 origin/gh-pages)
         git checkout gh-pages && git pull
         git merge --squash origin/${{ inputs.merge_from }} --allow-unrelated-histories -X theirs
-        git commit -m "Auto-merge ${{ inputs.merge_from }}@($FROM_SHA) to gh-pages@($TO_SHA)"
+        git commit -m "Auto-merge ${{ inputs.merge_from }}@($FROM_SHA) to gh-pages@($TO_SHA)" --allow-empty
         git push
