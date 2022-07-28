@@ -74,7 +74,7 @@ jobs:
         export SHORTSHA=$(git rev-parse --short HEAD)
         git symbolic-ref HEAD refs/heads/gh-pages-go
         echo why isnt
-        git fetch --unshallow
+        git fetch
         echo this
         git branch --set-upstream-to=origin/gh-pages-go gh-pages-go
         echo finding the branch
