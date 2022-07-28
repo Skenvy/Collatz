@@ -100,6 +100,14 @@ jobs:
         git config --global user.name "Github Actions"
         git fetch --unshallow
         export SHORTSHA=$(git rev-parse --short HEAD)
+        git symbolic-ref HEAD refs/heads/gh-pages-go && git reset
+        git branch --set-upstream-to=origin/gh-pages-go gh-pages-go
+        cd .. && mv go/docs ../MERGE_TARGET
+        git rm -rf . && git clean -fxd
+        mkdir go && mv ../MERGE_TARGET go
+        git add .
+        git commit -m "Build based on $SHORTSHA"
+        git push
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #   docs-merge:
