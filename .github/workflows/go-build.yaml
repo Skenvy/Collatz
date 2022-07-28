@@ -96,9 +96,8 @@ jobs:
       run: |
         make godoc
         make docs
-        git config --global user.email "actions@github.com"
-        git config --global user.name "Github Actions"
-        git fetch --unshallow
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
         export SHORTSHA=$(git rev-parse --short HEAD)
         git symbolic-ref HEAD refs/heads/gh-pages-go
         git branch --set-upstream-to=origin/gh-pages-go gh-pages-go
