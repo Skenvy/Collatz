@@ -5,6 +5,7 @@ on:
     - 'main'
     paths:
     - 'julia/**'
+    - '!julia/**.md'
     - '.github/workflows/julia-*'
   workflow_dispatch:
 defaults:
@@ -23,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+      version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -35,15 +37,26 @@ jobs:
       run: |
         export VERSION_FILE="julia/Project.toml"
         [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
-    - name: Notify of conditions
+    - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
-  # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
-  # Which will yield the condition check "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}"
-  # It seems that the typical "build" step is not part of uploading a package in Julia.
+    - name: Check if version specified in version file has not released.
+      id: version-tag-exists
+      run: |
+        git fetch --tags
+        export VER=$(grep Project.toml -e "^version = " | cut -d \" -f 2)
+        [ -z "$(git tag -l "julia-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+    - name: Notify on version-tag-exists
+      run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
+  # Now any step that should only run on the version change can use
+  # "needs: [workflow-conditions]" Which will yield the condition checks below.
+  # We want to "release" automatically if "version-file-changed" is true on push
+  # Or manually if workflow_dispatch and "version-tag-exists" is false.
   release-and-register:
     name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
     needs: [test, workflow-conditions]
-    if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}
+    if: >-
+      ${{ (fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      (fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false && github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
     outputs:
       new_version: ${{ steps.release_step.outputs.new_version }}
