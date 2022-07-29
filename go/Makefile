@@ -12,7 +12,7 @@ godoc:
 docs:
 	mkdir docs/lib/godoc -p
 	~/go/bin/godoc -goroot $$(pwd) -url /pkg/github.com/Skenvy/Collatz/go/ > docs/index.html && sed -i '1d' docs/index.html
-	# TODO: sed the html to make the href's relative, they aren't working on gh pages.
+	# TODO: sed the html to make the href's relative, they aren't working on gh pages..
 	cp -f ~/go/pkg/mod/golang.org/x/tools@$(GODOC_VER)/godoc/static/**.css docs/lib/godoc/
 	cp -f ~/go/pkg/mod/golang.org/x/tools@$(GODOC_VER)/godoc/static/**.js docs/lib/godoc/
 
