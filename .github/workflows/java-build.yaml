@@ -5,6 +5,7 @@ on:
     - 'main'
     paths:
     - 'java/**'
+    - '!java/**.md'
     - '.github/workflows/java-*'
   workflow_dispatch:
 defaults:
@@ -45,7 +46,6 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    # https://github.com/actions/setup-java
     - name: ☕🦆🌞 Set up Java
       uses: actions/setup-java@v3
       with:
@@ -119,7 +119,6 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    # https://github.com/actions/setup-java
     - name: ☕🦆🌞 Set up Java
       uses: actions/setup-java@v3
       with:

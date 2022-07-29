@@ -5,12 +5,14 @@ on:
     - 'main'
     paths:
     - 'julia/**'
+    - '!julia/**.md'
     - '.github/workflows/julia-*'
   pull_request:
     branches:
     - 'main'
     paths:
     - 'julia/**'
+    - '!julia/**.md'
     - '.github/workflows/julia-*'
   workflow_call:
 defaults:
@@ -25,7 +27,6 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    # https://github.com/julia-actions/setup-juliahttps://github.com/julia-actions/setup-julia
     - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@v1.6
       with:
@@ -44,15 +45,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # From versions in https://julialang-s3.julialang.org/bin/versions.json
-        # Does NOT support 1.0
+        # From versions in https://julialang-s3.julialang.org/bin/versions.json ; Does NOT support 1.0
         version: ['1', 'nightly', '1.6.0'] # '1.2.0' is the compat version, but 1.6 for @testset verbose
-        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         arch: [x64]
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    # https://github.com/julia-actions/setup-juliahttps://github.com/julia-actions/setup-julia
     - name: 🔴🟢🟣 Set up Julia ${{ matrix.version }}
       uses: julia-actions/setup-julia@v1.6
       with:
@@ -69,22 +68,10 @@ jobs:
           ${{ runner.os }}-test-${{ env.cache-name }}-
           ${{ runner.os }}-test-
           ${{ runner.os }}-
-    # https://github.com/julia-actions/julia-runtest
     - name: 🦂 Test
       uses: julia-actions/julia-runtest@v1.7
       with:
         project: julia
-    # TODO: https://github.com/julia-actions/julia-processcoverage
-    # - name: 👓 Pre CodeCov; Generate coverage.
-    #   uses: julia-actions/julia-processcoverage@v1
-    #   with:
-    #     directories: julia/src
-    # - name: 👓 CodeCov
-    #   uses: codecov/codecov-action@v2
-    #   with:
-    #     file: lcov.info
-    #     name: Collatz-Julia-${{ matrix.version }}-${{ matrix.os }}
-    #     verbose: true
   docs:
     name: Julia 🔴🟢🟣 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest

@@ -4,15 +4,10 @@ on:
     branches:
     - 'main'
     paths:
-    # contains(github.event.commits[][modified], 'python/src/collatz/__version__.py') is deprecated
-    # ^ although it would be easy to git diff between the before and after commits on the event
-    # it appears the above "commits[][modified]"" syntax doesn't actually work ~ causing a
-    # "The workflow is not valid." ... "Unexpected symbol: ']'", and 'if' can only use contexts
-    # https://github.blog/changelog/2019-10-16-changes-in-github-actions-push-event-payload/
-    # - 'python/src/collatz/__version__.py' < check for this file in workflow-conditions
     - 'python/**'
+    - '!python/**.md'
     - '.github/workflows/python-*'
-  workflow_dispatch: # manual, rather than tag triggering
+  workflow_dispatch:
 defaults:
   run:
     shell: bash
@@ -110,9 +105,6 @@ jobs:
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
     - name: 📦 Publish to PyPI
-      # While this if tag check is adequate, we only intend to run
-      # this on version changes that we would plan to release.
-      # if: startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1.5
       with:
         packages_dir: python/dist

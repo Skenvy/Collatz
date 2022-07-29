@@ -5,6 +5,7 @@ on:
     - 'main'
     paths:
     - 'julia/**'
+    - '!julia/**.md'
     - '.github/workflows/julia-*'
   workflow_dispatch:
 defaults:
@@ -39,7 +40,6 @@ jobs:
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
   # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
   # Which will yield the condition check "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}"
-  # It seems that the typical "build" step is not part of uploading a package in Julia.
   release-and-register:
     name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
     needs: [test, workflow-conditions]
