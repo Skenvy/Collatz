@@ -11,7 +11,7 @@ Parallel to this is that any operation performed during an "action", if performe
 _Any_ push to _any_ branch, **that changes files relevant to** _some_ release target(s), should invoke a **"CI verification"** on that release.
 * The steps within a **"CI verification"** can have either a _limited_ or _entire_ scope.
     * All release targets for the _entire_ scope should be included in the `jobs.<job_id>.strategy.matrix` such as;
-        ```
+        ```yaml
         jobs:
           <job_id>:
             runs-on: '${{ matrix.os }}'
@@ -54,7 +54,7 @@ flowchart TD
 ```
 We want different processes for the workflows across four essential categories.
 1. A push to main that changes the idiomatic release versioning.
-    ```
+    ```yaml
     on:
       push:
         branches:
@@ -65,7 +65,7 @@ We want different processes for the workflows across four essential categories.
     * Entire Scope CI
     * CD Process
 1. A push to main that doesn't change the idiomatic release versioning.
-    ```
+    ```yaml
     on:
       push:
         branches:
@@ -77,7 +77,7 @@ We want different processes for the workflows across four essential categories.
     ```
     * Entire Scope CI
 1. A push to any other branch
-    ```
+    ```yaml
     on:
       push:
         branches-ignore:
@@ -88,7 +88,7 @@ We want different processes for the workflows across four essential categories.
     ```
     * Limited Scope CI
 1. A PR against main
-    ```
+    ```yaml
     on:
       pull_request:
         branches:
@@ -104,10 +104,11 @@ Can be search+replace'd on
 * `<gh-action-setup-language@semver>` + `<language-version>`
 * `<make-environment-dependencies>`
 * `<version-file>` (appears as `export VERSION_FILE="<language>/<version-file>"`)
+* `<version-extracting-command>` (appears as `export VER=$(<version-extracting-command>)`)
 
 The caveat on the lowercase `<language>` is that it is replacing the value in `working-directory: <language>`, so is synonymous with the subfolder that contains that language, and might not always actually be replaced with something in lower case. It's also required that this uses the same capitalisation as the `.github/workflows/<language>-*` files.
 ## `<language>-test.yaml`
-```
+```yaml
 name: <Language> <language-emojis> Tests 🦂
 on:
   push:
@@ -115,12 +116,14 @@ on:
     - 'main'
     paths:
     - '<language>/**'
+    - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   pull_request:
     branches:
     - 'main'
     paths:
     - '<language>/**'
+    - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_call:
 defaults:
@@ -183,7 +186,7 @@ jobs:
   #     run: make docs
 ```
 ## `<language>-build.yaml`
-```
+```yaml
 name: <Language> <language-emojis> Test 🦂 Build 🧱 Release 🚰 and Publish 📦
 on:
   push:
@@ -191,6 +194,7 @@ on:
     - 'main'
     paths:
     - '<language>/**'
+    - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_dispatch:
 defaults:
@@ -209,6 +213,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+      version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -219,14 +224,26 @@ jobs:
       run: |
         export VERSION_FILE="<language>/<version-file>"
         [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
-    - name: Notify of conditions
+    - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
-  # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
-  # Which will yield the condition check "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}"
+    - name: Check if version specified in version file has not released.
+      id: version-tag-exists
+      run: |
+        git fetch --tags
+        export VER=$(<version-extracting-command>)
+        [ -z "$(git tag -l "<language>-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+    - name: Notify on version-tag-exists
+      run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
+  # Now any step that should only run on the version change can use
+  # "needs: [workflow-conditions]" Which will yield the condition checks below.
+  # We want to "release" automatically if "version-file-changed" is true on push
+  # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
   build:
     name: <Language> <language-emojis> Build 🧱
     needs: [test, workflow-conditions]
-    if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}
+    if: >-
+      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout

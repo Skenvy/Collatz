@@ -1,21 +1,20 @@
 name: Python 🐍🐍🐍 Tests 🦂
 on:
   push:
-    # A push to main with the same paths will trigger the CD workflow.
     branches-ignore:
     - 'main'
     paths:
     - 'python/**'
+    - '!python/**.md'
     - '.github/workflows/python-*'
   pull_request:
     branches:
     - 'main'
     paths:
     - 'python/**'
+    - '!python/**.md'
     - '.github/workflows/python-*'
-  workflow_call: # To be called by build, on a push to main that ups the version
-  # Although this is an event itself - and the event payload is the same as the callee,
-  # the "event_name" is _also_ the same. The event's in the callee are push and workflow_dispatch.
+  workflow_call:
 defaults:
   run:
     shell: bash
@@ -29,7 +28,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
     - name: 🐍🐍🐍 Set up Python 3.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
     - name: 🧱 Install build dependencies
@@ -51,7 +50,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
     - name: 🐍🐍🐍 Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: 🍑 Install dependencies
