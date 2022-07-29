@@ -1,4 +1,4 @@
-# [Collatz](https://github.com/Skenvy/Collatz): [Java](https://github.com/Skenvy/Collatz/tree/main/java)
+# [Collatz](https://github.com/Skenvy/Collatz): [Java](https://github.com/Skenvy/Collatz/tree/main/java) ☕🦆🌞
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Java](https://www.java.com/) ([OpenJDK](https://openjdk.org/)).
 ## Getting Started
 [To install the latest from Maven Central](https://repo1.maven.org/maven2/io/github/skenvy/collatz/) ([sonatype.org source mirror](https://s01.oss.sonatype.org/content/repositories/releases/io/github/skenvy/collatz/)) (also see [mvnrepository](https://mvnrepository.com/artifact/io.github.skenvy/collatz) or the [sonatype package index](https://search.maven.org/artifact/io.github.skenvy/collatz));

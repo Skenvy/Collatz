@@ -1,4 +1,4 @@
-# [Collatz](https://github.com/Skenvy/Collatz): [Python](https://github.com/Skenvy/Collatz/tree/main/python)
+# [Collatz](https://github.com/Skenvy/Collatz): [Python](https://github.com/Skenvy/Collatz/tree/main/python) 🐍🐍🐍
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Python](https://www.python.org/).
 ## Getting Started
 [To install the latest from pypi](https://pypi.org/project/collatz/);

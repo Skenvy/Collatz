@@ -1,4 +1,4 @@
-# [Collatz](https://github.com/Skenvy/Collatz): [Go](https://github.com/Skenvy/Collatz/tree/main/go)
+# [Collatz](https://github.com/Skenvy/Collatz): [Go](https://github.com/Skenvy/Collatz/tree/main/go) 🔷🐀🔷
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Go](https://go.dev/).
 ## Getting Started
 [To install the latest from pkg.go.dev](https://pkg.go.dev/github.com/Skenvy/Collatz/go);

@@ -1,4 +1,4 @@
-# [Collatz](https://github.com/Skenvy/Collatz): [Julia](https://github.com/Skenvy/Collatz/tree/main/julia)
+# [Collatz](https://github.com/Skenvy/Collatz): [Julia](https://github.com/Skenvy/Collatz/tree/main/julia) 🔴🟢🟣
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Julia](https://julialang.org/).
 ## Getting Started
 [To install the latest from JuliaRegistries/General](https://github.com/JuliaRegistries/General/tree/master/C/Collatz) ([also see JuliaHub](https://juliahub.com/ui/Packages/Collatz/UmeZE));
