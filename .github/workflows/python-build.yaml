@@ -4,15 +4,10 @@ on:
     branches:
     - 'main'
     paths:
-    # contains(github.event.commits[][modified], 'python/src/collatz/__version__.py') is deprecated
-    # ^ although it would be easy to git diff between the before and after commits on the event
-    # it appears the above "commits[][modified]"" syntax doesn't actually work ~ causing a
-    # "The workflow is not valid." ... "Unexpected symbol: ']'", and 'if' can only use contexts
-    # https://github.blog/changelog/2019-10-16-changes-in-github-actions-push-event-payload/
-    # - 'python/src/collatz/__version__.py' < check for this file in workflow-conditions
     - 'python/**'
+    - '!python/**.md'
     - '.github/workflows/python-*'
-  workflow_dispatch: # manual, rather than tag triggering
+  workflow_dispatch:
 defaults:
   run:
     shell: bash
@@ -29,6 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+      version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
@@ -39,20 +35,32 @@ jobs:
       run: |
         export VERSION_FILE="python/src/collatz/__version__.py"
         [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
-    - name: Notify of conditions
+    - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
-  # Now any step that should only run on the version change can use "needs: [workflow-conditions]"
-  # Which will yield the condition check "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}"
+    - name: Check if version specified in version file has not released.
+      id: version-tag-exists
+      run: |
+        git fetch --tags
+        export VER=$(cut -d \" -f 2 src/collatz/__version__.py)
+        [ -z "$(git tag -l "python-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+    - name: Notify on version-tag-exists
+      run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
+  # Now any step that should only run on the version change can use
+  # "needs: [workflow-conditions]" Which will yield the condition checks below.
+  # We want to "release" automatically if "version-file-changed" is true on push
+  # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
   build:
     name: Python 🐍🐍🐍 Build 🧱
     needs: [test, workflow-conditions]
-    if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true }}
+    if: >-
+      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
     - name: 🐍🐍🐍 Set up Python
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
     - name: 🧱 Install build dependencies
@@ -110,9 +118,6 @@ jobs:
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
     - name: 📦 Publish to PyPI
-      # While this if tag check is adequate, we only intend to run
-      # this on version changes that we would plan to release.
-      # if: startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@release/v1.5
       with:
         packages_dir: python/dist
