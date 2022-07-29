@@ -1,4 +1,4 @@
-# [Collatz](https://github.com/Skenvy/Collatz): [Node.JS](https://github.com/Skenvy/Collatz/tree/main/node.js) <language-emojis>
+# [Collatz](https://github.com/Skenvy/Collatz): [Node.JS](https://github.com/Skenvy/Collatz/tree/main/node.js) 🟨🟩🟥
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Node.JS](https://nodejs.org/).
 ## Pre development notes.
 * [The node package index](https://www.npmjs.com/)

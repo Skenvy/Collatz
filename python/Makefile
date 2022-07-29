@@ -28,12 +28,10 @@ test: clean
 
 # build will automatically include an adjacent "LICENSE*" ~ but if it's
 # referenced as ../LICENSE in either manifest or [metadate]license_files then
-# it will result in being added outside the built wheel? So just shuffle it
-# around here and remove it after to always use the top level one.
+# it will result in being added outside the built wheel. This used to copy the
+# LICENSE as `cp ../LICENSE LICENSE` -- build -- `rm LICENSE`.
 build: test clean_again
-	cp ../LICENSE LICENSE
 	$(VE) python3 -m build
-	rm LICENSE
 	$(VE) pip install --force-reinstall dist/*-none-any.whl
 
 # https://twine.readthedocs.io/en/stable/#twine-upload
