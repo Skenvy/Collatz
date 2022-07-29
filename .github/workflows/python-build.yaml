@@ -40,17 +40,21 @@ jobs:
     - name: Check if version specified in version file has not released.
       id: version-tag-exists
       run: |
+        git fetch --tags
         export VER=$(cut -d \" -f 2 src/collatz/__version__.py)
         [ -z "$(git tag -l "python-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
-  # Now any step that should only run on the version change can use "needs: [workflow-conditions]" Which will yield the condition checks;
-  # "if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true  ||
-  #          fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}"
+  # Now any step that should only run on the version change can use
+  # "needs: [workflow-conditions]" Which will yield the condition checks below.
+  # We want to "release" automatically if "version-file-changed" is true on push
+  # Or manually if workflow_dispatch and "version-tag-exists" is false.
   build:
     name: Python 🐍🐍🐍 Build 🧱
     needs: [test, workflow-conditions]
-    if: ${{ fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true || fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false}}
+    if: >-
+      ${{ (fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      (fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false && github.event_name == 'workflow_dispatch') }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
