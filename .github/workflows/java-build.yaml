@@ -48,13 +48,13 @@ jobs:
   # Now any step that should only run on the version change can use
   # "needs: [workflow-conditions]" Which will yield the condition checks below.
   # We want to "release" automatically if "version-file-changed" is true on push
-  # Or manually if workflow_dispatch and "version-tag-exists" is false.
+  # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
   build:
     name: Java ☕🦆🌞 Build 🧱
     needs: [test, workflow-conditions]
     if: >-
-      ${{ (fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
-      (fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false && github.event_name == 'workflow_dispatch') }}
+      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
