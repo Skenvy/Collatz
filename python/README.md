@@ -1,19 +1,10 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [Python](https://github.com/Skenvy/Collatz/tree/main/python)
-Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in Python.
+Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Python](https://www.python.org/).
 ## Getting Started
-To [install the latest](https://pypi.org/project/collatz/);
-```
+[To install the latest from pypi](https://pypi.org/project/collatz/);
+```sh
 pip install collatz
 ```
-### Developing
-#### The first time virtual env
-```
-git clone https://github.com/Skenvy/Collatz.git
-cd Collatz/python
-make venv
-```
-#### Iterative development
-`make build` will test and build the wheel and force reinstall it into the local venv, to test the built distribution
 ## Usage
 Provides the basic functionality to interact with the Collatz conjecture.
 The parameterisation uses the same `(P,a,b)` notation as Conway's generalisations.
@@ -21,7 +12,7 @@ Besides the function and reverse function, there is also functionality to retrie
 The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ### collatz.function(~)
 `(n:int, P:int=2, a:int=3, b:int=1)`
-```
+```python
 >>> import collatz
 >>> # The default "Collatz function"
 >>> collatz.function(5)
@@ -32,7 +23,7 @@ The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ```
 ### collatz.reverse_function(~)
 `(n:int, P:int=2, a:int=3, b:int=1)`
-```
+```python
 >>> import collatz
 >>> # Get the list of values that return the input.
 >>> collatz.reverse_function(4)
@@ -43,7 +34,7 @@ The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ```
 ### collatz.hailstone_sequence(~)
 `(initial_value:int, P:int=2,  a:int=3, b:int=1, max_total_stopping_time:int=1000, total_stopping_time:bool=True, verbose:bool=True)`
-```
+```python
 >>> import collatz
 >>> # Get the sequence of values forming the hailstone from an initial value
 >>> collatz.hailstone_sequence(10)
@@ -60,7 +51,7 @@ The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ```
 ### collatz.stopping_time(~)
 `(initial_value:int, P:int=2, a:int=3, b:int=1, max_stopping_time:int=1000, total_stopping_time:bool=False)`
-```
+```python
 >>> import collatz
 >>> # Reports the stopping time, the amount of iterations of the function to reach a value lower than the initial value.
 >>> collatz.stopping_time(5)
@@ -80,7 +71,7 @@ inf
 ```
 ### collatz.tree_graph(~)
 `(initial_value:int, max_orbit_distance:int, P:int=2, a:int=3, b:int=1)`
-```
+```python
 >>> import collatz
 >>> # See the tree graph built by a reverse function traversal, to the depth specified by max_orbit_distance.
 >>> collatz.tree_graph(1, 3)
@@ -91,3 +82,12 @@ inf
 >>> collatz.tree_graph(1, 2, P=5, a=2, b=3)
 {1: {-1: {-5: {}, -2: {}}, 5: {'CYCLE_INIT': 1, 25: {}}}}
 ```
+## [Sphinx generated docs](#TODO)
+## Developing
+### The first time setup
+```
+git clone https://github.com/Skenvy/Collatz.git && cd Collatz/python && make venv
+```
+### Iterative development
+* `make build` will test and build the wheel and force reinstall it into the local venv, to test the built distribution
+## [Open Source Insights](https://deps.dev/pypi/collatz)
