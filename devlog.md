@@ -38,6 +38,7 @@ Recently, I've been made aware of [https://deps.dev/], and it seems the implemen
 * `Maintained` is `0/10` for 1 commit out of 30 and 0 issue activity out of 0 found in the last 90 days.
 * `CII-Best-Practices` is `0/10` for not having [this badge](https://bestpractices.coreinfrastructure.org/en)?
     * Add the badge and work on its goals.
+        * [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6311/badge)](https://bestpractices.coreinfrastructure.org/projects/6311)
 * `Dependency-Update-Tool` is `0/10` for "no update tool detected".
     * Add a dependabot and renovatebot config.
 * `Token-Permissions` is `0/10` for "non read-only tokens detected in GitHub workflows".
