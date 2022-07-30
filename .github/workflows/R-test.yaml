@@ -1,4 +1,4 @@
-name: R ®🔵® Tests 🦂
+name: R 🏴‍☠️🔵🦜 Tests 🦂
 on:
   push:
     branches-ignore:
@@ -22,7 +22,7 @@ defaults:
     working-directory: R
 jobs:
   quick-test:
-    name: R ®🔵® Quick Test 🦂
+    name: R 🏴‍☠️🔵🦜 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:

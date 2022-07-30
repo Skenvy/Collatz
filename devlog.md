@@ -51,3 +51,5 @@ Recently, I've been made aware of [deps.dev](https://deps.dev/), and it seems th
     * Add a [`SECURITY.md`](https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository)
 * `Fuzzing` is `0/10` for "project is not fuzzed".
     * Use either [OSS-Fuzz](https://google.github.io/oss-fuzz/) or [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/).
+
+This might be a very silly thing to mention, but in my quest to assign 3 emojis to each implementation to make them visually easier to distinguish in the side panel, the ones I have chosen for C#, `🟢©#️⃣`, and for R, `®🔵®`, include the registered trademark and copyright symbols. Although, these don't seem to display as emoji in the browser which chunks the alignement horizontally, so I'm going to replace C# with the emojis that appear for "see" and "sharp" (there aren't any obvious "sea" ones, and the only "beach" one, 🏖, doesn't appear as an emoji in the text editor). I'm going to also make a dumb joke with "R" and replace borth "®" with pirate themed emoji.

@@ -1,4 +1,4 @@
-name: C# 🟢©#️⃣ Tests 🦂
+name: C# 🟢🙈🪒 Tests 🦂
 on:
   push:
     branches-ignore:
@@ -22,7 +22,7 @@ defaults:
     working-directory: C#
 jobs:
   quick-test:
-    name: C# 🟢©#️⃣ Quick Test 🦂
+    name: C# 🟢🙈🪒 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
