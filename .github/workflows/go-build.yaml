@@ -8,6 +8,7 @@ on:
     - '!go/**.md'
     - '.github/workflows/go-*'
   workflow_dispatch:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -27,7 +28,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -58,16 +59,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@84cbf8094393cdc5fe1fe1671ff2647332956b1a # v3.2.1
       with:
         go-version: '1.18'
     - name: 🧱 Install build dependencies
       run: make build
     # Some step that uses `make build`
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
       with:
         name: Collatz
         path: go/collatz/collatz
@@ -75,10 +76,12 @@ jobs:
   release:
     name: Go 🔷🐀🔷 Release 🚰
     needs: [build]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -91,18 +94,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 📦 Publish
       run: make publish
   docs:
     name: Go 🔷🐀🔷 Docs 📄
     needs: [release, publish]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@84cbf8094393cdc5fe1fe1671ff2647332956b1a # v3.2.1
       with:
         go-version: '1.13'
     - name: 📄 Docs
@@ -125,6 +130,8 @@ jobs:
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
+    permissions:
+      contents: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-go'

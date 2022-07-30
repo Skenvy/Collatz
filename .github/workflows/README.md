@@ -126,6 +126,7 @@ on:
     - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_call:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -137,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -150,8 +151,7 @@ jobs:
   full-test:
     name: <Language> <language-emojis> Full Test 🦂
     if: >- 
-      ${{ github.event_name == 'pull_request' ||
-      github.event_name == 'workflow_dispatch' ||
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: '${{ matrix.os }}'
     strategy:
@@ -162,7 +162,7 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language> ${{ matrix.version }}
       uses: <gh-action-setup-language@semver>
       with:
@@ -177,7 +177,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #   - name: 🏁 Checkout
-  #     uses: actions/checkout@v3
+  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
   #   - name: <language-emojis> Set up <Language>
   #     uses: <gh-action-setup-language@semver>
   #     with:
@@ -197,6 +197,7 @@ on:
     - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_dispatch:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -216,7 +217,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -247,7 +248,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -256,7 +257,7 @@ jobs:
       run: make <make-environment-dependencies>
     # Some step that uses `make build`
     # - name: 🆙 Upload dists
-    #   uses: actions/upload-artifact@v3
+    #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts/
@@ -264,12 +265,14 @@ jobs:
   release:
     name: <Language> <language-emojis> Release 🚰
     needs: [build]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@v3
+    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -287,9 +290,9 @@ jobs:
     # Although the dists are built uses checkout to satisfy refs/tags existence
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@v3
+    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -298,10 +301,12 @@ jobs:
   docs:
     name: <Language> <language-emojis> Docs 📄
     needs: [release, publish]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -315,6 +320,8 @@ jobs:
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
+    permissions:
+      contents: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-<language>'

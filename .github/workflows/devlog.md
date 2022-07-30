@@ -23,7 +23,7 @@ jobs:
       version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
       with:
         fetch-depth: 2
     - name: Check if version files changed
