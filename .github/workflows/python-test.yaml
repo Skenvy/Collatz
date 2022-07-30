@@ -1,61 +1,56 @@
-name: Python 🐍 Tests 🦂
+name: Python 🐍🐍🐍 Tests 🦂
 on:
   push:
     branches-ignore:
     - 'main'
-    # Ignoring the only branch that triggers the build which calls this with it's own push
-    # context via workflow call below will stop double runs of the tox step. But we do still
-    # need conditions on main's HEAD ref for each job as the callee workflow sends a puch event.
     paths:
     - 'python/**'
+    - '!python/**.md'
     - '.github/workflows/python-*'
   pull_request:
     branches:
     - 'main'
     paths:
     - 'python/**'
+    - '!python/**.md'
     - '.github/workflows/python-*'
-  workflow_call: # To be called by build, on a push to main that ups the version
-  # Although this is an event itself - and the event payload is the same as the callee,
-  # the "event_name" is _also_ the same. The event's in the callee are push and workflow_dispatch.
+  workflow_call:
 defaults:
   run:
     shell: bash
     working-directory: python
 jobs:
   quick-test:
-    name: Python 🐍 Pytest 🦂
+    name: Python 🐍🐍🐍 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    - name: 🐍 Set up Python 3.10
-      uses: actions/setup-python@v3
+    - name: 🐍🐍🐍 Set up Python 3.10
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
     - name: 🧱 Install build dependencies
-      run: |
-        make venv
+      run: make venv
     - name: 🦂 Test with pytest
-      run: |
-        make test
+      run: make test
   full-test:
-    name: Python 🐍 Tox 🦂
+    name: Python 🐍🐍🐍 Full Test 🦂
     if: >- 
-      ${{ github.event_name == 'pull_request' ||
-      github.event_name == 'workflow_dispatch' ||
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: '${{ matrix.os }}'
     strategy:
+      fail-fast: false
       matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
         os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@v3
-    - name: 🐍 Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+    - name: 🐍🐍🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: 🍑 Install dependencies

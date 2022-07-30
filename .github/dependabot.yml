@@ -1,0 +1,35 @@
+version: 2
+updates:
+# Workflow files stored in the default location of `.github/workflows`
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+- package-ecosystem: nuget
+  directory: "/C#"
+  schedule:
+    interval: monthly
+- package-ecosystem: gomod
+  directory: "/go"
+  schedule:
+    interval: weekly
+- package-ecosystem: maven
+  directory: "/java"
+  schedule:
+    interval: weekly
+# Julia has no supported ecosystem
+# https://github.com/dependabot/dependabot-core/issues/2105
+- package-ecosystem: npm
+  directory: "/node.js"
+  schedule:
+    interval: monthly
+- package-ecosystem: pip
+  directory: "/python"
+  schedule:
+    interval: weekly
+# R has no supported ecosystem
+# https://github.com/dependabot/dependabot-core/issues/2042
+- package-ecosystem: bundler
+  directory: "/ruby"
+  schedule:
+    interval: monthly

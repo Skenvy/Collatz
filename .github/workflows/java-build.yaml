@@ -1,0 +1,154 @@
+name: Java ☕🦆🌞 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
+on:
+  push:
+    branches:
+    - 'main'
+    paths:
+    - 'java/**'
+    - '!java/**.md'
+    - '.github/workflows/java-*'
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+    working-directory: java
+jobs:
+  context:
+    name: GitHub 🐱‍👤 Context 📑
+    uses: ./.github/workflows/github-context.yaml
+  test:
+    name: Java ☕🦆🌞 Test 🦂
+    uses: ./.github/workflows/java-test.yaml
+  workflow-conditions:
+    name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
+    runs-on: ubuntu-latest
+    outputs:
+      version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+      version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
+    - name: Check if version files changed
+      id: version-file-check
+      run: |
+        export VERSION_FILE="java/pom.xml"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+    - name: Notify on version-file-check
+      run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
+    - name: Check if version specified in version file has not released.
+      id: version-tag-exists
+      run: |
+        git fetch --tags
+        export VER=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout)
+        [ -z "$(git tag -l "java-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+    - name: Notify on version-tag-exists
+      run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
+  # Now any step that should only run on the version change can use
+  # "needs: [workflow-conditions]" Which will yield the condition checks below.
+  # We want to "release" automatically if "version-file-changed" is true on push
+  # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
+  build:
+    name: Java ☕🦆🌞 Build 🧱
+    needs: [test, workflow-conditions]
+    if: >-
+      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: ☕🦆🌞 Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        architecture: x64
+        cache: maven
+    - name: 🏺 Build jar and source
+      run: make build_noninteractive
+    - name: 🆙 Upload jar
+      uses: actions/upload-artifact@v3
+      with:
+        name: Package
+        path: java/target/*.jar
+        if-no-files-found: error
+  release:
+    name: Java ☕🦆🌞 Release 🚰
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@v3
+      with:
+        name: Package
+        path: java/target
+    - name: 🚰 Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        export VER=$(mvn help:evaluate -Dexpression="project.version" -q -DforceStdout)
+        gh release create java-v$VER --generate-notes -t "Java: Version $VER"
+  publish:
+    name: Java ☕🦆🌞 Publish 📦
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: ☕🦆🌞 Set up Java; for publishing to Maven Central Repository
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        server-id: ossrh
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
+        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+        gpg-passphrase: MAVEN_GPG_PASSPHRASE
+    - name: 📦 Publish to the Maven Central Repository
+      run: make deploy_noninteractive_ossrh
+      env:
+        MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+    - name: ☕🦆🌞 Set up Java; for publishing to GitHub Packages
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        server-id: github
+    - name: 📦 Publish to GitHub Packages
+      run: make deploy_noninteractive_github
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs:
+    name: Java ☕🦆🌞 Docs 📄
+    needs: [release, publish]
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: ☕🦆🌞 Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        architecture: x64
+        cache: maven
+    - name: 📄 Docs
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "Github Actions"
+        make docs_deploy SHORTSHA=$(git rev-parse --short HEAD) PASSWORD=$GITHUB_TOKEN
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-java'
