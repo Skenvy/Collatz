@@ -53,9 +53,6 @@ jobs:
   build:
     name: Python 🐍🐍🐍 Build 🧱
     needs: [test, workflow-conditions]
-    if: >-
-      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
-      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -77,6 +74,9 @@ jobs:
   release:
     name: Python 🐍🐍🐍 Release 🚰
     needs: [build]
+    if: >-
+      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
