@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
   # Made callable to be used by any build that wants it's context
   workflow_call:
-permissions: {}
+permissions:
+  contents: write
 defaults:
   run:
     shell: bash

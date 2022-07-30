@@ -12,6 +12,7 @@ on:
         description: 'The gh-pages-* branch to merge from into gh-pages.'
         required: true
         type: string
+permissions: {}
 defaults:
   run:
     shell: bash
