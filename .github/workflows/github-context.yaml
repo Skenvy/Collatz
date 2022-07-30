@@ -1,10 +1,12 @@
 name: Echo 🐱‍💻 GitHub 🐱‍👤 Context 📑
 on:
+  push:
   # If you need to use this to test a payload for some event/condition.
   # Then change this from workflow_dispatch to whatever you need.
   workflow_dispatch:
   # Made callable to be used by any build that wants it's context
   workflow_call:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -17,3 +19,20 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: echo "$GITHUB_CONTEXT"
+  merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3
+    - name: Merge 🧬gh-pages-julia🧬 into 🐱‍👤 gh-pages 📄
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        git fetch --unshallow
+        export FROM_SHA=$(git rev-parse --short=8 origin/gh-pages-julia
+        export TO_SHA=$(git rev-parse --short=8 origin/gh-pages)
+        git checkout gh-pages && git pull
+        git merge --squash origin/gh-pages-julia --allow-unrelated-histories -X theirs
+        git commit -m "Auto-merge gh-pages-julia@($FROM_SHA) to gh-pages@($TO_SHA)" --allow-empty
+        git push
