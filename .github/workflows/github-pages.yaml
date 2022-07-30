@@ -12,6 +12,8 @@ on:
         description: 'The gh-pages-* branch to merge from into gh-pages.'
         required: true
         type: string
+permissions:
+  contents: write
 defaults:
   run:
     shell: bash
@@ -21,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: Merge 🧬${{ inputs.merge_from }}🧬 into 🐱‍👤 gh-pages 📄
       run: |
         git config --local user.email "actions@github.com"
