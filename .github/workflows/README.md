@@ -126,6 +126,7 @@ on:
     - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_call:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -150,8 +151,7 @@ jobs:
   full-test:
     name: <Language> <language-emojis> Full Test 🦂
     if: >- 
-      ${{ github.event_name == 'pull_request' ||
-      github.event_name == 'workflow_dispatch' ||
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: '${{ matrix.os }}'
     strategy:

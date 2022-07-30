@@ -1,0 +1,30 @@
+name: Ruby 🔻💎🔻 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - 'ruby/**'
+    - '!ruby/**.md'
+    - '.github/workflows/ruby-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'ruby/**'
+    - '!ruby/**.md'
+    - '.github/workflows/ruby-*'
+  workflow_call:
+permissions: {}
+defaults:
+  run:
+    shell: bash
+    working-directory: ruby
+jobs:
+  quick-test:
+    name: Ruby 🔻💎🔻 Quick Test 🦂
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@v3

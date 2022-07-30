@@ -39,9 +39,9 @@ jobs:
       run: make test_noninteractive
   full-test:
     name: Java ☕🦆🌞 Full Test 🦂
-    # if: >- 
-    #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-    #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: '${{ matrix.os }}'
     strategy:
       fail-fast: false
