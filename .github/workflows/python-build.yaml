@@ -61,7 +61,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🐍🐍🐍 Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@c4e89fac7e8767b327bbad6cb4d859eda999cf08 # v4.1.0
       with:
         python-version: '3.10'
     - name: 🧱 Install build dependencies
@@ -69,7 +69,7 @@ jobs:
     - name: 🎡 Build wheel and source
       run: make build
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
       with:
         name: built-dists
         path: python/dist/
@@ -84,7 +84,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🆒 Download dists
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
       with:
         name: built-dists
         path: python/dist
@@ -109,19 +109,19 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🆒 Download dists
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
       with:
         name: built-dists
         path: python/dist
     - name: 📦 Publish to Test PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1.5
+      uses: pypa/gh-action-pypi-publish@37f50c210e3d2f9450da2cd423303d6a14a6e29f # v1.5.1
       with:
         packages_dir: python/dist
         skip_existing: true
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
     - name: 📦 Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1.5
+      uses: pypa/gh-action-pypi-publish@37f50c210e3d2f9450da2cd423303d6a14a6e29f # v1.5.1
       with:
         packages_dir: python/dist
         password: ${{ secrets.PYPI_API_TOKEN }}

@@ -69,7 +69,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
-      uses: Skenvy/julia-release@v1
+      uses: Skenvy/julia-release@08c907b2de6c6f85c1e9de5d1fb3e6a9ae8928c9 # v1.0.1-md
       id: release_step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -104,7 +104,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🔴🟢🟣 Set up Julia
-      uses: julia-actions/setup-julia@v1.8
+      uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:
         version: '1.7.2'
     - name: 📄 Docs
