@@ -197,6 +197,7 @@ on:
     - '!<language>/**.md'
     - '.github/workflows/<language>-*'
   workflow_dispatch:
+permissions: {}
 defaults:
   run:
     shell: bash
