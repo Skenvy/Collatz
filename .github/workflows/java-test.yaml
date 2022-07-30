@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: ☕🦆🌞 Set up Java
       uses: actions/setup-java@v3
       with:
@@ -52,7 +52,7 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
       uses: actions/setup-java@v3
       with:
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: ☕🦆🌞 Set up Java
       uses: actions/setup-java@v3
       with:

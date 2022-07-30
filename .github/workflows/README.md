@@ -138,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -162,7 +162,7 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language> ${{ matrix.version }}
       uses: <gh-action-setup-language@semver>
       with:
@@ -177,7 +177,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #   - name: 🏁 Checkout
-  #     uses: actions/checkout@v3
+  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
   #   - name: <language-emojis> Set up <Language>
   #     uses: <gh-action-setup-language@semver>
   #     with:
@@ -217,7 +217,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -248,7 +248,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -270,7 +270,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
     #   uses: actions/download-artifact@v3
     #   with:
@@ -290,7 +290,7 @@ jobs:
     # Although the dists are built uses checkout to satisfy refs/tags existence
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
     #   uses: actions/download-artifact@v3
     #   with:
@@ -306,7 +306,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
