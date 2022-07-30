@@ -1,13 +1,14 @@
 name: Python 🐍🐍🐍 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
 on:
   push:
-    branches:
-    - 'main'
+    # branches:
+    # - 'main'
     paths:
     - 'python/**'
     - '!python/**.md'
     - '.github/workflows/python-*'
   workflow_dispatch:
+permissions: {}
 defaults:
   run:
     shell: bash
