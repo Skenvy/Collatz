@@ -265,6 +265,8 @@ jobs:
   release:
     name: <Language> <language-emojis> Release 🚰
     needs: [build]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -299,6 +301,8 @@ jobs:
   docs:
     name: <Language> <language-emojis> Docs 📄
     needs: [release, publish]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -316,6 +320,8 @@ jobs:
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
+    permissions:
+      contents: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-<language>'

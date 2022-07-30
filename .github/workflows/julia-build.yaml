@@ -8,6 +8,7 @@ on:
     - '!julia/**.md'
     - '.github/workflows/julia-*'
   workflow_dispatch:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -54,6 +55,8 @@ jobs:
   release-and-register:
     name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
     needs: [test, workflow-conditions]
+    permissions:
+      contents: write
     if: >-
       ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
       github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
@@ -92,6 +95,8 @@ jobs:
   docs:
     name: Julia 🔴🟢🟣 Docs 📄
     needs: [release-and-register]
+    permissions:
+      contents: write
     # Couldn't find whether an unset value becomes null or empty. Be safe. Stay hydrated.
     if: ${{ needs.release-and-register.outputs.new_version != null && needs.release-and-register.outputs.new_version != '' }}
     runs-on: ubuntu-latest
@@ -111,6 +116,8 @@ jobs:
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
+    permissions:
+      contents: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-julia'

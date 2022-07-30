@@ -8,6 +8,7 @@ on:
     - '!go/**.md'
     - '.github/workflows/go-*'
   workflow_dispatch:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -75,6 +76,8 @@ jobs:
   release:
     name: Go 🔷🐀🔷 Release 🚰
     needs: [build]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -97,6 +100,8 @@ jobs:
   docs:
     name: Go 🔷🐀🔷 Docs 📄
     needs: [release, publish]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -125,6 +130,8 @@ jobs:
   docs-merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     needs: [docs]
+    permissions:
+      contents: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-go'

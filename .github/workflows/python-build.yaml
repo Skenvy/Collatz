@@ -77,6 +77,8 @@ jobs:
   release:
     name: Python 🐍🐍🐍 Release 🚰
     needs: [build]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
