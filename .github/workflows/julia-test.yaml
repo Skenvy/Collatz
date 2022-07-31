@@ -15,6 +15,7 @@ on:
     - '!julia/**.md'
     - '.github/workflows/julia-*'
   workflow_call:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -26,9 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🔴🟢🟣 Set up Julia
-      uses: julia-actions/setup-julia@v1.8
+      uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:
         version: '1.7.2' # The current local version -- to use the same recipes as local
         arch: 'x64'
@@ -51,14 +52,14 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🔴🟢🟣 Set up Julia ${{ matrix.version }}
-      uses: julia-actions/setup-julia@v1.8
+      uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:
         version: ${{ matrix.version }}
         arch: ${{ matrix.arch }}
     - name: 🧰 Cache
-      uses: actions/cache@v3
+      uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129 # v3.0.5
       env:
         cache-name: cache-artifacts
       with:
@@ -69,7 +70,7 @@ jobs:
           ${{ runner.os }}-test-
           ${{ runner.os }}-
     - name: 🦂 Test
-      uses: julia-actions/julia-runtest@v1.7
+      uses: julia-actions/julia-runtest@161c97cbc529b36fae585928ed5db05b00fdf2bc # v1.7.0
       with:
         project: julia
   docs:
@@ -77,9 +78,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🔴🟢🟣 Set up Julia
-      uses: julia-actions/setup-julia@v1.8
+      uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:
         version: '1.7.2'
     - name: 📄 Docs
