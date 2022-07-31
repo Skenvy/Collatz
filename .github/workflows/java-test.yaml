@@ -15,6 +15,7 @@ on:
     - '!java/**.md'
     - '.github/workflows/java-*'
   workflow_call:
+permissions: {}
 defaults:
   run:
     shell: bash
@@ -26,9 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3 # v3.4.1
       with:
         distribution: 'adopt'
         java-version: '11'
@@ -39,8 +40,7 @@ jobs:
   full-test:
     name: Java ☕🦆🌞 Full Test 🦂
     if: >- 
-      ${{ github.event_name == 'pull_request' ||
-      github.event_name == 'workflow_dispatch' ||
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: '${{ matrix.os }}'
     strategy:
@@ -52,9 +52,9 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3 # v3.4.1
       with:
         distribution: ${{ matrix.java-distribution }}
         java-version: ${{ matrix.java-version }}
@@ -67,9 +67,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3 # v3.4.1
       with:
         distribution: 'adopt'
         java-version: '11'
