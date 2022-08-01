@@ -1,26 +1,28 @@
 package collatz
 
 import (
-	"regexp"
+	"math/big"
+	"reflect"
 	"testing"
 )
 
+// AssertEqual checks if values are equal
+func AssertEqual(t *testing.T, a interface{}, b interface{}) {
+	if reflect.DeepEqual(a, b) {
+		return
+	}
+	// debug.PrintStack()
+	t.Errorf("Received %v (type %v), expected %v (type %v)", a, reflect.TypeOf(a), b, reflect.TypeOf(b))
+}
+
 // TestHelloName calls greetings.Hello with a name, checking
 // for a valid return value.
-func TestHelloName(t *testing.T) {
-	name := "Gladys"
-	want := regexp.MustCompile(`\b` + name + `\b`)
-	msg, err := Hello("Gladys")
-	if !want.MatchString(msg) || err != nil {
-		t.Fatalf(`Hello("Gladys") = %q, %v, want match for %#q, nil`, msg, err, want)
-	}
+func TestFunction(t *testing.T) {
+	AssertEqual(t, Function(ZERO()), ZERO())
 }
 
 // TestHelloEmpty calls greetings.Hello with an empty string,
 // checking for an error.
-func TestHelloEmpty(t *testing.T) {
-	msg, err := Hello("")
-	if msg != "" || err == nil {
-		t.Fatalf(`Hello("") = %q, %v, want "", error`, msg, err)
-	}
+func TestReverseFunction(t *testing.T) {
+	AssertEqual(t, ReverseFunction(ZERO()), []*big.Int{ZERO()})
 }
