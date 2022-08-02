@@ -1,4 +1,4 @@
-# [Collatz](https://github.com/Skenvy/Collatz): [Rust](https://github.com/Skenvy/Collatz/tree/main/rust) ♥️🦀♥️
+# [Collatz](https://github.com/Skenvy/Collatz): [Rust](https://github.com/Skenvy/Collatz/tree/main/rust) ❤️🦀❤️
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Rust](https://www.rust-lang.org/).
 ## Pre development notes.
 * [The default Rust crate index](https://crates.io/crates)
