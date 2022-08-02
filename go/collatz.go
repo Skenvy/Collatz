@@ -7,7 +7,6 @@ package collatz
 
 import (
 	"fmt"
-	"log"
 	"math/big"
 )
 
@@ -187,24 +186,25 @@ func __assert_sane_parameterisation(P *big.Int, a *big.Int, b *big.Int) error {
 //     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
 //     a (*big.Int): Factor by which to multiply n.
 //     b (*big.Int): Value to add to the scaled value of n.
-func ParameterisedFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) *big.Int {
+func ParameterisedFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (*big.Int, error) {
 	err := __assert_sane_parameterisation(P, a, b)
 	if err != nil {
-		log.Fatal(err.Error())
+		return nil, err
 	}
 	q, m := new(big.Int), new(big.Int)
 	q, m = q.DivMod(n, P, m)
 	if m.Cmp(ZERO()) == 0 { // n%P is zero
-		return q // n/P
+		return q, nil // n/P
 	} else {
-		return new(big.Int).Add(new(big.Int).Mul(a, n), b) //(a*n + b)
+		return new(big.Int).Add(new(big.Int).Mul(a, n), b), nil //(a*n + b)
 	}
 }
 
 // Returns the output of a single application of the Collatz function.
 //     n (*big.Int): The value on which to perform the Collatz-esque function
 func Function(n *big.Int) *big.Int {
-	return ParameterisedFunction(n, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
+	res, _ := ParameterisedFunction(n, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
+	return res
 }
 
 // Returns the output of a single application of a Collatz-esque reverse function.
@@ -212,7 +212,7 @@ func Function(n *big.Int) *big.Int {
 //     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P)
 //     a (*big.Int): Factor by which to multiply n.
 //     b (*big.Int): Value to add to the scaled value of n.
-func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) []*big.Int {
+func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) ([]*big.Int, error) {
 	// Every input can be reversed as the result of "n/P" division, which yields
 	// "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
 	// muliplication step was taken instead of the division by the modulus, then
@@ -222,7 +222,7 @@ func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int
 	// attempt (f(n) - b)/a)
 	err := __assert_sane_parameterisation(P, a, b)
 	if err != nil {
-		log.Fatal(err.Error())
+		return nil, err
 	}
 	var pre_values []*big.Int = []*big.Int{new(big.Int).Mul(P, n)} // init as P*n
 	// (n-b)%a is zero AND (n-b)%(P*a) is not zero
@@ -232,11 +232,12 @@ func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int
 	if m.Cmp(ZERO()) == 0 && new(big.Int).Mod(n_sub_b, (new(big.Int).Mul(P, a))).Cmp(ZERO()) != 0 {
 		pre_values = append(pre_values, q)
 	}
-	return pre_values
+	return pre_values, nil
 }
 
 // Returns the output of a single application of the Collatz reverse function.
 //     n (*big.Int): The value on which to perform the reverse Collatz function
 func ReverseFunction(n *big.Int) []*big.Int {
-	return ParameterisedReverseFunction(n, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
+	res, _ := ParameterisedReverseFunction(n, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
+	return res
 }

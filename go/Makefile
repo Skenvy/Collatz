@@ -47,7 +47,7 @@ build: test
 	go build -o collatz ./collatz
 
 run: build
-	./collatz/collatz
+	./collatz/collatz 27
 
 publish:
 	GOPROXY=proxy.golang.org go list -m github.com/Skenvy/Collatz/go@go-v$$(cat go.ver)
