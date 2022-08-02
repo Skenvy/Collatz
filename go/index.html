@@ -95,7 +95,14 @@
 			</div>
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
-				
+				<p>
+Provides the basic functionality to interact with the Collatz conjecture.
+The parameterisation uses the same (P,a,b) notation as Conway&#39;s generalisations.
+Besides the function and reverse function, there is also functionality to
+retrieve the hailstone sequence, the &#34;stopping time&#34;/&#34;total stopping time&#34;, or
+tree-graph.
+</p>
+
 				
 			</div>
 		</div>
@@ -114,8 +121,62 @@
 			
 			
 				
-				<dd><a href="#Hello">func Hello(name string) (string, error)</a></dd>
+				<dd><a href="#DEFAULT_A">func DEFAULT_A() *big.Int</a></dd>
 			
+				
+				<dd><a href="#DEFAULT_B">func DEFAULT_B() *big.Int</a></dd>
+			
+				
+				<dd><a href="#DEFAULT_P">func DEFAULT_P() *big.Int</a></dd>
+			
+				
+				<dd><a href="#Function">func Function(n *big.Int) *big.Int</a></dd>
+			
+				
+				<dd><a href="#KNOWN_CYCLES_INT">func KNOWN_CYCLES_INT() [4][]*big.Int</a></dd>
+			
+				
+				<dd><a href="#ParameterisedFunction">func ParameterisedFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (*big.Int, error)</a></dd>
+			
+				
+				<dd><a href="#ParameterisedReverseFunction">func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) ([]*big.Int, error)</a></dd>
+			
+				
+				<dd><a href="#ReverseFunction">func ReverseFunction(n *big.Int) []*big.Int</a></dd>
+			
+				
+				<dd><a href="#VERIFIED_MAXIMUM">func VERIFIED_MAXIMUM() *big.Int</a></dd>
+			
+				
+				<dd><a href="#VERIFIED_MINIMUM">func VERIFIED_MINIMUM() *big.Int</a></dd>
+			
+				
+				<dd><a href="#ZERO">func ZERO() *big.Int</a></dd>
+			
+			
+				
+				<dd><a href="#FailedSaneParameterCheck">type FailedSaneParameterCheck</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#FailedSaneParameterCheck.Error">func (fspc FailedSaneParameterCheck) Error() string</a></dd>
+				
+			
+				
+				<dd><a href="#SaneParameterErrMsg">type SaneParameterErrMsg</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SaneParameterErrMsg.String">func (spem SaneParameterErrMsg) String() string</a></dd>
+				
+			
+				
+				<dd><a href="#SequenceState">type SequenceState</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#SequenceState.String">func (ss SequenceState) String() string</a></dd>
+				
 			
 			
 			</dl>
@@ -143,20 +204,340 @@
 		
 			
 			
-			<h2 id="Hello">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=96:135#L1">Hello</a>
-				<a class="permalink" href="#Hello">&#xb6;</a>
+			<h2 id="DEFAULT_A">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=997:1022#L22">DEFAULT_A</a>
+				<a class="permalink" href="#DEFAULT_A">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func Hello(name <a href="/pkg/builtin/#string">string</a>) (<a href="/pkg/builtin/#string">string</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+			<pre>func DEFAULT_A() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
 			<p>
-Hello returns a greeting for the named person.
+Default value for a, the input&#39;s multiplicand.
 </p>
 
 			
 			
 
 		
+			
+			
+			<h2 id="DEFAULT_B">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1124:1149#L27">DEFAULT_B</a>
+				<a class="permalink" href="#DEFAULT_B">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DEFAULT_B() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+Default value for b, the value added to the multiplied value.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="DEFAULT_P">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=885:910#L17">DEFAULT_P</a>
+				<a class="permalink" href="#DEFAULT_P">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func DEFAULT_P() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+Default value for P, the modulus condition.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="Function">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=7623:7657#L195">Function</a>
+				<a class="permalink" href="#Function">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func Function(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+Returns the output of a single application of the Collatz function.
+</p>
+<pre>n (*big.Int): The value on which to perform the Collatz-esque function
+</pre>
+
+			
+			
+
+		
+			
+			
+			<h2 id="KNOWN_CYCLES_INT">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1806:1843#L51">KNOWN_CYCLES_INT</a>
+				<a class="permalink" href="#KNOWN_CYCLES_INT">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func KNOWN_CYCLES_INT() [4][]*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+The four known cycles for the standard parameterisation
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="ParameterisedFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=7082:7174#L179">ParameterisedFunction</a>
+				<a class="permalink" href="#ParameterisedFunction">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ParameterisedFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, a *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, b *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) (*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+			<p>
+Returns the output of a single application of a Collatz-esque function.
+</p>
+<pre>n (*big.Int): The value on which to perform the Collatz-esque function
+P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+a (*big.Int): Factor by which to multiply n.
+b (*big.Int): Value to add to the scaled value of n.
+</pre>
+
+			
+			
+
+		
+			
+			
+			<h2 id="ParameterisedReverseFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=8105:8206#L205">ParameterisedReverseFunction</a>
+				<a class="permalink" href="#ParameterisedReverseFunction">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ParameterisedReverseFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, a *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, b *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) ([]*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+			<p>
+Returns the output of a single application of a Collatz-esque reverse function.
+</p>
+<pre>n (*big.Int): The value on which to perform the reverse Collatz function
+P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P)
+a (*big.Int): Factor by which to multiply n.
+b (*big.Int): Value to add to the scaled value of n.
+</pre>
+
+			
+			
+
+		
+			
+			
+			<h2 id="ReverseFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=9334:9377#L230">ReverseFunction</a>
+				<a class="permalink" href="#ReverseFunction">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ReverseFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) []*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+Returns the output of a single application of the Collatz reverse function.
+</p>
+<pre>n (*big.Int): The value on which to perform the reverse Collatz function
+</pre>
+
+			
+			
+
+		
+			
+			
+			<h2 id="VERIFIED_MAXIMUM">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2217:2249#L58">VERIFIED_MAXIMUM</a>
+				<a class="permalink" href="#VERIFIED_MAXIMUM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func VERIFIED_MAXIMUM() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+The current value up to which the standard parameterisation has been verified.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="VERIFIED_MINIMUM">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2569:2601#L69">VERIFIED_MINIMUM</a>
+				<a class="permalink" href="#VERIFIED_MINIMUM">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func VERIFIED_MINIMUM() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+The current value down to which the standard parameterisation has been verified.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="ZERO">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1225:1245#L32">ZERO</a>
+				<a class="permalink" href="#ZERO">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func ZERO() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<p>
+Return a big.Int with a value of 0.
+</p>
+
+			
+			
+
+		
+		
+			
+			
+			<h2 id="FailedSaneParameterCheck">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3512:3561#L99">FailedSaneParameterCheck</a>
+				<a class="permalink" href="#FailedSaneParameterCheck">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Thrown when either P, the modulus, or a, the multiplicand, are zero.
+</p>
+
+			<pre>type FailedSaneParameterCheck <a href="#SaneParameterErrMsg">SaneParameterErrMsg</a></pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="FailedSaneParameterCheck.Error">func (FailedSaneParameterCheck) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3653:3704#L102">Error</a>
+					<a class="permalink" href="#FailedSaneParameterCheck.Error">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (fspc <a href="#FailedSaneParameterCheck">FailedSaneParameterCheck</a>) Error() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+Construct a FailedSaneParameterCheck with a message associated with the provided enum.
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="SaneParameterErrMsg">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2858:2888#L78">SaneParameterErrMsg</a>
+				<a class="permalink" href="#SaneParameterErrMsg">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Error message constants, to be used as input to the FailedSaneParameterCheck
+</p>
+
+			<pre>type SaneParameterErrMsg <a href="/pkg/builtin/#int64">int64</a></pre>
+
+			
+				
+				<pre>const (
+    <span class="comment">// Message to print in the FailedSaneParameterCheck if P, the modulus, is zero.</span>
+    <span id="SANE_PARAMS_P">SANE_PARAMS_P</span> <a href="#SaneParameterErrMsg">SaneParameterErrMsg</a> = <a href="/pkg/builtin/#iota">iota</a>
+    <span class="comment">// Message to print in the FailedSaneParameterCheck if a, the multiplicand, is zero.</span>
+    <span id="SANE_PARAMS_A">SANE_PARAMS_A</span>
+)</pre>
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="SaneParameterErrMsg.String">func (SaneParameterErrMsg) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3183:3230#L88">String</a>
+					<a class="permalink" href="#SaneParameterErrMsg.String">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (spem <a href="#SaneParameterErrMsg">SaneParameterErrMsg</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+Get the string associated with the SaneParameterErrMsg
+</p>
+
+				
+				
+				
+			
+		
+			
+			
+			<h2 id="SequenceState">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3956:3980#L109">SequenceState</a>
+				<a class="permalink" href="#SequenceState">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+SequenceState for Cycle Control: Descriptive flags to indicate
+when some event occurs in the hailstone sequences or tree graph
+reversal, when set to verbose, or stopping time check.
+</p>
+
+			<pre>type SequenceState <a href="/pkg/builtin/#int64">int64</a></pre>
+
+			
+				
+				<pre>const (
+    <span class="comment">// A Hailstone sequence state that indicates the stopping time, a value less than the initial, has been reached.</span>
+    <span id="STOPPING_TIME">STOPPING_TIME</span> <a href="#SequenceState">SequenceState</a> = <a href="/pkg/builtin/#iota">iota</a>
+    <span class="comment">// A Hailstone sequence state that indicates the total stopping time, a value of 1, has been reached.</span>
+    <span id="TOTAL_STOPPING_TIME">TOTAL_STOPPING_TIME</span>
+    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the first occurence of a value that subsequently forms a cycle.</span>
+    <span id="CYCLE_INIT">CYCLE_INIT</span>
+    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the last occurence of a value that has already formed a cycle.</span>
+    <span id="CYCLE_LENGTH">CYCLE_LENGTH</span>
+    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the sequence or traversal has executed some imposed &#39;maximum&#39; amount of times.</span>
+    <span id="MAX_STOP_OOB">MAX_STOP_OOB</span>
+    <span class="comment">// A Hailstone sequence state that indicates the sequence terminated by reaching &#34;0&#34;, a special type of &#34;stopping time&#34;.</span>
+    <span id="ZERO_STOP">ZERO_STOP</span>
+)</pre>
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="SequenceState.String">func (SequenceState) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=4878:4917#L127">String</a>
+					<a class="permalink" href="#SequenceState.String">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (ss <a href="#SequenceState">SequenceState</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
+				<p>
+Get the string associated with the SequenceState
+</p>
+
+				
+				
+				
+			
 		
 	
 
