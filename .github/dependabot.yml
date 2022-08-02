@@ -33,3 +33,7 @@ updates:
   directory: "/ruby"
   schedule:
     interval: monthly
+- package-ecosystem: cargo
+  directory: "/rust"
+  schedule:
+    interval: monthly
