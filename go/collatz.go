@@ -7,6 +7,7 @@ package collatz
 
 import (
 	"fmt"
+	"math"
 	"math/big"
 )
 
@@ -41,6 +42,11 @@ func DEFAULT_B() *big.Int {
 // Return a big.Int with a value of 0.
 func ZERO() *big.Int {
 	return big.NewInt(0)
+}
+
+// Return a big.Int with a value of 1.
+func ONE() *big.Int {
+	return big.NewInt(1)
 }
 
 // Map an array of ints to an array of big ints, for some mapping function.
@@ -128,7 +134,7 @@ const (
 	// A Hailstone and TreeGraph sequence state that indicates the last occurence of a value that has already formed a cycle.
 	CYCLE_LENGTH
 	// A Hailstone and TreeGraph sequence state that indicates the sequence or traversal has executed some imposed 'maximum' amount of times.
-	MAX_STOP_OOB
+	MAX_STOP_OUT_OF_BOUNDS
 	// A Hailstone sequence state that indicates the sequence terminated by reaching "0", a special type of "stopping time".
 	ZERO_STOP
 )
@@ -144,8 +150,8 @@ func (ss SequenceState) String() string {
 		return "CYCLE_INIT"
 	case CYCLE_LENGTH:
 		return "CYCLE_LENGTH"
-	case MAX_STOP_OOB:
-		return "MAX_STOP_OOB"
+	case MAX_STOP_OUT_OF_BOUNDS:
+		return "MAX_STOP_OUT_OF_BOUNDS"
 	case ZERO_STOP:
 		return "ZERO_STOP"
 	}
@@ -240,4 +246,115 @@ func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int
 func ReverseFunction(n *big.Int) []*big.Int {
 	res, _ := ParameterisedReverseFunction(n, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
 	return res
+}
+
+// Provides the appropriate lambda to use to check if iterations on an initial
+// value have reached either the stopping time, or total stopping time.
+//     n (*big.Int): The initial value to confirm against a stopping time check.
+//     total_stop (boolean): If false, the lambda will confirm that iterations of n
+//          have reached the oriented stopping time to reach a value closer to 0.
+//          If true, the lambda will simply check equality to 1.
+// return (Function<*big.Int, Boolean>): The lambda to check for the stopping time.
+func stoppingTimeTerminus(n *big.Int, total_stop bool) func(x *big.Int) bool {
+	one := ONE()
+	zero := ZERO()
+	if total_stop {
+		return func(x *big.Int) bool { return x.Cmp(one) == 0 }
+	} else if n.Cmp(zero) >= 0 {
+		return func(x *big.Int) bool { return ((x.Cmp(n) == -1) && (x.Cmp(zero) == 1)) }
+	} else {
+		return func(x *big.Int) bool { return ((x.Cmp(n) == 1) && (x.Cmp(zero) == -1)) }
+	}
+}
+
+// Contains the results of computing a hailstone sequence via {@code Collatz.hailstoneSequence(~)}.
+type HailstoneSequence struct {
+	// The set of values that comprise the hailstone sequence.
+	values    []*big.Int
+	terminate func(x *big.Int) bool
+	// A terminal condition that reflects the final state of the hailstone sequencing,
+	// whether than be that it succeeded at determining the stopping time, the total
+	// stopping time, found a cycle, or got stuck on zero (or surpassed the max total).
+	terminalCondition SequenceState
+	// A status value that has different meanings depending on what the terminal condition
+	// was. If the sequence completed either via reaching the stopping or total stopping time,
+	// or getting stuck on zero, then this value is the stopping/terminal time. If the sequence
+	// got stuck on a cycle, then this value is the cycle length. If the sequencing passes the
+	// maximum stopping time then this is the value that was provided as that maximum.
+	terminalStatus int
+}
+
+// Initialise and compute a new Hailstone Sequence.
+//     initialValue (*big.Int): The value to begin the hailstone sequence from.
+//     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+//     a (*big.Int): Factor by which to multiply n.
+//     b (*big.Int): Value to add to the scaled value of n.
+//     maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
+//     totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+//          (number of iterations to obtain 1) rather than the regular stopping time (number
+//          of iterations to reach a value less than the initial value).
+
+func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.Int, b *big.Int, maxTotalStoppingTime int, totalStoppingTime bool) (*HailstoneSequence, error) {
+	var hs HailstoneSequence
+	hs.terminate = stoppingTimeTerminus(initialValue, totalStoppingTime)
+	if initialValue.Cmp(ZERO()) == 0 {
+		// 0 is always an immediate stop.
+		hs.values = []*big.Int{ZERO()}
+		hs.terminalCondition = ZERO_STOP
+		hs.terminalStatus = 0
+	} else if initialValue.Cmp(ONE()) == 0 {
+		// 1 is always an immediate stop, with 0 stopping time.
+		hs.values = []*big.Int{ONE()}
+		hs.terminalCondition = TOTAL_STOPPING_TIME
+		hs.terminalStatus = 0
+	} else {
+		// Otherwise, hail!
+		minMaxTotalStoppingTime := int(math.Max(float64(maxTotalStoppingTime), 1))
+		hs.values = []*big.Int{initialValue}
+		var cycleMap map[string]bool = make(map[string]bool, maxTotalStoppingTime+1)
+		cycleMap[initialValue.String()] = true
+		zero := ZERO()
+		for k := 1; k <= minMaxTotalStoppingTime; k++ {
+			next, err := ParameterisedFunction(hs.values[k-1], P, a, b)
+			if err != nil {
+				return nil, err
+			}
+			// Check if the next hailstone is either the stopping time, total
+			// stopping time, the same as the initial value, or stuck at zero.
+			if hs.terminate(next) {
+				hs.values = append(hs.values, next)
+				if next.Cmp(ONE()) == 1 {
+					hs.terminalCondition = TOTAL_STOPPING_TIME
+				} else {
+					hs.terminalCondition = STOPPING_TIME
+				}
+				hs.terminalStatus = k
+				return &hs, nil
+			}
+			if cycleMap[next.String()] {
+				hs.values = append(hs.values, next)
+				cycle_init := 1
+				for j := 1; j <= k; j++ {
+					if hs.values[k-j].Cmp(next) == 0 {
+						cycle_init = j
+						break
+					}
+				}
+				hs.terminalCondition = CYCLE_LENGTH
+				hs.terminalStatus = cycle_init
+				return &hs, nil
+			}
+			if next.Cmp(zero) == 0 {
+				hs.values = append(hs.values, zero)
+				hs.terminalCondition = ZERO_STOP
+				hs.terminalStatus = -k
+				return &hs, nil
+			}
+			hs.values = append(hs.values, next)
+			cycleMap[next.String()] = true
+		}
+		hs.terminalCondition = MAX_STOP_OUT_OF_BOUNDS
+		hs.terminalStatus = minMaxTotalStoppingTime
+	}
+	return &hs, nil
 }
