@@ -17,6 +17,7 @@ For a v1.0.0 release, handling arbitrary integers is a nice to have, but not req
 | [Python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | **#TODO** | _N/A_ |
 | [R](https://github.com/Skenvy/Collatz/tree/main/R) | **#TODO** | **#TODO** | _N/A_ |
 | [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) | **#TODO** | **#TODO** | **#TODO** |
+| [Rust](https://github.com/Skenvy/Collatz/tree/main/rust) | **#TODO** | **#TODO** | **#TODO** |
 ## Basic functionality.
 ### Core functionality for v1
 * The **function**, _optionally_ parameterisable.
