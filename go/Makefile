@@ -11,7 +11,11 @@ godoc:
 
 docs:
 	mkdir docs/lib/godoc -p
-	~/go/bin/godoc -goroot $$(pwd) -url /pkg/github.com/Skenvy/Collatz/go/ > docs/index.html && sed -i '1d' docs/index.html
+	~/go/bin/godoc -goroot $$(pwd) -url /pkg/github.com/Skenvy/Collatz/go/ > docs/index.html
+	# Remove the first line directed to the file.
+	sed -i '1d' docs/index.html
+	# sed the html to make the href's relative, otherwise they don't work on gh pages.
+	sed -i 's|"/lib/godoc|"./lib/godoc|g' docs/index.html
 	cp -f ~/go/pkg/mod/golang.org/x/tools@$(GODOC_VER)/godoc/static/**.css docs/lib/godoc/
 	cp -f ~/go/pkg/mod/golang.org/x/tools@$(GODOC_VER)/godoc/static/**.js docs/lib/godoc/
 
@@ -32,17 +36,20 @@ clean:
 	go clean .
 	go clean ./collatz
 
-# locally, if test fails on the tidy, running it again shouldn't fail tidy again.
-# its intent is to catch an untidy mod in CI if not run before committing.
+# The intent is to catch an untidy mod in CI if not run before committing,
+# and if not automatically done by the IDE / plugin.
+format: clean
+	[[ -z "$$(gofmt -l .)" ]] && echo "All **.go files already formatted" || (echo "These **.go files need a 'gofmt -w .'" && echo "$$(gofmt -l .)" && exit 1)
+	[[ -z "$$($(TIDY) -v 2>&1)" ]] && echo "go.mod file is tidy" || (echo "go.mod file needs a '$(TIDY)'" && exit 1)
+
 test: clean
-	[[ -z "$$($(TIDY) -v 2>&1)" ]] && echo "go.mod file is tidy" || (echo "go.mod file needs a tidy" && exit 1)
 	go test -v .
 
 build: test
 	go build -o collatz ./collatz
 
 run: build
-	./collatz/collatz
+	./collatz/collatz 27
 
 publish:
 	GOPROXY=proxy.golang.org go list -m github.com/Skenvy/Collatz/go@go-v$$(cat go.ver)

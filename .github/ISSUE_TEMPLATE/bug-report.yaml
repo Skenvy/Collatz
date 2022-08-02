@@ -16,6 +16,7 @@ body:
       - Python
       - R
       - Ruby
+      - Rust
   validations:
     required: true
 - type: dropdown

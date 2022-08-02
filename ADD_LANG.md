@@ -12,8 +12,9 @@ touch <language>/README.md
 ```
 * Search [github/gitignore](https://github.com/github/gitignore) for community recomendations.
 * Consider what, if any applicable, can be added to [dependabot](https://github.com/Skenvy/Collatz/blob/main/.github/dependabot.yml).
-* Add a `| [<language>](https://github.com/Skenvy/Collatz/tree/main/<language>) | **#TODO** | **#TODO** | **#TODO** |` to the main [README's implementation list](https://github.com/Skenvy/Collatz/blob/main/README.md#implementations).
-* Add a `* [<language>](https://github.com/Skenvy/Collatz/blob/main/<language>/devlog.md)` to the main [devlog's devlog list](https://github.com/Skenvy/Collatz/blob/main/devlog.md#devlogs).
+* Add a `| [<Language>](https://github.com/Skenvy/Collatz/tree/main/<language>) | **#TODO** | **#TODO** | **#TODO** |` to the main [README's implementation list](https://github.com/Skenvy/Collatz/blob/main/README.md#implementations).
+* Add a `* [<Language>](https://github.com/Skenvy/Collatz/blob/main/<language>/devlog.md)` to the main [devlog's devlog list](https://github.com/Skenvy/Collatz/blob/main/devlog.md#devlogs).
+* Add a `- <Language>` to each input with `label: Implementation Language` under the [ISSUE_TEMPLATE](https://github.com/Skenvy/Collatz/tree/main/.github/ISSUE_TEMPLATE) folder.
 ---
 ## Add to the \<implementation\>/readme
 ---

@@ -16,3 +16,5 @@ I'm settling for now on a very hacky way of slapping together the MVP of docs, w
 1. `rm .git/index ; git clean -fdx`
 1. `git commit -m "Initial empty orphan" --allow-empty`
 1. `git push --set-upstream origin gh-pages-go`
+
+After starting to write the actual code for this implementation, I've learned quite abruptly that Go does not support overloading, nor does it support optional parameters. It also took a debug warning from the IDE to mention that function's are only exported if they start with a capital. Python and Julia both supported optional arguments so there was no need for overloading. Java does have overloading. So this will be the first implementation that does not have either. As such, we're choosing here to split the function names as "Parameterised*" and "*" for the core functions we're adding. It also appears there's no in built assertion, but we can make one work with `reflect.DeepEqual`.
