@@ -36,11 +36,13 @@ clean:
 	go clean .
 	go clean ./collatz
 
-# locally, if test fails on the tidy, running it again shouldn't fail tidy again.
-# its intent is to catch an untidy mod in CI if not run before committing.
-test: clean
+# The intent is to catch an untidy mod in CI if not run before committing,
+# and if not automatically done by the IDE / plugin.
+format: clean
 	[[ -z "$$(gofmt -l .)" ]] && echo "All **.go files already formatted" || (echo "These **.go files need a 'gofmt -w .'" && echo "$$(gofmt -l .)" && exit 1)
 	[[ -z "$$($(TIDY) -v 2>&1)" ]] && echo "go.mod file is tidy" || (echo "go.mod file needs a '$(TIDY)'" && exit 1)
+
+test: clean
 	go test -v .
 
 build: test
