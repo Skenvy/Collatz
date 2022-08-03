@@ -293,7 +293,6 @@ type HailstoneSequence struct {
 //     totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
 //          (number of iterations to obtain 1) rather than the regular stopping time (number
 //          of iterations to reach a value less than the initial value).
-
 func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.Int, b *big.Int, maxTotalStoppingTime int, totalStoppingTime bool) (*HailstoneSequence, error) {
 	var hs HailstoneSequence
 	hs.terminate = stoppingTimeTerminus(initialValue, totalStoppingTime)
@@ -310,7 +309,8 @@ func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.In
 	} else {
 		// Otherwise, hail!
 		minMaxTotalStoppingTime := int(math.Max(float64(maxTotalStoppingTime), 1))
-		hs.values = []*big.Int{initialValue}
+		hs.values = make([]*big.Int, 1, minMaxTotalStoppingTime+1)
+		hs.values[0] = initialValue
 		var cycleMap map[string]bool = make(map[string]bool, maxTotalStoppingTime+1)
 		cycleMap[initialValue.String()] = true
 		zero := ZERO()
@@ -357,4 +357,17 @@ func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.In
 		hs.terminalStatus = minMaxTotalStoppingTime
 	}
 	return &hs, nil
+}
+
+// Initialise and compute a new Hailstone Sequence.
+//     initialValue (*big.Int): The value to begin the hailstone sequence from.
+//     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+//     a (*big.Int): Factor by which to multiply n.
+//     b (*big.Int): Value to add to the scaled value of n.
+//     maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
+//     totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+//          (number of iterations to obtain 1) rather than the regular stopping time (number
+//          of iterations to reach a value less than the initial value).
+func HailstoneSequenceDefault(initialValue *big.Int) (*HailstoneSequence, error) {
+	return ParameterisedHailstoneSequence(initialValue, DEFAULT_P(), DEFAULT_A(), DEFAULT_B(), 1000, true)
 }
