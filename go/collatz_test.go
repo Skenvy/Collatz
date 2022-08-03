@@ -236,33 +236,27 @@ func TestHailstoneSequence_KnownCycles(t *testing.T) {
 	}
 }
 
-// func TestHailstoneSequence_Minus56(t *testing.T){
-// 	// Test the lead into a cycle by entering two of the cycles; -5
-// 	var seq []*big.Int = KNOWN_CYCLES[2]
-// 	ArrayList<BigInteger> _seq = new ArrayList<BigInteger>()
-// 	_seq.add(seq[1].multiply(BigInteger.valueOf(4)))
-// 	_seq.add(seq[1].multiply(BigInteger.valueOf(2)))
-// 	List<BigInteger> _rotInnerSeq = Arrays.asList(seq)
-// 	Collections.rotate(_rotInnerSeq, -1)
-// 	_seq.addAll(_rotInnerSeq)
-// 	_seq.add(seq[0]) // The rotate also acts on seq, so we add [0] instead of [1]
-// 	long[] expected = wrapBigIntArr(_seq.toArray([]*big.Int::new))
-// 	assertHailstoneSequence(t, wrapHailstoneSequenceDefault(-56), expected, CYCLE_LENGTH, seq.length)
-// }
+func TestHailstoneSequence_Minus56(t *testing.T) {
+	// Test the lead into a cycle by entering two of the cycles; -5
+	var seq []*big.Int = KNOWN_CYCLES()[2]
+	var _seq []*big.Int = make([]*big.Int, 2, 2)
+	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
+	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
+	_seq = append(_seq, seq[1:]...)
+	_seq = append(_seq, seq[0:2]...)
+	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(-56), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
+}
 
-// func TestHailstoneSequence_Minus200(t *testing.T){
-// 	// Test the lead into a cycle by entering two of the cycles; -17
-// 	var seq []*big.Int = KNOWN_CYCLES[3]
-// 	ArrayList<BigInteger> _seq = new ArrayList<BigInteger>()
-// 	_seq.add(seq[1].multiply(BigInteger.valueOf(4)))
-// 	_seq.add(seq[1].multiply(BigInteger.valueOf(2)))
-// 	List<BigInteger> _rotInnerSeq = Arrays.asList(seq)
-// 	Collections.rotate(_rotInnerSeq, -1)
-// 	_seq.addAll(_rotInnerSeq)
-// 	_seq.add(seq[0]) // The rotate also acts on seq, so we add [0] instead of [1]
-// 	long[] expected = wrapBigIntArr(_seq.toArray([]*big.Int::new))
-// 	assertHailstoneSequence(t, wrapHailstoneSequenceDefault(-200), expected, CYCLE_LENGTH, seq.length)
-// }
+func TestHailstoneSequence_Minus200(t *testing.T) {
+	// Test the lead into a cycle by entering two of the cycles; -17
+	var seq []*big.Int = KNOWN_CYCLES()[3]
+	var _seq []*big.Int = make([]*big.Int, 2, 2)
+	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
+	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
+	_seq = append(_seq, seq[1:]...)
+	_seq = append(_seq, seq[0:2]...)
+	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(-200), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
+}
 
 func TestHailstoneSequence_RegularStoppingTime(t *testing.T) {
 	// Test the regular stopping time check.
