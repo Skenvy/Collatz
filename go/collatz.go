@@ -64,7 +64,7 @@ func _MAP_INTS_TO_BIGINTS(ai []int64) []*big.Int {
 }
 
 // The four known cycles for the standard parameterisation
-func KNOWN_CYCLES_INT() [4][]*big.Int {
+func KNOWN_CYCLES() [4][]*big.Int {
 	return [4][]*big.Int{_MAP_INTS_TO_BIGINTS([]int64{1, 4, 2}), _MAP_INTS_TO_BIGINTS([]int64{-1, -2}),
 		_MAP_INTS_TO_BIGINTS([]int64{-5, -14, -7, -20, -10}),
 		_MAP_INTS_TO_BIGINTS([]int64{-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34})}
@@ -294,6 +294,11 @@ type HailstoneSequence struct {
 //          (number of iterations to obtain 1) rather than the regular stopping time (number
 //          of iterations to reach a value less than the initial value).
 func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.Int, b *big.Int, maxTotalStoppingTime int, totalStoppingTime bool) (*HailstoneSequence, error) {
+	// Call out the function before any magic returns to trap bad values.
+	_, err := ParameterisedFunction(initialValue, P, a, b)
+	if err != nil {
+		return nil, err
+	}
 	var hs HailstoneSequence
 	hs.terminate = stoppingTimeTerminus(initialValue, totalStoppingTime)
 	if initialValue.Cmp(ZERO()) == 0 {
@@ -323,7 +328,7 @@ func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.In
 			// stopping time, the same as the initial value, or stuck at zero.
 			if hs.terminate(next) {
 				hs.values = append(hs.values, next)
-				if next.Cmp(ONE()) == 1 {
+				if next.Cmp(ONE()) == 0 {
 					hs.terminalCondition = TOTAL_STOPPING_TIME
 				} else {
 					hs.terminalCondition = STOPPING_TIME
@@ -368,6 +373,7 @@ func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.In
 //     totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
 //          (number of iterations to obtain 1) rather than the regular stopping time (number
 //          of iterations to reach a value less than the initial value).
-func HailstoneSequenceDefault(initialValue *big.Int) (*HailstoneSequence, error) {
-	return ParameterisedHailstoneSequence(initialValue, DEFAULT_P(), DEFAULT_A(), DEFAULT_B(), 1000, true)
+func HailstoneSequenceDefault(initialValue *big.Int, maxTotalStoppingTime int) *HailstoneSequence {
+	ret, _ := ParameterisedHailstoneSequence(initialValue, DEFAULT_P(), DEFAULT_A(), DEFAULT_B(), maxTotalStoppingTime, true)
+	return ret
 }
