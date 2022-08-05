@@ -9,7 +9,8 @@ SHELL:=/bin/bash
 godoc:
 	$(GOENV) go get golang.org/x/tools/cmd/godoc@$(GODOC_VER) && go install ~/go/pkg/mod/golang.org/x/tools@$(GODOC_VER)/cmd/godoc/ && $(TIDY)
 
-docs:
+# We let docs require test to generate the coverage output file c.out
+docs: test
 	mkdir docs/lib/godoc -p
 	~/go/bin/godoc -goroot $$(pwd) -url /pkg/github.com/Skenvy/Collatz/go/ > docs/index.html
 	# Remove the first line directed to the file.
@@ -18,8 +19,11 @@ docs:
 	sed -i 's|"/lib/godoc|"./lib/godoc|g' docs/index.html
 	cp -f ~/go/pkg/mod/golang.org/x/tools@$(GODOC_VER)/godoc/static/**.css docs/lib/godoc/
 	cp -f ~/go/pkg/mod/golang.org/x/tools@$(GODOC_VER)/godoc/static/**.js docs/lib/godoc/
+	# Add the coverage from the test's c.out
+	go tool cover -html=coverage.out -o docs/coverage.html
 
 # Runs the ./docs/main.go from . and then targets ./docs internally
+# http://localhost:3000/ and http://localhost:3000/coverage.html
 docs_local: docs
 	go run ./docs
 
@@ -40,10 +44,13 @@ clean:
 # and if not automatically done by the IDE / plugin.
 format: clean
 	[[ -z "$$(gofmt -l .)" ]] && echo "All **.go files already formatted" || (echo "These **.go files need a 'gofmt -w .'" && echo "$$(gofmt -l .)" && exit 1)
+	[[ -z "$$(go vet ./...)" ]] && echo "All **.go files already vetted" || (echo "These **.go files need a 'go vet -json ./...'" && echo "$$(go vet -json ./...)" && exit 1)
 	[[ -z "$$($(TIDY) -v 2>&1)" ]] && echo "go.mod file is tidy" || (echo "go.mod file needs a '$(TIDY)'" && exit 1)
+	# TODO: Add staticcheck when upping version from 13 to 17.
 
 test: clean
-	go test -v .
+	go test -coverprofile=coverage.out -v .
+	go tool cover -func=coverage.out
 
 build: test
 	go build -o collatz ./collatz
