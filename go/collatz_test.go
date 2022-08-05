@@ -93,7 +93,7 @@ func TestFunction_AssertSaneParameterisation(t *testing.T) {
 }
 
 func wrapBigIntArr(vals []*big.Int) *[]int {
-	var wraps []int = make([]int, len(vals), len(vals))
+	var wraps []int = make([]int, len(vals))
 	for index, val := range vals {
 		wraps[index] = int(val.Int64())
 	}
@@ -239,18 +239,19 @@ func TestHailstoneSequence_KnownCycles(t *testing.T) {
 func TestHailstoneSequence_Minus56(t *testing.T) {
 	// Test the lead into a cycle by entering two of the cycles; -5
 	var seq []*big.Int = KNOWN_CYCLES()[2]
-	var _seq []*big.Int = make([]*big.Int, 2, 2)
+	var _seq []*big.Int = make([]*big.Int, 2, len(seq)+3)
 	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
 	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
 	_seq = append(_seq, seq[1:]...)
 	_seq = append(_seq, seq[0:2]...)
+	print(cap(_seq))
 	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(-56), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
 }
 
 func TestHailstoneSequence_Minus200(t *testing.T) {
 	// Test the lead into a cycle by entering two of the cycles; -17
 	var seq []*big.Int = KNOWN_CYCLES()[3]
-	var _seq []*big.Int = make([]*big.Int, 2, 2)
+	var _seq []*big.Int = make([]*big.Int, 2, len(seq)+3)
 	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
 	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
 	_seq = append(_seq, seq[1:]...)
