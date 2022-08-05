@@ -1,6 +1,7 @@
 package collatz
 
 import (
+	"math"
 	"math/big"
 	"reflect"
 	"runtime/debug"
@@ -296,5 +297,107 @@ func TestHailstoneSequence_AssertSaneParameterisation(t *testing.T) {
 	val, err = wrapParameterisedHailstoneSequence(1, 0, 0, 3, 1000, true)
 	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
 	val, err = wrapParameterisedHailstoneSequence(1, 1, 0, 3, 1000, true)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
+}
+
+func wrapStoppingTimeDefault(n int64) float64 {
+	return StoppingTime(big.NewInt(n))
+}
+
+func wrapStoppingTimeInterim(n int64, maxStoppingTime int, totalStoppingTime bool) (float64, error) {
+	return ParameterisedStoppingTime(big.NewInt(n), DEFAULT_P(), DEFAULT_A(), DEFAULT_B(), maxStoppingTime, totalStoppingTime)
+}
+
+func wrapParameterisedStoppingTime(n int64, P int64, a int64, b int64, maxStoppingTime int, totalStoppingTime bool) (float64, error) {
+	return ParameterisedStoppingTime(big.NewInt(n), big.NewInt(P), big.NewInt(a), big.NewInt(b), maxStoppingTime, totalStoppingTime)
+}
+
+func TestStoppingTime_ZeroTrap(t *testing.T) {
+	// Test 0's immediated termination.
+	AssertEqual(t, wrapStoppingTimeDefault(0), nil, nil, 0.0)
+}
+
+func TestStoppingTime_OnesCycleOnlyYieldsATotalStop(t *testing.T) {
+	// The cycle containing 1 wont yield a cycle termination, as 1 is considered
+	// the "total stop" that is the special case termination.
+	AssertEqual(t, wrapStoppingTimeDefault(1), nil, nil, 0.0)
+	// 1's cycle wont yield a description of it being a "cycle" as far as the
+	// hailstones are concerned, which is to be expected, so..
+	val, err := wrapStoppingTimeInterim(4, 100, true)
+	AssertEqual(t, val, err, nil, 2.0)
+	val, err = wrapStoppingTimeInterim(16, 100, true)
+	AssertEqual(t, val, err, nil, 4.0)
+}
+
+func TestStoppingTime_KnownCyclesYieldInfinity(t *testing.T) {
+	// Test the 3 known default parameter's cycles (ignoring [1,4,2])
+	for index, known_cycle := range KNOWN_CYCLES() {
+		// if !reflect.DeepEqual(_MAP_INTS_TO_BIGINTS([]int64{1, 4, 2}), known_cycle) {
+		if index != 0 {
+			for _, cycle_values := range known_cycle {
+				val, err := wrapStoppingTimeInterim(cycle_values.Int64(), 100, true)
+				AssertEqual(t, val, err, nil, math.Inf(1))
+			}
+		}
+	}
+}
+
+func TestStoppingTime_KnownCycleLeadIns(t *testing.T) {
+	// Test the lead into a cycle by entering two of the cycles. -56;-5, -200;-17
+	val, err := wrapStoppingTimeInterim(-56, 100, true)
+	AssertEqual(t, val, err, nil, math.Inf(1))
+	val, err = wrapStoppingTimeInterim(-200, 100, true)
+	AssertEqual(t, val, err, nil, math.Inf(1))
+}
+
+func TestStoppingTime_RegularStoppingTime(t *testing.T) {
+	// Test the regular stopping time check.
+	AssertEqual(t, wrapStoppingTimeDefault(4), nil, nil, 1.0)
+	AssertEqual(t, wrapStoppingTimeDefault(5), nil, nil, 3.0)
+}
+
+func TestStoppingTime_NegativeMaxTotalStoppingTime(t *testing.T) {
+	// Test small max total stopping time: (minimum internal value is one)
+	val, err := wrapStoppingTimeInterim(5, -100, true)
+	AssertEqual(t, val, err, nil, math.Inf(-1))
+}
+
+func TestStoppingTime_ZeroStopMidHail(t *testing.T) {
+	// Test the zero stop mid hailing. This wont happen with default params tho.
+	val, err := wrapParameterisedStoppingTime(3, 2, 3, -9, 100, false)
+	AssertEqual(t, val, err, nil, -1.0)
+}
+
+func TestStoppingTime_UnitaryPCausesAlmostImmediateCycles(t *testing.T) {
+	// Lastly, while the function wont let you use a P value of 0, 1 and -1 are
+	// still allowed, although they will generate immediate 1 or 2 length cycles
+	// respectively, so confirm the behaviour of each of these stopping times.
+	val, err := wrapParameterisedStoppingTime(3, 1, 3, 1, 100, false)
+	AssertEqual(t, val, err, nil, math.Inf(1))
+	val, err = wrapParameterisedStoppingTime(3, -1, 3, 1, 100, false)
+	AssertEqual(t, val, err, nil, math.Inf(1))
+}
+
+func TestStoppingTime_MultiplesOf576460752303423488Plus27(t *testing.T) {
+	// One last one for the fun of it..
+	val, err := wrapStoppingTimeInterim(27, 1000, true)
+	AssertEqual(t, val, err, nil, 111.0)
+	// # And for a bit more fun, common trajectories on
+	mod_behaviour_factor := new(big.Int)
+	mod_behaviour_factor, _ = mod_behaviour_factor.SetString("576460752303423488", 10)
+	for k := 0; k < 5; k++ {
+		input := new(big.Int).Add(big.NewInt(27), new(big.Int).Mul(big.NewInt(int64(k)), mod_behaviour_factor))
+		val, err = ParameterisedStoppingTime(input, DEFAULT_P(), DEFAULT_A(), DEFAULT_B(), 1000, false)
+		AssertEqual(t, val, err, nil, 96.0)
+	}
+}
+
+func TestStoppingTime_AssertSaneParameterisation(t *testing.T) {
+	// Set P and a to 0 to assert on __assert_sane_parameterisation
+	val, err := wrapParameterisedStoppingTime(1, 0, 2, 3, 1000, false)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
+	val, err = wrapParameterisedStoppingTime(1, 0, 0, 3, 1000, false)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
+	val, err = wrapParameterisedStoppingTime(1, 1, 0, 3, 1000, false)
 	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
 }
