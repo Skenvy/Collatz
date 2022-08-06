@@ -517,10 +517,12 @@ func newTreeGraphInnerNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int,
 	this.cycleCheck = cycleCheck
 	if this.cycleCheck[nodeValue.String()] != nil {
 		this.cycleCheck[nodeValue.String()].terminalSequenceState = CYCLE_INIT
+		this.cycleCheck = nil
 		this.terminalSequenceState = CYCLE_LENGTH
 		this.preNDivPNode = nil
 		this.preANplusBNode = nil
 	} else if int(math.Max(float64(maxOrbitDistance), 0)) == 0 {
+		this.cycleCheck = nil
 		this.terminalSequenceState = MAX_STOP_OUT_OF_BOUNDS
 		this.preNDivPNode = nil
 		this.preANplusBNode = nil
@@ -557,13 +559,13 @@ func newTreeGraphInnerNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int,
 //       null, MAX_STOP_OUT_OF_BOUNDS, CYCLE_INIT or CYCLE_LENGTH.
 //     preNDivPNode (TreeGraphNode): The expected "Pre N/P" child node.
 //     preANplusBNode (TreeGraphNode): The expected "Pre aN+b" child node.
-func newTreeGraphNode(nodeValue *big.Int, terminalSequenceState SequenceState, preNDivPNode *TreeGraphNode, preANplusBNode *TreeGraphNode) *TreeGraphNode {
+func newTreeGraphNode(nodeValue *big.Int, terminalSequenceState SequenceState, preNDivPNode *TreeGraphNode, preANplusBNode *TreeGraphNode, cycleCheck map[string]*TreeGraphNode) *TreeGraphNode {
 	this := new(TreeGraphNode)
 	this.nodeValue = nodeValue
 	this.terminalSequenceState = terminalSequenceState
 	this.preNDivPNode = preNDivPNode
 	this.preANplusBNode = preANplusBNode
-	this.cycleCheck = nil
+	this.cycleCheck = cycleCheck
 	return this
 }
 

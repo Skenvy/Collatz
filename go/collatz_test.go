@@ -401,3 +401,165 @@ func TestStoppingTime_AssertSaneParameterisation(t *testing.T) {
 	val, err = wrapParameterisedStoppingTime(1, 1, 0, 3, 1000, false)
 	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
 }
+
+func wrapParamTreeGraph(nodeValue int64, maxOrbitDistance int, P int64, a int64, b int64) (*TreeGraph, error) {
+	return ParameterisedTreeGraph(big.NewInt(nodeValue), maxOrbitDistance, big.NewInt(P), big.NewInt(a), big.NewInt(b))
+}
+
+func wrapTreeGraph(nodeValue int64, maxOrbitDistance int) (*TreeGraph, error) {
+	return TreeGraphDefault(big.NewInt(nodeValue), maxOrbitDistance)
+}
+
+// Create a "terminal" graph node with nil children and the terminal
+// condition that indicates it has reached the maximum orbit of the tree.
+func wrapTGN_TerminalNode(n int64) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), MAX_STOP_OUT_OF_BOUNDS, nil, nil, nil)
+}
+
+// Create a "cyclic terminal" graph node with nil children and the "cycle termination" condition.
+func wrapTGN_CyclicTerminal(n int64) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), CYCLE_LENGTH, nil, nil, nil)
+}
+
+// Create a "cyclic start" graph node with given children and the "cycle start" condition.
+//     n
+//     preNDivPNode
+//     preANplusBNode
+func wrapTGN_CyclicStart(n int64, preNDivPNode *TreeGraphNode, preANplusBNode *TreeGraphNode, cycleCheck map[string]*TreeGraphNode) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), CYCLE_INIT, preNDivPNode, preANplusBNode, cycleCheck)
+}
+
+/**
+ * Create a graph node with no terminal state, with given children.
+ * @param n
+ * @param preNDivPNode
+ * @param preANplusBNode
+ * @return
+ */
+func wrapTGN_Generic(n int64, preNDivPNode *TreeGraphNode, preANplusBNode *TreeGraphNode, cycleCheck map[string]*TreeGraphNode) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), NO_STATE, preNDivPNode, preANplusBNode, cycleCheck)
+}
+
+func TestTreeGraph_ZeroTrap(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// The default zero trap
+	// {0:D}
+	received_tree, received_error := wrapTreeGraph(0, 0)
+	expectedRoot := wrapTGN_TerminalNode(0)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {0:{C:0}}
+	received_tree, received_error = wrapTreeGraph(0, 1)
+	expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	received_tree, received_error = wrapTreeGraph(0, 2)
+	expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_RootOfOneYieldsTheOneCycle(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// The roundings of the 1 cycle.
+	// {1:D}
+	received_tree, received_error := wrapTreeGraph(1, 0)
+	expectedRoot := wrapTGN_TerminalNode(1)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {1:{2:D}}
+	received_tree, received_error = wrapTreeGraph(1, 1)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(2), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {1:{2:{4:D}}}
+	received_tree, received_error = wrapTreeGraph(1, 2)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_TerminalNode(4), nil, received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {1:{2:{4:{C:1,8:D}}}}
+	received_tree, received_error = wrapTreeGraph(1, 3)
+	expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(2, wrapTGN_Generic(4, wrapTGN_TerminalNode(8), wrapTGN_CyclicTerminal(1), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_RootOfTwoAndFourYieldTheOneCycle(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// {2:{4:{1:{C:2},8:{16:D}}}}
+	received_tree, received_error := wrapTreeGraph(2, 3)
+	expectedRoot := wrapTGN_CyclicStart(2, wrapTGN_Generic(4, wrapTGN_Generic(8, wrapTGN_TerminalNode(16), nil, received_tree.root.cycleCheck),
+		wrapTGN_Generic(1, wrapTGN_CyclicTerminal(2), nil, received_tree.root.cycleCheck), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
+	received_tree, received_error = wrapTreeGraph(4, 3)
+	expectedRoot = wrapTGN_CyclicStart(4, wrapTGN_Generic(8, wrapTGN_Generic(16, wrapTGN_TerminalNode(32), wrapTGN_TerminalNode(5), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck),
+		wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_CyclicTerminal(4), nil, received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_RootOfMinusOneYieldsTheMinusOneCycle(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// The roundings of the -1 cycle
+	// {-1:{-2:D}}
+	received_tree, received_error := wrapTreeGraph(-1, 1)
+	expectedRoot := wrapTGN_Generic(-1, wrapTGN_TerminalNode(-2), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {-1:{-2:{-4:D,C:-1}}}
+	received_tree, received_error = wrapTreeGraph(-1, 2)
+	expectedRoot = wrapTGN_CyclicStart(-1, wrapTGN_Generic(-2, wrapTGN_TerminalNode(-4), wrapTGN_CyclicTerminal(-1), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_WiderModuloSweep(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+	// Orbit distance of 1 ~= {1:{-1:D,5:D}}
+	received_tree, received_error := wrapParamTreeGraph(1, 1, 5, 2, 3)
+	expectedRoot := wrapTGN_Generic(1, wrapTGN_TerminalNode(5), wrapTGN_TerminalNode(-1), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 2 ~= {1:{-1:{-5:D,-2:D},5:{C:1,25:D}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 2, 5, 2, 3)
+	expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_TerminalNode(25), wrapTGN_CyclicTerminal(1), received_tree.root.cycleCheck),
+		wrapTGN_Generic(-1, wrapTGN_TerminalNode(-5), wrapTGN_TerminalNode(-2), received_tree.root.cycleCheck), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 3 ~=  {1:{-1:{-5:{-25:D,-4:D},-2:{-10:D}},5:{C:1,25:{11:D,125:D}}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 3, 5, 2, 3)
+	expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_Generic(25, wrapTGN_TerminalNode(125), wrapTGN_TerminalNode(11), received_tree.root.cycleCheck), wrapTGN_CyclicTerminal(1), received_tree.root.cycleCheck),
+		wrapTGN_Generic(-1, wrapTGN_Generic(-5, wrapTGN_TerminalNode(-25), wrapTGN_TerminalNode(-4), received_tree.root.cycleCheck), wrapTGN_Generic(-2, wrapTGN_TerminalNode(-10), nil, received_tree.root.cycleCheck), received_tree.root.cycleCheck), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_NegativeParamterisation(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// Test negative P, a and b ~ P=-3, a=-2, b=-5
+	// Orbit distance of 1 ~= {1:{-3:D}}
+	received_tree, received_error := wrapParamTreeGraph(1, 1, -3, -2, -5)
+	expectedRoot := wrapTGN_Generic(1, wrapTGN_TerminalNode(-3), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 2 ~= {1:{-3:{-1:D,9:D}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 2, -3, -2, -5)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_TerminalNode(9), wrapTGN_TerminalNode(-1), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 3 ~= {1:{-3:{-1:{-2:D,3:D},9:{-27:D,-7:D}}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 3, -3, -2, -5)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_Generic(9, wrapTGN_TerminalNode(-27), wrapTGN_TerminalNode(-7), received_tree.root.cycleCheck),
+		wrapTGN_Generic(-1, wrapTGN_TerminalNode(3), wrapTGN_TerminalNode(-2), received_tree.root.cycleCheck), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_ZeroReversesOnB(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+	// {0:{C:0,3:D}}
+	received_tree, received_error := wrapParamTreeGraph(0, 1, 17, 2, -6)
+	expectedRoot := wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), wrapTGN_TerminalNode(3), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {0:{C:0}}
+	received_tree, received_error = wrapParamTreeGraph(0, 1, 17, 2, 102)
+	expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_AssertSaneParameterisation(t *testing.T) {
+	// Set P and a to 0 to assert on __assert_sane_parameterisation
+	val, err := wrapParamTreeGraph(1, 1, 0, 2, 3)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
+	val, err = wrapParamTreeGraph(1, 1, 0, 0, 3)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
+	val, err = wrapParamTreeGraph(1, 1, 1, 0, 3)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
+}
