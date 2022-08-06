@@ -125,8 +125,10 @@ func (fspc FailedSaneParameterCheck) Error() string {
 type SequenceState int64
 
 const (
+	// A TreeGraph sequence state that indicates the lack of another state, as this state can't be nil
+	NO_STATE SequenceState = iota
 	// A Hailstone sequence state that indicates the stopping time, a value less than the initial, has been reached.
-	STOPPING_TIME SequenceState = iota
+	STOPPING_TIME
 	// A Hailstone sequence state that indicates the total stopping time, a value of 1, has been reached.
 	TOTAL_STOPPING_TIME
 	// A Hailstone and TreeGraph sequence state that indicates the first occurence of a value that subsequently forms a cycle.
@@ -142,6 +144,8 @@ const (
 // Get the string associated with the SequenceState
 func (ss SequenceState) String() string {
 	switch ss {
+	case NO_STATE:
+		return "NO_STATE"
 	case STOPPING_TIME:
 		return "STOPPING_TIME"
 	case TOTAL_STOPPING_TIME:
@@ -433,4 +437,228 @@ func ParameterisedStoppingTime(initialValue *big.Int, P *big.Int, a *big.Int, b 
 func StoppingTime(initialValue *big.Int) float64 {
 	stop, _ := ParameterisedStoppingTime(initialValue, DEFAULT_P(), DEFAULT_A(), DEFAULT_B(), 1000, false)
 	return stop
+}
+
+// Nodes that form a "tree graph", structured as a tree, with their own node's value,
+// as well as references to either possible child node, where a node can only ever have
+// two children, as there are only ever two reverse values. Also records any possible
+// "terminal sequence state", whether that be that the "orbit distance" has been reached,
+// as an "out of bounds" stop, which is the regularly expected terminal state. Other
+// terminal states possible however include the cycle state and cycle length (end) states.
+type TreeGraphNode struct {
+	// The value of this node in the tree.
+	nodeValue *big.Int
+	// The terminal state; null if not a terminal node, MAX_STOP_OUT_OF_BOUNDS if the maxOrbitDistance
+	// has been reached, CYCLE_LENGTH if the node's value is found to have occured previously, or
+	// CYCLE_INIT, retroactively applied when a CYCLE_LENGTH state node is found.
+	terminalSequenceState SequenceState
+	// The "Pre N/P" child of this node that is always
+	// present if this is not a terminal node.
+	preNDivPNode *TreeGraphNode
+	// The "Pre aN+b" child of this node that is present
+	// if it exists and this is not a terminal node.
+	preANplusBNode *TreeGraphNode
+	// A map of previous graph nodes which maps instances of
+	// TreeGraphNode to themselves, to enable cycle detection.
+	cycleCheck map[string]*TreeGraphNode
+}
+
+// Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
+//     nodeValue (*big.Int): The value for which to find the tree graph node reversal.
+//     maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
+//     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+//     a (*big.Int): Factor by which to multiply n.
+//     b (*big.Int): Value to add to the scaled value of n.
+func newTreeGraphRootNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int, a *big.Int, b *big.Int) (*TreeGraphNode, error) {
+	this := new(TreeGraphNode)
+	this.nodeValue = nodeValue
+	if int(math.Max(float64(maxOrbitDistance), 0)) == 0 {
+		this.terminalSequenceState = MAX_STOP_OUT_OF_BOUNDS
+		this.preNDivPNode = nil
+		this.preANplusBNode = nil
+		this.cycleCheck = nil
+	} else {
+		reverses, err := ParameterisedReverseFunction(nodeValue, P, a, b)
+		if err != nil {
+			return nil, err
+		}
+		this.cycleCheck = make(map[string]*TreeGraphNode, 1+int(math.Pow(2, float64(maxOrbitDistance))))
+		this.cycleCheck[nodeValue.String()] = this
+		preNDivPNode, err := newTreeGraphInnerNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+		if err != nil {
+			return nil, err
+		}
+		this.preNDivPNode = preNDivPNode
+		if len(reverses) == 2 {
+			preANplusBNode, err := newTreeGraphInnerNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+			if err != nil {
+				return nil, err
+			}
+			this.preANplusBNode = preANplusBNode
+		} else {
+			this.preANplusBNode = nil
+		}
+	}
+	return this, nil
+}
+
+// Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
+// This is used internally by itself and the public constructor to pass the cycle checking map,
+// recursively determining subsequent child nodes.
+//     nodeValue (*big.Int): The value for which to find the tree graph node reversal.
+//     maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
+//     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+//     a (*big.Int): Factor by which to multiply n.
+//     b (*big.Int): Value to add to the scaled value of n.
+//     cycleCheck (Map<TreeGraphNode,TreeGraphNode>): Checks if this node's value already occurred.
+func newTreeGraphInnerNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int, a *big.Int, b *big.Int, cycleCheck map[string]*TreeGraphNode) (*TreeGraphNode, error) {
+	this := new(TreeGraphNode)
+	this.nodeValue = nodeValue
+	this.cycleCheck = cycleCheck
+	if this.cycleCheck[nodeValue.String()] != nil {
+		this.cycleCheck[nodeValue.String()].terminalSequenceState = CYCLE_INIT
+		this.terminalSequenceState = CYCLE_LENGTH
+		this.preNDivPNode = nil
+		this.preANplusBNode = nil
+	} else if int(math.Max(float64(maxOrbitDistance), 0)) == 0 {
+		this.terminalSequenceState = MAX_STOP_OUT_OF_BOUNDS
+		this.preNDivPNode = nil
+		this.preANplusBNode = nil
+	} else {
+		this.cycleCheck[nodeValue.String()] = this
+		this.terminalSequenceState = NO_STATE
+		reverses, err := ParameterisedReverseFunction(nodeValue, P, a, b)
+		if err != nil {
+			return nil, err
+		}
+		preNDivPNode, err := newTreeGraphInnerNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+		if err != nil {
+			return nil, err
+		}
+		this.preNDivPNode = preNDivPNode
+		if len(reverses) == 2 {
+			preANplusBNode, err := newTreeGraphInnerNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+			if err != nil {
+				return nil, err
+			}
+			this.preANplusBNode = preANplusBNode
+		} else {
+			this.preANplusBNode = nil
+		}
+	}
+	return this, nil
+}
+
+// Create an instance of TreeGraphNode by directly passing it the values required to instantiate,
+// intended to be used in testing by manually creating trees in reverse, by passing expected child
+// nodes to their parents until the entire expected tree is created.
+//     nodeValue (*big.Int): The value expected of this node.
+//     terminalSequenceState (SequenceState): The expected sequence state;
+//       null, MAX_STOP_OUT_OF_BOUNDS, CYCLE_INIT or CYCLE_LENGTH.
+//     preNDivPNode (TreeGraphNode): The expected "Pre N/P" child node.
+//     preANplusBNode (TreeGraphNode): The expected "Pre aN+b" child node.
+func newTreeGraphNode(nodeValue *big.Int, terminalSequenceState SequenceState, preNDivPNode *TreeGraphNode, preANplusBNode *TreeGraphNode) *TreeGraphNode {
+	this := new(TreeGraphNode)
+	this.nodeValue = nodeValue
+	this.terminalSequenceState = terminalSequenceState
+	this.preNDivPNode = preNDivPNode
+	this.preANplusBNode = preANplusBNode
+	this.cycleCheck = nil
+	return this
+}
+
+// A much stricter equality check than the {@code equals(Object obj)} override.
+// This will only confirm an equality if the whole subtree of both nodes, including
+// node values, sequence states, and child nodes, checked recursively, are equal.
+//     t1 (*TreeGraphNode): The TreeGraphNode with which to compare equality.
+//     t2 (*TreeGraphNode): The TreeGraphNode with which to compare equality.
+// return {@code true}, if the entire sub-trees are equal.
+func subTreeEquals(t1 *TreeGraphNode, t2 *TreeGraphNode) bool {
+	if t1.nodeValue.Cmp(t2.nodeValue) != 0 || t1.terminalSequenceState != t2.terminalSequenceState {
+		return false
+	}
+	if t1.preNDivPNode == nil && t2.preNDivPNode != nil {
+		return false
+	}
+	if t1.preNDivPNode != nil && !subTreeEquals(t1.preNDivPNode, t2.preNDivPNode) {
+		return false
+	}
+	if t1.preANplusBNode == nil && t2.preANplusBNode != nil {
+		return false
+	}
+	if t1.preANplusBNode != nil && !subTreeEquals(t1.preANplusBNode, t2.preANplusBNode) {
+		return false
+	}
+	return true
+}
+
+// Contains the results of computing the Tree Graph via Collatz.treeGraph(~).
+// Contains the root node of a tree of TreeGraphNode's.
+type TreeGraph struct {
+	// The root node of the tree of TreeGraphNode's.
+	root *TreeGraphNode
+}
+
+// Create a new TreeGraph with the root node defined by the inputs.
+//     nodeValue (*big.Int): The value for which to find the tree graph node reversal.
+//     maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
+//     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+//     a (*big.Int): Factor by which to multiply n.
+//     b (*big.Int): Value to add to the scaled value of n.
+
+// Returns a directed tree graph of the reverse function values up to a maximum
+// nesting of maxOrbitDistance, with the initialValue as the root.
+//     initialValue (*big.Int): The root value of the directed tree graph.
+//     maxOrbitDistance (int): Maximum amount of times to iterate the reverse
+//          function. There is no natural termination to populating the tree
+//          graph, equivalent to the termination of hailstone sequences or
+//          stopping time attempts, so this is not an optional argument like
+//          maxStoppingTime / maxTotalStoppingTime, as it is the intended target
+//          of orbits to obtain, rather than a limit to avoid uncapped computation.
+//     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
+//     a (*big.Int): Factor by which to multiply n.
+//     b (*big.Int): Value to add to the scaled value of n.
+func ParameterisedTreeGraph(nodeValue *big.Int, maxOrbitDistance int, P *big.Int, a *big.Int, b *big.Int) (*TreeGraph, error) {
+	rootNode, err := newTreeGraphRootNode(nodeValue, maxOrbitDistance, P, a, b)
+	if err != nil {
+		return nil, err
+	}
+	return newTreeGraph(rootNode), nil
+}
+
+// Create a new TreeGraph by directly passing it the root node.
+// Intended to be used in testing by manually creating trees.
+//     root (TreeGraphNode): The root node of the tree.
+func newTreeGraph(rootNode *TreeGraphNode) *TreeGraph {
+	tree := new(TreeGraph)
+	tree.root = rootNode
+	return tree
+}
+
+// The equality between {@code TreeGraph}'s is determined by the equality check on subtrees.
+// A subtree check will be done on both {@code TreeGraph}'s root nodes. */
+func treeEquals(t1 *TreeGraph, t2 *TreeGraph) bool {
+	if t1 == nil && t2 != nil {
+		return false
+	}
+	if t1 != nil && t2 == nil {
+		return false
+	}
+	if t1 == nil && t2 == nil {
+		return true
+	}
+	return subTreeEquals(t1.root, t2.root)
+}
+
+// Returns a directed tree graph of the reverse function values up to a maximum
+// nesting of maxOrbitDistance, with the initialValue as the root.
+//     initialValue (*big.Int): The root value of the directed tree graph.
+//     maxOrbitDistance (int): Maximum amount of times to iterate the reverse
+//          function. There is no natural termination to populating the tree
+//          graph, equivalent to the termination of hailstone sequences or
+//          stopping time attempts, so this is not an optional argument like
+//          maxStoppingTime / maxTotalStoppingTime, as it is the intended target
+//          of orbits to obtain, rather than a limit to avoid uncapped computation.
+func TreeGraphDefault(initialValue *big.Int, maxOrbitDistance int) (*TreeGraph, error) {
+	return ParameterisedTreeGraph(initialValue, maxOrbitDistance, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
 }
