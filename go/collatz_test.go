@@ -185,8 +185,8 @@ func TestReverseFunction_AssertSaneParameterisation(t *testing.T) {
 	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
 }
 
-func wrapHailstoneSequenceDefault(n int64) *HailstoneSequence {
-	hs := HailstoneSequenceDefault(big.NewInt(n), 1000)
+func wrapNewHailstoneSequence(n int64) *HailstoneSequence {
+	hs := NewHailstoneSequence(big.NewInt(n), 1000)
 	return hs
 }
 
@@ -212,17 +212,17 @@ func AssertHailstoneSequence(t *testing.T, hs *HailstoneSequence, received_error
 
 func TestHailstoneSequence_ZeroTrap(t *testing.T) {
 	// Test 0's immediated termination.
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(0), nil, nil, &[]int{0}, ZERO_STOP, 0)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(0), nil, nil, &[]int{0}, ZERO_STOP, 0)
 }
 
 func TestHailstoneSequence_OnesCycleOnlyYieldsATotalStop(t *testing.T) {
 	// The cycle containing 1 wont yield a cycle termination, as 1 is considered
 	// the "total stop" that is the special case termination.
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(1), nil, nil, &[]int{1}, TOTAL_STOPPING_TIME, 0)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(1), nil, nil, &[]int{1}, TOTAL_STOPPING_TIME, 0)
 	// 1's cycle wont yield a description of it being a "cycle" as far as the
 	// hailstones are concerned, which is to be expected, so..
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(4), nil, nil, &[]int{4, 2, 1}, TOTAL_STOPPING_TIME, 2)
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(16), nil, nil, &[]int{16, 8, 4, 2, 1}, TOTAL_STOPPING_TIME, 4)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(4), nil, nil, &[]int{4, 2, 1}, TOTAL_STOPPING_TIME, 2)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(16), nil, nil, &[]int{16, 8, 4, 2, 1}, TOTAL_STOPPING_TIME, 4)
 }
 
 func TestHailstoneSequence_KnownCycles(t *testing.T) {
@@ -235,7 +235,7 @@ func TestHailstoneSequence_KnownCycles(t *testing.T) {
 				expected[k] = (*known_cycle)[k]
 			}
 			expected[len(*known_cycle)] = (*known_cycle)[0]
-			AssertHailstoneSequence(t, HailstoneSequenceDefault((*known_cycle)[0], 1000), nil, nil, wrapBigIntArr(expected), CYCLE_LENGTH, len(*known_cycle))
+			AssertHailstoneSequence(t, NewHailstoneSequence((*known_cycle)[0], 1000), nil, nil, wrapBigIntArr(expected), CYCLE_LENGTH, len(*known_cycle))
 		}
 	}
 }
@@ -249,7 +249,7 @@ func TestHailstoneSequence_Minus56(t *testing.T) {
 	_seq = append(_seq, seq[1:]...)
 	_seq = append(_seq, seq[0:2]...)
 	print(cap(_seq))
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(-56), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(-56), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
 }
 
 func TestHailstoneSequence_Minus200(t *testing.T) {
@@ -260,7 +260,7 @@ func TestHailstoneSequence_Minus200(t *testing.T) {
 	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
 	_seq = append(_seq, seq[1:]...)
 	_seq = append(_seq, seq[0:2]...)
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(-200), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(-200), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
 }
 
 func TestHailstoneSequence_RegularStoppingTime(t *testing.T) {
@@ -410,7 +410,7 @@ func wrapParamTreeGraph(nodeValue int64, maxOrbitDistance int, P int64, a int64,
 }
 
 func wrapTreeGraph(nodeValue int64, maxOrbitDistance int) (*TreeGraph, error) {
-	return TreeGraphDefault(big.NewInt(nodeValue), maxOrbitDistance)
+	return NewTreeGraph(big.NewInt(nodeValue), maxOrbitDistance)
 }
 
 // Create a "terminal" graph node with nil children and the terminal
