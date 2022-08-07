@@ -102,21 +102,24 @@ func wrapBigIntArr(vals []*big.Int) *[]int {
 }
 
 func wrapReverseFunction(n int64) *[]int {
-	vals := ReverseFunction(big.NewInt(n))
-	var ret []int = []int{}
-	for _, val := range vals {
-		ret = append(ret, int(val.Int64()))
+	preNDivP, preANplusB := ReverseFunction(big.NewInt(n))
+	var ret []int = []int{int(preNDivP.Int64())}
+	if preANplusB != nil {
+		ret = append(ret, int(preANplusB.Int64()))
 	}
 	return &ret
 }
 
 func wrapParamReverseFunction(n int64, P int64, a int64, b int64) (*[]int, error) {
-	vals, err := ParameterisedReverseFunction(big.NewInt(n), big.NewInt(P), big.NewInt(a), big.NewInt(b))
-	if vals == nil {
+	preNDivP, preANplusB, err := ParameterisedReverseFunction(big.NewInt(n), big.NewInt(P), big.NewInt(a), big.NewInt(b))
+	if preNDivP == nil {
 		return nil, err
 	}
-	var ret *[]int = wrapBigIntArr(vals)
-	return ret, err
+	var ret []int = []int{int(preNDivP.Int64())}
+	if preANplusB != nil {
+		ret = append(ret, int(preANplusB.Int64()))
+	}
+	return &ret, err
 }
 
 func TestReverseFunction_ZeroTrap(t *testing.T) {
@@ -227,19 +230,19 @@ func TestHailstoneSequence_KnownCycles(t *testing.T) {
 	for index, known_cycle := range KNOWN_CYCLES() {
 		// if !reflect.DeepEqual(_MAP_INTS_TO_BIGINTS([]int64{1, 4, 2}), known_cycle) {
 		if index != 0 {
-			var expected []*big.Int = make([]*big.Int, (len(known_cycle) + 1))
-			for k := 0; k < len(known_cycle); k++ {
-				expected[k] = known_cycle[k]
+			var expected []*big.Int = make([]*big.Int, (len(*known_cycle) + 1))
+			for k := 0; k < len(*known_cycle); k++ {
+				expected[k] = (*known_cycle)[k]
 			}
-			expected[len(known_cycle)] = known_cycle[0]
-			AssertHailstoneSequence(t, HailstoneSequenceDefault(known_cycle[0], 1000), nil, nil, wrapBigIntArr(expected), CYCLE_LENGTH, len(known_cycle))
+			expected[len(*known_cycle)] = (*known_cycle)[0]
+			AssertHailstoneSequence(t, HailstoneSequenceDefault((*known_cycle)[0], 1000), nil, nil, wrapBigIntArr(expected), CYCLE_LENGTH, len(*known_cycle))
 		}
 	}
 }
 
 func TestHailstoneSequence_Minus56(t *testing.T) {
 	// Test the lead into a cycle by entering two of the cycles; -5
-	var seq []*big.Int = KNOWN_CYCLES()[2]
+	var seq []*big.Int = *KNOWN_CYCLES()[2]
 	var _seq []*big.Int = make([]*big.Int, 2, len(seq)+3)
 	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
 	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
@@ -251,7 +254,7 @@ func TestHailstoneSequence_Minus56(t *testing.T) {
 
 func TestHailstoneSequence_Minus200(t *testing.T) {
 	// Test the lead into a cycle by entering two of the cycles; -17
-	var seq []*big.Int = KNOWN_CYCLES()[3]
+	var seq []*big.Int = *KNOWN_CYCLES()[3]
 	var _seq []*big.Int = make([]*big.Int, 2, len(seq)+3)
 	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
 	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
@@ -334,7 +337,7 @@ func TestStoppingTime_KnownCyclesYieldInfinity(t *testing.T) {
 	for index, known_cycle := range KNOWN_CYCLES() {
 		// if !reflect.DeepEqual(_MAP_INTS_TO_BIGINTS([]int64{1, 4, 2}), known_cycle) {
 		if index != 0 {
-			for _, cycle_values := range known_cycle {
+			for _, cycle_values := range *known_cycle {
 				val, err := wrapStoppingTimeInterim(cycle_values.Int64(), 100, true)
 				AssertEqual(t, val, err, nil, math.Inf(1))
 			}

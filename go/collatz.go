@@ -50,24 +50,24 @@ func ONE() *big.Int {
 }
 
 // Map an array of ints to an array of big ints, for some mapping function.
-func __MAP_INTS_TO_BIGINTS(ai []int64, m func(int64) *big.Int) []*big.Int {
-	aim := make([]*big.Int, len(ai))
-	for index, value := range ai {
+func __MAP_INTS_TO_BIGINTS(ai *[]int64, m func(int64) *big.Int) *[]*big.Int {
+	aim := make([]*big.Int, len(*ai))
+	for index, value := range *ai {
 		aim[index] = m(value)
 	}
-	return aim
+	return &aim
 }
 
 // Map an array of ints to an array of big ints with the same value.
-func _MAP_INTS_TO_BIGINTS(ai []int64) []*big.Int {
+func _MAP_INTS_TO_BIGINTS(ai *[]int64) *[]*big.Int {
 	return __MAP_INTS_TO_BIGINTS(ai, func(value int64) *big.Int { return big.NewInt(value) })
 }
 
 // The four known cycles for the standard parameterisation
-func KNOWN_CYCLES() [4][]*big.Int {
-	return [4][]*big.Int{_MAP_INTS_TO_BIGINTS([]int64{1, 4, 2}), _MAP_INTS_TO_BIGINTS([]int64{-1, -2}),
-		_MAP_INTS_TO_BIGINTS([]int64{-5, -14, -7, -20, -10}),
-		_MAP_INTS_TO_BIGINTS([]int64{-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34})}
+func KNOWN_CYCLES() [4]*[]*big.Int {
+	return [4]*[]*big.Int{_MAP_INTS_TO_BIGINTS(&[]int64{1, 4, 2}), _MAP_INTS_TO_BIGINTS(&[]int64{-1, -2}),
+		_MAP_INTS_TO_BIGINTS(&[]int64{-5, -14, -7, -20, -10}),
+		_MAP_INTS_TO_BIGINTS(&[]int64{-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34})}
 }
 
 // The current value up to which the standard parameterisation has been verified.
@@ -168,7 +168,7 @@ func (ss SequenceState) String() string {
 //     P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).
 //     a (int): Factor by which to multiply n.
 //     b (int): Value to add to the scaled value of n.
-func __assert_sane_parameterisation(P *big.Int, a *big.Int, b *big.Int) error {
+func assertSaneParameterication(P *big.Int, a *big.Int, b *big.Int) error {
 	// Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
 	// theoretically, although would violate the reversability (if ~a is 0 then a
 	// value of "b" as the input to the reverse function would have a pre-emptive
@@ -197,7 +197,7 @@ func __assert_sane_parameterisation(P *big.Int, a *big.Int, b *big.Int) error {
 //     a (*big.Int): Factor by which to multiply n.
 //     b (*big.Int): Value to add to the scaled value of n.
 func ParameterisedFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (*big.Int, error) {
-	err := __assert_sane_parameterisation(P, a, b)
+	err := assertSaneParameterication(P, a, b)
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func Function(n *big.Int) *big.Int {
 //     P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P)
 //     a (*big.Int): Factor by which to multiply n.
 //     b (*big.Int): Value to add to the scaled value of n.
-func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) ([]*big.Int, error) {
+func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (*big.Int, *big.Int, error) {
 	// Every input can be reversed as the result of "n/P" division, which yields
 	// "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
 	// muliplication step was taken instead of the division by the modulus, then
@@ -230,26 +230,27 @@ func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int
 	// not placing restrictions on the parameters yet, although there is a better
 	// way of shortcutting this for the default variables, we need to always
 	// attempt (f(n) - b)/a)
-	err := __assert_sane_parameterisation(P, a, b)
+	err := assertSaneParameterication(P, a, b)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	var pre_values []*big.Int = []*big.Int{new(big.Int).Mul(P, n)} // init as P*n
+	// preNDivP, the first return value, is new(big.Int).Mul(P, n)
 	// (n-b)%a is zero AND (n-b)%(P*a) is not zero
 	n_sub_b := new(big.Int).Sub(n, b)
-	q, m := new(big.Int), new(big.Int)
-	q, m = q.DivMod(n_sub_b, a, m)
-	if m.Cmp(ZERO()) == 0 && new(big.Int).Mod(n_sub_b, (new(big.Int).Mul(P, a))).Cmp(ZERO()) != 0 {
-		pre_values = append(pre_values, q)
+	preANplusB, nsubb_mod_a := new(big.Int), new(big.Int)
+	preANplusB, nsubb_mod_a = preANplusB.DivMod(n_sub_b, a, nsubb_mod_a)
+	if nsubb_mod_a.Cmp(ZERO()) == 0 && new(big.Int).Mod(n_sub_b, (new(big.Int).Mul(P, a))).Cmp(ZERO()) != 0 {
+		return new(big.Int).Mul(P, n), preANplusB, nil
+	} else {
+		return new(big.Int).Mul(P, n), nil, nil
 	}
-	return pre_values, nil
 }
 
 // Returns the output of a single application of the Collatz reverse function.
 //     n (*big.Int): The value on which to perform the reverse Collatz function
-func ReverseFunction(n *big.Int) []*big.Int {
-	res, _ := ParameterisedReverseFunction(n, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
-	return res
+func ReverseFunction(n *big.Int) (*big.Int, *big.Int) {
+	preNDivP, preANplusB, _ := ParameterisedReverseFunction(n, DEFAULT_P(), DEFAULT_A(), DEFAULT_B())
+	return preNDivP, preANplusB
 }
 
 // Provides the appropriate lambda to use to check if iterations on an initial
@@ -478,19 +479,19 @@ func newTreeGraphRootNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int, 
 		this.preANplusBNode = nil
 		this.cycleCheck = nil
 	} else {
-		reverses, err := ParameterisedReverseFunction(nodeValue, P, a, b)
+		preNDivP, preANplusB, err := ParameterisedReverseFunction(nodeValue, P, a, b)
 		if err != nil {
 			return nil, err
 		}
 		this.cycleCheck = make(map[string]*TreeGraphNode, 1+int(math.Pow(2, float64(maxOrbitDistance))))
 		this.cycleCheck[nodeValue.String()] = this
-		preNDivPNode, err := newTreeGraphInnerNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+		preNDivPNode, err := newTreeGraphInnerNode(preNDivP, maxOrbitDistance-1, P, a, b, this.cycleCheck)
 		if err != nil {
 			return nil, err
 		}
 		this.preNDivPNode = preNDivPNode
-		if len(reverses) == 2 {
-			preANplusBNode, err := newTreeGraphInnerNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+		if preANplusB != nil {
+			preANplusBNode, err := newTreeGraphInnerNode(preANplusB, maxOrbitDistance-1, P, a, b, this.cycleCheck)
 			if err != nil {
 				return nil, err
 			}
@@ -529,17 +530,17 @@ func newTreeGraphInnerNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int,
 	} else {
 		this.cycleCheck[nodeValue.String()] = this
 		this.terminalSequenceState = NO_STATE
-		reverses, err := ParameterisedReverseFunction(nodeValue, P, a, b)
+		preNDivP, preANplusB, err := ParameterisedReverseFunction(nodeValue, P, a, b)
 		if err != nil {
 			return nil, err
 		}
-		preNDivPNode, err := newTreeGraphInnerNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+		preNDivPNode, err := newTreeGraphInnerNode(preNDivP, maxOrbitDistance-1, P, a, b, this.cycleCheck)
 		if err != nil {
 			return nil, err
 		}
 		this.preNDivPNode = preNDivPNode
-		if len(reverses) == 2 {
-			preANplusBNode, err := newTreeGraphInnerNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck)
+		if preANplusB != nil {
+			preANplusBNode, err := newTreeGraphInnerNode(preANplusB, maxOrbitDistance-1, P, a, b, this.cycleCheck)
 			if err != nil {
 				return nil, err
 			}
