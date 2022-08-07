@@ -11,6 +11,7 @@ The parameterisation uses the same `(P,a,b)` notation as Conway's generalisation
 Besides the function and reverse function, there is also functionality to retrieve the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph. 
 The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ## [GoDoc generated docs](https://skenvy.github.io/Collatz/go)
+## [Generated Coverage](https://skenvy.github.io/Collatz/go/coverage.html)
 ## Developing
 ### The first time setup
 ```

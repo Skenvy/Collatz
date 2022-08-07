@@ -102,21 +102,24 @@ func wrapBigIntArr(vals []*big.Int) *[]int {
 }
 
 func wrapReverseFunction(n int64) *[]int {
-	vals := ReverseFunction(big.NewInt(n))
-	var ret []int = []int{}
-	for _, val := range vals {
-		ret = append(ret, int(val.Int64()))
+	preNDivP, preANplusB := ReverseFunction(big.NewInt(n))
+	var ret []int = []int{int(preNDivP.Int64())}
+	if preANplusB != nil {
+		ret = append(ret, int(preANplusB.Int64()))
 	}
 	return &ret
 }
 
 func wrapParamReverseFunction(n int64, P int64, a int64, b int64) (*[]int, error) {
-	vals, err := ParameterisedReverseFunction(big.NewInt(n), big.NewInt(P), big.NewInt(a), big.NewInt(b))
-	if vals == nil {
+	preNDivP, preANplusB, err := ParameterisedReverseFunction(big.NewInt(n), big.NewInt(P), big.NewInt(a), big.NewInt(b))
+	if preNDivP == nil {
 		return nil, err
 	}
-	var ret *[]int = wrapBigIntArr(vals)
-	return ret, err
+	var ret []int = []int{int(preNDivP.Int64())}
+	if preANplusB != nil {
+		ret = append(ret, int(preANplusB.Int64()))
+	}
+	return &ret, err
 }
 
 func TestReverseFunction_ZeroTrap(t *testing.T) {
@@ -182,8 +185,8 @@ func TestReverseFunction_AssertSaneParameterisation(t *testing.T) {
 	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
 }
 
-func wrapHailstoneSequenceDefault(n int64) *HailstoneSequence {
-	hs := HailstoneSequenceDefault(big.NewInt(n), 1000)
+func wrapNewHailstoneSequence(n int64) *HailstoneSequence {
+	hs := NewHailstoneSequence(big.NewInt(n), 1000)
 	return hs
 }
 
@@ -209,17 +212,17 @@ func AssertHailstoneSequence(t *testing.T, hs *HailstoneSequence, received_error
 
 func TestHailstoneSequence_ZeroTrap(t *testing.T) {
 	// Test 0's immediated termination.
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(0), nil, nil, &[]int{0}, ZERO_STOP, 0)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(0), nil, nil, &[]int{0}, ZERO_STOP, 0)
 }
 
 func TestHailstoneSequence_OnesCycleOnlyYieldsATotalStop(t *testing.T) {
 	// The cycle containing 1 wont yield a cycle termination, as 1 is considered
 	// the "total stop" that is the special case termination.
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(1), nil, nil, &[]int{1}, TOTAL_STOPPING_TIME, 0)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(1), nil, nil, &[]int{1}, TOTAL_STOPPING_TIME, 0)
 	// 1's cycle wont yield a description of it being a "cycle" as far as the
 	// hailstones are concerned, which is to be expected, so..
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(4), nil, nil, &[]int{4, 2, 1}, TOTAL_STOPPING_TIME, 2)
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(16), nil, nil, &[]int{16, 8, 4, 2, 1}, TOTAL_STOPPING_TIME, 4)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(4), nil, nil, &[]int{4, 2, 1}, TOTAL_STOPPING_TIME, 2)
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(16), nil, nil, &[]int{16, 8, 4, 2, 1}, TOTAL_STOPPING_TIME, 4)
 }
 
 func TestHailstoneSequence_KnownCycles(t *testing.T) {
@@ -227,37 +230,37 @@ func TestHailstoneSequence_KnownCycles(t *testing.T) {
 	for index, known_cycle := range KNOWN_CYCLES() {
 		// if !reflect.DeepEqual(_MAP_INTS_TO_BIGINTS([]int64{1, 4, 2}), known_cycle) {
 		if index != 0 {
-			var expected []*big.Int = make([]*big.Int, (len(known_cycle) + 1))
-			for k := 0; k < len(known_cycle); k++ {
-				expected[k] = known_cycle[k]
+			var expected []*big.Int = make([]*big.Int, (len(*known_cycle) + 1))
+			for k := 0; k < len(*known_cycle); k++ {
+				expected[k] = (*known_cycle)[k]
 			}
-			expected[len(known_cycle)] = known_cycle[0]
-			AssertHailstoneSequence(t, HailstoneSequenceDefault(known_cycle[0], 1000), nil, nil, wrapBigIntArr(expected), CYCLE_LENGTH, len(known_cycle))
+			expected[len(*known_cycle)] = (*known_cycle)[0]
+			AssertHailstoneSequence(t, NewHailstoneSequence((*known_cycle)[0], 1000), nil, nil, wrapBigIntArr(expected), CYCLE_LENGTH, len(*known_cycle))
 		}
 	}
 }
 
 func TestHailstoneSequence_Minus56(t *testing.T) {
 	// Test the lead into a cycle by entering two of the cycles; -5
-	var seq []*big.Int = KNOWN_CYCLES()[2]
+	var seq []*big.Int = *KNOWN_CYCLES()[2]
 	var _seq []*big.Int = make([]*big.Int, 2, len(seq)+3)
 	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
 	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
 	_seq = append(_seq, seq[1:]...)
 	_seq = append(_seq, seq[0:2]...)
 	print(cap(_seq))
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(-56), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(-56), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
 }
 
 func TestHailstoneSequence_Minus200(t *testing.T) {
 	// Test the lead into a cycle by entering two of the cycles; -17
-	var seq []*big.Int = KNOWN_CYCLES()[3]
+	var seq []*big.Int = *KNOWN_CYCLES()[3]
 	var _seq []*big.Int = make([]*big.Int, 2, len(seq)+3)
 	_seq[0] = new(big.Int).Mul(seq[1], big.NewInt(4))
 	_seq[1] = new(big.Int).Mul(seq[1], big.NewInt(2))
 	_seq = append(_seq, seq[1:]...)
 	_seq = append(_seq, seq[0:2]...)
-	AssertHailstoneSequence(t, wrapHailstoneSequenceDefault(-200), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
+	AssertHailstoneSequence(t, wrapNewHailstoneSequence(-200), nil, nil, wrapBigIntArr(_seq), CYCLE_LENGTH, len(seq))
 }
 
 func TestHailstoneSequence_RegularStoppingTime(t *testing.T) {
@@ -334,7 +337,7 @@ func TestStoppingTime_KnownCyclesYieldInfinity(t *testing.T) {
 	for index, known_cycle := range KNOWN_CYCLES() {
 		// if !reflect.DeepEqual(_MAP_INTS_TO_BIGINTS([]int64{1, 4, 2}), known_cycle) {
 		if index != 0 {
-			for _, cycle_values := range known_cycle {
+			for _, cycle_values := range *known_cycle {
 				val, err := wrapStoppingTimeInterim(cycle_values.Int64(), 100, true)
 				AssertEqual(t, val, err, nil, math.Inf(1))
 			}
@@ -399,5 +402,167 @@ func TestStoppingTime_AssertSaneParameterisation(t *testing.T) {
 	val, err = wrapParameterisedStoppingTime(1, 0, 0, 3, 1000, false)
 	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
 	val, err = wrapParameterisedStoppingTime(1, 1, 0, 3, 1000, false)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
+}
+
+func wrapParamTreeGraph(nodeValue int64, maxOrbitDistance int, P int64, a int64, b int64) (*TreeGraph, error) {
+	return ParameterisedTreeGraph(big.NewInt(nodeValue), maxOrbitDistance, big.NewInt(P), big.NewInt(a), big.NewInt(b))
+}
+
+func wrapTreeGraph(nodeValue int64, maxOrbitDistance int) (*TreeGraph, error) {
+	return NewTreeGraph(big.NewInt(nodeValue), maxOrbitDistance)
+}
+
+// Create a "terminal" graph node with nil children and the terminal
+// condition that indicates it has reached the maximum orbit of the tree.
+func wrapTGN_TerminalNode(n int64) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), MAX_STOP_OUT_OF_BOUNDS, nil, nil, nil)
+}
+
+// Create a "cyclic terminal" graph node with nil children and the "cycle termination" condition.
+func wrapTGN_CyclicTerminal(n int64) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), CYCLE_LENGTH, nil, nil, nil)
+}
+
+// Create a "cyclic start" graph node with given children and the "cycle start" condition.
+//     n
+//     preNDivPNode
+//     preANplusBNode
+func wrapTGN_CyclicStart(n int64, preNDivPNode *TreeGraphNode, preANplusBNode *TreeGraphNode, cycleCheck map[string]*TreeGraphNode) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), CYCLE_INIT, preNDivPNode, preANplusBNode, cycleCheck)
+}
+
+/**
+ * Create a graph node with no terminal state, with given children.
+ * @param n
+ * @param preNDivPNode
+ * @param preANplusBNode
+ * @return
+ */
+func wrapTGN_Generic(n int64, preNDivPNode *TreeGraphNode, preANplusBNode *TreeGraphNode, cycleCheck map[string]*TreeGraphNode) *TreeGraphNode {
+	return newTreeGraphNode(big.NewInt(n), NO_STATE, preNDivPNode, preANplusBNode, cycleCheck)
+}
+
+func TestTreeGraph_ZeroTrap(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// The default zero trap
+	// {0:D}
+	received_tree, received_error := wrapTreeGraph(0, 0)
+	expectedRoot := wrapTGN_TerminalNode(0)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {0:{C:0}}
+	received_tree, received_error = wrapTreeGraph(0, 1)
+	expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	received_tree, received_error = wrapTreeGraph(0, 2)
+	expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_RootOfOneYieldsTheOneCycle(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// The roundings of the 1 cycle.
+	// {1:D}
+	received_tree, received_error := wrapTreeGraph(1, 0)
+	expectedRoot := wrapTGN_TerminalNode(1)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {1:{2:D}}
+	received_tree, received_error = wrapTreeGraph(1, 1)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(2), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {1:{2:{4:D}}}
+	received_tree, received_error = wrapTreeGraph(1, 2)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_TerminalNode(4), nil, received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {1:{2:{4:{C:1,8:D}}}}
+	received_tree, received_error = wrapTreeGraph(1, 3)
+	expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(2, wrapTGN_Generic(4, wrapTGN_TerminalNode(8), wrapTGN_CyclicTerminal(1), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_RootOfTwoAndFourYieldTheOneCycle(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// {2:{4:{1:{C:2},8:{16:D}}}}
+	received_tree, received_error := wrapTreeGraph(2, 3)
+	expectedRoot := wrapTGN_CyclicStart(2, wrapTGN_Generic(4, wrapTGN_Generic(8, wrapTGN_TerminalNode(16), nil, received_tree.root.cycleCheck),
+		wrapTGN_Generic(1, wrapTGN_CyclicTerminal(2), nil, received_tree.root.cycleCheck), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
+	received_tree, received_error = wrapTreeGraph(4, 3)
+	expectedRoot = wrapTGN_CyclicStart(4, wrapTGN_Generic(8, wrapTGN_Generic(16, wrapTGN_TerminalNode(32), wrapTGN_TerminalNode(5), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck),
+		wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_CyclicTerminal(4), nil, received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_RootOfMinusOneYieldsTheMinusOneCycle(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// The roundings of the -1 cycle
+	// {-1:{-2:D}}
+	received_tree, received_error := wrapTreeGraph(-1, 1)
+	expectedRoot := wrapTGN_Generic(-1, wrapTGN_TerminalNode(-2), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {-1:{-2:{-4:D,C:-1}}}
+	received_tree, received_error = wrapTreeGraph(-1, 2)
+	expectedRoot = wrapTGN_CyclicStart(-1, wrapTGN_Generic(-2, wrapTGN_TerminalNode(-4), wrapTGN_CyclicTerminal(-1), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_WiderModuloSweep(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+	// Orbit distance of 1 ~= {1:{-1:D,5:D}}
+	received_tree, received_error := wrapParamTreeGraph(1, 1, 5, 2, 3)
+	expectedRoot := wrapTGN_Generic(1, wrapTGN_TerminalNode(5), wrapTGN_TerminalNode(-1), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 2 ~= {1:{-1:{-5:D,-2:D},5:{C:1,25:D}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 2, 5, 2, 3)
+	expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_TerminalNode(25), wrapTGN_CyclicTerminal(1), received_tree.root.cycleCheck),
+		wrapTGN_Generic(-1, wrapTGN_TerminalNode(-5), wrapTGN_TerminalNode(-2), received_tree.root.cycleCheck), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 3 ~=  {1:{-1:{-5:{-25:D,-4:D},-2:{-10:D}},5:{C:1,25:{11:D,125:D}}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 3, 5, 2, 3)
+	expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_Generic(25, wrapTGN_TerminalNode(125), wrapTGN_TerminalNode(11), received_tree.root.cycleCheck), wrapTGN_CyclicTerminal(1), received_tree.root.cycleCheck),
+		wrapTGN_Generic(-1, wrapTGN_Generic(-5, wrapTGN_TerminalNode(-25), wrapTGN_TerminalNode(-4), received_tree.root.cycleCheck), wrapTGN_Generic(-2, wrapTGN_TerminalNode(-10), nil, received_tree.root.cycleCheck), received_tree.root.cycleCheck), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_NegativeParamterisation(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// Test negative P, a and b ~ P=-3, a=-2, b=-5
+	// Orbit distance of 1 ~= {1:{-3:D}}
+	received_tree, received_error := wrapParamTreeGraph(1, 1, -3, -2, -5)
+	expectedRoot := wrapTGN_Generic(1, wrapTGN_TerminalNode(-3), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 2 ~= {1:{-3:{-1:D,9:D}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 2, -3, -2, -5)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_TerminalNode(9), wrapTGN_TerminalNode(-1), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// Orbit distance of 3 ~= {1:{-3:{-1:{-2:D,3:D},9:{-27:D,-7:D}}}}
+	received_tree, received_error = wrapParamTreeGraph(1, 3, -3, -2, -5)
+	expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_Generic(9, wrapTGN_TerminalNode(-27), wrapTGN_TerminalNode(-7), received_tree.root.cycleCheck),
+		wrapTGN_Generic(-1, wrapTGN_TerminalNode(3), wrapTGN_TerminalNode(-2), received_tree.root.cycleCheck), received_tree.root.cycleCheck), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_ZeroReversesOnB(t *testing.T) {
+	// ":D" for terminal, "C:" for cyclic end
+	// If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+	// {0:{C:0,3:D}}
+	received_tree, received_error := wrapParamTreeGraph(0, 1, 17, 2, -6)
+	expectedRoot := wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), wrapTGN_TerminalNode(3), received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+	// {0:{C:0}}
+	received_tree, received_error = wrapParamTreeGraph(0, 1, 17, 2, 102)
+	expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), nil, received_tree.root.cycleCheck)
+	AssertEqual(t, received_tree, received_error, nil, newTreeGraph(expectedRoot))
+}
+
+func TestTreeGraph_AssertSaneParameterisation(t *testing.T) {
+	// Set P and a to 0 to assert on __assert_sane_parameterisation
+	val, err := wrapParamTreeGraph(1, 1, 0, 2, 3)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
+	val, err = wrapParamTreeGraph(1, 1, 0, 0, 3)
+	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_P), 0)
+	val, err = wrapParamTreeGraph(1, 1, 1, 0, 3)
 	AssertEqual(t, val, err, FailedSaneParameterCheck(SANE_PARAMS_A), 0)
 }
