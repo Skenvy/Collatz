@@ -96,12 +96,14 @@
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
-Provides the basic functionality to interact with the Collatz conjecture.
-The parameterisation uses the same (P,a,b) notation as Conway&#39;s generalisations.
+Provides the basic functionality to interact with the Collatz conjecture. The
+parameterisation uses the same (P,a,b) notation as Conway&#39;s generalisations.
 Besides the function and reverse function, there is also functionality to
-retrieve the hailstone sequence, the &#34;stopping time&#34;/&#34;total stopping time&#34;, or
-tree-graph.
+retrieve the hailstone sequence, the &#34;stopping time&#34;/&#34;total stopping time&#34;,
+or tree-graph.
 </p>
+<pre>import collatz &#34;github.com/Skenvy/Collatz/go&#34;
+</pre>
 
 				
 			</div>
@@ -121,46 +123,49 @@ tree-graph.
 			
 			
 				
-				<dd><a href="#DEFAULT_A">func DEFAULT_A() *big.Int</a></dd>
+				<dd><a href="#DEFAULT_A">func DEFAULT_A() (DEFAULT_A *big.Int)</a></dd>
 			
 				
-				<dd><a href="#DEFAULT_B">func DEFAULT_B() *big.Int</a></dd>
+				<dd><a href="#DEFAULT_B">func DEFAULT_B() (DEFAULT_B *big.Int)</a></dd>
 			
 				
-				<dd><a href="#DEFAULT_P">func DEFAULT_P() *big.Int</a></dd>
+				<dd><a href="#DEFAULT_P">func DEFAULT_P() (DEFAULT_P *big.Int)</a></dd>
 			
 				
-				<dd><a href="#Function">func Function(n *big.Int) *big.Int</a></dd>
+				<dd><a href="#Function">func Function(n *big.Int) (result *big.Int)</a></dd>
 			
 				
-				<dd><a href="#KNOWN_CYCLES">func KNOWN_CYCLES() [4][]*big.Int</a></dd>
+				<dd><a href="#KNOWN_CYCLES">func KNOWN_CYCLES() (KNOWN_CYCLES [4]*[]*big.Int)</a></dd>
 			
 				
-				<dd><a href="#ONE">func ONE() *big.Int</a></dd>
+				<dd><a href="#ONE">func ONE() (ONE *big.Int)</a></dd>
 			
 				
-				<dd><a href="#ParameterisedFunction">func ParameterisedFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (*big.Int, error)</a></dd>
+				<dd><a href="#ParameterisedFunction">func ParameterisedFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (result *big.Int, sanity error)</a></dd>
 			
 				
-				<dd><a href="#ParameterisedReverseFunction">func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) ([]*big.Int, error)</a></dd>
+				<dd><a href="#ParameterisedReverseFunction">func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (preNDivP *big.Int, preANplusB *big.Int, sanity error)</a></dd>
 			
 				
 				<dd><a href="#ParameterisedStoppingTime">func ParameterisedStoppingTime(initialValue *big.Int, P *big.Int, a *big.Int, b *big.Int, maxStoppingTime int, totalStoppingTime bool) (float64, error)</a></dd>
 			
 				
-				<dd><a href="#ReverseFunction">func ReverseFunction(n *big.Int) []*big.Int</a></dd>
+				<dd><a href="#ReverseFunction">func ReverseFunction(n *big.Int) (preNDivP *big.Int, preANplusB *big.Int)</a></dd>
 			
 				
 				<dd><a href="#StoppingTime">func StoppingTime(initialValue *big.Int) float64</a></dd>
 			
 				
-				<dd><a href="#VERIFIED_MAXIMUM">func VERIFIED_MAXIMUM() *big.Int</a></dd>
+				<dd><a href="#TreeGraphEquals">func TreeGraphEquals(t1 *TreeGraph, t2 *TreeGraph) bool</a></dd>
 			
 				
-				<dd><a href="#VERIFIED_MINIMUM">func VERIFIED_MINIMUM() *big.Int</a></dd>
+				<dd><a href="#VERIFIED_MAXIMUM">func VERIFIED_MAXIMUM() (VERIFIED_MAXIMUM *big.Int)</a></dd>
 			
 				
-				<dd><a href="#ZERO">func ZERO() *big.Int</a></dd>
+				<dd><a href="#VERIFIED_MINIMUM">func VERIFIED_MINIMUM() (VERIFIED_MINIMUM *big.Int)</a></dd>
+			
+				
+				<dd><a href="#ZERO">func ZERO() (ZERO *big.Int)</a></dd>
 			
 			
 				
@@ -175,7 +180,7 @@ tree-graph.
 				<dd><a href="#HailstoneSequence">type HailstoneSequence</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#HailstoneSequenceDefault">func HailstoneSequenceDefault(initialValue *big.Int, maxTotalStoppingTime int) *HailstoneSequence</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#NewHailstoneSequence">func NewHailstoneSequence(initialValue *big.Int, maxTotalStoppingTime int) *HailstoneSequence</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#ParameterisedHailstoneSequence">func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.Int, b *big.Int, maxTotalStoppingTime int, totalStoppingTime bool) (*HailstoneSequence, error)</a></dd>
@@ -187,7 +192,7 @@ tree-graph.
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SaneParameterErrMsg.String">func (spem SaneParameterErrMsg) String() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SaneParameterErrMsg.String">func (spem SaneParameterErrMsg) String() (ErrorMessage string)</a></dd>
 				
 			
 				
@@ -195,7 +200,23 @@ tree-graph.
 				
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#SequenceState.String">func (ss SequenceState) String() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#SequenceState.String">func (ss SequenceState) String() (StateString string)</a></dd>
+				
+			
+				
+				<dd><a href="#TreeGraph">type TreeGraph</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewTreeGraph">func NewTreeGraph(initialValue *big.Int, maxOrbitDistance int) (*TreeGraph, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#ParameterisedTreeGraph">func ParameterisedTreeGraph(initialValue *big.Int, maxOrbitDistance int, P *big.Int, a *big.Int, b *big.Int) (*TreeGraph, error)</a></dd>
+				
+				
+			
+				
+				<dd><a href="#TreeGraphNode">type TreeGraphNode</a></dd>
+				
 				
 			
 			
@@ -224,14 +245,15 @@ tree-graph.
 		
 			
 			
-			<h2 id="DEFAULT_A">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1005:1030#L23">DEFAULT_A</a>
+			<h2 id="DEFAULT_A">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1310:1347#L28">DEFAULT_A</a>
 				<a class="permalink" href="#DEFAULT_A">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func DEFAULT_A() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func DEFAULT_A() (DEFAULT_A *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
-Default value for a, the input&#39;s multiplicand.
+Returns DEFAULT_A, the default value for a,
+the input&#39;s multiplicand.
 </p>
 
 			
@@ -240,14 +262,15 @@ Default value for a, the input&#39;s multiplicand.
 		
 			
 			
-			<h2 id="DEFAULT_B">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1132:1157#L28">DEFAULT_B</a>
+			<h2 id="DEFAULT_B">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1475:1512#L34">DEFAULT_B</a>
 				<a class="permalink" href="#DEFAULT_B">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func DEFAULT_B() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func DEFAULT_B() (DEFAULT_B *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
-Default value for b, the value added to the multiplied value.
+Returns DEFAULT_B, the default value for b,
+the value added to the multiplied value.
 </p>
 
 			
@@ -256,14 +279,15 @@ Default value for b, the value added to the multiplied value.
 		
 			
 			
-			<h2 id="DEFAULT_P">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=893:918#L18">DEFAULT_P</a>
+			<h2 id="DEFAULT_P">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1160:1197#L22">DEFAULT_P</a>
 				<a class="permalink" href="#DEFAULT_P">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func DEFAULT_P() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func DEFAULT_P() (DEFAULT_P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
-Default value for P, the modulus condition.
+Returns DEFAULT_P, the default value for P,
+the modulus condition.
 </p>
 
 			
@@ -272,16 +296,16 @@ Default value for P, the modulus condition.
 		
 			
 			
-			<h2 id="Function">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=7743:7777#L201">Function</a>
+			<h2 id="Function">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=9374:9417#L236">Function</a>
 				<a class="permalink" href="#Function">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func Function(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func Function(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) (result *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
-Returns the output of a single application of the Collatz function.
+Returns the result of a single application of the Collatz function.
 </p>
-<pre>n (*big.Int): The value on which to perform the Collatz-esque function
+<pre>- n: The value on which to perform the Collatz-esque function
 </pre>
 
 			
@@ -290,14 +314,14 @@ Returns the output of a single application of the Collatz function.
 		
 			
 			
-			<h2 id="KNOWN_CYCLES">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1900:1933#L57">KNOWN_CYCLES</a>
+			<h2 id="KNOWN_CYCLES">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2276:2325#L63">KNOWN_CYCLES</a>
 				<a class="permalink" href="#KNOWN_CYCLES">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func KNOWN_CYCLES() [4][]*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func KNOWN_CYCLES() (KNOWN_CYCLES [4]*[]*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
-The four known cycles for the standard parameterisation
+The four KNOWN_CYCLES for the standard parameterisation.
 </p>
 
 			
@@ -306,12 +330,12 @@ The four known cycles for the standard parameterisation
 		
 			
 			
-			<h2 id="ONE">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1320:1339#L38">ONE</a>
+			<h2 id="ONE">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1682:1707#L44">ONE</a>
 				<a class="permalink" href="#ONE">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func ONE() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func ONE() (ONE *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
 Return a big.Int with a value of 1.
 </p>
@@ -322,19 +346,19 @@ Return a big.Int with a value of 1.
 		
 			
 			
-			<h2 id="ParameterisedFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=7202:7294#L185">ParameterisedFunction</a>
+			<h2 id="ParameterisedFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=8837:8943#L219">ParameterisedFunction</a>
 				<a class="permalink" href="#ParameterisedFunction">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func ParameterisedFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, a *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, b *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) (*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+			<pre>func ParameterisedFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, a *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, b *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) (result *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, sanity <a href="/pkg/builtin/#error">error</a>)</pre>
 			<p>
-Returns the output of a single application of a Collatz-esque function.
+Returns the result of a single application of a Collatz-esque function.
 </p>
-<pre>n (*big.Int): The value on which to perform the Collatz-esque function
-P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
-a (*big.Int): Factor by which to multiply n.
-b (*big.Int): Value to add to the scaled value of n.
+<pre>- n: The value on which to perform the Collatz-esque function
+- P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+- a: Factor by which to multiply n.
+- b: Value to add to the scaled value of n.
 </pre>
 
 			
@@ -343,19 +367,21 @@ b (*big.Int): Value to add to the scaled value of n.
 		
 			
 			
-			<h2 id="ParameterisedReverseFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=8225:8326#L211">ParameterisedReverseFunction</a>
+			<h2 id="ParameterisedReverseFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=9970:10106#L248">ParameterisedReverseFunction</a>
 				<a class="permalink" href="#ParameterisedReverseFunction">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func ParameterisedReverseFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, a *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, b *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) ([]*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+			<pre>func ParameterisedReverseFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, a *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, b *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) (preNDivP *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, preANplusB *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, sanity <a href="/pkg/builtin/#error">error</a>)</pre>
 			<p>
 Returns the output of a single application of a Collatz-esque reverse function.
+If there is no error in the parameters, then the value of preNDivP will always
+be an actual result, while preANplusB may either be a result, or nil.
 </p>
-<pre>n (*big.Int): The value on which to perform the reverse Collatz function
-P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P)
-a (*big.Int): Factor by which to multiply n.
-b (*big.Int): Value to add to the scaled value of n.
+<pre>- n: The value on which to perform the reverse Collatz function
+- P: Modulus used to devide n, iff n is equivalent to (0 mod P)
+- a: Factor by which to multiply n.
+- b: Value to add to the scaled value of n.
 </pre>
 
 			
@@ -364,7 +390,7 @@ b (*big.Int): Value to add to the scaled value of n.
 		
 			
 			
-			<h2 id="ParameterisedStoppingTime">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=16962:17113#L391">ParameterisedStoppingTime</a>
+			<h2 id="ParameterisedStoppingTime">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=19029:19180#L438">ParameterisedStoppingTime</a>
 				<a class="permalink" href="#ParameterisedStoppingTime">&#xb6;</a>
 				
 				
@@ -381,16 +407,16 @@ will be the negative of what would otherwise be the &#34;total stopping time&#34
 to reach 1, where 0 is considered a &#34;total stop&#34; that should not occur as
 it does form a cycle of length 1.
 </p>
-<pre>initialValue (*big.Int): The value for which to find the stopping time.
-P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
-a (*big.Int): Factor by which to multiply n.
-b (*big.Int): Value to add to the scaled value of n.
-maxStoppingTime (int): Maximum amount of times to iterate the function, if
-     the stopping time is not reached. IF the maxStoppingTime is reached,
-     the function will return null.
-totalStoppingTime (bool): Whether or not to execute until the &#34;total&#34; stopping
-     time (number of iterations to obtain 1) rather than the regular stopping
-     time (number of iterations to reach a value less than the initial value).
+<pre>- initialValue: The value for which to find the stopping time.
+- P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+- a: Factor by which to multiply n.
+- b: Value to add to the scaled value of n.
+- maxStoppingTime: Maximum amount of times to iterate the function,
+  if the stopping time is not reached. IF the maxStoppingTime is reached,
+  the function will return null.
+- totalStoppingTime: Whether or not to execute until the &#34;total&#34; stopping
+  time (number of iterations to obtain 1) rather than the regular stopping
+  time (number of iterations to reach a value less than the initial value).
 </pre>
 <p>
 return (float64): The stopping time, or, in a special case, infinity, null or a negative.
@@ -402,16 +428,18 @@ return (float64): The stopping time, or, in a special case, infinity, null or a 
 		
 			
 			
-			<h2 id="ReverseFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=9454:9497#L236">ReverseFunction</a>
+			<h2 id="ReverseFunction">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=11427:11500#L276">ReverseFunction</a>
 				<a class="permalink" href="#ReverseFunction">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func ReverseFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) []*<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func ReverseFunction(n *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) (preNDivP *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, preANplusB *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
 Returns the output of a single application of the Collatz reverse function.
+The value of preNDivP will always be an actual result, while preANplusB
+may either be a result, or nil.
 </p>
-<pre>n (*big.Int): The value on which to perform the reverse Collatz function
+<pre>- n: The value on which to perform the reverse Collatz function
 </pre>
 
 			
@@ -420,7 +448,7 @@ Returns the output of a single application of the Collatz reverse function.
 		
 			
 			
-			<h2 id="StoppingTime">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=18530:18578#L423">StoppingTime</a>
+			<h2 id="StoppingTime">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=20583:20631#L470">StoppingTime</a>
 				<a class="permalink" href="#StoppingTime">&#xb6;</a>
 				
 				
@@ -430,10 +458,10 @@ Returns the output of a single application of the Collatz reverse function.
 Returns the stopping time, the amount of iterations required to reach a
 value less than the initial value, or -Inf if maxStoppingTime is exceeded.
 </p>
-<pre>initialValue (*big.Int): The value for which to find the stopping time.
+<pre>- initialValue: The value for which to find the stopping time.
 </pre>
 <p>
-return (float64): The stopping time, or, in a cycle case, infinity.
+return float64: The stopping time, or, in a cycle case, infinity.
 </p>
 
 			
@@ -442,12 +470,29 @@ return (float64): The stopping time, or, in a cycle case, infinity.
 		
 			
 			
-			<h2 id="VERIFIED_MAXIMUM">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2307:2339#L64">VERIFIED_MAXIMUM</a>
+			<h2 id="TreeGraphEquals">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=29482:29537#L673">TreeGraphEquals</a>
+				<a class="permalink" href="#TreeGraphEquals">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func TreeGraphEquals(t1 *<a href="#TreeGraph">TreeGraph</a>, t2 *<a href="#TreeGraph">TreeGraph</a>) <a href="/pkg/builtin/#bool">bool</a></pre>
+			<p>
+The equality between TreeGraphs is determined by the equality check on
+subtrees. A subtree check will be done on both TreeGraph&#39;s root nodes.
+</p>
+
+			
+			
+
+		
+			
+			
+			<h2 id="VERIFIED_MAXIMUM">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2688:2739#L70">VERIFIED_MAXIMUM</a>
 				<a class="permalink" href="#VERIFIED_MAXIMUM">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func VERIFIED_MAXIMUM() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func VERIFIED_MAXIMUM() (VERIFIED_MAXIMUM *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
 The current value up to which the standard parameterisation has been verified.
 </p>
@@ -458,12 +503,12 @@ The current value up to which the standard parameterisation has been verified.
 		
 			
 			
-			<h2 id="VERIFIED_MINIMUM">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2659:2691#L75">VERIFIED_MINIMUM</a>
+			<h2 id="VERIFIED_MINIMUM">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3058:3109#L81">VERIFIED_MINIMUM</a>
 				<a class="permalink" href="#VERIFIED_MINIMUM">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func VERIFIED_MINIMUM() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func VERIFIED_MINIMUM() (VERIFIED_MINIMUM *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
 The current value down to which the standard parameterisation has been verified.
 </p>
@@ -474,12 +519,12 @@ The current value down to which the standard parameterisation has been verified.
 		
 			
 			
-			<h2 id="ZERO">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1233:1253#L33">ZERO</a>
+			<h2 id="ZERO">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=1588:1615#L39">ZERO</a>
 				<a class="permalink" href="#ZERO">&#xb6;</a>
 				
 				
 			</h2>
-			<pre>func ZERO() *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a></pre>
+			<pre>func ZERO() (ZERO *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>)</pre>
 			<p>
 Return a big.Int with a value of 0.
 </p>
@@ -491,14 +536,18 @@ Return a big.Int with a value of 0.
 		
 			
 			
-			<h2 id="FailedSaneParameterCheck">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3602:3651#L105">FailedSaneParameterCheck</a>
+			<h2 id="FailedSaneParameterCheck">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=4760:4809#L121">FailedSaneParameterCheck</a>
 				<a class="permalink" href="#FailedSaneParameterCheck">&#xb6;</a>
 				
 				
 			</h2>
 			<p>
-Thrown when either P, the modulus, or a, the multiplicand, are zero.
+Thrown when either P, the modulus, or a, the
+multiplicand, are zero. Create as either or;
 </p>
+<pre>FailedSaneParameterCheck(SANE_PARAMS_P)
+FailedSaneParameterCheck(SANE_PARAMS_A)
+</pre>
 
 			<pre>type FailedSaneParameterCheck <a href="#SaneParameterErrMsg">SaneParameterErrMsg</a></pre>
 
@@ -514,14 +563,15 @@ Thrown when either P, the modulus, or a, the multiplicand, are zero.
 
 			
 				
-				<h3 id="FailedSaneParameterCheck.Error">func (FailedSaneParameterCheck) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3743:3794#L108">Error</a>
+				<h3 id="FailedSaneParameterCheck.Error">func (FailedSaneParameterCheck) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=4904:4955#L125">Error</a>
 					<a class="permalink" href="#FailedSaneParameterCheck.Error">&#xb6;</a>
 					
 					
 				</h3>
 				<pre>func (fspc <a href="#FailedSaneParameterCheck">FailedSaneParameterCheck</a>) Error() <a href="/pkg/builtin/#string">string</a></pre>
 				<p>
-Construct a FailedSaneParameterCheck with a message associated with the provided enum.
+Construct a FailedSaneParameterCheck with
+a message associated with the provided enum.
 </p>
 
 				
@@ -531,14 +581,17 @@ Construct a FailedSaneParameterCheck with a message associated with the provided
 		
 			
 			
-			<h2 id="HailstoneSequence">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=10640:11541#L261">HailstoneSequence</a>
+			<h2 id="HailstoneSequence">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=12881:13855#L307">HailstoneSequence</a>
 				<a class="permalink" href="#HailstoneSequence">&#xb6;</a>
 				
 				
 			</h2>
 			<p>
-Contains the results of computing a hailstone sequence via {@code Collatz.hailstoneSequence(~)}.
+Contains the results of computing a hailstone sequence. Can be created via;
 </p>
+<pre>ParameterisedHailstoneSequence(~)
+NewHailstoneSequence(~)
+</pre>
 
 			<pre>type HailstoneSequence struct {
     <span class="comment">// contains filtered or unexported fields</span>
@@ -555,30 +608,30 @@ Contains the results of computing a hailstone sequence via {@code Collatz.hailst
 
 			
 				
-				<h3 id="HailstoneSequenceDefault">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=15273:15370#L366">HailstoneSequenceDefault</a>
-					<a class="permalink" href="#HailstoneSequenceDefault">&#xb6;</a>
+				<h3 id="NewHailstoneSequence">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=17431:17524#L413">NewHailstoneSequence</a>
+					<a class="permalink" href="#NewHailstoneSequence">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func HailstoneSequenceDefault(initialValue *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, maxTotalStoppingTime <a href="/pkg/builtin/#int">int</a>) *<a href="#HailstoneSequence">HailstoneSequence</a></pre>
+				<pre>func NewHailstoneSequence(initialValue *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, maxTotalStoppingTime <a href="/pkg/builtin/#int">int</a>) *<a href="#HailstoneSequence">HailstoneSequence</a></pre>
 				<p>
 Initialise and compute a new Hailstone Sequence.
 </p>
-<pre>initialValue (*big.Int): The value to begin the hailstone sequence from.
-P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
-a (*big.Int): Factor by which to multiply n.
-b (*big.Int): Value to add to the scaled value of n.
-maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
-totalStoppingTime (boolean): Whether or not to execute until the &#34;total&#34; stopping time
-     (number of iterations to obtain 1) rather than the regular stopping time (number
-     of iterations to reach a value less than the initial value).
+<pre>- initialValue: The value to begin the hailstone sequence from.
+- P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+- a: Factor by which to multiply n.
+- b: Value to add to the scaled value of n.
+- maxTotalStoppingTime: Maximum amount of times to iterate the function, if 1 is not reached.
+- totalStoppingTime: Whether or not to execute until the &#34;total&#34; stopping time
+  (number of iterations to obtain 1) rather than the regular stopping time
+  (number of iterations to reach a value less than the initial value).
 </pre>
 
 				
 				
 			
 				
-				<h3 id="ParameterisedHailstoneSequence">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=12233:12405#L286">ParameterisedHailstoneSequence</a>
+				<h3 id="ParameterisedHailstoneSequence">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=14469:14641#L333">ParameterisedHailstoneSequence</a>
 					<a class="permalink" href="#ParameterisedHailstoneSequence">&#xb6;</a>
 					
 					
@@ -587,14 +640,14 @@ totalStoppingTime (boolean): Whether or not to execute until the &#34;total&#34;
 				<p>
 Initialise and compute a new Hailstone Sequence.
 </p>
-<pre>initialValue (*big.Int): The value to begin the hailstone sequence from.
-P (*big.Int): Modulus used to devide n, iff n is equivalent to (0 mod P).
-a (*big.Int): Factor by which to multiply n.
-b (*big.Int): Value to add to the scaled value of n.
-maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
-totalStoppingTime (boolean): Whether or not to execute until the &#34;total&#34; stopping time
-     (number of iterations to obtain 1) rather than the regular stopping time (number
-     of iterations to reach a value less than the initial value).
+<pre>- initialValue: The value to begin the hailstone sequence from.
+- P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+- a: Factor by which to multiply n.
+- b: Value to add to the scaled value of n.
+- maxTotalStoppingTime: Maximum amount of times to iterate the function, if 1 is not reached.
+- totalStoppingTime: Whether or not to execute until the &#34;total&#34; stopping time
+  (number of iterations to obtain 1) rather than the regular stopping time
+  (number of iterations to reach a value less than the initial value).
 </pre>
 
 				
@@ -605,7 +658,7 @@ totalStoppingTime (boolean): Whether or not to execute until the &#34;total&#34;
 		
 			
 			
-			<h2 id="SaneParameterErrMsg">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=2948:2978#L84">SaneParameterErrMsg</a>
+			<h2 id="SaneParameterErrMsg">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3979:4009#L97">SaneParameterErrMsg</a>
 				<a class="permalink" href="#SaneParameterErrMsg">&#xb6;</a>
 				
 				
@@ -636,12 +689,12 @@ Error message constants, to be used as input to the FailedSaneParameterCheck
 
 			
 				
-				<h3 id="SaneParameterErrMsg.String">func (SaneParameterErrMsg) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=3273:3320#L94">String</a>
+				<h3 id="SaneParameterErrMsg.String">func (SaneParameterErrMsg) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=4304:4366#L107">String</a>
 					<a class="permalink" href="#SaneParameterErrMsg.String">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (spem <a href="#SaneParameterErrMsg">SaneParameterErrMsg</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
+				<pre>func (spem <a href="#SaneParameterErrMsg">SaneParameterErrMsg</a>) String() (ErrorMessage <a href="/pkg/builtin/#string">string</a>)</pre>
 				<p>
 Get the string associated with the SaneParameterErrMsg
 </p>
@@ -653,7 +706,7 @@ Get the string associated with the SaneParameterErrMsg
 		
 			
 			
-			<h2 id="SequenceState">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=4046:4070#L115">SequenceState</a>
+			<h2 id="SequenceState">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=5207:5231#L132">SequenceState</a>
 				<a class="permalink" href="#SequenceState">&#xb6;</a>
 				
 				
@@ -669,17 +722,26 @@ reversal, when set to verbose, or stopping time check.
 			
 				
 				<pre>const (
-    <span class="comment">// A Hailstone sequence state that indicates the stopping time, a value less than the initial, has been reached.</span>
-    <span id="STOPPING_TIME">STOPPING_TIME</span> <a href="#SequenceState">SequenceState</a> = <a href="/pkg/builtin/#iota">iota</a>
-    <span class="comment">// A Hailstone sequence state that indicates the total stopping time, a value of 1, has been reached.</span>
+    <span class="comment">// A TreeGraph sequence state that indicates the lack</span>
+    <span class="comment">// of another state, as this state can&#39;t be nil</span>
+    <span id="NO_STATE">NO_STATE</span> <a href="#SequenceState">SequenceState</a> = <a href="/pkg/builtin/#iota">iota</a>
+    <span class="comment">// A Hailstone sequence state that indicates the stopping</span>
+    <span class="comment">// time, a value less than the initial, has been reached.</span>
+    <span id="STOPPING_TIME">STOPPING_TIME</span>
+    <span class="comment">// A Hailstone sequence state that indicates the total</span>
+    <span class="comment">// stopping time, a value of 1, has been reached.</span>
     <span id="TOTAL_STOPPING_TIME">TOTAL_STOPPING_TIME</span>
-    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the first occurence of a value that subsequently forms a cycle.</span>
+    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the</span>
+    <span class="comment">// first occurence of a value that subsequently forms a cycle.</span>
     <span id="CYCLE_INIT">CYCLE_INIT</span>
-    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the last occurence of a value that has already formed a cycle.</span>
+    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the</span>
+    <span class="comment">// last occurence of a value that has already formed a cycle.</span>
     <span id="CYCLE_LENGTH">CYCLE_LENGTH</span>
-    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the sequence or traversal has executed some imposed &#39;maximum&#39; amount of times.</span>
+    <span class="comment">// A Hailstone and TreeGraph sequence state that indicates the sequence</span>
+    <span class="comment">// or traversal has executed some imposed &#39;maximum&#39; amount of times.</span>
     <span id="MAX_STOP_OUT_OF_BOUNDS">MAX_STOP_OUT_OF_BOUNDS</span>
-    <span class="comment">// A Hailstone sequence state that indicates the sequence terminated by reaching &#34;0&#34;, a special type of &#34;stopping time&#34;.</span>
+    <span class="comment">// A Hailstone sequence state that indicates the sequence terminated</span>
+    <span class="comment">// by reaching &#34;0&#34;, a special type of &#34;stopping time&#34;.</span>
     <span id="ZERO_STOP">ZERO_STOP</span>
 )</pre>
 			
@@ -694,12 +756,12 @@ reversal, when set to verbose, or stopping time check.
 
 			
 				
-				<h3 id="SequenceState.String">func (SequenceState) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=4978:5017#L133">String</a>
+				<h3 id="SequenceState.String">func (SequenceState) <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=6277:6330#L159">String</a>
 					<a class="permalink" href="#SequenceState.String">&#xb6;</a>
 					
 					
 				</h3>
-				<pre>func (ss <a href="#SequenceState">SequenceState</a>) String() <a href="/pkg/builtin/#string">string</a></pre>
+				<pre>func (ss <a href="#SequenceState">SequenceState</a>) String() (StateString <a href="/pkg/builtin/#string">string</a>)</pre>
 				<p>
 Get the string associated with the SequenceState
 </p>
@@ -707,6 +769,121 @@ Get the string associated with the SequenceState
 				
 				
 				
+			
+		
+			
+			
+			<h2 id="TreeGraph">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=27795:27891#L636">TreeGraph</a>
+				<a class="permalink" href="#TreeGraph">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Contains the results, in a &#34;root node&#34; of computing the Tree Graph via;
+</p>
+<pre>ParameterisedTreeGraph(~)
+NewTreeGraph(~)
+</pre>
+
+			<pre>type TreeGraph struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewTreeGraph">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=30436:30518#L696">NewTreeGraph</a>
+					<a class="permalink" href="#NewTreeGraph">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func NewTreeGraph(initialValue *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, maxOrbitDistance <a href="/pkg/builtin/#int">int</a>) (*<a href="#TreeGraph">TreeGraph</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Create a new TreeGraph with the root node defined by the inputs.
+Returns a directed tree graph of the reverse function values up to a maximum
+nesting of maxOrbitDistance, with the initialValue as the root.
+</p>
+<pre>- initialValue: The root value of the directed tree graph.
+- maxOrbitDistance: Maximum amount of times to iterate the reverse
+  function. There is no natural termination to populating the tree
+  graph, equivalent to the termination of hailstone sequences or
+  stopping time attempts, so this is not an optional argument like
+  maxStoppingTime / maxTotalStoppingTime, as it is the intended target
+  of orbits to obtain, rather than a limit to avoid uncapped computation.
+</pre>
+
+				
+				
+			
+				
+				<h3 id="ParameterisedTreeGraph">func <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=28763:28891#L654">ParameterisedTreeGraph</a>
+					<a class="permalink" href="#ParameterisedTreeGraph">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func ParameterisedTreeGraph(initialValue *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, maxOrbitDistance <a href="/pkg/builtin/#int">int</a>, P *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, a *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>, b *<a href="/pkg/math/big/">big</a>.<a href="/pkg/math/big/#Int">Int</a>) (*<a href="#TreeGraph">TreeGraph</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Create a new TreeGraph with the root node defined by the inputs.
+Returns a directed tree graph of the reverse function values up to a maximum
+nesting of maxOrbitDistance, with the initialValue as the root.
+</p>
+<pre>- initialValue: The root value of the directed tree graph.
+- maxOrbitDistance: Maximum amount of times to iterate the reverse
+  function. There is no natural termination to populating the tree
+  graph, equivalent to the termination of hailstone sequences or
+  stopping time attempts, so this is not an optional argument like
+  maxStoppingTime / maxTotalStoppingTime, as it is the intended target
+  of orbits to obtain, rather than a limit to avoid uncapped computation.
+- P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+- a: Factor by which to multiply n.
+- b: Value to add to the scaled value of n.
+</pre>
+
+				
+				
+			
+
+			
+		
+			
+			
+			<h2 id="TreeGraphNode">type <a href="/src/github.com/Skenvy/Collatz/go/collatz.go?s=21498:22314#L485">TreeGraphNode</a>
+				<a class="permalink" href="#TreeGraphNode">&#xb6;</a>
+				
+				
+			</h2>
+			<p>
+Nodes that form a &#34;tree graph&#34;, structured as a tree, with their own node&#39;s value,
+as well as references to either possible child node, where a node can only ever have
+two children, as there are only ever two reverse values. Also records any possible
+&#34;terminal sequence state&#34;, whether that be that the &#34;orbit distance&#34; has been reached,
+as an &#34;out of bounds&#34; stop, which is the regularly expected terminal state. Other
+terminal states possible however include the cycle state and cycle length (end) states.
+</p>
+
+			<pre>type TreeGraphNode struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
 			
 		
 	
