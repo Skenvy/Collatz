@@ -32,8 +32,6 @@ jobs:
       uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
       with:
         r-version: '4.2.1'
-    - name: 🧱 Install build dependencies
-      run: make <make-environment-dependencies>
     - name: 🦂 Test
       run: make test
   full-test:
@@ -54,9 +52,8 @@ jobs:
       uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
       with:
         r-version: ${{ matrix.version }}
-    # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
-    # TODO: run: or uses: something depending on the languges
+      run: make test
   # Docs step is optional depending on language
   # docs:
   #   name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂

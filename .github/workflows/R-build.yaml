@@ -69,7 +69,7 @@ jobs:
     - name: 🆙 Upload tarball
       uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
       with:
-        name: Collatz R Tarball
+        name: Tarball
         path: R/collatz_*.tar.gz
         if-no-files-found: error
   release:
@@ -81,17 +81,17 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
-    #   with:
-    #     name: some-artefacts
-    #     path: R/some-artefacts
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+      with:
+        name: Tarball
+        path: R
     - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
-        gh release create R-v$VER --generate-notes -t "R: Version $VER"
+        gh release create R-v$VER "$(find . | grep -e collatz_*\.tar\.gz)#Tarball" --generate-notes -t "R: Version $VER"
   publish:
     name: R 🏴‍☠️🔵🦜 Publish 📦
     needs: [release]
