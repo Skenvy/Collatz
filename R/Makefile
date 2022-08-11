@@ -7,7 +7,8 @@ clean:
 	rm -rf collatz.Rcheck
 
 test: clean
-	# TODO
+	R CMD check --no-manual .
+	# TODO TESTS
 
 build: test
 	R CMD build --no-manual .
