@@ -1,5 +1,22 @@
-.PHONY: clean test build check run
+.PHONY: setup_debian setup clean test build check run
 SHELL:=/bin/bash
+
+# A partially complete list of packages you might need to install to
+# get the installation of devtools to work on ubunut. Also possibly
+# with a slow connection you might need to attempt installing stringi
+# seperately from the rest as it seems to often timeout. This isn't
+# exhaustive, so you might need to install other missing deps.
+# sudo make setup_debian
+setup_debian:
+	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
+	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
+	libpng-dev libtiff5-dev libjpeg-dev
+
+setup:
+	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
+	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
+	Rscript -e 'install.packages("devtools")'
+	Rscript -e 'install.packages("roxygen2")'
 
 # We'd "rm -rf ..Rcheck" or "rm -rf **Rcheck" if doing other "R CMD check"'s
 clean:
