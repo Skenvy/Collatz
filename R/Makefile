@@ -13,10 +13,15 @@ setup_debian:
 	libpng-dev libtiff5-dev libjpeg-dev
 
 setup:
+	# Create or use user / local install location
 	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
+	# Devlopment packages
 	Rscript -e 'install.packages("devtools")'
 	Rscript -e 'install.packages("roxygen2")'
+	Rscript -e 'install.packages("testthat")'
+	# Included packages
+	Rscript -e 'install.packages("gmp")'
 
 # We'd "rm -rf ..Rcheck" or "rm -rf **Rcheck" if doing other "R CMD check"'s
 clean:

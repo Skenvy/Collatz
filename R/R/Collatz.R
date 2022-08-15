@@ -1,9 +1,13 @@
+library(gmp)
+
+Collatz <- new.env()
+
 #' The four known cycles for the standard parameterisation.
 #' As a "list of lists", you can iterate over them as
 #' for (KC in KNOWN.CYCLES[[1]]) with an inner for (val in KC)
-KNOWN.CYCLES <- list(c(list(c(1, 4, 2)), list(c(-1, -2)), list(c(-5, -14, -7, -20, -10)),
+Collatz$KNOWN.CYCLES <- list(c(list(c(1, 4, 2)), list(c(-1, -2)), list(c(-5, -14, -7, -20, -10)),
     list(c(-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34))))
-lockBinding("KNOWN.CYCLES", globalenv())
+lockBinding("KNOWN.CYCLES", Collatz)
 
 # for (KC in KNOWN.CYCLES[[1]]){
 #     print(KC)
@@ -13,16 +17,16 @@ lockBinding("KNOWN.CYCLES", globalenv())
 # }
 
 # too large to add until implementing arb ints
-# VERIFIED.MAXIMUM <- 295147905179352825856
-# lockBinding("VERIFIED.MAXIMUM", globalenv())
+# Collatz$VERIFIED.MAXIMUM <- 295147905179352825856
+# lockBinding("VERIFIED.MAXIMUM", Collatz)
 
-VERIFIED.MINIMUM <- -272
-lockBinding("VERIFIED.MINIMUM", globalenv())
+Collatz$VERIFIED.MINIMUM <- -272
+lockBinding("VERIFIED.MINIMUM", Collatz)
 
-SaneParameterErrMsg <- list(P="'P' should not be 0 ~ violates modulo being non-zero.", A="'a' should not be 0 ~ violates the reversability.")
-lockBinding("SaneParameterErrMsg", globalenv())
+Collatz$SaneParameterErrMsg <- list(P="'P' should not be 0 ~ violates modulo being non-zero.", A="'a' should not be 0 ~ violates the reversability.")
+lockBinding("SaneParameterErrMsg", Collatz)
 
-SequenceState <- list()
+Collatz$SequenceState <- list()
 
 #' Handles the sanity check for the parameterisation (P,a,b) required by both
 #' the function and reverse function. Returns an error of type;
@@ -33,21 +37,21 @@ SequenceState <- list()
 #'  - a: Factor by which to multiply n.
 #'  - b: Value to add to the scaled value of n.
 assertSaneParameterication <- function(P, a, b) {
-	# Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
-	# theoretically, although would violate the reversability (if ~a is 0 then a
-	# value of "b" as the input to the reverse function would have a pre-emptive
-	# value of every number not divisible by P). The function doesn't _have_ to
-	# be reversable, but we are only interested in dealing with the class of
-	# functions that exhibit behaviour consistant with the collatz function. If
-	# _every_ input not divisable by P went straight to "b", it would simply
-	# cause a cycle consisting of "b" and every b/P^z that is an integer. While
-	# P in [-1, 1] could also be a reasonable check, as it makes every value
-	# either a 1 or 2 length cycle, it's not strictly an illegal operation.
-	# "b" being zero would cause behaviour not consistant with the collatz
-	# function, but would not violate the reversability, so no check either.
-	# " != 0" is redundant for python assertions.
-	if (P == 0) stop(SaneParameterErrMsg$P)
-	if (a == 0) stop(SaneParameterErrMsg$A)
+    # Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
+    # theoretically, although would violate the reversability (if ~a is 0 then a
+    # value of "b" as the input to the reverse function would have a pre-emptive
+    # value of every number not divisible by P). The function doesn't _have_ to
+    # be reversable, but we are only interested in dealing with the class of
+    # functions that exhibit behaviour consistant with the collatz function. If
+    # _every_ input not divisable by P went straight to "b", it would simply
+    # cause a cycle consisting of "b" and every b/P^z that is an integer. While
+    # P in [-1, 1] could also be a reasonable check, as it makes every value
+    # either a 1 or 2 length cycle, it's not strictly an illegal operation.
+    # "b" being zero would cause behaviour not consistant with the collatz
+    # function, but would not violate the reversability, so no check either.
+    # " != 0" is redundant for python assertions.
+    if (P == 0) stop(Collatz$SaneParameterErrMsg$P)
+    if (a == 0) stop(Collatz$SaneParameterErrMsg$A)
 }
 
 #' Returns the output of a single application of a Collatz-esque function.
