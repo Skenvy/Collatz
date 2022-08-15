@@ -33,7 +33,7 @@ jobs:
       with:
         r-version: '4.2.1'
     - name: 🦂 Test
-      run: make test
+      run: make setup_libraries && make test
   full-test:
     name: R 🏴‍☠️🔵🦜 Full Test 🦂
     if: >- 
@@ -53,7 +53,7 @@ jobs:
       with:
         r-version: ${{ matrix.version }}
     - name: 🦂 Test
-      run: make test
+      run: make setup_libraries && make test
   # Docs step is optional depending on language
   # docs:
   #   name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂

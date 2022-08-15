@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup clean test build check run
+.PHONY: setup_debian setup setup_libraries clean test build check run
 SHELL:=/bin/bash
 
 # A partially complete list of packages you might need to install to
@@ -20,6 +20,11 @@ setup:
 	Rscript -e 'install.packages("devtools")'
 	Rscript -e 'install.packages("roxygen2")'
 	Rscript -e 'install.packages("testthat")'
+
+setup_libraries:
+	# Create or use user / local install location
+	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
+	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
 	# Included packages
 	Rscript -e 'install.packages("gmp")'
 
