@@ -2,23 +2,30 @@ library(gmp)
 
 Collatz <- new.env()
 
-#' The four known cycles for the standard parameterisation.
-#' As a "list of lists", you can iterate over them as
-#' for (KC in KNOWN.CYCLES[[1]]) with an inner for (val in KC)
-Collatz$KNOWN.CYCLES <- list(c(list(c(1, 4, 2)), list(c(-1, -2)), list(c(-5, -14, -7, -20, -10)),
-    list(c(-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34))))
-lockBinding("KNOWN.CYCLES", Collatz)
+#' The four known cycles for the standard parameterisation, as ints.
+Collatz$KNOWN.CYCLES.INT <- list(list(1, 4, 2), list(-1, -2), list(-5, -14, -7, -20, -10),
+    list(-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34))
+lockBinding("KNOWN.CYCLES.INT", Collatz)
 
-# for (KC in KNOWN.CYCLES[[1]]){
-#     print(KC)
+# for (KC in Collatz$KNOWN.CYCLES.INT){
+#     print(typeof(KC))
 #     for (val in KC){
 #         print(val)
 #     }
 # }
 
-# too large to add until implementing arb ints
-# Collatz$VERIFIED.MAXIMUM <- 295147905179352825856
-# lockBinding("VERIFIED.MAXIMUM", Collatz)
+#' The four known cycles for the standard parameterisation.
+Collatz$KNOWN.CYCLES <- vector("list", length(Collatz$KNOWN.CYCLES.INT))
+for (k in 1:length(Collatz$KNOWN.CYCLES.INT)){
+    Collatz$KNOWN.CYCLES[[k]] <- vector("list", length(Collatz$KNOWN.CYCLES.INT[[k]]))
+    for (j in 1:length(Collatz$KNOWN.CYCLES.INT[[k]])){
+        Collatz$KNOWN.CYCLES[[k]][[j]] <- as.bigz(Collatz$KNOWN.CYCLES.INT[[k]][[j]])
+    }
+}
+lockBinding("KNOWN.CYCLES", Collatz)
+
+Collatz$VERIFIED.MAXIMUM <- as.bigz("295147905179352825856")
+lockBinding("VERIFIED.MAXIMUM", Collatz)
 
 Collatz$VERIFIED.MINIMUM <- -272
 lockBinding("VERIFIED.MINIMUM", Collatz)
@@ -62,6 +69,9 @@ assertSaneParameterication <- function(P, a, b) {
 #'         Default is 2.
 #'     a (int): Factor by which to multiply n. Default is 3.
 #'     b (int): Value to add to the scaled value of n. Default is 1.
+#' Returns a numeric, either in-built or a bigz | bigq from the gmp library.
+#' If the result in n/P and either is a bigz, then the result will be a bigq
+#' although it's denominator(~) will return 1.
 Function <- function(n, P=2, a=3, b=1){
     assertSaneParameterication(P,a,b)
     if (n%%P == 0) (n/P) else ((a*n)+b)
@@ -94,3 +104,8 @@ reverseFunction <- function(n, P=2, a=3, b=1){
 
 Function(17)
 reverseFunction(4)
+s <- Function(as.bigz("17000000000000000000000000000000000000000000000000000000000017"), P=17)
+is.bigq(s)
+denominator(s)
+denominator(s) == 1
+
