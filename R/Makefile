@@ -47,15 +47,16 @@ clean:
 docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
-	Rscript -e 'devtools::build_manual(path="./docs/pdf/")'
+	mkdir docs/pdf -p
+	Rscript -e 'devtools::build_manual(path="./docs/pdf")'
 	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 test: clean
-	Rscript -e 'devtools::test()'
+	_R_CHECK_FORCE_SUGGESTS_=0 Rscript -e 'devtools::test()'
 
 full_test: test
 	# We can avoid checking the pdf in full test as it should be test generated in docs
-	R CMD check --no-manual .
+	_R_CHECK_FORCE_SUGGESTS_=0 R CMD check --no-manual .
 
 build: full_test
 	R CMD build .
