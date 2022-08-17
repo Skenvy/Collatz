@@ -14,3 +14,6 @@ Date: 2022-08-08
 URL: https://github.com/Skenvy/Collatz, https://github.com/Skenvy/Collatz/tree/main/R
 BugReports: https://github.com/Skenvy/Collatz/issues/new/choose
 Depends: R (>= 3.0)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
