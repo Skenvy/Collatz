@@ -2,3 +2,6 @@
 ..Rcheck/
 devlog.md
 Makefile
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
