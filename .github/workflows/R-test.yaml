@@ -1,3 +1,7 @@
+# This workflow makes use of the rocker/tidyverse container to avoid the lengthy and cumbersome
+# installation of debian packages and the compilation of every package that devtools requires
+# as the rocker/tidyverse container in the minimum spec per https://github.com/rocker-org/rocker
+# that includes devtools.
 name: R 🏴‍☠️🔵🦜 Tests 🦂
 on:
   push:
@@ -35,7 +39,7 @@ jobs:
     #   with:
     #     r-version: '4.2.1'
     - name: 🦂 Test
-      run: make test
+      run: make setup_libraries && make test
   full-test:
     name: R 🏴‍☠️🔵🦜 Full Test 🦂
     if: >- 
@@ -48,7 +52,7 @@ jobs:
       fail-fast: false
       matrix:
         version: ['3.5.0', '4.0.0', '4']
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest] # , macOS-latest, windows-latest # < irrelevant if running in tidyverse container.
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -63,7 +67,7 @@ jobs:
     # - name: 🏴‍☠️ Install required libraries
     #   run: make setup_libraries
     - name: 🦂 Test
-      run: make test
+      run: make setup_libraries && make test
   # Docs step is optional depending on language
   # docs:
   #   name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
