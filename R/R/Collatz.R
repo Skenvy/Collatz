@@ -1,38 +1,30 @@
 library(gmp)
 
+#' An environment for constants related to the Collatz package, primarily for
+#' testing purposes.
 Collatz <- new.env()
 
 #' The four known cycles for the standard parameterisation, as ints.
-Collatz$KNOWN.CYCLES.INT <- list(list(1, 4, 2), list(-1, -2), list(-5, -14, -7, -20, -10),
+Collatz$KNOWN.CYCLES <- list(list(1, 4, 2), list(-1, -2), list(-5, -14, -7, -20, -10),
     list(-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34))
-lockBinding("KNOWN.CYCLES.INT", Collatz)
-
-# for (KC in Collatz$KNOWN.CYCLES.INT){
-#     print(typeof(KC))
-#     for (val in KC){
-#         print(val)
-#     }
-# }
-
-#' The four known cycles for the standard parameterisation.
-Collatz$KNOWN.CYCLES <- vector("list", length(Collatz$KNOWN.CYCLES.INT))
-for (k in 1:length(Collatz$KNOWN.CYCLES.INT)){
-    Collatz$KNOWN.CYCLES[[k]] <- vector("list", length(Collatz$KNOWN.CYCLES.INT[[k]]))
-    for (j in 1:length(Collatz$KNOWN.CYCLES.INT[[k]])){
-        Collatz$KNOWN.CYCLES[[k]][[j]] <- as.bigz(Collatz$KNOWN.CYCLES.INT[[k]][[j]])
-    }
-}
 lockBinding("KNOWN.CYCLES", Collatz)
 
+#' The current value up to which the standard parameterisation has been verified.
 Collatz$VERIFIED.MAXIMUM <- as.bigz("295147905179352825856")
 lockBinding("VERIFIED.MAXIMUM", Collatz)
 
+# TODO: Check the actual lowest bound.
+#' The current value down to which the standard parameterisation has been verified.
 Collatz$VERIFIED.MINIMUM <- -272
 lockBinding("VERIFIED.MINIMUM", Collatz)
 
+#' Error message constants
 Collatz$SaneParameterErrMsg <- list(P="'P' should not be 0 ~ violates modulo being non-zero.", A="'a' should not be 0 ~ violates the reversability.")
 lockBinding("SaneParameterErrMsg", Collatz)
 
+#' SequenceState for Cycle Control: Descriptive flags to indicate when some
+#' event occurs in the hailstone sequences or tree graph reversal, when set to
+#' verbose, or stopping time check.
 Collatz$SequenceState <- list()
 
 #' Handles the sanity check for the parameterisation (P,a,b) required by both
@@ -72,13 +64,16 @@ assertSaneParameterication <- function(P, a, b) {
 #' Returns a numeric, either in-built or a bigz | bigq from the gmp library.
 #' If the result in n/P and either is a bigz, then the result will be a bigq
 #' although it's denominator(~) will return 1.
-Function <- function(n, P=2, a=3, b=1){
+collatzFunction <- function(n, P=2, a=3, b=1){
     assertSaneParameterication(P,a,b)
     if (n%%P == 0) (n/P) else ((a*n)+b)
 }
 
 #' Returns the output of a single application of a Collatz-esque reverse
-#' function.
+#' function. If only one value is returned, it is the value that would be
+#' divided by P. If two values are returned, the first is the value that
+#' would be divided by P, and the second value is that which would undergo
+#' the multiply and add step, regardless of which is larger.
 #' Args:
 #'     n (int): The value on which to perform the reverse Collatz function
 #' Kwargs:
@@ -89,23 +84,22 @@ Function <- function(n, P=2, a=3, b=1){
 reverseFunction <- function(n, P=2, a=3, b=1){
     assertSaneParameterication(P,a,b)
     # Every input can be reversed as the result of "n/P" division, which yields
-    # "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
+    # "Pn"... {f(n) = an + b}~={(f(n) - b)/a = n} ~ if n was such that the
     # muliplication step was taken instead of the division by the modulus, then
     # (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we're
     # not placing restrictions on the parameters yet, although there is a better
     # way of shortcutting this for the default variables, we need to always
     # attempt (f(n) - b)/a)
-    pre.values = c(P*n)
+    pre.values <- c(P*n)
     if ((n-b)%%a == 0 && (n-b)%%(P*a) != 0){
-        pre.values = append(pre.values, (n-b)/a)
+        pre.values <- append(pre.values, (n-b)/a)
     }
     pre.values
 }
 
-Function(17)
-reverseFunction(4)
-s <- Function(as.bigz("17000000000000000000000000000000000000000000000000000000000017"), P=17)
-is.bigq(s)
-denominator(s)
-denominator(s) == 1
-
+# collatzFunction(17)
+# reverseFunction(4)
+# s <- collatzFunction(as.bigz("1700000000000000000000000000000000000000000000000017"), P=17)
+# is.bigq(s)
+# denominator(s)
+# denominator(s) == 1

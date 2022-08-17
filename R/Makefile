@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup setup_libraries clean test build check run
+.PHONY: setup_debian setup setup_libraries clean test build check test_workflow build_workflow check_workflow run
 SHELL:=/bin/bash
 
 # A partially complete list of packages you might need to install to
@@ -20,6 +20,8 @@ setup:
 	Rscript -e 'install.packages("devtools")'
 	Rscript -e 'install.packages("roxygen2")'
 	Rscript -e 'install.packages("testthat")'
+	Rscript -e 'install.packages("covr")'
+	Rscript -e 'install.packages("DT")'
 
 setup_libraries:
 	# Create or use user / local install location
@@ -31,11 +33,14 @@ setup_libraries:
 # We'd "rm -rf ..Rcheck" or "rm -rf **Rcheck" if doing other "R CMD check"'s
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
-	rm -rf collatz.Rcheck
+	rm -rf **Rcheck
+	rm -rf docs
 
+# requires a preemptive setup
 test: clean
-	R CMD check --no-manual .
-	# TODO TESTS
+	# R CMD check --no-manual .
+	Rscript -e 'devtools::test()'
+	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 build: test
 	R CMD build --no-manual .
@@ -46,6 +51,17 @@ build: test
 # --no-manual to silence the current pdfLaTeX errors.
 check: build
 	R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
+
+test_workflow: setup setup_libraries clean
+	R CMD check --no-manual .
+	Rscript -e 'devtools::test()'
+	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+
+build_workflow:
+	R CMD build .
+
+check_workflow: build_workflow
+	R CMD check $$(ls | grep collatz_*.tar.gz)
 
 run:
 	Rscript R/Collatz.R
