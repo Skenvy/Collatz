@@ -50,3 +50,7 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+################################################################################
+# Also ignore the ./man/*.Rd as we want roxygen to recreate it during build
+man/

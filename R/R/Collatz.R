@@ -1,40 +1,56 @@
+#' Collatz
+#'
+#' Functions related to the Collatz/Syracuse/3N+1 problem.
+#'
+#' Provides the basic functionality to interact with the Collatz conjecture.
+#' The parameterisation uses the same (P,a,b) notation as Conway's generalisations.
+#' Besides the function and reverse function, there is also functionality to retrieve
+#' the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph.
+#' The only restriction placed on parameters is that both P and a can't be 0.
+#'
+#' @docType package
+#' @name collatz
+#' @import gmp
+NULL
+
 library(gmp)
 
-#' An environment for constants related to the Collatz package, primarily for
-#' testing purposes.
+# An environment for constants related to the Collatz package, primarily for testing purposes.
 Collatz <- new.env()
 
-#' The four known cycles for the standard parameterisation, as ints.
+# The four known cycles for the standard parameterisation, as ints.
 Collatz$KNOWN.CYCLES <- list(list(1, 4, 2), list(-1, -2), list(-5, -14, -7, -20, -10),
     list(-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34))
 lockBinding("KNOWN.CYCLES", Collatz)
 
-#' The current value up to which the standard parameterisation has been verified.
+# The current value up to which the standard parameterisation has been verified.
 Collatz$VERIFIED.MAXIMUM <- as.bigz("295147905179352825856")
 lockBinding("VERIFIED.MAXIMUM", Collatz)
 
+# The current value down to which the standard parameterisation has been verified.
 # TODO: Check the actual lowest bound.
-#' The current value down to which the standard parameterisation has been verified.
 Collatz$VERIFIED.MINIMUM <- -272
 lockBinding("VERIFIED.MINIMUM", Collatz)
 
-#' Error message constants
+# Error message constants
 Collatz$SaneParameterErrMsg <- list(P="'P' should not be 0 ~ violates modulo being non-zero.", A="'a' should not be 0 ~ violates the reversability.")
 lockBinding("SaneParameterErrMsg", Collatz)
 
-#' SequenceState for Cycle Control: Descriptive flags to indicate when some
-#' event occurs in the hailstone sequences or tree graph reversal, when set to
-#' verbose, or stopping time check.
+# SequenceState for Cycle Control: Descriptive flags to indicate when some
+# event occurs in the hailstone sequences or tree graph reversal, when set to
+# verbose, or stopping time check.
 Collatz$SequenceState <- list()
 
-#' Handles the sanity check for the parameterisation (P,a,b) required by both
-#' the function and reverse function. Returns an error of type;
-#'  FailedSaneParameterCheck(SANE_PARAMS_P)
-#'  FailedSaneParameterCheck(SANE_PARAMS_A)
-#' Has arguments;
-#'  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
-#'  - a: Factor by which to multiply n.
-#'  - b: Value to add to the scaled value of n.
+#' Sane Parameter Check
+#'
+#' Handles the sanity check for the parameterisation (P,a,b)
+#'
+#' Required by both the function and reverse function, to assert that they
+#' have sane parameters, otherwise will force stop the execution.
+#'
+#' @param P Modulus used to devide n, iff n is equivalent to (0 mod P).
+#' @param a Factor by which to multiply n.
+#' @param b Value to add to the scaled value of n.
 assertSaneParameterication <- function(P, a, b) {
     # Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
     # theoretically, although would violate the reversability (if ~a is 0 then a
@@ -53,34 +69,48 @@ assertSaneParameterication <- function(P, a, b) {
     if (a == 0) stop(Collatz$SaneParameterErrMsg$A)
 }
 
+#' The Collatz function
+#'
 #' Returns the output of a single application of a Collatz-esque function.
-#' Args:
-#'     n (int): The value on which to perform the Collatz-esque function
-#' Kwargs:
-#'     P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).
-#'         Default is 2.
-#'     a (int): Factor by which to multiply n. Default is 3.
-#'     b (int): Value to add to the scaled value of n. Default is 1.
-#' Returns a numeric, either in-built or a bigz | bigq from the gmp library.
-#' If the result in n/P and either is a bigz, then the result will be a bigq
+#'
+#' This function will compute and return the result of applying one iteration
+#' of a parameterised Collatz-esque function. Although it will operate with
+#' integer inputs, for overflow safety, provide a gmp Big Integer ('bigz').
+#'
+#' @param n (numeric|bigz|bigq) The value on which
+#' to perform the Collatz-esque function
+#' @param P (numeric|bigz|bigq): Modulus used to divide
+#' n, iff n is equivalent to (0 mod P). Default is 2.
+#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
+#' @param b (numeric|bigz|bigq) Value to add
+#' to the scaled value of n. Default is 1.
+#' @returns a numeric, either in-built or a bigz | bigq from the gmp library.
+#' If either n or P are bigz, then the result of n/P will be a bigq
 #' although it's denominator(~) will return 1.
+#' @export
 collatzFunction <- function(n, P=2, a=3, b=1){
     assertSaneParameterication(P,a,b)
     if (n%%P == 0) (n/P) else ((a*n)+b)
 }
 
+#' The "inverse"/"reverse" Collatz function
+#'
+#' Calculates the values that would return the input under the Collatz function.
+#'
 #' Returns the output of a single application of a Collatz-esque reverse
 #' function. If only one value is returned, it is the value that would be
 #' divided by P. If two values are returned, the first is the value that
 #' would be divided by P, and the second value is that which would undergo
 #' the multiply and add step, regardless of which is larger.
-#' Args:
-#'     n (int): The value on which to perform the reverse Collatz function
-#' Kwargs:
-#'     P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
-#'         Default is 2.
-#'     a (int): Factor by which to multiply n. Default is 3.
-#'     b (int): Value to add to the scaled value of n. Default is 1.
+#' @param n (numeric|bigz|bigq) The value on which
+#' to perform the reverse Collatz function
+#' @param P (numeric|bigz|bigq) Modulus used to divide
+#' n, iff n is equivalent to (0 mod P) Default is 2.
+#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
+#' @param b (numeric|bigz|bigq) Value to add
+#' to the scaled value of n. Default is 1.
+#' @returns A vector of either numeric or bigz | bigq type
+#' @export
 reverseFunction <- function(n, P=2, a=3, b=1){
     assertSaneParameterication(P,a,b)
     # Every input can be reversed as the result of "n/P" division, which yields
@@ -96,10 +126,3 @@ reverseFunction <- function(n, P=2, a=3, b=1){
     }
     pre.values
 }
-
-# collatzFunction(17)
-# reverseFunction(4)
-# s <- collatzFunction(as.bigz("1700000000000000000000000000000000000000000000000017"), P=17)
-# is.bigq(s)
-# denominator(s)
-# denominator(s) == 1

@@ -22,6 +22,7 @@ setup:
 	Rscript -e 'install.packages("testthat")'
 	Rscript -e 'install.packages("covr")'
 	Rscript -e 'install.packages("DT")'
+	Rscript -e 'install.packages("pkgdown")'
 
 setup_libraries:
 	# Create or use user / local install location
@@ -34,16 +35,18 @@ setup_libraries:
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
 	rm -rf **Rcheck
+	rm -rf man
 	rm -rf docs
 
 # The following steps assume that the setup has been run already.
 
-docs:
-	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+docs: clean
+	Rscript -e 'devtools::document()'
+	# Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 test: clean
 	Rscript -e 'devtools::test()'
-	# R CMD check --no-manual .
+	R CMD check --no-manual .
 
 build: test
 	R CMD build --no-manual .

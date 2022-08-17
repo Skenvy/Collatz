@@ -1,7 +1,9 @@
 # This workflow makes use of the rocker/tidyverse container to avoid the lengthy and cumbersome
 # installation of debian packages and the compilation of every package that devtools requires
 # as the rocker/tidyverse container in the minimum spec per https://github.com/rocker-org/rocker
-# that includes devtools.
+# that includes devtools. The alternative is to use the action to install R;
+# r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
+# And then install dependencies, packages, and libraries on top.
 name: R 🏴‍☠️🔵🦜 Tests 🦂
 on:
   push:
@@ -34,10 +36,6 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🏴‍☠️🔵🦜 Set up R
-    #   uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
-    #   with:
-    #     r-version: '4.2.1'
     - name: 🦂 Test
       run: make setup_libraries && make test
   full-test:
@@ -45,27 +43,16 @@ jobs:
     if: >- 
       ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
-    runs-on: '${{ matrix.os }}'
+    runs-on: ubuntu-latest
     container:
       image: rocker/tidyverse:${{ matrix.version }}
     strategy:
       fail-fast: false
       matrix:
         version: ['3.5.0', '4.0.0', '4']
-        os: [ubuntu-latest] # , macOS-latest, windows-latest # < irrelevant if running in tidyverse container.
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🏴‍☠️🔵🦜 Set up R ${{ matrix.version }}
-    #   uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
-    #   with:
-    #     r-version: ${{ matrix.version }}
-    # - name: 🥔 Install devtools required debian packages
-    #   run: make setup_debian
-    # - name: 🦜 Install ~devtools+
-    #   run: make setup
-    # - name: 🏴‍☠️ Install required libraries
-    #   run: make setup_libraries
     - name: 🦂 Test
       run: make setup_libraries && make test
   # Docs step is optional depending on language
