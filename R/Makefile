@@ -10,7 +10,7 @@ SHELL:=/bin/bash
 setup_debian:
 	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
-	libpng-dev libtiff5-dev libjpeg-dev
+	libpng-dev libtiff5-dev libjpeg-dev pandoc
 
 setup:
 	# Create or use user / local install location
@@ -42,7 +42,8 @@ clean:
 
 docs: clean
 	Rscript -e 'devtools::document()'
-	# Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+	Rscript -e 'pkgdown::build_site()'
+	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 test: clean
 	Rscript -e 'devtools::test()'

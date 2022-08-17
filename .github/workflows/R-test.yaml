@@ -55,16 +55,13 @@ jobs:
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🦂 Test
       run: make setup_libraries && make test
-  # Docs step is optional depending on language
-  # docs:
-  #   name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🏴‍☠️🔵🦜 Set up R
-  #     uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
-  #     with:
-  #       r-version: '4.2.1'
-  #   - name: 📄 Docs
-  #     run: make docs
+  docs:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 📄 Docs
+      run: make setup_libraries && make docs
