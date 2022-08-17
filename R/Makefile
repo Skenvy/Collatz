@@ -48,7 +48,7 @@ docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
-	Rscript -e 'devtools::build_manual(path="./docs/pdf")'
+	Rscript -e 'devtools::build_manual()'
 	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 test: clean
