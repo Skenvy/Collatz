@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup setup_libraries clean test build check run
+.PHONY: setup_debian setup setup_libraries clean test full_test build check run
 SHELL:=/bin/bash
 
 # A partially complete list of packages you might need to install to
@@ -23,6 +23,10 @@ setup:
 	Rscript -e 'install.packages("covr")'
 	Rscript -e 'install.packages("DT")'
 	Rscript -e 'install.packages("pkgdown")'
+	Rscript -e 'install.packages("tinytex")'
+	Rscript -e 'install.packages("knitr")'
+	Rscript -e 'tinytex::install_tinytex()'
+	Rscript -e 'tinytex::tlmgr_install("makeindex")'
 
 setup_libraries:
 	# Create or use user / local install location
@@ -43,21 +47,25 @@ clean:
 docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
+	Rscript -e 'devtools::build_manual(path="./docs/pdf/")'
 	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 test: clean
 	Rscript -e 'devtools::test()'
+
+full_test: test
+	# We can avoid checking the pdf in full test as it should be test generated in docs
 	R CMD check --no-manual .
 
-build: test
-	R CMD build --no-manual .
+build: full_test
+	R CMD build .
 
 # Using -- R CMD check collatz_$$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2).tar.gz
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE && --as-cran
 # --no-manual to silence the current pdfLaTeX errors.
 check: build
-	R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
+	R CMD check $$(ls | grep collatz_*.tar.gz)
 
 run:
 	Rscript R/Collatz.R

@@ -57,3 +57,4 @@ man/
 # Running -- Rscript -e 'usethis::use_pkgdown()' -- isn't happy with the above
 # docs/ ignore, and will always insist on readding this "docs"
 docs
+**.tex
