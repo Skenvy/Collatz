@@ -64,6 +64,6 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🥔 Setup
-      run: make setup && make setup_libraries
+      run: apt -y install texinfo && make setup && make setup_libraries
     - name: 📄 Docs
       run: make docs

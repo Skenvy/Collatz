@@ -11,7 +11,7 @@ LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin &&
 setup_debian:
 	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
-	libpng-dev libtiff5-dev libjpeg-dev pandoc
+	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo
 
 # Create or use user / local install location
 # Devlopment packages
