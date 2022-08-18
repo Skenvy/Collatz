@@ -38,6 +38,7 @@ setup_libraries:
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
 	rm -rf **Rcheck
+	rm -rf .Rd2pdf*
 	rm -rf man
 	rm -rf docs
 
@@ -47,6 +48,8 @@ docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
+	Rscript -e 'Sys.which("makeindex")'
+	Rscript -e 'tidyverse::check_man()'
 	Rscript -e 'devtools::build_manual(path="./docs/pdf")'
 	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
