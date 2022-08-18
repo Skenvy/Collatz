@@ -1,4 +1,9 @@
 url: https://skenvy.github.io/Collatz/R
 template:
   bootstrap: 5
-
+repo:
+  url:
+    home: https://github.com/Skenvy/Collatz/
+    source: https://github.com/Skenvy/Collatz/tree/main/R/
+    issue: https://github.com/Skenvy/Collatz/issues/
+    user: https://github.com/Skenvy/

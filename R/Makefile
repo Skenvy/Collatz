@@ -1,6 +1,5 @@
 .PHONY: setup_debian setup setup_libraries clean docs docs_local test full_test build check run
 SHELL:=/bin/bash
-LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
@@ -14,7 +13,7 @@ setup_debian:
 	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo
 
 # Create or use user / local install location
-# Devlopment packages
+# Devlopment packages.
 setup:
 	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
@@ -46,12 +45,15 @@ docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
-	$(LOCALBIN) Rscript -e 'Sys.which("makeindex")'
-	$(LOCALBIN) Rscript -e 'devtools::build_manual(path="./docs/pdf")'
-	$(LOCALBIN) Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+	Rscript -e 'Sys.which("makeindex")'
+	Rscript -e 'devtools::build_manual(path="./docs/pdf")'
+	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
+# http://127.0.0.1:4321/
+# http://127.0.0.1:4321/pdf/ -- collatz_$VER.pdf
+# http://127.0.0.1:4321/covr/Collatz-report.html
 docs_local: docs
-	Rscript -e 'servr::httd(dir = "./docs")'
+	Rscript -e 'servr::httd(dir="./docs")'
 
 test: clean
 	_R_CHECK_FORCE_SUGGESTS_=0 Rscript -e 'devtools::test()'
