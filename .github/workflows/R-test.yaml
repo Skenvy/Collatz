@@ -40,9 +40,9 @@ jobs:
       run: make setup_libraries && make full_test
   full-test:
     name: R 🏴‍☠️🔵🦜 Full Test 🦂
-    if: >- 
-      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    # if: >- 
+    #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+    #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     container:
       image: rocker/tidyverse:${{ matrix.version }}
@@ -55,6 +55,26 @@ jobs:
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🦂 Test
       run: make setup_libraries && make full_test
+  windows-mac-cmd-check:
+    name: R 🏴‍☠️🔵🦜 Windows and MacOS CMD check
+    # if: >- 
+    #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+    #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['3.5.0', '4.0.0', '4']
+        os: [macOS-latest, windows-latest]
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🏴‍☠️🔵🦜 Set up R
+      uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
+      with:
+        r-version: ${{ matrix.version }}
+    - name: 🦂 Test
+      run: _R_CHECK_FORCE_SUGGESTS_=0 R CMD check --no-manual .
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest

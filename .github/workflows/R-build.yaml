@@ -92,46 +92,67 @@ jobs:
       run: |
         export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
         gh release create R-v$VER "$(find . | grep -e collatz_*\.tar\.gz)#Tarball" --generate-notes -t "R: Version $VER"
-  publish:
-    name: R 🏴‍☠️🔵🦜 Publish 📦
+    # "Publishing" in R-world is a manual upload of the built tarball
+    # as a submission to https://cran.r-project.org/submit.html
+  docs-generate:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Generate
     needs: [release]
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4.2.1
     steps:
-    # Although the dists are built uses checkout to satisfy refs/tags existence
-    # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
-    #   with:
-    #     name: some-artefacts
-    #     path: R/some-artefacts
-    # - name: 📦 Publish
-    # TODO: run: or uses: something depending on the languges
-  # docs:
-  #   name: R 🏴‍☠️🔵🦜 Docs 📄
-  #   needs: [release, publish]
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🏴‍☠️🔵🦜 Set up R
-  #     uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
-  #     with:
-  #       r-version: '4.2.1'
-  #   - name: 📄 Docs
-  #     run: |
-  #       export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
-  #       # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-R'
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # docs-merge:
-  #   name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
-  #   needs: [docs]
-  #   permissions:
-  #     contents: write
-  #   uses: ./.github/workflows/github-pages.yaml
-  #   with:
-  #     merge_from: 'gh-pages-R'
+    - name: 🥔 Setup
+      run: |
+        apt update
+        apt -y install texinfo
+        make setup
+        make setup_libraries
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 🆙 Upload docs
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Docs
+        path: R/docs/
+        if-no-files-found: error
+  docs-publish:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Publish
+    needs: [docs-generate]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+      with:
+        name: Docs
+        path: R/docs
+    - name: 📄 Docs
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-R:gh-pages-R
+        git symbolic-ref HEAD refs/heads/gh-pages-R
+        cd .. && mv R/docs ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/ && rm R/.gitignore
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-R
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs-publish]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-R'
