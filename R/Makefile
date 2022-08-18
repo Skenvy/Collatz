@@ -1,5 +1,6 @@
-.PHONY: setup_debian setup setup_libraries clean test full_test build check run
+.PHONY: setup_debian setup setup_libraries clean docs docs_local test full_test build check run
 SHELL:=/bin/bash
+LOCALBIN=PATH=$$PATH:~/.local/bin && 
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
@@ -12,27 +13,24 @@ setup_debian:
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
 	libpng-dev libtiff5-dev libjpeg-dev pandoc
 
+# Create or use user / local install location
+# Devlopment packages
 setup:
-	# Create or use user / local install location
 	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	# Devlopment packages
+	Rscript -e 'install.packages(c("roxygen2", "testthat"))'
 	Rscript -e 'install.packages("devtools")'
-	Rscript -e 'install.packages("roxygen2")'
-	Rscript -e 'install.packages("testthat")'
-	Rscript -e 'install.packages("covr")'
-	Rscript -e 'install.packages("DT")'
-	Rscript -e 'install.packages("pkgdown")'
-	Rscript -e 'install.packages("tinytex")'
-	Rscript -e 'install.packages("knitr")'
+	Rscript -e 'install.packages(c("covr", "DT"))'
+	Rscript -e 'install.packages(c("pkgdown", "servr"))'
+	Rscript -e 'install.packages(c("tinytex", "knitr"))'
 	Rscript -e 'tinytex::install_tinytex()'
 	Rscript -e 'tinytex::tlmgr_install("makeindex")'
 
+# Create or use user / local install location
+# Included packages
 setup_libraries:
-	# Create or use user / local install location
 	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	# Included packages
 	Rscript -e 'install.packages("gmp")'
 
 clean:
@@ -48,10 +46,12 @@ docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
-	Rscript -e 'Sys.which("makeindex")'
-	Rscript -e 'tidyverse::check_man()'
-	Rscript -e 'devtools::build_manual(path="./docs/pdf")'
-	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+	$(LOCALBIN) Rscript -e 'Sys.which("makeindex")'
+	$(LOCALBIN) Rscript -e 'devtools::build_manual(path="./docs/pdf")'
+	$(LOCALBIN) Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+
+docs_local: docs
+	Rscript -e 'servr::httd(dir = "./docs")'
 
 test: clean
 	_R_CHECK_FORCE_SUGGESTS_=0 Rscript -e 'devtools::test()'

@@ -17,12 +17,13 @@ Depends:
     R (>= 3.5.0),
     gmp
 Suggests:
-    devtools,
     roxygen2,
     testthat (>= 3.0.0),
+    devtools,
     covr,
     DT,
     pkgdown,
+    servr,
     tinytex,
     knitr
 Config/testthat/edition: 3
