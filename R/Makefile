@@ -35,7 +35,6 @@ setup_libraries:
 	# Included packages
 	Rscript -e 'install.packages("gmp")'
 
-# We'd "rm -rf ..Rcheck" or "rm -rf **Rcheck" if doing other "R CMD check"'s
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
 	rm -rf **Rcheck
@@ -48,7 +47,7 @@ docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
-	Rscript -e 'devtools::build_manual()'
+	Rscript -e 'devtools::build_manual(path="./docs/pdf")'
 	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 test: clean
