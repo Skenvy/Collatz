@@ -53,6 +53,9 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: GMP version
+      if: ${{ matrix.version == '3.5.0' }}
+      run: apt update && apt install libgmp-dev
     - name: 🦂 Test
       run: make setup_libraries && make full_test
   windows-mac-cmd-check:
@@ -73,6 +76,8 @@ jobs:
       uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
       with:
         r-version: ${{ matrix.version }}
+    - name: 🧱 Dependencies
+      run: make setup_libraries
     - name: 🦂 Test
       run: _R_CHECK_FORCE_SUGGESTS_=0 R CMD check --no-manual .
   docs:

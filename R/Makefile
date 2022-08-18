@@ -1,5 +1,6 @@
 .PHONY: setup_debian setup setup_libraries clean docs docs_local test full_test build check run
 SHELL:=/bin/bash
+LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
@@ -45,9 +46,9 @@ docs: clean
 	Rscript -e 'devtools::document()'
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
-	Rscript -e 'Sys.which("makeindex")'
-	Rscript -e 'devtools::build_manual(path="./docs/pdf")'
-	Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+	$(LOCALBIN) Rscript -e 'Sys.which("makeindex")'
+	$(LOCALBIN) Rscript -e 'devtools::build_manual(path="./docs/pdf")'
+	$(LOCALBIN) Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 # http://127.0.0.1:4321/
 # http://127.0.0.1:4321/pdf/ -- collatz_$VER.pdf
