@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup setup_libraries clean docs docs_local test full_test build check run
+.PHONY: setup_debian setup setup_libraries setup_mac_tests setup_win_tests clean docs docs_local test full_test build check run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 
@@ -33,8 +33,15 @@ setup_libraries:
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
 	Rscript -e 'install.packages("gmp")'
 
-setup_winmac_tests: setup_libraries
-	Rscript -e 'install.packages("testthat")'
+setup_mac_tests: setup_libraries
+	Rscript -e 'install.packages("testthat", type="binary")'
+
+# Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
+# In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
+setup_win_tests:
+	$(R_PATH)\bin\Rscript.exe -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
+	$(R_PATH)\bin\Rscript.exe -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
+	$(R_PATH)\bin\Rscript.exe -e 'install.packages(c("gmp", "testthat"), type="binary", repos="http://cran.us.r-project.org")'
 
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
