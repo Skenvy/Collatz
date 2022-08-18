@@ -60,9 +60,9 @@ jobs:
       run: make setup_libraries && make full_test
   mac-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Mac)
-    # if: >- 
-    #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-    #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: macOS-latest
     strategy:
       fail-fast: false
@@ -81,6 +81,8 @@ jobs:
       run: _R_CHECK_FORCE_SUGGESTS_=0 R CMD check --no-manual .
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
+    defaults:
+      shell: pwsh
     # if: >- 
     #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
     #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
