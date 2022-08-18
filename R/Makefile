@@ -1,6 +1,6 @@
 .PHONY: setup_debian setup setup_libraries clean docs docs_local test full_test build check run
 SHELL:=/bin/bash
-LOCALBIN=PATH=$$PATH:~/.local/bin && 
+LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
