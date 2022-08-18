@@ -33,6 +33,9 @@ setup_libraries:
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
 	Rscript -e 'install.packages("gmp")'
 
+setup_winmac_tests: setup_libraries
+	Rscript -e 'install.packages("testthat")'
+
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
 	rm -rf **Rcheck
