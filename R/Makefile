@@ -91,6 +91,7 @@ build:
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
 check: full_test build
+	Rscript -e 'devtools::document()'
 	R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
 quick_check: cmd_check build
