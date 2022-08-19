@@ -27,4 +27,4 @@ I did a fair amount of experimenting with setting up the generating of the pdf w
 1. `git commit -m "Initial empty orphan" --allow-empty`
 1. `git push --set-upstream origin gh-pages-R`
 
-Which means we now have the target for where to deploy docs to, and then test that they are fine to merge to the main gh-pages branch.
+Which means we now have the target for where to deploy docs to, and then test that they are fine to merge to the main gh-pages branch. A funny quirk of pkgdown appears to be that it requires newlines above header lines in the markdown files that it converts to the home page, so the readme here will be formatted slightly differently, although visually inconsequentially so, to all the others.

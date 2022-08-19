@@ -272,7 +272,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -292,7 +292,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
