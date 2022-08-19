@@ -91,7 +91,7 @@ build: full_test
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
 check: build
-	$(NO_SUGGESTS) R CMD check --as-cran --no-manual $$(ls | grep collatz_*.tar.gz)
+	$(NO_SUGGESTS) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
 winmac_check: cmd_check
 	R CMD build .
