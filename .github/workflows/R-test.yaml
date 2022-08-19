@@ -126,79 +126,68 @@ jobs:
     - name: 📄 Docs
       run: make docs
   # FROM BUILD, TEST, TO REMOVE
-  # build:
-  #   name: R 🏴‍☠️🔵🦜 Build 🧱
-  #   runs-on: ubuntu-latest
-  #   container:
-  #     image: rocker/tidyverse:4.2.1
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🧱 Dependencies for Full Test + Suggests
-  #     run: make setup_docs
-  #   - name: 🧱 Build and Check
-  #     run: make check
-  #   - name: 🆙 Upload tarball
-  #     uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
-  #     with:
-  #       name: Tarball
-  #       path: R/collatz_*.tar.gz
-  #       if-no-files-found: error
-  # docs-generate:
-  #   name: R 🏴‍☠️🔵🦜 Docs 📄 Generate
-  #   needs: [build]
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   container:
-  #     image: rocker/tidyverse:4.2.1
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🥔 Setup
-  #     run: make setup_docs
-  #   - name: 📄 Docs Generation
-  #     run: make docs
-  #   - name: 🆙 Upload docs
-  #     uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
-  #     with:
-  #       name: Docs
-  #       path: R/docs/
-  #       if-no-files-found: error
-  # docs-publish:
-  #   name: R 🏴‍☠️🔵🦜 Docs 📄 Publish
-  #   needs: [docs-generate]
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🆒 Download dists
-  #     uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
-  #     with:
-  #       name: Docs
-  #       path: R/docs
-  #   - name: 📄 Docs
-  #     run: |
-  #       git config --local user.email "actions@github.com"
-  #       git config --local user.name "Github Actions"
-  #       export SHORTSHA=$(git rev-parse --short HEAD)
-  #       git fetch origin gh-pages-R:gh-pages-R
-  #       git symbolic-ref HEAD refs/heads/gh-pages-R
-  #       cd .. && mv R/docs ../MERGE_TARGET
-  #       git rm -rf . && git clean -fxd && git reset
-  #       shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/
-  #       git add . && git checkout HEAD -- R/pdf/ && git add .
-  #       git commit -m "Build based on $SHORTSHA" --allow-empty
-  #       git push --set-upstream origin gh-pages-R
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # docs-merge:
-  #   name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
-  #   needs: [docs-publish]
-  #   permissions:
-  #     contents: write
-  #   uses: ./.github/workflows/github-pages.yaml
-  #   with:
-  #     merge_from: 'gh-pages-R'
+  build:
+    name: R 🏴‍☠️🔵🦜 Build 🧱
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4.2.1
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🧱 Dependencies for Full Test + Suggests
+      run: make setup_docs
+    - name: 🧱 Build and Check
+      run: make check
+    - name: 🆙 Upload tarball
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Tarball
+        path: R/collatz_*.tar.gz
+        if-no-files-found: error
+  docs-generate:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Generate
+    needs: [build]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4.2.1
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🥔 Setup
+      run: make setup_docs
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 🆙 Upload docs
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Docs
+        path: R/docs/
+        if-no-files-found: error
+  docs-publish:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Publish
+    needs: [docs-generate]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+      with:
+        name: Docs
+        path: R/docs
+    - name: 📄 Docs
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-R:gh-pages-R
+        git symbolic-ref HEAD refs/heads/gh-pages-R
+        cd .. && mv R/docs ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/
+        git add . && git checkout HEAD -- R/pdf/ && git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
