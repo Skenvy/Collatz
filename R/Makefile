@@ -2,7 +2,7 @@
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 ifeq ($(OS),Windows_NT)
-SHELL:=powershell.exe
+SHELL:=pwsh.exe
 .SHELLFLAGS:=-NoProfile -Command
 endif
 
