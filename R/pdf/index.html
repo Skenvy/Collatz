@@ -34,7 +34,7 @@
   <ol>
   {% for pdf in site.static_files %}
   {% if pdf.path contains 'R/pdf' %}
-  <li><a href="Collatz/{{ pdf.path }}">{{ pdf.name }}</a></li>
+  <li><a href="{{ pdf.path }}">{{ pdf.name }}</a></li>
   {% endif %}
   {% endfor %}
   </ol>
