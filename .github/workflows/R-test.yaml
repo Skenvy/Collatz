@@ -62,7 +62,7 @@ jobs:
       if: ${{ matrix.version == '3.5.0' }}
       run: make setup_debian_350
     - name: 🧱 Dependencies
-      run: make setup_bin && make setup_libraries
+      run: make setup && make setup_libraries
     - name: 🦂 Test
       run: make check
   mac-cmd-check:

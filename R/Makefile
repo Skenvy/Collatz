@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup_debian_350 setup setup_bin setup_libraries setup_mac_tests setup_win_tests setup_docs clean docs docs_local test cmd_check full_test build check winmac_check run
+.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean docs docs_local test cmd_check full_test build check winmac_check run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
@@ -27,17 +27,6 @@ setup:
 	Rscript -e 'install.packages(c("covr", "DT"))'
 	Rscript -e 'install.packages(c("pkgdown", "servr"))'
 	Rscript -e 'install.packages(c("tinytex", "knitr"))'
-	Rscript -e 'tinytex::install_tinytex()'
-	Rscript -e 'tinytex::tlmgr_install("makeindex")'
-
-setup_bin:
-	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
-	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	Rscript -e 'install.packages(c("roxygen2", "testthat"), type="binary")'
-	Rscript -e 'install.packages("devtools", type="binary")'
-	Rscript -e 'install.packages(c("covr", "DT"), type="binary")'
-	Rscript -e 'install.packages(c("pkgdown", "servr"), type="binary")'
-	Rscript -e 'install.packages(c("tinytex", "knitr"), type="binary")'
 	Rscript -e 'tinytex::install_tinytex()'
 	Rscript -e 'tinytex::tlmgr_install("makeindex")'
 
