@@ -58,11 +58,13 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: GMP version
+    - name: 🧱 Dependencies - GMP version
       if: ${{ matrix.version == '3.5.0' }}
       run: make setup_debian_350
+    - name: 🧱 Dependencies
+      run: make setup_bin && make setup_libraries
     - name: 🦂 Test
-      run: make setup_libraries && make check
+      run: make check
   mac-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Mac)
     if: >- 
