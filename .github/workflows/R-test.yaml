@@ -1,3 +1,34 @@
+################################################################################
+# This is the first workflow that requires a different set of testing setup for
+# Windows and MacOS than ubuntu, so it's correspondingly more fragile. R is the
+# first language dealt with here that doesn't ship a lot of the languages' CI
+# functionality with the language itself, but rather through packages, which to
+# install repeatedly would be painfully slow, so I've hacked together a messier
+# set of make recipes than usual to accommodate all the different calls. The
+# main "gotcha" so far has been needing to preface anything that uses TinyTeX
+# with the path override LOCALBIN - https://github.com/rstudio/tinytex/issues/16
+################################################################################
+# All "full test" set use strategy.matrix.version: ['3.5.0', '4.0.0', '4.2.1']
+# which is symbolic for "minimum R dependency", "latest major", "latest patch".
+# While many sources suggest installing release and devel, we use the specific
+# patch version that happened to be released when development started as it ties
+# to the container of tidyverse, discussed below, that is used in-tandem.
+################################################################################
+# This workflow makes use of the rocker/tidyverse container to avoid the lengthy 
+# and cumbersome installation of debian packages and the compilation of every
+# package that devtools requires as the rocker/tidyverse container in the
+# minimum spec per https://github.com/rocker-org/rocker that includes devtools.
+# The alternative is to use the action to install R;
+# r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
+# And then install dependencies, packages, and libraries on top. For Mac, we
+# simply need to setup R and run the ordinary CMD Check. For windows, we need to
+# install rtools to allow the 3.5.0 test to use C:\rtools40\usr\bin\bash.EXE
+# instead of C:\Program Files\Git\bin\bash.EXE -- which would otherwise return a
+# make: /bin/bash: Command not found -- lucky for us though, "35" is default --
+# in the action's ~/setup-r/src/installer.ts#L41. When the version itself starts
+# with a 3, otherwise it installs version 40. Thankfully, just installing rtools
+# version 40 works for 3.5.0 as well as the others.
+################################################################################
 name: R 🏴‍☠️🔵🦜 Tests 🦂
 on:
   push:
@@ -25,6 +56,92 @@ jobs:
     name: R 🏴‍☠️🔵🦜 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🦂 Test
+      run: make setup_libraries && make full_test
+  full-test:
+    name: R 🏴‍☠️🔵🦜 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:${{ matrix.version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['3.5.0', '4.0.0', '4.2.1']
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🧱 Dependencies - GMP version
+      if: ${{ matrix.version == '3.5.0' }}
+      run: make setup_debian_350
+    - name: 🧱 Dependencies for Full Test + Suggests
+      if: ${{ matrix.version == '4.2.1' }}
+      run: make setup_docs
+    - name: 🦂 Test (not cran, no manual)
+      if: ${{ matrix.version != '4.2.1' }}
+      run: make setup_libraries && make quick_check
+    - name: 🦂 Test (cran, manual)
+      if: ${{ matrix.version == '4.2.1' }}
+      run: make check
+  mac-cmd-check:
+    name: R 🏴‍☠️🔵🦜 CMD check (Mac)
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: macOS-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['3.5.0', '4.0.0', '4.2.1']
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🏴‍☠️🔵🦜 Set up R
+      uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
+      with:
+        r-version: ${{ matrix.version }}
+    - name: 🧱 Dependencies
+      run: make setup_mac_tests
+    - name: 🦂 Test
+      run: make quick_check
+  windows-cmd-check:
+    name: R 🏴‍☠️🔵🦜 CMD check (Win)
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['3.5.0', '4.0.0', '4.2.1']
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🏴‍☠️🔵🦜 Set up R
+      uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
+      with:
+        r-version: ${{ matrix.version }}
+        rtools-version: '40'
+    - name: 🧱 Dependencies
+      run: make setup_win_tests
+    - name: 🦂 Test
+      run: make quick_check
+  docs:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4.2.1
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🥔 Setup
+      run: make setup_docs
+    - name: 📄 Docs
+      run: make docs
