@@ -3,7 +3,12 @@
 # as the rocker/tidyverse container in the minimum spec per https://github.com/rocker-org/rocker
 # that includes devtools. The alternative is to use the action to install R;
 # r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
-# And then install dependencies, packages, and libraries on top.
+# And then install dependencies, packages, and libraries on top. For Mac, we simply need to setup
+# R and run the ordinary CMD Check. For windows, we need to install rtools to allow the 3.5.0 test
+# to use C:\rtools40\usr\bin\bash.EXE instead of C:\Program Files\Git\bin\bash.EXE -- which would
+# otherwise return a make: /bin/bash: Command not found -- lucky for us though, "35" is default --
+# https://github.com/r-lib/actions/blob/43e2714071e44b1e373b83e7374dbc39e8b04f55/setup-r/src/installer.ts#L41
+# When the version itself starts with a 3, otherwise it installs version 40.
 name: R 🏴‍☠️🔵🦜 Tests 🦂
 on:
   push:
@@ -81,9 +86,6 @@ jobs:
       run: _R_CHECK_FORCE_SUGGESTS_=0 R CMD check --no-manual .
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
-    # defaults:
-    #   run:
-    #     shell: pwsh
     # if: >- 
     #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
     #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
@@ -99,6 +101,7 @@ jobs:
       uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
       with:
         r-version: ${{ matrix.version }}
+        rtools-version: '40'
     - name: 🧱 Dependencies
       run: make setup_win_tests R_PATH='C:\R\R-${{ matrix.version }}'
     - name: 🦂 Test
