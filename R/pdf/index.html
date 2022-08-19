@@ -4,15 +4,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Rd2pdf+TinyTex Generated PDF's</title>
+ <title>Rd2pdf+TinyTex Generated PDFs</title>
+ <meta charset="UTF-8">
+ <style>
+  /* Style the body */
+  body {
+    font-family: Arial;
+    margin: 0;
+  }
+  /* Header/Logo Title */
+  .header {
+    padding: 60px;
+    text-align: center;
+    background: #1abc9c;
+    color: white;
+    font-size: 30px;
+  }
+  /* Page Content */
+  .content {padding:20px;}
+ </style>
 </head>
 <body>
-<ol>
-{% for pdf in site.static_files %}
-{% if pdf.path contains 'R/pdf' %}
-<li><a href="{{ pdf.path }}">{{ pdf.name }}</a></li>
-{% endif %}
-{% endfor %}
-</ol>
+ <div class="header">
+  <h1>Collatz R PDFs</h1>
+  <p>Generated with Rd2pdf+TinyTex</p>
+ </div>
+ <div class="content">
+  <h1>List of versioned PDFs</h1>
+  <ol>
+  {% for pdf in site.static_files %}
+  {% if pdf.path contains 'R/pdf' %}
+  <li><a href="Collatz/{{ pdf.path }}">{{ pdf.name }}</a></li>
+  {% endif %}
+  {% endfor %}
+  </ol>
+ </div>
 </body>
 </html>
