@@ -61,9 +61,14 @@ jobs:
     - name: 🧱 Dependencies - GMP version
       if: ${{ matrix.version == '3.5.0' }}
       run: make setup_debian_350
-    - name: 🧱 Dependencies
+    - name: 🧱 Dependencies for Full Test + Suggests
+      if: ${{ matrix.version == '4' }}
       run: make setup && make setup_libraries
-    - name: 🦂 Test
+    - name: 🦂 Test (not cran, no manual)
+      if: ${{ matrix.version != '4' }}
+      run: make setup_libraries && make quick_check
+    - name: 🦂 Test (cran, manual)
+      if: ${{ matrix.version == '4' }}
       run: make check
   mac-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Mac)
@@ -85,7 +90,7 @@ jobs:
     - name: 🧱 Dependencies
       run: make setup_mac_tests
     - name: 🦂 Test
-      run: make winmac_check
+      run: make quick_check
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
     if: >- 
@@ -107,7 +112,7 @@ jobs:
     - name: 🧱 Dependencies
       run: make setup_win_tests
     - name: 🦂 Test
-      run: make winmac_check
+      run: make quick_check
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
