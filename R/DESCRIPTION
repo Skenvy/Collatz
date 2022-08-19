@@ -1,6 +1,6 @@
 Package: collatz
 Version: 0.1.0
-License: Apache License (= 2.0) | file LICENSE
+License: Apache License (== 2.0) | file LICENSE
 Authors@R: c(person("Nathan", "Levett", role = c("aut", "cre"), email = "nathan.a.z.levett@gmail.com"))
 Title: Functions Related to the Collatz/Syracuse/3n+1 Problem
 Description: Provides the basic functionality to interact with the Collatz conjecture.
