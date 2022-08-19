@@ -72,26 +72,26 @@ jobs:
         name: Tarball
         path: R/collatz_*.tar.gz
         if-no-files-found: error
-  # release:
-  #   name: R 🏴‍☠️🔵🦜 Release 🚰
-  #   needs: [build]
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🆒 Download dists
-  #     uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-  #     with:
-  #       name: Tarball
-  #       path: R
-  #   - name: 🚰 Release
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #     run: |
-  #       export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
-  #       gh release create R-v$VER "$(find . | grep -e collatz_*\.tar\.gz)#Tarball" --generate-notes -t "R: Version $VER"
+  release:
+    name: R 🏴‍☠️🔵🦜 Release 🚰
+    needs: [build]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Tarball
+        path: R
+    - name: 🚰 Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
+        gh release create R-v$VER "$(find . | grep -e collatz_*\.tar\.gz)#Tarball" --generate-notes -t "R: Version $VER"
     # "Publishing" in R-world is a manual upload of the built tarball
     # as a submission to https://cran.r-project.org/submit.html
   docs-generate:

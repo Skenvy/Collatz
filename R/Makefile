@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean docs docs_local test cmd_check full_test build check quick_check run
+.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check quick_check run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
@@ -62,8 +62,10 @@ clean:
 
 # The following steps assume that the setup has been run already.
 
-docs: clean
+manRd: clean
 	Rscript -e 'devtools::document()'
+
+docs: manRd
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
 	$(LOCALBIN) Rscript -e 'Sys.which("makeindex")'
@@ -90,8 +92,7 @@ build:
 # Using -- R CMD check collatz_$$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2).tar.gz
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
-check: full_test build
-	Rscript -e 'devtools::document()'
+check: full_test manRd build
 	$(LOCALBIN) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
 quick_check: cmd_check build
