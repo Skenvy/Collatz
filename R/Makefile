@@ -1,10 +1,6 @@
-.PHONY: setup_debian setup setup_libraries setup_mac_tests setup_win_tests clean docs docs_local test full_test build check run
+.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean docs docs_local test cmd_check full_test build check run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
-# ifeq ($(OS),Windows_NT)
-# SHELL:=pwsh.exe
-# .SHELLFLAGS:=-NoProfile -Command
-# endif
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
@@ -16,6 +12,9 @@ setup_debian:
 	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
 	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo
+
+setup_debian_350:
+	apt update && apt install -y libgmp-dev
 
 # Create or use user / local install location
 # Devlopment packages.
@@ -42,11 +41,16 @@ setup_mac_tests: setup_libraries
 
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
 # In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
+# For installing locall we'd need to reference $(R_PATH)\bin\Rscript.exe -e "~"
+# But in GHA, the rtools bash let's us just 'Rscript -e "~"' <-- also
+# worth mentioning it does also require the outer quotes to be " not '
 setup_win_tests:
-	# $(R_PATH)\bin\Rscript.exe -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
-	# $(R_PATH)\bin\Rscript.exe -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	# $(R_PATH)\bin\Rscript.exe -e 'install.packages(c("gmp", "testthat"), type="binary", repos="http://cran.us.r-project.org")'
 	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
+
+setup_docs:
+	apt update && apt -y install texinfo
+	make setup
+    make setup_libraries
 
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
@@ -74,9 +78,10 @@ docs_local: docs
 test: clean
 	_R_CHECK_FORCE_SUGGESTS_=0 Rscript -e 'devtools::test()'
 
-full_test: test
-	# We can avoid checking the pdf in full test as it should be test generated in docs
+cmd_check: clean
 	_R_CHECK_FORCE_SUGGESTS_=0 R CMD check --no-manual .
+
+full_test: test cmd_check
 
 build: full_test
 	R CMD build .
