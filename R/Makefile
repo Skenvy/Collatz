@@ -1,6 +1,7 @@
 .PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean docs docs_local test cmd_check full_test build check winmac_check run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
+NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
@@ -76,10 +77,10 @@ docs_local: docs
 	Rscript -e 'servr::httd(dir="./docs")'
 
 test: clean
-	_R_CHECK_FORCE_SUGGESTS_=0 Rscript -e 'devtools::test()'
+	$(NO_SUGGESTS) Rscript -e 'devtools::test()'
 
 cmd_check: clean
-	_R_CHECK_FORCE_SUGGESTS_=0 R CMD check --no-manual .
+	$(NO_SUGGESTS) R CMD check --no-manual .
 
 full_test: test cmd_check
 
@@ -90,11 +91,11 @@ build: full_test
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
 check: build
-	R CMD check --as-cran --no-manual $$(ls | grep collatz_*.tar.gz)
+	$(NO_SUGGESTS) R CMD check --as-cran --no-manual $$(ls | grep collatz_*.tar.gz)
 
 winmac_check: cmd_check
 	R CMD build .
-	R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
+	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
 
 run:
 	Rscript R/Collatz.R
