@@ -139,8 +139,7 @@ jobs:
         cd .. && mv R/docs ../MERGE_TARGET
         git rm -rf . && git clean -fxd && git reset
         shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/
-        git add .
-        git checkout HEAD -- R/pdf/
+        git add . && git checkout HEAD -- R/pdf/ && git add .
         git commit -m "Build based on $SHORTSHA" --allow-empty
         git push --set-upstream origin gh-pages-R
       env:
