@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean docs docs_local test cmd_check full_test build check winmac_cran_check run
+.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean docs docs_local test cmd_check full_test build check winmac_check run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 
@@ -92,9 +92,9 @@ build: full_test
 check: build
 	R CMD check --as-cran --no-manual $$(ls | grep collatz_*.tar.gz)
 
-winmac_cran_check: cmd_check
+winmac_check: cmd_check
 	R CMD build .
-	R CMD check --as-cran --no-manual $$(ls | grep collatz_*.tar.gz)
+	R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
 
 run:
 	Rscript R/Collatz.R

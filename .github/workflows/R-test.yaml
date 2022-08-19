@@ -83,7 +83,7 @@ jobs:
     - name: 🧱 Dependencies
       run: make setup_mac_tests
     - name: 🦂 Test
-      run: make winmac_cran_check
+      run: make winmac_check
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
     # if: >- 
@@ -105,7 +105,7 @@ jobs:
     - name: 🧱 Dependencies
       run: make setup_win_tests
     - name: 🦂 Test
-      run: make winmac_cran_check
+      run: make winmac_check
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
