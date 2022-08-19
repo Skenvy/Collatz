@@ -43,9 +43,10 @@ setup_mac_tests: setup_libraries
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
 # In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
 setup_win_tests:
-	$(R_PATH)\bin\Rscript.exe -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
-	$(R_PATH)\bin\Rscript.exe -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	$(R_PATH)\bin\Rscript.exe -e 'install.packages(c("gmp", "testthat"), type="binary", repos="http://cran.us.r-project.org")'
+	# $(R_PATH)\bin\Rscript.exe -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
+	# $(R_PATH)\bin\Rscript.exe -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
+	# $(R_PATH)\bin\Rscript.exe -e 'install.packages(c("gmp", "testthat"), type="binary", repos="http://cran.us.r-project.org")'
+	Rscript -e 'install.packages(c("gmp", "testthat"), type="binary", repos="http://cran.us.r-project.org")'
 
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
