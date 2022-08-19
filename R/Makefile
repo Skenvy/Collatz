@@ -1,10 +1,10 @@
 .PHONY: setup_debian setup setup_libraries setup_mac_tests setup_win_tests clean docs docs_local test full_test build check run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
-ifeq ($(OS),Windows_NT)
-SHELL:=pwsh.exe
-.SHELLFLAGS:=-NoProfile -Command
-endif
+# ifeq ($(OS),Windows_NT)
+# SHELL:=pwsh.exe
+# .SHELLFLAGS:=-NoProfile -Command
+# endif
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
