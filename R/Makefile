@@ -33,11 +33,11 @@ setup:
 setup_bin:
 	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	Rscript -e 'install.packages(c("roxygen2", "testthat"), type='binary')'
-	Rscript -e 'install.packages("devtools", type='binary')'
-	Rscript -e 'install.packages(c("covr", "DT"), type='binary')'
-	Rscript -e 'install.packages(c("pkgdown", "servr"), type='binary')'
-	Rscript -e 'install.packages(c("tinytex", "knitr"), type='binary')'
+	Rscript -e 'install.packages(c("roxygen2", "testthat"), type="binary")'
+	Rscript -e 'install.packages("devtools", type="binary")'
+	Rscript -e 'install.packages(c("covr", "DT"), type="binary")'
+	Rscript -e 'install.packages(c("pkgdown", "servr"), type="binary")'
+	Rscript -e 'install.packages(c("tinytex", "knitr"), type="binary")'
 	Rscript -e 'tinytex::install_tinytex()'
 	Rscript -e 'tinytex::tlmgr_install("makeindex")'
 
