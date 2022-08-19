@@ -16,8 +16,8 @@
   .header {
     padding: 60px;
     text-align: center;
-    background: #1abc9c;
-    color: white;
+    background: #2369bd;
+    color: #bdbfc3;
     font-size: 30px;
   }
   /* Page Content */
@@ -34,7 +34,7 @@
   <ol>
   {% for pdf in site.static_files %}
   {% if pdf.path contains 'R/pdf' %}
-  <li><a href="{{ pdf.path }}">{{ pdf.name }}</a></li>
+  <li><a href="./{{ pdf.name }}">{{ pdf.name }}</a></li>
   {% endif %}
   {% endfor %}
   </ol>
