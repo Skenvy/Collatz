@@ -63,7 +63,7 @@ jobs:
       run: make setup_debian_350
     - name: 🧱 Dependencies for Full Test + Suggests
       if: ${{ matrix.version == '4' }}
-      run: make setup && make setup_libraries
+      run: make setup_docs
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4' }}
       run: make setup_libraries && make quick_check
