@@ -50,7 +50,7 @@ setup_win_tests:
 setup_docs:
 	apt update && apt -y install texinfo
 	make setup
-    make setup_libraries
+	make setup_libraries
 
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
