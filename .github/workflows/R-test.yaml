@@ -45,9 +45,9 @@ jobs:
       run: make setup_libraries && make full_test
   full-test:
     name: R 🏴‍☠️🔵🦜 Full Test 🦂
-    # if: >- 
-    #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-    #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     container:
       image: rocker/tidyverse:${{ matrix.version }}
@@ -62,7 +62,7 @@ jobs:
       if: ${{ matrix.version == '3.5.0' }}
       run: make setup_debian_350
     - name: 🦂 Test
-      run: make setup_libraries && make full_test
+      run: make setup_libraries && make check
   mac-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Mac)
     # if: >- 
@@ -83,7 +83,7 @@ jobs:
     - name: 🧱 Dependencies
       run: make setup_mac_tests
     - name: 🦂 Test
-      run: make cmd_check
+      run: make winmac_cran_check
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
     # if: >- 
@@ -105,7 +105,7 @@ jobs:
     - name: 🧱 Dependencies
       run: make setup_win_tests
     - name: 🦂 Test
-      run: make cmd_check
+      run: make winmac_cran_check
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
