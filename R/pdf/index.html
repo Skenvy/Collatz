@@ -1,0 +1,43 @@
+---
+# this is an empty front matter to make jekyll render the liquid template
+---
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Rd2pdf+TinyTex Generated PDFs</title>
+ <meta charset="UTF-8">
+ <style>
+  /* Style the body */
+  body {
+    font-family: Arial;
+    margin: 0;
+  }
+  /* Header/Logo Title */
+  .header {
+    padding: 60px;
+    text-align: center;
+    background: #2369bd;
+    color: #bdbfc3;
+    font-size: 30px;
+  }
+  /* Page Content */
+  .content {padding:20px;}
+ </style>
+</head>
+<body>
+ <div class="header">
+  <h1>Collatz R PDFs</h1>
+  <p>Generated with Rd2pdf+TinyTex</p>
+ </div>
+ <div class="content">
+  <h1>List of versioned PDFs</h1>
+  <ol>
+  {% for pdf in site.static_files %}
+  {% if pdf.path contains 'R/pdf' %}
+  <li><a href="./{{ pdf.name }}">{{ pdf.name }}</a></li>
+  {% endif %}
+  {% endfor %}
+  </ol>
+ </div>
+</body>
+</html>
