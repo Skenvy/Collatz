@@ -12,7 +12,7 @@ NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
 setup_debian:
 	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
-	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo texlive-latex-base
+	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo
 
 setup_debian_350:
 	apt update && apt install -y libgmp-dev
@@ -49,7 +49,7 @@ setup_win_tests:
 	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
 
 setup_docs:
-	apt update && apt -y install texinfo texlive-latex-base
+	apt update && apt -y install pandoc texinfo
 	make setup
 	make setup_libraries
 
