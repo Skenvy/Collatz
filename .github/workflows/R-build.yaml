@@ -57,13 +57,13 @@ jobs:
       ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
       github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
     runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4.2.1
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🏴‍☠️🔵🦜 Set up R
-      uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
-      with:
-        r-version: '4.2.1'
+    - name: 🧱 Dependencies for Full Test + Suggests
+      run: make setup_docs
     - name: 🧱 Build and Check
       run: make check
     - name: 🆙 Upload tarball
@@ -72,26 +72,26 @@ jobs:
         name: Tarball
         path: R/collatz_*.tar.gz
         if-no-files-found: error
-  release:
-    name: R 🏴‍☠️🔵🦜 Release 🚰
-    needs: [build]
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-    - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
-      with:
-        name: Tarball
-        path: R
-    - name: 🚰 Release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
-        gh release create R-v$VER "$(find . | grep -e collatz_*\.tar\.gz)#Tarball" --generate-notes -t "R: Version $VER"
+  # release:
+  #   name: R 🏴‍☠️🔵🦜 Release 🚰
+  #   needs: [build]
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+  #   - name: 🆒 Download dists
+  #     uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+  #     with:
+  #       name: Tarball
+  #       path: R
+  #   - name: 🚰 Release
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     run: |
+  #       export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
+  #       gh release create R-v$VER "$(find . | grep -e collatz_*\.tar\.gz)#Tarball" --generate-notes -t "R: Version $VER"
     # "Publishing" in R-world is a manual upload of the built tarball
     # as a submission to https://cran.r-project.org/submit.html
   docs-generate:
@@ -106,11 +106,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🥔 Setup
-      run: |
-        apt update
-        apt -y install texinfo
-        make setup
-        make setup_libraries
+      run: make setup_docs
     - name: 📄 Docs Generation
       run: make docs
     - name: 🆙 Upload docs
@@ -142,8 +138,9 @@ jobs:
         git symbolic-ref HEAD refs/heads/gh-pages-R
         cd .. && mv R/docs ../MERGE_TARGET
         git rm -rf . && git clean -fxd && git reset
-        shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/ && rm R/.gitignore
+        shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/
         git add .
+        git checkout HEAD -- R/pdf/
         git commit -m "Build based on $SHORTSHA" --allow-empty
         git push --set-upstream origin gh-pages-R
       env:
