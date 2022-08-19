@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Rd2pdf+TinyTex Generated PDF's</title>
+</head>
+<body>
+<ol>
+{% for pdf in site.static_files %}
+{% if pdf.path contains 'R/pdf' %}
+<li><a href="{{ pdf.path }}">{{ pdf.name }}</a></li>
+{% endif %}
+{% endfor %}
+</ol>
+</body>
+</html>
