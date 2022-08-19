@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/404.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/devlog.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/index.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/assertSaneParameterication.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/collatz.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/collatzFunction.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/reverseFunction.html</loc>
+  </url>
+</urlset>
