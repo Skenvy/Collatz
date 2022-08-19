@@ -11,7 +11,7 @@ Description: Provides the basic functionality to interact with the Collatz conje
 Author: Nathan Levett [aut, cre]
 Maintainer: Nathan Levett <nathan.a.z.levett@gmail.com>
 Date: 2022-08-08
-URL: https://github.com/Skenvy/Collatz, https://github.com/Skenvy/Collatz/tree/main/R
+URL: https://github.com/Skenvy/Collatz, https://github.com/Skenvy/Collatz/tree/main/R https://skenvy.github.io/Collatz/R/ https://skenvy.github.io/Collatz/R/pdf/
 BugReports: https://github.com/Skenvy/Collatz/issues/new/choose
 Depends:
     R (>= 3.5.0),
