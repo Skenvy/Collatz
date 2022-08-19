@@ -92,7 +92,7 @@ build:
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
 check: full_test build
 	Rscript -e 'devtools::document()'
-	R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
+	$(LOCALBIN) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
 quick_check: cmd_check build
 	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
