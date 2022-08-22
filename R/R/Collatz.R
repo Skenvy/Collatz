@@ -69,7 +69,7 @@ assertSaneParameterication <- function(P, a, b) {
     if (a == 0) stop(Collatz$SaneParameterErrMsg$A)
 }
 
-#' The Collatz function
+#' The Collatz function.
 #'
 #' Returns the output of a single application of a Collatz-esque function.
 #'
