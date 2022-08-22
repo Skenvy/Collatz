@@ -143,5 +143,7 @@ jobs:
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🥔 Setup
       run: make setup_docs
+    - name: Add the repo as a safe repo inside the job container
+      run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 📄 Docs
       run: make docs
