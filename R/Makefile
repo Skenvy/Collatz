@@ -65,7 +65,7 @@ clean:
 manRd: clean
 	Rscript -e 'devtools::document()'
 	echo "Exit if a change to the documentation is not committed"
-	which git && $$(which git) --version && cd .. && ls -liath
+	which git && $$(which git) --version && cd .. && ls -liath .git
 	cd R && $$(which git) diff --exit-code --stat -- NAMESPACE
 	$$(which git) add man && $$(which git) diff --exit-code --cached --stat -- man/
 
