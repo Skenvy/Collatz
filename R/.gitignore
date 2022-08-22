@@ -56,3 +56,4 @@ rsconnect/
 # docs/ ignore, and will always insist on readding this "docs"
 docs
 **.tex
+inst/doc

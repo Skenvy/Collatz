@@ -26,7 +26,7 @@ setup:
 	Rscript -e 'install.packages("devtools")'
 	Rscript -e 'install.packages(c("covr", "DT"))'
 	Rscript -e 'install.packages(c("pkgdown", "servr"))'
-	Rscript -e 'install.packages(c("tinytex", "knitr"))'
+	Rscript -e 'install.packages(c("tinytex", "knitr", "rmarkdown"))'
 	Rscript -e 'tinytex::install_tinytex()'
 	Rscript -e 'tinytex::tlmgr_install("makeindex")'
 
