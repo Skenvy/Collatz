@@ -64,6 +64,9 @@ clean:
 
 manRd: clean
 	Rscript -e 'devtools::document()'
+	echo "Exit if a change to the documentation is not committed"
+	git diff --exit-code --stat -- NAMESPACE
+	git add man && git diff --exit-code --cached --stat -- man/
 
 docs: manRd
 	Rscript -e 'pkgdown::build_site()'
