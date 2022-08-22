@@ -10,7 +10,6 @@ Rscript -e 'devtools::install_github("Skenvy/Collatz", subdir="R")'
 ```sh
 VER=0.1.0 && curl -L https://github.com/Skenvy/Collatz/releases/download/R-v${VER}/collatz_${VER}.tar.gz > collatz_${VER}.tar.gz && Rscript -e "install.packages('collatz_${VER}.tar.gz', repos=NULL, type='source')"
 ```
-
 It's _not on CRAN_, but if it does get added, then this would also be relevant.
 
 [To install the latest from CRAN](https://cran.r-project.org/package=collatz);
