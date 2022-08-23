@@ -20,7 +20,7 @@ NULL
 #' If either n or P are bigz, then the result of n/P will be a bigq
 #' although it's denominator(~) will return 1.
 #' @export
-collatzFunction <- function(n, P=2, a=3, b=1){
-    assertSaneParameterication(P,a,b)
+collatz_function <- function(n, P=2, a=3, b=1){
+    assert_sane_parameterication(P,a,b)
     if (n%%P == 0) (n/P) else ((a*n)+b)
 }

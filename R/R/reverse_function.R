@@ -19,8 +19,8 @@ NULL
 #' to the scaled value of n. Default is 1.
 #' @returns A vector of either numeric or bigz | bigq type
 #' @export
-reverseFunction <- function(n, P=2, a=3, b=1){
-    assertSaneParameterication(P,a,b)
+reverse_function <- function(n, P=2, a=3, b=1){
+    assert_sane_parameterication(P,a,b)
     # Every input can be reversed as the result of "n/P" division, which yields
     # "Pn"... {f(n) = an + b}~={(f(n) - b)/a = n} ~ if n was such that the
     # muliplication step was taken instead of the division by the modulus, then

@@ -19,11 +19,11 @@ Depends:
     gmp
 Collate: 
     'utils.R'
-    'HailstoneSequence.R'
-    'TreeGraph.R'
-    'collatzFunction.R'
-    'reverseFunction.R'
-    'stoppingTime.R'
+    'collatz_function.R'
+    'hailstone_sequence.R'
+    'reverse_function.R'
+    'stopping_time.R'
+    'tree_graph.R'
 Suggests:
     roxygen2,
     testthat (>= 3.0.0),

@@ -39,15 +39,13 @@ lockBinding("SaneParameterErrMsg", Collatz)
 # SequenceState for Cycle Control: Descriptive flags to indicate when some
 # event occurs in the hailstone sequences or tree graph reversal, when set to
 # verbose, or stopping time check. Create as an S3 class.
-Collatz$SequenceStateClass <- "SequenceState"
-lockBinding("SequenceStateClass", Collatz)
 Collatz$SequenceState <- list(
-    STOPPING_TIME=structure("STOPPING_TIME", class=Collatz$SequenceStateClass),
-    TOTAL_STOPPING_TIME=structure("STOPPING_TIME", class=Collatz$SequenceStateClass),
-    CYCLE_INIT=structure("CYCLE_INIT", class=Collatz$SequenceStateClass),
-    CYCLE_LENGTH=structure("CYCLE_LENGTH", class=Collatz$SequenceStateClass),
-    MAX_STOP_OUT_OF_BOUNDS=structure("MAX_STOP_OUT_OF_BOUNDS", class=Collatz$SequenceStateClass),
-    ZERO_STOP=structure("ZERO_STOP", class=Collatz$SequenceStateClass))
+    STOPPING_TIME="STOPPING_TIME",
+    TOTAL_STOPPING_TIME="TOTAL_STOPPING_TIME",
+    CYCLE_INIT="CYCLE_INIT",
+    CYCLE_LENGTH="CYCLE_LENGTH",
+    MAX_STOP_OUT_OF_BOUNDS="MAX_STOP_OUT_OF_BOUNDS",
+    ZERO_STOP="ZERO_STOP")
 lockBinding("SequenceState", Collatz)
 
 #' Sane Parameter Check
@@ -60,7 +58,7 @@ lockBinding("SequenceState", Collatz)
 #' @param P Modulus used to devide n, iff n is equivalent to (0 mod P).
 #' @param a Factor by which to multiply n.
 #' @param b Value to add to the scaled value of n.
-assertSaneParameterication <- function(P, a, b) {
+assert_sane_parameterication <- function(P, a, b) {
     # Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
     # theoretically, although would violate the reversability (if ~a is 0 then a
     # value of "b" as the input to the reverse function would have a pre-emptive
@@ -88,7 +86,7 @@ assertSaneParameterication <- function(P, a, b) {
 #'    have reached the oriented stopping time to reach a value closer to 0.
 #'    If true, the lambda will simply check equality to 1.
 #' @returns An anonymous function to check for the stopping time.
-stoppingTimeTerminus <- function(n, total_stop) {
+stopping_time_terminus <- function(n, total_stop) {
 	if (total_stop) {
 		return(function(x) { return(x==1) })
 	} else if (n >= 0) {

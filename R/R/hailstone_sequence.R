@@ -1,0 +1,94 @@
+#' @include utils.R
+#' @include collatz_function.R
+NULL
+
+#' Hailstone Sequencer
+#'
+#' Calculates the values of a hailstone sequence, from an initial value.
+#'
+#' Returns a list of successive values obtained by iterating a Collatz-esque
+#' function, until either 1 is reached, or the total amount of iterations
+#' exceeds max_total_stopping_time, unless total_stopping_time is FALSE, which
+#' will terminate the hailstone at the "stopping time" value, i.e. the first
+#' value less than the initial value. While the sequence has the capability to
+#' determine that it has encountered a cycle, the cycle from "1" wont be
+#' attempted or reported as part of a cycle, regardless of default or custom
+#' parameterisation, as "1" is considered a "total stop".
+#'
+#' @param initial_value (numeric|bigz|bigq)
+#' The value to begin the hailstone sequence from.
+#' @param P (numeric|bigz|bigq): Modulus used to divide
+#' n, iff n is equivalent to (0 mod P). Default is 2.
+#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
+#' @param b (numeric|bigz|bigq) Value to add
+#' to the scaled value of n. Default is 1.
+#' @param max_total_stopping_time (int) Maximum amount of times to iterate the
+#' function, if 1 is not reached. Default is 1000.
+#' @param total_stopping_time (bool) Whether or not to execute until the "total"
+#' stopping time (number of iterations to obtain 1) rather than the regular
+#' stopping time (number of iterations to reach a value less than the initial
+#' value). Default is TRUE.
+#' @param verbose (bool) If set to verbose, the hailstone sequence will include
+#' control string sequences to provide information about how the
+#' sequence terminated, whether by reaching a stopping time or entering
+#' a cycle. Default is TRUE.
+#' @returns
+#' @export
+hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
+    max_total_stopping_time=1000, total_stopping_time=TRUE, verbose=TRUE){
+    # Call out the collatz_function before any magic returns to trap bad values.
+    throwaway_test <- collatz_function(initial_value,P=P,a=a,b=b)
+    # 0 is always an immediate stop.
+    if (initial_value == 0){
+        if (verbose) {
+            list(terminalCondition=Collatz$SequenceState$ZERO_STOP, terminalStatus=0)
+        } else {
+            c(0)
+        }
+    }
+    # 1 is always an immediate stop, with 0 stopping time.
+    if (initial_value == 1){
+        if (verbose) {
+            list(terminalCondition=Collatz$SequenceState$TOTAL_STOPPING_TIME, terminalStatus=0)
+        } else {
+            c(1)
+        }
+    }
+    terminate <- stopping_time_terminus(initial_value, total_stopping_time)
+    # Start the hailstone sequence.
+    max_total_stopping_time <- max(max_total_stopping_time, 1)
+    hailstone <- list(values=c(initial_value))
+#     cyclic <- (lambda x: x in hailstone)
+#     for k in range(_max_total_stopping_time):
+#         _next <- collatz_function(hailstone[-1],P=P,a=a,b=b)
+        # Check if the next hailstone is either the stopping time, total
+        # stopping time, the same as the initial value, or stuck at zero.
+#         if terminate(_next):
+#             hailstone += [_next]
+#             if verbose:
+#                 m <- Collatz$SequenceState$TOTAL_STOPPING_TIME if _next == 1 else Collatz$SequenceState$STOPPING_TIME
+#                 hailstone += [[m.value, len(hailstone)-1]]
+#             break
+#         if cyclic(_next):
+#             cycle_init <- 1
+#             for j in range(1,len(hailstone)+1):
+#                 if hailstone[-j] == _next:
+#                     cycle_init <- j
+#                     break
+#             if verbose:
+#                 hailstone <- hailstone[:-cycle_init] + [Collatz$SequenceState$CYCLE_INIT.value,
+#                     hailstone[-cycle_init:],[Collatz$SequenceState$CYCLE_LENGTH.value,cycle_init]]
+#             else:
+#                 hailstone += [_next]
+#             break
+#         if _next == 0:
+#             hailstone += [0]
+#             if verbose:
+#                 hailstone += [[Collatz$SequenceState$ZERO_STOP.value, -(len(hailstone)-1)]]
+#             break
+#         hailstone += [_next]
+#     else:
+#         if verbose:
+#             hailstone += [[Collatz$SequenceState$MAX_STOP_OOB.value, _max_total_stopping_time]]
+#     return hailstone
+}

@@ -58,7 +58,6 @@ clean:
 	rm -rf ..Rcheck
 	rm -rf **Rcheck
 	rm -rf .Rd2pdf*
-	rm -rf man
 	rm -rf docs
 	rm -rf doc
 	rm -rf Meta
