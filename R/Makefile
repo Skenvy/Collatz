@@ -55,10 +55,13 @@ setup_docs:
 
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
+	rm -rf ..Rcheck
 	rm -rf **Rcheck
 	rm -rf .Rd2pdf*
 	rm -rf man
 	rm -rf docs
+	rm -rf doc
+	rm -rf Meta
 
 # The following steps assume that the setup has been run already.
 

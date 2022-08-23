@@ -1,0 +1,75 @@
+---
+title: "collatz"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{collatz}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Install
+After following the ["Getting Started"](https://skenvy.github.io/Collatz/R/#getting-started)
+instructions (which can also be seen in the [README](https://github.com/Skenvy/Collatz/tree/main/R))
+to download and or install the package, it can be imported with;
+```{r setup, message = FALSE}
+library(collatz)
+# Optionally
+library(gmp)
+```
+You can jump right into using the functions in this package with integer inputs, or you can use `bigz` or `bigq` from the `gmp` library.
+Each function, amongst possible _other_ parameters, comes with the default parameters `(P=2,a=3,b=1)` as optional inputs.
+In each case, `P[=2]` is the modulus to check for divisibility of the input by, `a[=3]` is the factor to multiply the input by,
+and `b[=1]` is the value to add to the product of `a[=3]` and the input.
+There are two basic commands to start with; the `collatzFunction` and the `reverseFunction`.
+
+## collatzFunction
+Returns the output of a single application of a Collatz-esque function.
+Without `gmp` or parameterisation, we can try something simple like
+```{r}
+collatzFunction(5)
+collatzFunction(16)
+```
+If we want change the default parameterisation we can;
+```{r}
+collatzFunction(4, 5, 2, 3)
+```
+Or if we only want to change one of them
+```{r}
+collatzFunction(3, a=-2)
+```
+All the above work fine, but the function doesn't offer protection against overflowing integers by default.
+To venture into the world of arbitrary integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+```{r}
+collatzFunction(99999999999999999999)
+collatzFunction(as.bigz("99999999999999999999"))
+```
+
+## reverseFunction
+Calculates the values that would return the input under the Collatz function.
+Without `gmp` or parameterisation, we can try something simple like
+```{r}
+reverseFunction(1)
+reverseFunction(2)
+reverseFunction(4)
+```
+If we want change the default parameterisation we can;
+```{r}
+reverseFunction(3, -3, -2, -5)
+```
+Or if we only want to change one of them
+```{r}
+reverseFunction(16, a=5)
+```
+All the above work fine, but the function doesn't offer protection against overflowing integers by default.
+To venture into the world of arbitrary integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+```{r}
+reverseFunction(99999999999999999999)
+reverseFunction(as.bigz("99999999999999999999"))
+```

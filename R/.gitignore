@@ -57,3 +57,5 @@ rsconnect/
 docs
 **.tex
 inst/doc
+/doc/
+/Meta/
