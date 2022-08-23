@@ -38,8 +38,17 @@ lockBinding("SaneParameterErrMsg", Collatz)
 
 # SequenceState for Cycle Control: Descriptive flags to indicate when some
 # event occurs in the hailstone sequences or tree graph reversal, when set to
-# verbose, or stopping time check.
-Collatz$SequenceState <- list()
+# verbose, or stopping time check. Create as an S3 class.
+Collatz$SequenceStateClass <- "SequenceState"
+lockBinding("SequenceStateClass", Collatz)
+Collatz$SequenceState <- list(
+    STOPPING_TIME=structure("STOPPING_TIME", class=Collatz$SequenceStateClass),
+    TOTAL_STOPPING_TIME=structure("STOPPING_TIME", class=Collatz$SequenceStateClass),
+    CYCLE_INIT=structure("CYCLE_INIT", class=Collatz$SequenceStateClass),
+    CYCLE_LENGTH=structure("CYCLE_LENGTH", class=Collatz$SequenceStateClass),
+    MAX_STOP_OUT_OF_BOUNDS=structure("MAX_STOP_OUT_OF_BOUNDS", class=Collatz$SequenceStateClass),
+    ZERO_STOP=structure("ZERO_STOP", class=Collatz$SequenceStateClass))
+lockBinding("SequenceState", Collatz)
 
 #' Sane Parameter Check
 #'
@@ -67,4 +76,24 @@ assertSaneParameterication <- function(P, a, b) {
     # " != 0" is redundant for python assertions.
     if (P == 0) stop(Collatz$SaneParameterErrMsg$P)
     if (a == 0) stop(Collatz$SaneParameterErrMsg$A)
+}
+
+#' Stopping Time Terminus
+#'
+#' Provides the appropriate lambda to use to check if iterations on an initial
+#' value have reached either the stopping time, or total stopping time.
+#'
+#' @param n The initial value to confirm against a stopping time check.
+#' @param total_stop If false, the lambda will confirm that iterations of n
+#'    have reached the oriented stopping time to reach a value closer to 0.
+#'    If true, the lambda will simply check equality to 1.
+#' @returns An anonymous function to check for the stopping time.
+stoppingTimeTerminus <- function(n, total_stop) {
+	if (total_stop) {
+		return(function(x) { return(x==1) })
+	} else if (n >= 0) {
+		return(function(x) { return ((x < n) && (x > 0)) })
+	} else {
+		return(function(x) { return ((x > n) && (x < 0)) })
+	}
 }
