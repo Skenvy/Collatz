@@ -12,7 +12,7 @@ NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
 setup_debian:
 	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
-	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo
+	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo qpdf
 
 setup_debian_350:
 	apt update && apt install -y libgmp-dev
