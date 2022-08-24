@@ -81,9 +81,9 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
         }
         if (cyclic(next_val)) {
             cycle_init <- 1
-            for (j in 1:(k-1)) {
+            for (j in 0:(k-1)) {
                 if (hailstone$values[[k-j]] == next_val) {
-                    cycle_init <- j
+                    cycle_init <- j+1
                     break
                 }
             }
