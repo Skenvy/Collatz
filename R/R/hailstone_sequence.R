@@ -43,7 +43,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
         if (verbose) {
             list(terminalCondition=Collatz$SequenceState$ZERO_STOP, terminalStatus=0)
         } else {
-            c(0)
+            list(0)
         }
     }
     # 1 is always an immediate stop, with 0 stopping time.
@@ -51,44 +51,67 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
         if (verbose) {
             list(terminalCondition=Collatz$SequenceState$TOTAL_STOPPING_TIME, terminalStatus=0)
         } else {
-            c(1)
+            list(1)
         }
     }
     terminate <- stopping_time_terminus(initial_value, total_stopping_time)
     # Start the hailstone sequence.
-    max_total_stopping_time <- max(max_total_stopping_time, 1)
-    hailstone <- list(values=c(initial_value))
-#     cyclic <- (lambda x: x in hailstone)
-#     for k in range(_max_total_stopping_time):
-#         _next <- collatz_function(hailstone[-1],P=P,a=a,b=b)
-        # Check if the next hailstone is either the stopping time, total
+    max_max_total_stopping_time <- max(max_total_stopping_time, 1)
+    hailstone <- list(values=vector(mode="list", length=max_max_total_stopping_time), terminalCondition=NA, terminalStatus=NA)
+    hailstone$values[[1]] <- initial_value
+    cyclic <- function(x){x %in% hailstone$values}
+    for (k in 1:max_max_total_stopping_time){
+        next_val <- collatz_function(hailstone$values[[k]],P=P,a=a,b=b)
+        # Check if the next_val hailstone is either the stopping time, total
         # stopping time, the same as the initial value, or stuck at zero.
-#         if terminate(_next):
-#             hailstone += [_next]
-#             if verbose:
-#                 m <- Collatz$SequenceState$TOTAL_STOPPING_TIME if _next == 1 else Collatz$SequenceState$STOPPING_TIME
-#                 hailstone += [[m.value, len(hailstone)-1]]
-#             break
-#         if cyclic(_next):
-#             cycle_init <- 1
-#             for j in range(1,len(hailstone)+1):
-#                 if hailstone[-j] == _next:
-#                     cycle_init <- j
-#                     break
-#             if verbose:
-#                 hailstone <- hailstone[:-cycle_init] + [Collatz$SequenceState$CYCLE_INIT.value,
-#                     hailstone[-cycle_init:],[Collatz$SequenceState$CYCLE_LENGTH.value,cycle_init]]
-#             else:
-#                 hailstone += [_next]
-#             break
-#         if _next == 0:
-#             hailstone += [0]
-#             if verbose:
-#                 hailstone += [[Collatz$SequenceState$ZERO_STOP.value, -(len(hailstone)-1)]]
-#             break
-#         hailstone += [_next]
-#     else:
-#         if verbose:
-#             hailstone += [[Collatz$SequenceState$MAX_STOP_OOB.value, _max_total_stopping_time]]
-#     return hailstone
+        if (terminate(next_val)) {
+            hailstone$values[[k+1]] <- next_val
+            if (verbose) {
+                if (next_val == 1) {
+                    hailstone$terminalCondition <- Collatz$SequenceState$TOTAL_STOPPING_TIME
+                } else {
+                    hailstone$terminalCondition <- Collatz$SequenceState$STOPPING_TIME
+                }
+                hailstone$terminalStatus <- k # +/- 1?
+                return(hailstone)
+            } else {
+                return(hailstone$values)
+            }
+        }
+        if (cyclic(next_val)) {
+            cycle_init <- 1
+            for (j in 1:(k-1)) {
+                if (hailstone$values[[k-j]] == next_val) {
+                    cycle_init <- j
+                    break
+                }
+            }
+            hailstone$values[[k+1]] <- next_val
+            if (verbose) {
+                hailstone$terminalCondition <- Collatz$SequenceState$CYCLE_LENGTH
+                hailstone$terminalStatus <- cycle_init
+                return(hailstone)
+            } else {
+                return(hailstone$values)
+            }
+        }
+        if (next_val == 0) {
+            hailstone$values[[k+1]] <- 0
+            if (verbose) {
+                hailstone$terminalCondition <- Collatz$SequenceState$ZERO_STOP
+                hailstone$terminalStatus <- -k-1 # +/- 1?
+                return(hailstone)
+            } else {
+                return(hailstone$values)
+            }
+        }
+        hailstone$values[[k+1]] <- next_val
+    }
+    if (verbose) {
+        hailstone$terminalCondition <- Collatz$SequenceState$MAX_STOP_OOB
+        hailstone$terminalStatus <- max_max_total_stopping_time
+        return(hailstone)
+    } else {
+        return(hailstone$values)
+    }
 }
