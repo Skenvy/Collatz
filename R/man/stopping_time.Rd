@@ -33,6 +33,9 @@ stopping time (number of iterations to obtain 1) rather than the regular
 stopping time (number of iterations to reach a value less than the initial
 value). Default is FALSE.}
 }
+\value{
+An integer numeral if stopped, Inf if a cycle, NaN if OOB, else NA.
+}
 \description{
 Determine the stopping time, or "total" stopping time, for an initial value.
 }

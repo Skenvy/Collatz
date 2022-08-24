@@ -23,7 +23,7 @@ NULL
 #' @param cycle_prevention (set[int]) Used to prevent cycles from precipitating
 #' by keeping track of all values added across previous nest depths. Only to be
 #' used internally by the function recursing. Does not expect input.
-#' @returns
+#' @returns A set of nested dictionaries.
 #' @export
 
 tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_prevention=NA){

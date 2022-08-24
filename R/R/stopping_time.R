@@ -28,7 +28,7 @@ NULL
 #' stopping time (number of iterations to obtain 1) rather than the regular
 #' stopping time (number of iterations to reach a value less than the initial
 #' value). Default is FALSE.
-#' @returns
+#' @returns An integer numeral if stopped, Inf if a cycle, NaN if OOB, else NA.
 #' @export
 
 stopping_time <- function(initial_value, P=2, a=3, b=1,

@@ -39,6 +39,10 @@ control string sequences to provide information about how the
 sequence terminated, whether by reaching a stopping time or entering
 a cycle. Default is TRUE.}
 }
+\value{
+A keyed list consisting of a $values list of numeric | bigz | bigq
+along with a $terminalCondition and $terminalStatus
+}
 \description{
 Calculates the values of a hailstone sequence, from an initial value.
 }

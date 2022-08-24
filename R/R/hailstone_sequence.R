@@ -32,7 +32,8 @@ NULL
 #' control string sequences to provide information about how the
 #' sequence terminated, whether by reaching a stopping time or entering
 #' a cycle. Default is TRUE.
-#' @returns
+#' @returns A keyed list consisting of a $values list of numeric | bigz | bigq
+#' along with a $terminalCondition and $terminalStatus
 #' @export
 hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
     max_total_stopping_time=1000, total_stopping_time=TRUE, verbose=TRUE){

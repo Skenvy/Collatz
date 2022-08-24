@@ -35,6 +35,9 @@ to the scaled value of n. Default is 1.}
 by keeping track of all values added across previous nest depths. Only to be
 used internally by the function recursing. Does not expect input.}
 }
+\value{
+A set of nested dictionaries.
+}
 \description{
 Determine the Tree Graph to some depth by iteratively reversing values.
 }
