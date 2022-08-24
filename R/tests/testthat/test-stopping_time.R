@@ -13,16 +13,16 @@ test_that("StoppingTime_OnesCycleOnlyYieldsATotalStop", {
     expect_equal(stopping_time(16, total_stopping_time=TRUE), 4)
 })
 
-# test_that("StoppingTime_KnownCyclesYieldInfinity", {
-#     # Test the 3 known default parameter's cycles (ignoring [1,4,2])
-#     for(BigInteger[] kc : Collatz.KNOWN_CYCLES){
-#         if(!Arrays.asList(kc).contains(BigInteger.ONE)){
-#             for(BigInteger c : kc){
-#                 expect_equal(stopping_time(c.longValue(), total_stopping_time=TRUE), Inf)
-#             }
-#         }
-#     }
-# })
+test_that("StoppingTime_KnownCyclesYieldInfinity", {
+    # Test the 3 known default parameter's cycles (ignoring [1,4,2])
+    for (kc in Collatz$KNOWN.CYCLES) {
+        if (!(1 %in% kc)) {
+            for(val in kc){
+                expect_equal(stopping_time(val, total_stopping_time=TRUE), Inf)
+            }
+        }
+    }
+})
 
 test_that("StoppingTime_KnownCycleLeadIns", {
     # Test the lead into a cycle by entering two of the cycles. -56;-5, -200;-17
@@ -56,12 +56,10 @@ test_that("StoppingTime_UnitaryPCausesAlmostImmediateCycles", {
 
 # test_that("StoppingTime_MultiplesOf576460752303423488Plus27", {
 #     # One last one for the fun of it..
-#     expect_equal(stopping_time(27, 1000, total_stopping_time=TRUE), 111)
+#     expect_equal(stopping_time(27, max_stopping_time=1000, total_stopping_time=TRUE), 111)
 #     # # And for a bit more fun, common trajectories on
-#     for(int k = 0; k < 5; k++){
-#         BigInteger input = BigInteger.valueOf(27).add(BigInteger.valueOf(k).multiply(new BigInteger("576460752303423488")))
-#         Double stop = Collatz.stoppingTime(input, Collatz.DEFAULT_P, Collatz.DEFAULT_A, Collatz.DEFAULT_B, 1000, FALSE)
-#         expect_equal(stop, 96)
+#     for (k in 0:4) {
+#         expect_equal(stopping_time(27+(k*gmp::as.bigz("576460752303423488"))), 96)
 #     }
 # })
 

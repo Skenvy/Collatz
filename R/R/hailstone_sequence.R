@@ -80,6 +80,14 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
                 return(hailstone$values)
             }
         }
+        # Here is normally where cyclic <- function(x){x %in% hailstone$values}
+        # would be used to determine presence of a new value in previous values
+        # but R's in-built tests for set membership all behave differently to
+        # other languages when the input itself is a vector, which bigz raw is!
+        # e.g. see how meaningless this is: `gmp::numerator(5) %in% list(5)`
+        # So we need to always do to the inverse loop traversal and compare,
+        # as the compare on list elements against bigz | bigq _does_ work!
+        # >>>>>
         if (cyclic(next_val)) {
             cycle_init <- 1
             for (j in 0:(k-1)) {
@@ -98,6 +106,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
                 return(hailstone$values)
             }
         }
+        # <<<<<
         if (next_val == 0) {
             hailstone$values[[k+1]] <- 0
             hailstone$values <- hailstone$values[1:(k+1)]
