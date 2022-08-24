@@ -41,17 +41,17 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
     # 0 is always an immediate stop.
     if (initial_value == 0){
         if (verbose) {
-            list(terminalCondition=Collatz$SequenceState$ZERO_STOP, terminalStatus=0)
+            return(list(values=list(0), terminalCondition=Collatz$SequenceState$ZERO_STOP, terminalStatus=0))
         } else {
-            list(0)
+            return(list(0))
         }
     }
     # 1 is always an immediate stop, with 0 stopping time.
     if (initial_value == 1){
         if (verbose) {
-            list(terminalCondition=Collatz$SequenceState$TOTAL_STOPPING_TIME, terminalStatus=0)
+            return(list(values=list(1), terminalCondition=Collatz$SequenceState$TOTAL_STOPPING_TIME, terminalStatus=0))
         } else {
-            list(1)
+            return(list(1))
         }
     }
     terminate <- stopping_time_terminus(initial_value, total_stopping_time)
