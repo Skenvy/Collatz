@@ -51,7 +51,7 @@ stopping_time <- function(initial_value, P=2, a=3, b=1,
         "STOPPING_TIME" = sequence$terminalStatus,
         "CYCLE_LENGTH" = Inf,
         "ZERO_STOP" = sequence$terminalStatus,
-        "MAX_STOP_OOB" = NaN,
+        "MAX_STOP_OUT_OF_BOUNDS" = NaN,
         NA
     ))
 }

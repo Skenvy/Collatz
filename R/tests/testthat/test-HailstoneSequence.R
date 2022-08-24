@@ -44,36 +44,29 @@ test_that("HailstoneSequence_Minus200", {
     expected_hailstone_sequence(hailstone_sequence(-200), expected, Collatz$SequenceState$CYCLE_LENGTH, length(cycle))
 })
 
-# test_that("HailstoneSequence_RegularStoppingTime", {
-#     HailstoneSequence hail
-#     # Test the regular stopping time check.
-#     hail <- wrapHailstoneSequence(4, 1000, FALSE)
-#     expected_hailstone_sequence(hail, list(4, 2), Collatz$SequenceState$STOPPING_TIME, 1)
-#     hail <- wrapHailstoneSequence(5, 1000, FALSE)
-#     expected_hailstone_sequence(hail, list(5, 16, 8, 4), Collatz$SequenceState$STOPPING_TIME, 3)
-# })
+test_that("HailstoneSequence_RegularStoppingTime", {
+    # Test the regular stopping time check.
+    expected_hailstone_sequence(hailstone_sequence(4, total_stopping_time=FALSE), list(4, 2), Collatz$SequenceState$STOPPING_TIME, 1)
+    expected_hailstone_sequence(hailstone_sequence(5, total_stopping_time=FALSE), list(5, 16, 8, 4), Collatz$SequenceState$STOPPING_TIME, 3)
+})
 
-# test_that("HailstoneSequence_NegativeMaxTotalStoppingTime", {
-#     # Test small max total stopping time: (minimum internal value is one)
-#     HailstoneSequence hail <- wrapHailstoneSequence(4, -100, TRUE)
-#     expected_hailstone_sequence(hail, list(4, 2), Collatz$SequenceState$MAX_STOP_OUT_OF_BOUNDS, 1)
-# }
+test_that("HailstoneSequence_NegativeMaxTotalStoppingTime", {
+    # Test small max total stopping time: (minimum internal value is one)
+    expected_hailstone_sequence(hailstone_sequence(4, max_total_stopping_time=-100), list(4, 2), Collatz$SequenceState$MAX_STOP_OUT_OF_BOUNDS, 1)
+})
 
-# test_that("HailstoneSequence_ZeroStopMidHail", {
-#     # Test the zero stop mid hailing. This wont happen with default params tho.
-#     HailstoneSequence hail <- wrapHailstoneSequence(3, 2, 3, -9, 100, TRUE)
-#     expected_hailstone_sequence(hail, list(3, 0), Collatz$SequenceState$ZERO_STOP, -1)
-# })
+test_that("HailstoneSequence_ZeroStopMidHail", {
+    # Test the zero stop mid hailing. This wont happen with default params tho.
+    expected_hailstone_sequence(hailstone_sequence(3, P=2, a=3, b=-9), list(3, 0), Collatz$SequenceState$ZERO_STOP, -1)
+})
 
-# test_that("HailstoneSequence_UnitaryPCausesAlmostImmediateCycles", {
-#     # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
-#     # still allowed, although they will generate immediate 1 or 2 length cycles
-#     # respectively, so confirm the behaviour of each of these hailstones.
-#     hail <- wrapHailstoneSequence(3, 1, 3, 1, 100, TRUE)
-#     expected_hailstone_sequence(hail, list(3, 3), Collatz$SequenceState$CYCLE_LENGTH, 1)
-#     hail <- wrapHailstoneSequence(3, -1, 3, 1, 100, TRUE)
-#     expected_hailstone_sequence(hail, list(3, -3, 3), Collatz$SequenceState$CYCLE_LENGTH, 2)
-# })
+test_that("HailstoneSequence_UnitaryPCausesAlmostImmediateCycles", {
+    # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
+    # still allowed, although they will generate immediate 1 or 2 length cycles
+    # respectively, so confirm the behaviour of each of these hailstones.
+    expected_hailstone_sequence(hailstone_sequence(3, 1, 3, 1), list(3, 3), Collatz$SequenceState$CYCLE_LENGTH, 1)
+    expected_hailstone_sequence(hailstone_sequence(3, -1, 3, 1), list(3, -3, 3), Collatz$SequenceState$CYCLE_LENGTH, 2)
+})
 
 test_that("HailstoneSequence_AssertSaneParameterisation", {
     # Set P and a to 0 to assert on __assert_sane_parameterisation

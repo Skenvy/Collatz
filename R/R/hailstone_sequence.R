@@ -73,7 +73,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
                 } else {
                     hailstone$terminalCondition <- Collatz$SequenceState$STOPPING_TIME
                 }
-                hailstone$terminalStatus <- k # +/- 1?
+                hailstone$terminalStatus <- k
                 return(hailstone)
             } else {
                 return(hailstone$values)
@@ -102,7 +102,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
             hailstone$values <- hailstone$values[1:(k+1)]
             if (verbose) {
                 hailstone$terminalCondition <- Collatz$SequenceState$ZERO_STOP
-                hailstone$terminalStatus <- -k-1 # +/- 1?
+                hailstone$terminalStatus <- -k
                 return(hailstone)
             } else {
                 return(hailstone$values)
@@ -111,7 +111,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
         hailstone$values[[k+1]] <- next_val
     }
     if (verbose) {
-        hailstone$terminalCondition <- Collatz$SequenceState$MAX_STOP_OOB
+        hailstone$terminalCondition <- Collatz$SequenceState$MAX_STOP_OUT_OF_BOUNDS
         hailstone$terminalStatus <- max_max_total_stopping_time
         return(hailstone)
     } else {
