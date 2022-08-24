@@ -66,6 +66,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
         # stopping time, the same as the initial value, or stuck at zero.
         if (terminate(next_val)) {
             hailstone$values[[k+1]] <- next_val
+            hailstone$values <- hailstone$values[1:(k+1)]
             if (verbose) {
                 if (next_val == 1) {
                     hailstone$terminalCondition <- Collatz$SequenceState$TOTAL_STOPPING_TIME
@@ -87,6 +88,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
                 }
             }
             hailstone$values[[k+1]] <- next_val
+            hailstone$values <- hailstone$values[1:(k+1)]
             if (verbose) {
                 hailstone$terminalCondition <- Collatz$SequenceState$CYCLE_LENGTH
                 hailstone$terminalStatus <- cycle_init
@@ -97,6 +99,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
         }
         if (next_val == 0) {
             hailstone$values[[k+1]] <- 0
+            hailstone$values <- hailstone$values[1:(k+1)]
             if (verbose) {
                 hailstone$terminalCondition <- Collatz$SequenceState$ZERO_STOP
                 hailstone$terminalStatus <- -k-1 # +/- 1?
