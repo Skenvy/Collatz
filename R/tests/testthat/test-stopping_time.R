@@ -54,14 +54,14 @@ test_that("StoppingTime_UnitaryPCausesAlmostImmediateCycles", {
     expect_equal(stopping_time(3, -1, 3, 1, 100, FALSE), Inf)
 })
 
-# test_that("StoppingTime_MultiplesOf576460752303423488Plus27", {
-#     # One last one for the fun of it..
-#     expect_equal(stopping_time(27, max_stopping_time=1000, total_stopping_time=TRUE), 111)
-#     # # And for a bit more fun, common trajectories on
-#     for (k in 0:4) {
-#         expect_equal(stopping_time(27+(k*gmp::as.bigz("576460752303423488"))), 96)
-#     }
-# })
+test_that("StoppingTime_MultiplesOf576460752303423488Plus27", {
+    # One last one for the fun of it..
+    expect_equal(stopping_time(27, max_stopping_time=1000, total_stopping_time=TRUE), 111)
+    # # And for a bit more fun, common trajectories on
+    for (k in 0:4) {
+        expect_equal(stopping_time(27+(k*gmp::as.bigz("576460752303423488"))), 96)
+    }
+})
 
 test_that("StoppingTime_AssertSaneParameterisation", {
     # Set P and a to 0 to assert on __assert_sane_parameterisation

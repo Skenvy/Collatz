@@ -7,21 +7,19 @@
 collatz_function(n, P = 2, a = 3, b = 1)
 }
 \arguments{
-\item{n}{(numeric|bigz|bigq) The value on which
+\item{n}{(numeric|bigz) The value on which
 to perform the Collatz-esque function}
 
-\item{P}{(numeric|bigz|bigq): Modulus used to divide
+\item{P}{(numeric|bigz): Modulus used to divide
 n, iff n is equivalent to (0 mod P). Default is 2.}
 
-\item{a}{(numeric|bigz|bigq) Factor by which to multiply n. Default is 3.}
+\item{a}{(numeric|bigz) Factor by which to multiply n. Default is 3.}
 
-\item{b}{(numeric|bigz|bigq) Value to add
+\item{b}{(numeric|bigz) Value to add
 to the scaled value of n. Default is 1.}
 }
 \value{
-a numeric, either in-built or a bigz | bigq from the gmp library.
-If either n or P are bigz, then the result of n/P will be a bigq
-although it's denominator(~) will return 1.
+a numeric, either in-built or a bigz from the gmp library.
 }
 \description{
 Returns the output of a single application of a Collatz-esque function.

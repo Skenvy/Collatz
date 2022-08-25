@@ -15,15 +15,15 @@ hailstone_sequence(
 )
 }
 \arguments{
-\item{initial_value}{(numeric|bigz|bigq)
+\item{initial_value}{(numeric|bigz)
 The value to begin the hailstone sequence from.}
 
-\item{P}{(numeric|bigz|bigq): Modulus used to divide
+\item{P}{(numeric|bigz): Modulus used to divide
 n, iff n is equivalent to (0 mod P). Default is 2.}
 
-\item{a}{(numeric|bigz|bigq) Factor by which to multiply n. Default is 3.}
+\item{a}{(numeric|bigz) Factor by which to multiply n. Default is 3.}
 
-\item{b}{(numeric|bigz|bigq) Value to add
+\item{b}{(numeric|bigz) Value to add
 to the scaled value of n. Default is 1.}
 
 \item{max_total_stopping_time}{(int) Maximum amount of times to iterate the
@@ -40,7 +40,7 @@ sequence terminated, whether by reaching a stopping time or entering
 a cycle. Default is TRUE.}
 }
 \value{
-A keyed list consisting of a $values list of numeric | bigz | bigq
+A keyed list consisting of a $values list of numeric | bigz
 along with a $terminalCondition and $terminalStatus
 }
 \description{

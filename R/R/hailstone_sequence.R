@@ -15,12 +15,12 @@ NULL
 #' attempted or reported as part of a cycle, regardless of default or custom
 #' parameterisation, as "1" is considered a "total stop".
 #'
-#' @param initial_value (numeric|bigz|bigq)
+#' @param initial_value (numeric|bigz)
 #' The value to begin the hailstone sequence from.
-#' @param P (numeric|bigz|bigq): Modulus used to divide
+#' @param P (numeric|bigz): Modulus used to divide
 #' n, iff n is equivalent to (0 mod P). Default is 2.
-#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
-#' @param b (numeric|bigz|bigq) Value to add
+#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.
+#' @param b (numeric|bigz) Value to add
 #' to the scaled value of n. Default is 1.
 #' @param max_total_stopping_time (int) Maximum amount of times to iterate the
 #' function, if 1 is not reached. Default is 1000.
@@ -32,7 +32,7 @@ NULL
 #' control string sequences to provide information about how the
 #' sequence terminated, whether by reaching a stopping time or entering
 #' a cycle. Default is TRUE.
-#' @returns A keyed list consisting of a $values list of numeric | bigz | bigq
+#' @returns A keyed list consisting of a $values list of numeric | bigz
 #' along with a $terminalCondition and $terminalStatus
 #' @export
 hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
@@ -60,7 +60,6 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
     max_max_total_stopping_time <- max(max_total_stopping_time, 1)
     hailstone <- list(values=vector(mode="list", length=max_max_total_stopping_time), terminalCondition=NA, terminalStatus=NA)
     hailstone$values[[1]] <- initial_value
-    cyclic <- function(x){x %in% hailstone$values}
     for (k in 1:max_max_total_stopping_time){
         next_val <- collatz_function(hailstone$values[[k]],P=P,a=a,b=b)
         # Check if the next_val hailstone is either the stopping time, total
@@ -87,15 +86,15 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
         # e.g. see how meaningless this is: `gmp::numerator(5) %in% list(5)`
         # So we need to always do to the inverse loop traversal and compare,
         # as the compare on list elements against bigz | bigq _does_ work!
-        # >>>>>
-        if (cyclic(next_val)) {
-            cycle_init <- 1
-            for (j in 0:(k-1)) {
-                if (hailstone$values[[k-j]] == next_val) {
-                    cycle_init <- j+1
-                    break
-                }
+        # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        cycle_init <- -1
+        for (j in 0:(k-1)) {
+            if (hailstone$values[[k-j]] == next_val) {
+                cycle_init <- j+1
+                break
             }
+        }
+        if (cycle_init > 0) {
             hailstone$values[[k+1]] <- next_val
             hailstone$values <- hailstone$values[1:(k+1)]
             if (verbose) {
@@ -106,7 +105,7 @@ hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
                 return(hailstone$values)
             }
         }
-        # <<<<<
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         if (next_val == 0) {
             hailstone$values[[k+1]] <- 0
             hailstone$values <- hailstone$values[1:(k+1)]

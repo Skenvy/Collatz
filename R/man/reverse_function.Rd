@@ -7,19 +7,19 @@
 reverse_function(n, P = 2, a = 3, b = 1)
 }
 \arguments{
-\item{n}{(numeric|bigz|bigq) The value on which
+\item{n}{(numeric|bigz) The value on which
 to perform the reverse Collatz function}
 
-\item{P}{(numeric|bigz|bigq) Modulus used to divide
+\item{P}{(numeric|bigz) Modulus used to divide
 n, iff n is equivalent to (0 mod P) Default is 2.}
 
-\item{a}{(numeric|bigz|bigq) Factor by which to multiply n. Default is 3.}
+\item{a}{(numeric|bigz) Factor by which to multiply n. Default is 3.}
 
-\item{b}{(numeric|bigz|bigq) Value to add
+\item{b}{(numeric|bigz) Value to add
 to the scaled value of n. Default is 1.}
 }
 \value{
-A vector of either numeric or bigz | bigq type
+A vector of either numeric or bigz type
 }
 \description{
 Calculates the values that would return the input under the Collatz function.
