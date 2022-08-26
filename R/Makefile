@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check quick_check install run
+.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check wincheck quick_check install run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 WINTEX=set PATH=%PATH%;%APPDATA%\TinyTeX
@@ -103,6 +103,9 @@ build: clean
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
 check: full_test manRd build
 	$(LOCALBIN) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
+
+wincheck: full_test manRd build
+	$(WINTEX) && R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
 quick_check: cmd_check build
 	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)

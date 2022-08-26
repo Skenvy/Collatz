@@ -154,7 +154,7 @@ jobs:
       run: make quick_check
     - name: 🦂 Test (cran, manual)
       if: ${{ matrix.version == '4.2.1' }}
-      run: make check
+      run: make wincheck
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
