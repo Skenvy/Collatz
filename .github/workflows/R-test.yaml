@@ -113,10 +113,18 @@ jobs:
       uses: r-lib/actions/setup-pandoc@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
       with:
         pandoc-version: '2.17.1'
+    - name: TinyTex
+      uses: r-lib/actions/setup-tinytex@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
+    - name: TinyTex MakeIndex
+      run: tlmgr install makeindex
     - name: 🧱 Dependencies
       run: make setup_mac_tests
-    - name: 🦂 Test
+    - name: 🦂 Test (not cran, no manual)
+      if: ${{ matrix.version != '4.2.1' }}
       run: make quick_check
+    - name: 🦂 Test (cran, manual)
+      if: ${{ matrix.version == '4.2.1' }}
+      run: make check
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
     # if: >- 
@@ -139,10 +147,18 @@ jobs:
       uses: r-lib/actions/setup-pandoc@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
       with:
         pandoc-version: '2.17.1'
+    - name: TinyTex
+      uses: r-lib/actions/setup-tinytex@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
+    - name: TinyTex MakeIndex
+      run: tlmgr install makeindex
     - name: 🧱 Dependencies
       run: make setup_win_tests
-    - name: 🦂 Test
+    - name: 🦂 Test (not cran, no manual)
+      if: ${{ matrix.version != '4.2.1' }}
       run: make quick_check
+    - name: 🦂 Test (cran, manual)
+      if: ${{ matrix.version == '4.2.1' }}
+      run: make check
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest

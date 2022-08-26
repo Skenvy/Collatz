@@ -38,7 +38,7 @@ setup_libraries:
 	Rscript -e 'install.packages("gmp")'
 
 setup_mac_tests: setup_libraries
-	Rscript -e 'install.packages(c("testthat", "roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "tinytex", "knitr", "rmarkdown"), type="binary")'
+	Rscript -e 'install.packages(c("testthat", "roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "knitr", "rmarkdown"), type="binary")'
 
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
 # In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
@@ -47,7 +47,7 @@ setup_mac_tests: setup_libraries
 # worth mentioning it does also require the outer quotes to be " not '
 setup_win_tests:
 	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
-	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'tinytex', 'knitr', 'rmarkdown'), type='binary', repos='http://cran.us.r-project.org')"
+	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown'), type='binary', repos='http://cran.us.r-project.org')"
 
 setup_docs:
 	apt update && apt -y install pandoc texinfo qpdf
@@ -89,7 +89,7 @@ test: clean
 	$(NO_SUGGESTS) Rscript -e 'devtools::test()'
 
 cmd_check: clean
-	$(NO_SUGGESTS) R CMD check --no-manual --no-build-vignettes .
+	$(NO_SUGGESTS) R CMD check --no-manual .
 
 full_test: test cmd_check
 
