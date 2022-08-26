@@ -50,15 +50,18 @@ tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_p
     # }
     cycle_prevention <- append(cycle_prevention, initial_value)
     for (branch_value in reverse_function(initial_value, P=P, a=a, b=b)) {
+        no_cycle <- TRUE
         for (previous_value in cycle_prevention) {
             if (branch_value == previous_value) {
                 tgraph[[as.character(initial_value)]][[Collatz$SequenceState$CYCLE_INIT]] <- branch_value
-                next
+                no_cycle <- FALSE
+                break
             }
         }
-        # else | if not next'd
-        tgraph[[as.character(initial_value)]][[as.character(branch_value)]] <- tree_graph(branch_value,
-            max_orbit_distance-1, P=P, a=a, b=b, cycle_prevention=cycle_prevention)[[branch_value]]
+        if (no_cycle) {
+            tgraph[[as.character(initial_value)]][[as.character(branch_value)]] <- tree_graph(branch_value,
+                max_orbit_distance-1, P=P, a=a, b=b, cycle_prevention=cycle_prevention)[[as.character(branch_value)]]
+        }
     }
     return(tgraph)
 }
