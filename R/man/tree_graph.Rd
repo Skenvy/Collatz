@@ -10,7 +10,7 @@ tree_graph(
   P = 2,
   a = 3,
   b = 1,
-  cycle_prevention = NA
+  cycle_prevention = list()
 )
 }
 \arguments{

@@ -26,23 +26,39 @@ NULL
 #' @returns A set of nested dictionaries.
 #' @export
 
-tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_prevention=NA){
+tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_prevention=list()){
     # Call out the reverse_function before any magic returns to trap bad values.
     throwaway_test <- reverse_function(initial_value,P=P,a=a,b=b)
-#     tgraph <- {initial_value:{}}
-#     if max(0, max_orbit_distance) == 0:
-#         return tgraph
+    # In R, if a numeric is used as the key in a K:V list, it will populate the
+    # entire list up to that point as ascending numerics pointing to NULLs.
+    # To get around this, we can "as.character(numeric_val)" as it does not
+    # do the same backfilling for string keys. Although this yields another
+    # problem, that the syntax `list((as.character(some_num))=anything)`
+    # complains of `Error: unexpected '=' in "list((as.character(some_num))="`
+    # So rather than a syntactically concise one liner, we need a few lines..
+    tgraph <- list()
+    tgraph[[as.character(initial_value)]] <- NA
+    if (max(0, max_orbit_distance) == 0) {
+        return(tgraph)
+    } else {
+        tgraph[[as.character(initial_value)]] <- list()
+    }
     # Handle cycle prevention for recursive calls ~
     # Shouldn't use a mutable object initialiser for a default.
-#     if __cycle_prevention is NA:
-#         __cycle_prevention <- set()
-#     __cycle_prevention.add(initial_value)
-#     for branch_value in reverse_function(initial_value, P=P, a=a, b=b):
-#         if branch_value in __cycle_prevention:
-#             tgraph[initial_value][Collatz$SequenceState$CYCLE_INIT.value] <- branch_value
-#         else:
-#             tgraph[initial_value][branch_value] <- tree_graph(branch_value,
-#                 max_orbit_distance-1, P=P, a=a, b=b,
-#                 __cycle_prevention=__cycle_prevention)[branch_value]
-#     return tgraph
+    # if (is.null(cycle_prevention)) {
+    #     cycle_prevention <- list()
+    # }
+    cycle_prevention <- append(cycle_prevention, initial_value)
+    for (branch_value in reverse_function(initial_value, P=P, a=a, b=b)) {
+        for (previous_value in cycle_prevention) {
+            if (branch_value == previous_value) {
+                tgraph[[as.character(initial_value)]][[Collatz$SequenceState$CYCLE_INIT]] <- branch_value
+                next
+            }
+        }
+        # else | if not next'd
+        tgraph[[as.character(initial_value)]][[as.character(branch_value)]] <- tree_graph(branch_value,
+            max_orbit_distance-1, P=P, a=a, b=b, cycle_prevention=cycle_prevention)[[branch_value]]
+    }
+    return(tgraph)
 }
