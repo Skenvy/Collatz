@@ -149,7 +149,6 @@ jobs:
       run: make docs
   docs-publish:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Publish
-    needs: [docs-generate]
     permissions:
       contents: write
     runs-on: ubuntu-latest
