@@ -65,9 +65,9 @@ jobs:
       run: make setup_libraries && make full_test
   full-test:
     name: R 🏴‍☠️🔵🦜 Full Test 🦂
-    # if: >- 
-    #   ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-    #   (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     container:
       image: rocker/tidyverse:${{ matrix.version }}
@@ -149,52 +149,3 @@ jobs:
       run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 📄 Docs
       run: make docs
-  docs-generate:
-    name: R 🏴‍☠️🔵🦜 Docs 📄 Generate
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    container:
-      image: rocker/tidyverse:4.2.1
-    steps:
-    - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🥔 Setup
-      run: make setup_docs
-    - name: Add the repo as a safe repo inside the job container
-      run: git config --global --add safe.directory /__w/Collatz/Collatz
-    - name: 📄 Docs Generation
-      run: make docs
-    - name: 🆙 Upload docs
-      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
-      with:
-        name: Docs
-        path: R/docs/
-        if-no-files-found: error
-  docs-publish:
-    name: R 🏴‍☠️🔵🦜 Docs 📄 Publish
-    needs: [docs-generate]
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-    - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-      with:
-        name: Docs
-        path: R/docs
-    - name: 📄 Docs
-      run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "Github Actions"
-        export SHORTSHA=$(git rev-parse --short HEAD)
-        git fetch origin gh-pages-R:gh-pages-R
-        git symbolic-ref HEAD refs/heads/gh-pages-R
-        cd .. && mv R/docs ../MERGE_TARGET
-        git rm -rf . && git clean -fxd && git reset
-        shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/
-        git add . && git checkout HEAD -- R/pdf/ && git add .
-        git commit -m "Build based on $SHORTSHA" --allow-empty
-        git diff HEAD~1.. --stat
