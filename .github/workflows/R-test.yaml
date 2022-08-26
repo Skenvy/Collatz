@@ -147,10 +147,6 @@ jobs:
       uses: r-lib/actions/setup-pandoc@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
       with:
         pandoc-version: '2.17.1'
-    - name: TinyTex
-      uses: r-lib/actions/setup-tinytex@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
-    - name: TinyTex MakeIndex
-      run: Rscript -e "tinytex::tlmgr_install('makeindex')"
     - name: 🧱 Dependencies
       run: make setup_win_tests
     - name: 🦂 Test (not cran, no manual)

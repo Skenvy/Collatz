@@ -47,7 +47,8 @@ setup_mac_tests: setup_libraries
 # worth mentioning it does also require the outer quotes to be " not '
 setup_win_tests:
 	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
-	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown'), type='binary', repos='http://cran.us.r-project.org')"
+	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown', 'tinytex'), type='binary', repos='http://cran.us.r-project.org')"
+	Rscript -e "tinytex::tlmgr_install('makeindex')"
 
 setup_docs:
 	apt update && apt -y install pandoc texinfo qpdf
