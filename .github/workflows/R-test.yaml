@@ -151,7 +151,6 @@ jobs:
       run: make docs
   docs-generate:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Generate
-    needs: [release]
     permissions:
       contents: write
     runs-on: ubuntu-latest
