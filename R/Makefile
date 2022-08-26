@@ -1,6 +1,7 @@
 .PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check quick_check install run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
+WINTEX=set PATH=%PATH%;%APPDATA%\TinyTeX
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 
 # A partially complete list of packages you might need to install to
@@ -48,7 +49,7 @@ setup_mac_tests: setup_libraries
 setup_win_tests:
 	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
 	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown', 'tinytex'), type='binary', repos='http://cran.us.r-project.org')"
-	Rscript -e "tinytex::tlmgr_install('makeindex')"
+	# $(WINTEX) Rscript -e "tinytex::tlmgr_install('makeindex')"
 
 setup_docs:
 	apt update && apt -y install pandoc texinfo qpdf
