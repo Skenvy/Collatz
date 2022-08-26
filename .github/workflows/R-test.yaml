@@ -87,6 +87,8 @@ jobs:
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.1' }}
       run: make setup_libraries && make quick_check
+    - name: Add the repo as a safe repo inside the job container
+      run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 🦂 Test (cran, manual)
       if: ${{ matrix.version == '4.2.1' }}
       run: make check

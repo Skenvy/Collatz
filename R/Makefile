@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check quick_check run
+.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check quick_check install run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
@@ -88,7 +88,7 @@ test: clean
 	$(NO_SUGGESTS) Rscript -e 'devtools::test()'
 
 cmd_check: clean
-	$(NO_SUGGESTS) R CMD check --no-manual .
+	$(NO_SUGGESTS) R CMD check --no-manual --no-build-vignettes .
 
 full_test: test cmd_check
 
