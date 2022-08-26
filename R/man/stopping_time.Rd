@@ -16,12 +16,12 @@ stopping_time(
 \arguments{
 \item{initial_value}{(int): The value for which to find the stopping time.}
 
-\item{P}{(numeric|bigz|bigq): Modulus used to divide
+\item{P}{(numeric|bigz): Modulus used to divide
 n, iff n is equivalent to (0 mod P). Default is 2.}
 
-\item{a}{(numeric|bigz|bigq) Factor by which to multiply n. Default is 3.}
+\item{a}{(numeric|bigz) Factor by which to multiply n. Default is 3.}
 
-\item{b}{(numeric|bigz|bigq) Value to add
+\item{b}{(numeric|bigz) Value to add
 to the scaled value of n. Default is 1.}
 
 \item{max_stopping_time}{(int) Maximum amount of times to iterate the

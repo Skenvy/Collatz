@@ -23,12 +23,12 @@ attempts, so this is not an optional argument like max_stopping_time or
 max_total_stopping_time, as it is the intended target of orbits to obtain,
 rather than a limit to avoid uncapped computation.}
 
-\item{P}{(numeric|bigz|bigq): Modulus used to divide
+\item{P}{(numeric|bigz): Modulus used to divide
 n, iff n is equivalent to (0 mod P). Default is 2.}
 
-\item{a}{(numeric|bigz|bigq) Factor by which to multiply n. Default is 3.}
+\item{a}{(numeric|bigz) Factor by which to multiply n. Default is 3.}
 
-\item{b}{(numeric|bigz|bigq) Value to add
+\item{b}{(numeric|bigz) Value to add
 to the scaled value of n. Default is 1.}
 
 \item{cycle_prevention}{(set[int]) Used to prevent cycles from precipitating

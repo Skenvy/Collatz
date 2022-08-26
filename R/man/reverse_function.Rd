@@ -19,7 +19,7 @@ n, iff n is equivalent to (0 mod P) Default is 2.}
 to the scaled value of n. Default is 1.}
 }
 \value{
-A vector of either numeric or bigz type
+A list of either numeric or bigz type
 }
 \description{
 Calculates the values that would return the input under the Collatz function.
