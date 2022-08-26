@@ -43,11 +43,6 @@ tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_p
     } else {
         tgraph[[as.character(initial_value)]] <- list()
     }
-    # Handle cycle prevention for recursive calls ~
-    # Shouldn't use a mutable object initialiser for a default.
-    # if (is.null(cycle_prevention)) {
-    #     cycle_prevention <- list()
-    # }
     cycle_prevention <- append(cycle_prevention, initial_value)
     for (branch_value in reverse_function(initial_value, P=P, a=a, b=b)) {
         no_cycle <- TRUE

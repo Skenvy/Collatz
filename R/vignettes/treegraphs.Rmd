@@ -1,0 +1,29 @@
+---
+title: "Tree Graphs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tree Graphs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Getting Started
+After following the ["Get Started + Install"](https://skenvy.github.io/Collatz/R/articles/collatz.html#install) guide;
+```{r setup, message = FALSE}
+library(collatz)
+# Optionally
+library(gmp)
+```
+
+## tree_graph
+```{r}
+tree_graph(5, 3)
+tree_graph(16, 3)
+```

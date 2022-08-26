@@ -23,7 +23,7 @@ library(collatz)
 # Optionally
 library(gmp)
 ```
-You can jump right into using the functions in this package with integer inputs, or you can use `bigz` or `bigq` from the `gmp` library.
+You can jump right into using the functions in this package with integer inputs, or you can use `bigz` from the `gmp` library.
 Each function, amongst possible _other_ parameters, comes with the default parameters `(P=2,a=3,b=1)` as optional inputs.
 In each case, `P[=2]` is the modulus to check for divisibility of the input by, `a[=3]` is the factor to multiply the input by,
 and `b[=1]` is the value to add to the product of `a[=3]` and the input.
@@ -72,4 +72,34 @@ To venture into the world of arbitrary integer inputs we can use an `as.bigz` fr
 ```{r}
 reverse_function(99999999999999999999)
 reverse_function(as.bigz("99999999999999999999"))
+```
+
+## stopping_time
+Calculates the "stopping time", or optionally the "total" stopping time.
+Without `gmp` or parameterisation, we can try something simple like
+```{r}
+stopping_time(27)
+stopping_time(27, total_stopping_time=TRUE)
+```
+If we want change the default parameterisation we can;
+```{r}
+stopping_time(3, 5, 2, 1)
+```
+Or if we only want to change one of them
+```{r}
+stopping_time(17, a=5)
+```
+All the above work fine, but the function doesn't offer protection against overflowing integers by default.
+To venture into the world of arbitrary integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+```{r}
+stopping_time(99999999999999999999)
+stopping_time(as.bigz("99999999999999999999"))
+```
+As an extra note, the original motivation for creating a range of Collatz themed packages came from some earlier
+scripts for calculating the stopping distances under certain parameterisations. An inconsequential result of which
+was observing that all of the following, for however high `k` goes, should equal `96`!
+```{r}
+for (k in 0:4) {
+    stopping_time(27+(k*as.bigz("576460752303423488")))
+}
 ```
