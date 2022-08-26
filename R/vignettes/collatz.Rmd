@@ -99,7 +99,9 @@ As an extra note, the original motivation for creating a range of Collatz themed
 scripts for calculating the stopping distances under certain parameterisations. An inconsequential result of which
 was observing that all of the following, for however high `k` goes, should equal `96`!
 ```{r}
-for (k in 0:4) {
-    stopping_time(27+(k*as.bigz("576460752303423488")))
-}
+stopping_time(27)
+stopping_time(27+as.bigz("576460752303423488"))
+stopping_time(27+(2*as.bigz("576460752303423488")))
+stopping_time(27+(3*as.bigz("576460752303423488")))
+stopping_time(27+(4*as.bigz("576460752303423488")))
 ```

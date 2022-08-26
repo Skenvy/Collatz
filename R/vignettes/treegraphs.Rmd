@@ -23,7 +23,24 @@ library(gmp)
 ```
 
 ## tree_graph
+Compute a tree graph, which takes both a value to initialise the tree from,
+and an "orbit distance" for how many layers deep in the tree to compute;
 ```{r}
-tree_graph(5, 3)
 tree_graph(16, 3)
+```
+It will also stop on finding a cycle;
+```{r}
+tree_graph(4, 3)
+```
+And can be parameterised;
+```{r}
+tree_graph(1, 1, -3, -2, -5)
+```
+If b is a multiple of a, but not of Pa, then 0 can have a reverse;
+```{r}
+tree_graph(0, 1, 17, 2, -6)
+```
+The tree graph can run on `bigz`;
+```{r}
+tree_graph((27+as.bigz("576460752303423488")), 3)
 ```
