@@ -92,7 +92,7 @@ cmd_check: clean
 
 full_test: test cmd_check
 
-build:
+build: clean
 	R CMD build .
 
 # Using -- R CMD check collatz_$$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2).tar.gz
@@ -103,6 +103,9 @@ check: full_test manRd build
 
 quick_check: cmd_check build
 	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
+
+install: build
+	R CMD INSTALL $$(ls | grep collatz_*.tar.gz)
 
 run:
 	Rscript R/Collatz.R

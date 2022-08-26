@@ -30,3 +30,26 @@ I did a fair amount of experimenting with setting up the generating of the pdf w
 Which means we now have the target for where to deploy docs to, and then test that they are fine to merge to the main gh-pages branch. A funny quirk of pkgdown appears to be that it requires newlines above header lines in the markdown files that it converts to the home page, so the readme here will be formatted slightly differently, although visually inconsequentially so, to all the others. I've reached the stage where I can generate docs, and test successfully across ubuntu, mac and windows, and complete a CRAN check on the latest. So we'll merge to main now to get the 0.1.0 release into main before then adding vignettes and the hailstone and tree graph functions.
 
 We've released version 0.1.0, but I've realised that my desire to keep the roxygen2 generated namespace and man folder changes only to be generated in CI has hit a roadblock; using devtools to install from github would require the state of the repo to be as the contents of the tarballs would be, so we've got to swap it around and make sure that we do checkin the man folder and namespace changes, which means adding the ability to fail the workflow if it detects a change that hasn't been checked in. This led to discovering a semi-bug, that if using a job container in github actions, that the repository checked out with actions/checkout step won't be owned by the user inside the job container that is used to evoke the run commands, so we need to add the checkout as a safe directory so that we can compare and error on a diff. Now we need to start looking at vignettes `Rscript -e 'usethis::use_vignette("my-vignette")'`.
+
+Well, I've got most of the content sorted, but have uncovered an unusual behaviour I didn't see before in how `bigz` isn't easy to use in an iterative sense, i.e. like `append`'ing to a list and then looping through them. I only caught it because the bug surfaced through using a vignette for the tree graphing function when using a `bigz`, and the error can be reproduced with something like `append(list(), gmp::as.bigz(5))`, which yields;
+```R
+> append(list(), as.bigz(5))
+Error in c_bigz(argL) : 
+  only logical, numeric or character (atomic) vectors can be coerced to 'bigz'
+```
+The reverse function and the tree graph that uses it are the only places that the append can operate on a `bigz`, and it seems it doesn't behave well with them. For example;
+```R
+> f <- list()
+> f <- append(f, as.bigz(3))
+Error in c_bigz(argL) : 
+  only logical, numeric or character (atomic) vectors can be coerced to 'bigz'
+```
+If the list is initialised with a numeric, `f <- list(1)`, then appending a `bigz` doesn't produce the same error, but it adds the entire raw contents. For example, the resulting list of adding a small `bigz` to a number is 17 elements long. If `f` in the example is initialised with a `bigz`, then the result is the same, but the first element is the `bigz` and the following 16 entries are the raw contents of the appended `bigz`. HOWEVER, there is a solution! By wrapping the appended content in another `list()` invocation, it does properly separate them.
+```R
+> f <- list()
+> f <- append(f,list(as.bigz(1)))
+> f
+[[1]]
+Big Integer ('bigz') :
+[1] 1
+```

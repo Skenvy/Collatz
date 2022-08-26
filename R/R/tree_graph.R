@@ -15,10 +15,10 @@ NULL
 #' attempts, so this is not an optional argument like max_stopping_time or
 #' max_total_stopping_time, as it is the intended target of orbits to obtain,
 #' rather than a limit to avoid uncapped computation.
-#' @param P (numeric|bigz|bigq): Modulus used to divide
+#' @param P (numeric|bigz): Modulus used to divide
 #' n, iff n is equivalent to (0 mod P). Default is 2.
-#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
-#' @param b (numeric|bigz|bigq) Value to add
+#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.
+#' @param b (numeric|bigz) Value to add
 #' to the scaled value of n. Default is 1.
 #' @param cycle_prevention (set[int]) Used to prevent cycles from precipitating
 #' by keeping track of all values added across previous nest depths. Only to be
@@ -43,7 +43,7 @@ tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_p
     } else {
         tgraph[[as.character(initial_value)]] <- list()
     }
-    cycle_prevention <- append(cycle_prevention, initial_value)
+    cycle_prevention <- append(cycle_prevention, list(initial_value))
     for (branch_value in reverse_function(initial_value, P=P, a=a, b=b)) {
         no_cycle <- TRUE
         for (previous_value in cycle_prevention) {

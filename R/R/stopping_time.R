@@ -16,10 +16,10 @@ NULL
 #' considered a "total stop" that should not occur as it does form a cycle of
 #' length 1.
 #' @param initial_value (int): The value for which to find the stopping time.
-#' @param P (numeric|bigz|bigq): Modulus used to divide
+#' @param P (numeric|bigz): Modulus used to divide
 #' n, iff n is equivalent to (0 mod P). Default is 2.
-#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
-#' @param b (numeric|bigz|bigq) Value to add
+#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.
+#' @param b (numeric|bigz) Value to add
 #' to the scaled value of n. Default is 1.
 #' @param max_stopping_time (int) Maximum amount of times to iterate the
 #' function, if the stopping time is not reached. IF the max_stopping_time
