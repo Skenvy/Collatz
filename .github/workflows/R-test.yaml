@@ -109,6 +109,10 @@ jobs:
       uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
       with:
         r-version: ${{ matrix.version }}
+    - name: 🐼 Pandoc
+      uses: r-lib/actions/setup-pandoc@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
+      with:
+        pandoc-version: '2.17.1'
     - name: 🧱 Dependencies
       run: make setup_mac_tests
     - name: 🦂 Test
@@ -131,6 +135,10 @@ jobs:
       with:
         r-version: ${{ matrix.version }}
         rtools-version: '40'
+    - name: 🐼 Pandoc
+      uses: r-lib/actions/setup-pandoc@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
+      with:
+        pandoc-version: '2.17.1'
     - name: 🧱 Dependencies
       run: make setup_win_tests
     - name: 🦂 Test
