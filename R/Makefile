@@ -1,7 +1,7 @@
 .PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check wincheck quick_check install run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
-WINBIN=PATH=$$PATH:$$(Rscript -e 'tinytex::tinytex_root()' | cut -d \  -f2 | sed 's|"||g')/bin/win32 && 
+WINBIN=PATH=$$PATH:$$(Rscript -e 'tinytex::tinytex_root()' | cut -d \  -f2 | sed 's|"||g' | sed 's|\\\\|/|g' | sed 's|C:|/c|g')/bin/win32 && echo $$PATH && 
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 
 # A partially complete list of packages you might need to install to
