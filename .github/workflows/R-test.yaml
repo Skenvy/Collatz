@@ -74,7 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
+        version: ['3.5.0', '4.0.0', '4.2.1'] # 'devel' # gmp not installing from source as of this commit
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -82,7 +82,7 @@ jobs:
       if: ${{ matrix.version == '3.5.0' }}
       run: make setup_debian_350
     - name: 🧱 Dependencies for Full Test + Suggests
-      if: ${{ matrix.version == '4.2.1'  || matrix.version == 'devel' }}
+      if: ${{ matrix.version == '4.2.1' || matrix.version == 'devel' }}
       run: make setup_docs
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.1' }}
