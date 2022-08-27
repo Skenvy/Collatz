@@ -36,7 +36,7 @@ setup:
 setup_libraries:
 	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	Rscript -e 'install.packages(c("gmp", "testthat", "knitr", "rmarkdown"))'
+	Rscript -e 'install.packages(c("gmp", "testthat"))'
 
 setup_mac_tests: setup_libraries
 	Rscript -e 'install.packages(c("testthat", "roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "knitr", "rmarkdown"), type="binary")'

@@ -74,7 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1', 'devel'] # 'devel' # gmp not installing from source as of this commit
+        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -100,7 +100,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
+        version: ['3.5.0', '4.0.0', '4.2.1'] # , 'devel' # requires installing knitr and rmarkdown from src which takes ~ 20 minutes
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
