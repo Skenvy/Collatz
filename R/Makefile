@@ -1,4 +1,4 @@
-.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check wincheck quick_check install run
+.PHONY: setup_debian setup_debian_gmp setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check wincheck quick_check install run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
 WINBIN=PATH=$$PATH:$$(Rscript -e 'tinytex::tinytex_root()' | cut -d \  -f2 | sed 's|"||g' | sed 's|\\\\|/|g' | sed 's|C:|/c|g')/bin/win32 && echo $$PATH && 
@@ -15,7 +15,7 @@ setup_debian:
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
 	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo qpdf
 
-setup_debian_350:
+setup_debian_gmp:
 	apt update && apt install -y libgmp-dev
 
 # Create or use user / local install location
