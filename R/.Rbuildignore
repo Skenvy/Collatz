@@ -1,0 +1,10 @@
+.gitignore
+..Rcheck/
+devlog.md
+Makefile
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^doc$
+^Meta$
+^cran-comments.md$

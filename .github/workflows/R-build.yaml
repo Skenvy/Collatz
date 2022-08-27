@@ -1,0 +1,158 @@
+name: R 🏴‍☠️🔵🦜 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
+on:
+  push:
+    branches:
+    - 'main'
+    paths:
+    - 'R/**'
+    - '!R/**.md'
+    - '.github/workflows/R-*'
+  workflow_dispatch:
+permissions: {}
+defaults:
+  run:
+    shell: bash
+    working-directory: R
+jobs:
+  context:
+    name: GitHub 🐱‍👤 Context 📑
+    uses: ./.github/workflows/github-context.yaml
+  test:
+    name: R 🏴‍☠️🔵🦜 Test 🦂
+    uses: ./.github/workflows/R-test.yaml
+  workflow-conditions:
+    name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
+    runs-on: ubuntu-latest
+    outputs:
+      version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+      version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      with:
+        fetch-depth: 2
+    - name: Check if version files changed
+      id: version-file-check
+      run: |
+        export VERSION_FILE="R/DESCRIPTION"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+    - name: Notify on version-file-check
+      run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
+    - name: Check if version specified in version file has not released.
+      id: version-tag-exists
+      run: |
+        git fetch --tags
+        export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
+        [ -z "$(git tag -l "R-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+    - name: Notify on version-tag-exists
+      run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
+  # Now any step that should only run on the version change can use
+  # "needs: [workflow-conditions]" Which will yield the condition checks below.
+  # We want to "release" automatically if "version-file-changed" is true on push
+  # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
+  build:
+    name: R 🏴‍☠️🔵🦜 Build 🧱
+    needs: [test, workflow-conditions]
+    if: >-
+      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4.2.1
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🧱 Dependencies for Full Test + Suggests
+      run: make setup_docs
+    - name: Add the repo as a safe repo inside the job container
+      run: git config --global --add safe.directory /__w/Collatz/Collatz
+    - name: 🧱 Build and Check
+      run: make check
+    - name: 🆙 Upload tarball
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Tarball
+        path: R/collatz_*.tar.gz
+        if-no-files-found: error
+  release:
+    name: R 🏴‍☠️🔵🦜 Release 🚰
+    needs: [build]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Tarball
+        path: R
+    - name: 🚰 Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
+        gh release create R-v$VER "$(find . | grep -e collatz_*\.tar\.gz)#Tarball" --generate-notes -t "R: Version $VER"
+    # "Publishing" in R-world is a manual upload of the built tarball
+    # as a submission to https://cran.r-project.org/submit.html
+  docs-generate:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Generate
+    needs: [release]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/tidyverse:4.2.1
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🥔 Setup
+      run: make setup_docs
+    - name: Add the repo as a safe repo inside the job container
+      run: git config --global --add safe.directory /__w/Collatz/Collatz
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 🆙 Upload docs
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Docs
+        path: R/docs/
+        if-no-files-found: error
+  docs-publish:
+    name: R 🏴‍☠️🔵🦜 Docs 📄 Publish
+    needs: [docs-generate]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Docs
+        path: R/docs
+    - name: 📄 Docs
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-R:gh-pages-R
+        git symbolic-ref HEAD refs/heads/gh-pages-R
+        cd .. && mv R/docs ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir R && mv ../MERGE_TARGET/* R/
+        git add . && git checkout HEAD -- R/pdf/ && git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-R
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs-publish]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-R'

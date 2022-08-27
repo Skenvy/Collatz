@@ -10,6 +10,7 @@ The aim is to package as close to as the same functionality as possible across a
 * [Python](https://github.com/Skenvy/Collatz/blob/main/python/devlog.md)
 * [R](https://github.com/Skenvy/Collatz/blob/main/R/devlog.md)
 * [Ruby](https://github.com/Skenvy/Collatz/blob/main/ruby/devlog.md)
+* [Rust](https://github.com/Skenvy/Collatz/blob/main/rust/devlog.md)
 ## Motivation
 I've always appreciated the "Rosetta Stone"-esque compilations of similar tasks across multiple languages, including but not limited to;
 * [Rosetta Code](http://www.rosettacode.org/wiki/Rosetta_Code)
