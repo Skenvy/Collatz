@@ -38,8 +38,15 @@ lockBinding("SaneParameterErrMsg", Collatz)
 
 # SequenceState for Cycle Control: Descriptive flags to indicate when some
 # event occurs in the hailstone sequences or tree graph reversal, when set to
-# verbose, or stopping time check.
-Collatz$SequenceState <- list()
+# verbose, or stopping time check. Create as an S3 class.
+Collatz$SequenceState <- list(
+    STOPPING_TIME="STOPPING_TIME",
+    TOTAL_STOPPING_TIME="TOTAL_STOPPING_TIME",
+    CYCLE_INIT="CYCLE_INIT",
+    CYCLE_LENGTH="CYCLE_LENGTH",
+    MAX_STOP_OUT_OF_BOUNDS="MAX_STOP_OUT_OF_BOUNDS",
+    ZERO_STOP="ZERO_STOP")
+lockBinding("SequenceState", Collatz)
 
 #' Sane Parameter Check
 #'
@@ -51,7 +58,7 @@ Collatz$SequenceState <- list()
 #' @param P Modulus used to devide n, iff n is equivalent to (0 mod P).
 #' @param a Factor by which to multiply n.
 #' @param b Value to add to the scaled value of n.
-assertSaneParameterication <- function(P, a, b) {
+assert_sane_parameterication <- function(P, a, b) {
     # Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
     # theoretically, although would violate the reversability (if ~a is 0 then a
     # value of "b" as the input to the reverse function would have a pre-emptive
@@ -69,60 +76,22 @@ assertSaneParameterication <- function(P, a, b) {
     if (a == 0) stop(Collatz$SaneParameterErrMsg$A)
 }
 
-#' The Collatz function
+#' Stopping Time Terminus
 #'
-#' Returns the output of a single application of a Collatz-esque function.
+#' Provides the appropriate lambda to use to check if iterations on an initial
+#' value have reached either the stopping time, or total stopping time.
 #'
-#' This function will compute and return the result of applying one iteration
-#' of a parameterised Collatz-esque function. Although it will operate with
-#' integer inputs, for overflow safety, provide a gmp Big Integer ('bigz').
-#'
-#' @param n (numeric|bigz|bigq) The value on which
-#' to perform the Collatz-esque function
-#' @param P (numeric|bigz|bigq): Modulus used to divide
-#' n, iff n is equivalent to (0 mod P). Default is 2.
-#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
-#' @param b (numeric|bigz|bigq) Value to add
-#' to the scaled value of n. Default is 1.
-#' @returns a numeric, either in-built or a bigz | bigq from the gmp library.
-#' If either n or P are bigz, then the result of n/P will be a bigq
-#' although it's denominator(~) will return 1.
-#' @export
-collatzFunction <- function(n, P=2, a=3, b=1){
-    assertSaneParameterication(P,a,b)
-    if (n%%P == 0) (n/P) else ((a*n)+b)
-}
-
-#' The "inverse"/"reverse" Collatz function
-#'
-#' Calculates the values that would return the input under the Collatz function.
-#'
-#' Returns the output of a single application of a Collatz-esque reverse
-#' function. If only one value is returned, it is the value that would be
-#' divided by P. If two values are returned, the first is the value that
-#' would be divided by P, and the second value is that which would undergo
-#' the multiply and add step, regardless of which is larger.
-#' @param n (numeric|bigz|bigq) The value on which
-#' to perform the reverse Collatz function
-#' @param P (numeric|bigz|bigq) Modulus used to divide
-#' n, iff n is equivalent to (0 mod P) Default is 2.
-#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.
-#' @param b (numeric|bigz|bigq) Value to add
-#' to the scaled value of n. Default is 1.
-#' @returns A vector of either numeric or bigz | bigq type
-#' @export
-reverseFunction <- function(n, P=2, a=3, b=1){
-    assertSaneParameterication(P,a,b)
-    # Every input can be reversed as the result of "n/P" division, which yields
-    # "Pn"... {f(n) = an + b}~={(f(n) - b)/a = n} ~ if n was such that the
-    # muliplication step was taken instead of the division by the modulus, then
-    # (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we're
-    # not placing restrictions on the parameters yet, although there is a better
-    # way of shortcutting this for the default variables, we need to always
-    # attempt (f(n) - b)/a)
-    pre.values <- c(P*n)
-    if ((n-b)%%a == 0 && (n-b)%%(P*a) != 0){
-        pre.values <- append(pre.values, (n-b)/a)
-    }
-    pre.values
+#' @param n The initial value to confirm against a stopping time check.
+#' @param total_stop If false, the lambda will confirm that iterations of n
+#'    have reached the oriented stopping time to reach a value closer to 0.
+#'    If true, the lambda will simply check equality to 1.
+#' @returns An anonymous function to check for the stopping time.
+stopping_time_terminus <- function(n, total_stop) {
+	if (total_stop) {
+		return(function(x) { return(x==1) })
+	} else if (n >= 0) {
+		return(function(x) { return ((x < n) && (x > 0)) })
+	} else {
+		return(function(x) { return ((x > n) && (x < 0)) })
+	}
 }

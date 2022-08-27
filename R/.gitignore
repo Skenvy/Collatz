@@ -52,9 +52,10 @@ po/*~
 rsconnect/
 
 ################################################################################
-# Also ignore the ./man/*.Rd as we want roxygen to recreate it during build
-man/
 # Running -- Rscript -e 'usethis::use_pkgdown()' -- isn't happy with the above
 # docs/ ignore, and will always insist on readding this "docs"
 docs
 **.tex
+inst/doc
+/doc/
+/Meta/

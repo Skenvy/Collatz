@@ -1,7 +1,8 @@
-.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check quick_check run
+.PHONY: setup_debian setup_debian_350 setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check wincheck quick_check install run
 SHELL:=/bin/bash
 LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
-NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
+WINBIN=PATH=$$PATH:$$(Rscript -e 'tinytex::tinytex_root()' | cut -d \  -f2 | sed 's|"||g' | sed 's|\\\\|/|g' | sed 's|C:|/c|g')/bin/win32 && echo $$PATH && 
+NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
@@ -12,7 +13,7 @@ NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=0
 setup_debian:
 	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
-	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo
+	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo qpdf
 
 setup_debian_350:
 	apt update && apt install -y libgmp-dev
@@ -26,7 +27,7 @@ setup:
 	Rscript -e 'install.packages("devtools")'
 	Rscript -e 'install.packages(c("covr", "DT"))'
 	Rscript -e 'install.packages(c("pkgdown", "servr"))'
-	Rscript -e 'install.packages(c("tinytex", "knitr"))'
+	Rscript -e 'install.packages(c("tinytex", "knitr", "rmarkdown"))'
 	Rscript -e 'tinytex::install_tinytex()'
 	Rscript -e 'tinytex::tlmgr_install("makeindex")'
 
@@ -35,10 +36,10 @@ setup:
 setup_libraries:
 	Rscript -e 'dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)'
 	Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER"))'
-	Rscript -e 'install.packages("gmp")'
+	Rscript -e 'install.packages(c("gmp", "testthat"))'
 
 setup_mac_tests: setup_libraries
-	Rscript -e 'install.packages("testthat", type="binary")'
+	Rscript -e 'install.packages(c("testthat", "roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "knitr", "rmarkdown"), type="binary")'
 
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
 # In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
@@ -47,23 +48,33 @@ setup_mac_tests: setup_libraries
 # worth mentioning it does also require the outer quotes to be " not '
 setup_win_tests:
 	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
+	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown', 'tinytex'), type='binary', repos='http://cran.us.r-project.org')"
+	Rscript -e 'tinytex::install_tinytex()'
+	Rscript -e 'tinytex::tinytex_root()'
+	Rscript -e "tinytex::tlmgr_install('makeindex')"
 
 setup_docs:
-	apt update && apt -y install pandoc texinfo
+	apt update && apt -y install pandoc texinfo qpdf
 	make setup
 	make setup_libraries
 
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
+	rm -rf ..Rcheck
 	rm -rf **Rcheck
 	rm -rf .Rd2pdf*
-	rm -rf man
 	rm -rf docs
+	rm -rf doc
+	rm -rf Meta
 
 # The following steps assume that the setup has been run already.
 
 manRd: clean
 	Rscript -e 'devtools::document()'
+	echo "Exit if a change to the documentation is not committed"
+	git diff --exit-code --stat -- DESCRIPTION
+	git diff --exit-code --stat -- NAMESPACE
+	git add man && git diff --exit-code --cached --stat -- man/
 
 docs: manRd
 	Rscript -e 'pkgdown::build_site()'
@@ -86,7 +97,7 @@ cmd_check: clean
 
 full_test: test cmd_check
 
-build:
+build: clean
 	R CMD build .
 
 # Using -- R CMD check collatz_$$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2).tar.gz
@@ -95,8 +106,14 @@ build:
 check: full_test manRd build
 	$(LOCALBIN) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
+wincheck: full_test manRd build
+	$(WINBIN) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
+
 quick_check: cmd_check build
 	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
+
+install: build
+	R CMD INSTALL $$(ls | grep collatz_*.tar.gz)
 
 run:
 	Rscript R/Collatz.R

@@ -74,7 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1']
+        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -82,11 +82,13 @@ jobs:
       if: ${{ matrix.version == '3.5.0' }}
       run: make setup_debian_350
     - name: 🧱 Dependencies for Full Test + Suggests
-      if: ${{ matrix.version == '4.2.1' }}
+      if: ${{ matrix.version == '4.2.1'  || matrix.version == 'devel' }}
       run: make setup_docs
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.1' }}
       run: make setup_libraries && make quick_check
+    - name: Add the repo as a safe repo inside the job container
+      run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 🦂 Test (cran, manual)
       if: ${{ matrix.version == '4.2.1' }}
       run: make check
@@ -99,7 +101,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1']
+        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -107,10 +109,22 @@ jobs:
       uses: r-lib/actions/setup-r@43e2714071e44b1e373b83e7374dbc39e8b04f55 # v2
       with:
         r-version: ${{ matrix.version }}
+    - name: 🐼 Pandoc
+      uses: r-lib/actions/setup-pandoc@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
+      with:
+        pandoc-version: '2.17.1'
+    - name: TinyTex
+      uses: r-lib/actions/setup-tinytex@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
+    - name: TinyTex MakeIndex
+      run: tlmgr install makeindex
     - name: 🧱 Dependencies
       run: make setup_mac_tests
-    - name: 🦂 Test
+    - name: 🦂 Test (not cran, no manual)
+      if: ${{ matrix.version != '4.2.1' }}
       run: make quick_check
+    - name: 🦂 Test (cran, manual)
+      if: ${{ matrix.version == '4.2.1' }}
+      run: make check
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
     if: >- 
@@ -120,7 +134,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1']
+        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -129,10 +143,18 @@ jobs:
       with:
         r-version: ${{ matrix.version }}
         rtools-version: '40'
+    - name: 🐼 Pandoc
+      uses: r-lib/actions/setup-pandoc@013ba94bca5baa9368e398ae5b61f9c924448346 # v2.2.7
+      with:
+        pandoc-version: '2.17.1'
     - name: 🧱 Dependencies
       run: make setup_win_tests
-    - name: 🦂 Test
+    - name: 🦂 Test (not cran, no manual)
+      if: ${{ matrix.version != '4.2.1' }}
       run: make quick_check
+    - name: 🦂 Test (cran, manual)
+      if: ${{ matrix.version == '4.2.1' }}
+      run: make wincheck
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
@@ -143,5 +165,7 @@ jobs:
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🥔 Setup
       run: make setup_docs
+    - name: Add the repo as a safe repo inside the job container
+      run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 📄 Docs
       run: make docs

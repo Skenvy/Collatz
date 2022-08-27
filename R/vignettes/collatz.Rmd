@@ -1,0 +1,107 @@
+---
+title: "collatz"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{collatz}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Install
+After following the ["Getting Started"](https://skenvy.github.io/Collatz/R/#getting-started)
+instructions (which can also be seen in the [README](https://github.com/Skenvy/Collatz/tree/main/R))
+to download and or install the package, it can be imported with;
+```{r setup, message = FALSE}
+library(collatz)
+# Optionally
+library(gmp)
+```
+You can jump right into using the functions in this package with integer inputs, or you can use `bigz` from the `gmp` library.
+Each function, amongst possible _other_ parameters, comes with the default parameters `(P=2,a=3,b=1)` as optional inputs.
+In each case, `P[=2]` is the modulus to check for divisibility of the input by, `a[=3]` is the factor to multiply the input by,
+and `b[=1]` is the value to add to the product of `a[=3]` and the input.
+There are two basic commands to start with; the `collatz_function` and the `reverse_function`.
+
+## collatz_function
+Returns the output of a single application of a Collatz-esque function.
+Without `gmp` or parameterisation, we can try something simple like
+```{r}
+collatz_function(5)
+collatz_function(16)
+```
+If we want change the default parameterisation we can;
+```{r}
+collatz_function(4, 5, 2, 3)
+```
+Or if we only want to change one of them
+```{r}
+collatz_function(3, a=-2)
+```
+All the above work fine, but the function doesn't offer protection against overflowing integers by default.
+To venture into the world of arbitrary integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+```{r}
+collatz_function(99999999999999999999)
+collatz_function(as.bigz("99999999999999999999"))
+```
+
+## reverse_function
+Calculates the values that would return the input under the Collatz function.
+Without `gmp` or parameterisation, we can try something simple like
+```{r}
+reverse_function(1)
+reverse_function(2)
+reverse_function(4)
+```
+If we want change the default parameterisation we can;
+```{r}
+reverse_function(3, -3, -2, -5)
+```
+Or if we only want to change one of them
+```{r}
+reverse_function(16, a=5)
+```
+All the above work fine, but the function doesn't offer protection against overflowing integers by default.
+To venture into the world of arbitrary integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+```{r}
+reverse_function(99999999999999999999)
+reverse_function(as.bigz("99999999999999999999"))
+```
+
+## stopping_time
+Calculates the "stopping time", or optionally the "total" stopping time.
+Without `gmp` or parameterisation, we can try something simple like
+```{r}
+stopping_time(27)
+stopping_time(27, total_stopping_time=TRUE)
+```
+If we want change the default parameterisation we can;
+```{r}
+stopping_time(3, 5, 2, 1)
+```
+Or if we only want to change one of them
+```{r}
+stopping_time(17, a=5)
+```
+All the above work fine, but the function doesn't offer protection against overflowing integers by default.
+To venture into the world of arbitrary integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+```{r}
+stopping_time(99999999999999999999)
+stopping_time(as.bigz("99999999999999999999"))
+```
+As an extra note, the original motivation for creating a range of Collatz themed packages came from some earlier
+scripts for calculating the stopping distances under certain parameterisations. An inconsequential result of which
+was observing that all of the following, for however high `k` goes, should equal `96`!
+```{r}
+stopping_time(27)
+stopping_time(27+as.bigz("576460752303423488"))
+stopping_time(27+(2*as.bigz("576460752303423488")))
+stopping_time(27+(3*as.bigz("576460752303423488")))
+stopping_time(27+(4*as.bigz("576460752303423488")))
+```
