@@ -82,7 +82,7 @@ jobs:
       if: ${{ matrix.version == '3.5.0' }}
       run: make setup_debian_350
     - name: 🧱 Dependencies for Full Test + Suggests
-      if: ${{ matrix.version == '4.2.1' }}
+      if: ${{ matrix.version == '4.2.1'  || matrix.version == 'devel' }}
       run: make setup_docs
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.1' }}
