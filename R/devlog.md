@@ -53,3 +53,190 @@ If the list is initialised with a numeric, `f <- list(1)`, then appending a `big
 Big Integer ('bigz') :
 [1] 1
 ```
+
+After releasing version 1 of this R implementation, I've uploaded it to CRAN, which resulted in an email "CRAN Submission of collatz 1.0.0 - Confirmation Link" with a link `https://<some_cran_mirror>/cransubmit/conf_mail.php?code=<unique_submission_code>` to confirm the submission, and included the comments on the submission. After confirming the upload, the tarball appeared in the [incoming/pretest](https://cran.r-project.org/incoming/pretest/) section, before then 8 minutes later recieving a "package collatz_1.0.0.tar.gz has been auto-processed and is pending a manual inspection" email, which included (along with the upload now instead appearing in [incoming/inspect](https://cran.r-project.org/incoming/inspect/))
+```txt
+Log dir: <https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/>
+The files will be removed after roughly 7 days.
+Installation time in seconds: 5
+Check time in seconds: 88
+R Under development (unstable) (2022-08-25 r82762 ucrt)
+
+Pretests results:
+Windows: <https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/Windows/00check.log>
+Status: 1 NOTE
+Debian: <https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/Debian/00check.log>
+Status: 1 NOTE
+```
+The windows check was;
+```txt
+* using log directory 'd:/RCompile/CRANincoming/R-devel/collatz.Rcheck'
+* using R Under development (unstable) (2022-08-25 r82762 ucrt)
+* using platform: x86_64-w64-mingw32 (64-bit)
+* using session charset: UTF-8
+* checking for file 'collatz/DESCRIPTION' ... OK
+* this is package 'collatz' version '1.0.0'
+* package encoding: UTF-8
+* checking CRAN incoming feasibility ... [14s] NOTE
+Maintainer: 'Nathan Levett <nathan.a.z.levett@gmail.com>'
+
+New submission
+
+Possibly misspelled words in DESCRIPTION:
+  Collatz (5:33, 6:68)
+  parameterisation (7:9)
+
+Found the following (possibly) invalid URLs:
+  URL: http://localhost:4321
+    From: README.md
+    Status: Error
+    Message: Failed to connect to localhost port 4321: Connection refused
+  URL: https://skenvy.github.io/Collatz/R (moved to https://skenvy.github.io/Collatz/R/)
+    From: DESCRIPTION
+    Status: 200
+    Message: OK
+  URL: https://skenvy.github.io/Collatz/R/pdf (moved to https://skenvy.github.io/Collatz/R/pdf/)
+    From: DESCRIPTION
+    Status: 200
+    Message: OK
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking whether package 'collatz' can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking 'build' directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... [1s] OK
+* checking whether the package can be loaded with stated dependencies ... [0s] OK
+* checking whether the package can be unloaded cleanly ... [0s] OK
+* checking whether the namespace can be loaded with stated dependencies ... [0s] OK
+* checking whether the namespace can be unloaded cleanly ... [1s] OK
+* checking loading without being on the library search path ... [1s] OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [5s] OK
+* checking Rd files ... [1s] OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking files in 'vignettes' ... OK
+* checking examples ... NONE
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ... [4s] OK
+  Running 'testthat.R' [4s]
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in 'inst/doc' ... OK
+* checking re-building of vignette outputs ... [16s] OK
+* checking PDF version of manual ... [20s] OK
+* checking HTML version of manual ... [1s] OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE
+```
+And the debian check was;
+```txt
+* using log directory ‘/srv/hornik/tmp/CRAN/collatz.Rcheck’
+* using R Under development (unstable) (2022-08-25 r82762)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* checking for file ‘collatz/DESCRIPTION’ ... OK
+* this is package ‘collatz’ version ‘1.0.0’
+* package encoding: UTF-8
+* checking CRAN incoming feasibility ... [3s/4s] NOTE
+Maintainer: ‘Nathan Levett <nathan.a.z.levett@gmail.com>’
+
+New submission
+
+Possibly misspelled words in DESCRIPTION:
+  Collatz (5:33, 6:68)
+
+Found the following (possibly) invalid URLs:
+  URL: http://localhost:4321
+    From: README.md
+    Status: Error
+    Message: Failed to connect to localhost port 4321 after 0 ms: Connection refused
+  URL: https://skenvy.github.io/Collatz/R (moved to https://skenvy.github.io/Collatz/R/)
+    From: DESCRIPTION
+    Status: 301
+    Message: Moved Permanently
+  URL: https://skenvy.github.io/Collatz/R/pdf (moved to https://skenvy.github.io/Collatz/R/pdf/)
+    From: DESCRIPTION
+    Status: 301
+    Message: Moved Permanently
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘collatz’ can be installed ... [1s/1s] OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... [0s/0s] OK
+* checking whether the package can be loaded with stated dependencies ... [0s/0s] OK
+* checking whether the package can be unloaded cleanly ... [0s/0s] OK
+* checking whether the namespace can be loaded with stated dependencies ... [0s/0s] OK
+* checking whether the namespace can be unloaded cleanly ... [0s/0s] OK
+* checking loading without being on the library search path ... [0s/0s] OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [2s/2s] OK
+* checking Rd files ... [0s/0s] OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... NONE
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... [1s/1s] OK
+  Running ‘testthat.R’ [1s/1s]
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking re-building of vignette outputs ... [3s/3s] OK
+* checking PDF version of manual ... [2s/2s] OK
+* checking HTML version of manual ... [0s/0s] OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE
+```
+I do find it funny that the `x86_64-w64-mingw32` check included `parameterisation (7:9)` in `Possibly misspelled words in DESCRIPTION`, and both github pages in the notes yielded http 200, but in the `x86_64-pc-linux-gnu` check it did not complain about `parameterisation`, and both github pages links yielded a http 301.
