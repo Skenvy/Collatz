@@ -240,3 +240,5 @@ Found the following (possibly) invalid URLs:
 Status: 1 NOTE
 ```
 I do find it funny that the `x86_64-w64-mingw32` check included `parameterisation (7:9)` in `Possibly misspelled words in DESCRIPTION`, and both github pages in the notes yielded http 200, but in the `x86_64-pc-linux-gnu` check it did not complain about `parameterisation`, and both github pages links yielded a http 301.
+
+It's now the following day, and I've already received a follow up email about fixing the links in the description that returned a 301. I don't want to clog up my commit history on the gh-pages-R branch with 80+kb pdfs, but do want to keep the pdf's generated up there when relevant, and would like R v1.0.0 to be the CRAN submission, rather than some v1.0.1+, so it might feel dirty, but I'm gonna force push removing the last commits on gh-pages and gh-pages-R and remove the v1.0.0 release and tag, so that merging this comment, with the fix in the description, recreates the "version 1.0.0".
