@@ -8,7 +8,7 @@ Description: Provides the basic functionality to interact with the Collatz conje
     Besides the function and reverse function, there is also functionality to retrieve
     the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph. 
     The only restriction placed on parameters is that both P and a can't be 0.
-    For further reading, see <https:https://en.wikipedia.org/wiki/Collatz_conjecture>.
+    For further reading, see <https://en.wikipedia.org/wiki/Collatz_conjecture>.
 Author: Nathan Levett [aut, cre]
 Maintainer: Nathan Levett <nathan.a.z.levett@gmail.com>
 Date: 2022-08-08
