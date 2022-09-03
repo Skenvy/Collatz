@@ -18,6 +18,22 @@ NULL
 #' @param b (numeric|bigz) Value to add
 #' to the scaled value of n. Default is 1.
 #' @returns A list of either numeric or bigz type
+#' @examples
+#' # Calculates the values that would return the input under the Collatz
+#' # function. Without `gmp` or parameterisation, we can try something
+#' # simple like
+#' reverse_function(1)
+#' reverse_function(2)
+#' reverse_function(4)
+#' # If we want change the default parameterisation we can;
+#' reverse_function(3, -3, -2, -5)
+#' # Or if we only want to change one of them
+#' reverse_function(16, a=5)
+#' # All the above work fine, but the function doesn't offer protection against
+#' # overflowing integers by default. To venture into the world of arbitrary
+#' # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+#' reverse_function(99999999999999999999)
+#' reverse_function(as.bigz("99999999999999999999"))
 #' @export
 reverse_function <- function(n, P=2, a=3, b=1){
     assert_sane_parameterication(P,a,b)

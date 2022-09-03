@@ -45,3 +45,16 @@ Determine the Tree Graph to some depth by iteratively reversing values.
 Returns nested dictionaries that model the directed tree graph up to a
 maximum nesting of max_orbit_distance, with the initial_value as the root.
 }
+\examples{
+#Compute a tree graph, which takes both a value to initialise the tree from,
+# and an "orbit distance" for how many layers deep in the tree to compute;
+tree_graph(16, 3)
+# It will also stop on finding a cycle;
+tree_graph(4, 3)
+# And can be parameterised;
+tree_graph(1, 1, -3, -2, -5)
+# If b is a multiple of a, but not of Pa, then 0 can have a reverse;
+tree_graph(0, 1, 17, 2, -6)
+# The tree graph can run on `bigz`;
+tree_graph((27+as.bigz("576460752303423488")), 3)
+}

@@ -34,6 +34,19 @@ NULL
 #' a cycle. Default is TRUE.
 #' @returns A keyed list consisting of a $values list of numeric | bigz
 #' along with a $terminalCondition and $terminalStatus
+#' @examples
+#' # Compute a hailstone sequence, which defaults to the total stopping time;
+#' hailstone_sequence(5)
+#' # Or only compute down to the regular stopping time;
+#' hailstone_sequence(5, total_stopping_time=FALSE)
+#' # Remove verbose messaging;
+#' hailstone_sequence(5, verbose=FALSE)
+#' # It will also stop on finding a cycle;
+#' hailstone_sequence(-56)
+#' # And can be parameterised;
+#' hailstone_sequence(3, -1, 3, 1)
+#' # The hailstone sequence can run on `bigz`;
+#' hailstone_sequence(27+as.bigz("576460752303423488"))
 #' @export
 hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
     max_total_stopping_time=1000, total_stopping_time=TRUE, verbose=TRUE){
