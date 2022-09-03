@@ -56,3 +56,17 @@ determine that it has encountered a cycle, the cycle from "1" wont be
 attempted or reported as part of a cycle, regardless of default or custom
 parameterisation, as "1" is considered a "total stop".
 }
+\examples{
+# Compute a hailstone sequence, which defaults to the total stopping time;
+hailstone_sequence(5)
+# Or only compute down to the regular stopping time;
+hailstone_sequence(5, total_stopping_time=FALSE)
+# Remove verbose messaging;
+hailstone_sequence(5, verbose=FALSE)
+# It will also stop on finding a cycle;
+hailstone_sequence(-56)
+# And can be parameterised;
+hailstone_sequence(3, -1, 3, 1)
+# The hailstone sequence can run on `bigz`;
+hailstone_sequence(27+as.bigz("576460752303423488"))
+}

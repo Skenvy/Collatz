@@ -31,3 +31,20 @@ divided by P. If two values are returned, the first is the value that
 would be divided by P, and the second value is that which would undergo
 the multiply and add step, regardless of which is larger.
 }
+\examples{
+# Calculates the values that would return the input under the Collatz
+# function. Without `gmp` or parameterisation, we can try something
+# simple like
+reverse_function(1)
+reverse_function(2)
+reverse_function(4)
+# If we want change the default parameterisation we can;
+reverse_function(3, -3, -2, -5)
+# Or if we only want to change one of them
+reverse_function(16, a=5)
+# All the above work fine, but the function doesn't offer protection against
+# overflowing integers by default. To venture into the world of arbitrary
+# integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+reverse_function(99999999999999999999)
+reverse_function(as.bigz("99999999999999999999"))
+}
