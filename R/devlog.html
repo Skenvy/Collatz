@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="index.html">collatz</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,18 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
+  <a class="nav-link" href="articles/collatz.html">Get started</a>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/hailstones.html">Hailstone Sequences</a>
+    <a class="dropdown-item" href="articles/hailstones_576460752303423488.html">Hailstone of 27+576460752303423488</a>
+    <a class="dropdown-item" href="articles/treegraphs.html">Tree Graphs</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -56,6 +67,214 @@
 <p>I realised upon testing for the first time in the gh action that it would be irritatingly long each time to install dependencies that have to recompile, and why do so, when we can just reuse the tidyverse images provided above, which exist far back enough to have a 3.5.0 tagged image, which is the earliest version I want to test on (being the minimum version of the only dependency, gmp). With tests now working in the workflow, the last things to check out are <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> for creating a site, but first, <a href="https://roxygen2.r-lib.org/" class="external-link">roxygen2</a> for generating the <code>./man/</code>! It seems that Roxygen doesn’t like the DESCRIPTION not including <code>Encoding: UTF-8</code> which is against the CRAN standard of ASCII, and I’d been trying to stick with that, but roxygen adds too much benefit to not use it. With a minimum setup of roxygen, let’s have a look at using pkgdown. Start with <code>Rscript -e 'usethis::use_pkgdown()'</code>.</p>
 <p>I did a fair amount of experimenting with setting up the generating of the pdf without commenting about it here, but I finally got it working. Locally it would work 50/50 (for some reason it just casually fails half the time, and works fine the other half of the time, on back to back invocations with no background changes..) but it took installing the debian texinfo package in the rocker/tidyverse container to get it to manage to generate the pdf in the workflow. We’re now ready to; 1. <code>git checkout --orphan gh-pages-R</code> 1. <code>rm .git/index ; git clean -fdx</code> 1. <code>git commit -m "Initial empty orphan" --allow-empty</code> 1. <code>git push --set-upstream origin gh-pages-R</code></p>
 <p>Which means we now have the target for where to deploy docs to, and then test that they are fine to merge to the main gh-pages branch. A funny quirk of pkgdown appears to be that it requires newlines above header lines in the markdown files that it converts to the home page, so the readme here will be formatted slightly differently, although visually inconsequentially so, to all the others. I’ve reached the stage where I can generate docs, and test successfully across ubuntu, mac and windows, and complete a CRAN check on the latest. So we’ll merge to main now to get the 0.1.0 release into main before then adding vignettes and the hailstone and tree graph functions.</p>
+<p>We’ve released version 0.1.0, but I’ve realised that my desire to keep the roxygen2 generated namespace and man folder changes only to be generated in CI has hit a roadblock; using devtools to install from github would require the state of the repo to be as the contents of the tarballs would be, so we’ve got to swap it around and make sure that we do checkin the man folder and namespace changes, which means adding the ability to fail the workflow if it detects a change that hasn’t been checked in. This led to discovering a semi-bug, that if using a job container in github actions, that the repository checked out with actions/checkout step won’t be owned by the user inside the job container that is used to evoke the run commands, so we need to add the checkout as a safe directory so that we can compare and error on a diff. Now we need to start looking at vignettes <code>Rscript -e 'usethis::use_vignette("my-vignette")'</code>.</p>
+<p>Well, I’ve got most of the content sorted, but have uncovered an unusual behaviour I didn’t see before in how <code>bigz</code> isn’t easy to use in an iterative sense, i.e. like <code>append</code>’ing to a list and then looping through them. I only caught it because the bug surfaced through using a vignette for the tree graphing function when using a <code>bigz</code>, and the error can be reproduced with something like <code>append(list(), gmp::as.bigz(5))</code>, which yields;</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">append</span>(<span class="fu">list</span>(), <span class="fu">as.bigz</span>(<span class="dv">5</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">c_bigz</span>(argL) <span class="sc">:</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  only logical, numeric or <span class="fu">character</span> (atomic) vectors can be coerced to <span class="st">'bigz'</span></span></code></pre></div>
+<p>The reverse function and the tree graph that uses it are the only places that the append can operate on a <code>bigz</code>, and it seems it doesn’t behave well with them. For example;</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">append</span>(f, <span class="fu">as.bigz</span>(<span class="dv">3</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">c_bigz</span>(argL) <span class="sc">:</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  only logical, numeric or <span class="fu">character</span> (atomic) vectors can be coerced to <span class="st">'bigz'</span></span></code></pre></div>
+<p>If the list is initialised with a numeric, <code>f &lt;- list(1)</code>, then appending a <code>bigz</code> doesn’t produce the same error, but it adds the entire raw contents. For example, the resulting list of adding a small <code>bigz</code> to a number is 17 elements long. If <code>f</code> in the example is initialised with a <code>bigz</code>, then the result is the same, but the first element is the <code>bigz</code> and the following 16 entries are the raw contents of the appended <code>bigz</code>. HOWEVER, there is a solution! By wrapping the appended content in another <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> invocation, it does properly separate them.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">append</span>(f,<span class="fu">list</span>(<span class="fu">as.bigz</span>(<span class="dv">1</span>)))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>]]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Big <span class="fu">Integer</span> (<span class="st">'bigz'</span>) <span class="sc">:</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1</span></span></code></pre></div>
+<p>After releasing version 1 of this R implementation, I’ve uploaded it to CRAN, which resulted in an email “CRAN Submission of collatz 1.0.0 - Confirmation Link” with a link <code>https://&lt;some_cran_mirror&gt;/cransubmit/conf_mail.php?code=&lt;unique_submission_code&gt;</code> to confirm the submission, and included the comments on the submission. After confirming the upload, the tarball appeared in the <a href="https://cran.r-project.org/incoming/pretest/" class="external-link">incoming/pretest</a> section, before then 8 minutes later recieving a “package collatz_1.0.0.tar.gz has been auto-processed and is pending a manual inspection” email, which included (along with the upload now instead appearing in <a href="https://cran.r-project.org/incoming/inspect/" class="external-link">incoming/inspect</a>)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Log dir: &lt;https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/&gt;</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>The files will be removed after roughly 7 days.</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Installation time in seconds: 5</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Check time in seconds: 88</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>R Under development (unstable) (2022-08-25 r82762 ucrt)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>Pretests results:</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>Windows: &lt;https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/Windows/00check.log&gt;</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>Status: 1 NOTE</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>Debian: &lt;https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/Debian/00check.log&gt;</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>Status: 1 NOTE</span></code></pre></div>
+<p>The windows check was;</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>* using log directory 'd:/RCompile/CRANincoming/R-devel/collatz.Rcheck'</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>* using R Under development (unstable) (2022-08-25 r82762 ucrt)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>* using platform: x86_64-w64-mingw32 (64-bit)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>* using session charset: UTF-8</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>* checking for file 'collatz/DESCRIPTION' ... OK</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>* this is package 'collatz' version '1.0.0'</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>* package encoding: UTF-8</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>* checking CRAN incoming feasibility ... [14s] NOTE</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>Maintainer: 'Nathan Levett &lt;nathan.a.z.levett@gmail.com&gt;'</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>New submission</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>Possibly misspelled words in DESCRIPTION:</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  Collatz (5:33, 6:68)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  parameterisation (7:9)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>Found the following (possibly) invalid URLs:</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  URL: http://localhost:4321</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    From: README.md</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    Status: Error</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    Message: Failed to connect to localhost port 4321: Connection refused</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  URL: https://skenvy.github.io/Collatz/R (moved to https://skenvy.github.io/Collatz/R/)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    From: DESCRIPTION</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    Status: 200</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    Message: OK</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  URL: https://skenvy.github.io/Collatz/R/pdf (moved to https://skenvy.github.io/Collatz/R/pdf/)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    From: DESCRIPTION</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    Status: 200</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    Message: OK</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>* checking package namespace information ... OK</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>* checking package dependencies ... OK</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>* checking if this is a source package ... OK</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>* checking if there is a namespace ... OK</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>* checking for hidden files and directories ... OK</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>* checking for portable file names ... OK</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>* checking whether package 'collatz' can be installed ... OK</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>* checking installed package size ... OK</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>* checking package directory ... OK</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>* checking for future file timestamps ... OK</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>* checking 'build' directory ... OK</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>* checking DESCRIPTION meta-information ... OK</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>* checking top-level files ... OK</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>* checking for left-over files ... OK</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>* checking index information ... OK</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>* checking package subdirectories ... OK</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>* checking R files for non-ASCII characters ... OK</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>* checking R files for syntax errors ... OK</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>* checking whether the package can be loaded ... [1s] OK</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>* checking whether the package can be loaded with stated dependencies ... [0s] OK</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>* checking whether the package can be unloaded cleanly ... [0s] OK</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>* checking whether the namespace can be loaded with stated dependencies ... [0s] OK</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>* checking whether the namespace can be unloaded cleanly ... [1s] OK</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>* checking loading without being on the library search path ... [1s] OK</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>* checking use of S3 registration ... OK</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>* checking dependencies in R code ... OK</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>* checking S3 generic/method consistency ... OK</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>* checking replacement functions ... OK</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>* checking foreign function calls ... OK</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>* checking R code for possible problems ... [5s] OK</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>* checking Rd files ... [1s] OK</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>* checking Rd metadata ... OK</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>* checking Rd line widths ... OK</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>* checking Rd cross-references ... OK</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>* checking for missing documentation entries ... OK</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>* checking for code/documentation mismatches ... OK</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>* checking Rd \usage sections ... OK</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>* checking Rd contents ... OK</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>* checking for unstated dependencies in examples ... OK</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>* checking installed files from 'inst/doc' ... OK</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>* checking files in 'vignettes' ... OK</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>* checking examples ... NONE</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>* checking for unstated dependencies in 'tests' ... OK</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>* checking tests ... [4s] OK</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>  Running 'testthat.R' [4s]</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>* checking for unstated dependencies in vignettes ... OK</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>* checking package vignettes in 'inst/doc' ... OK</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>* checking re-building of vignette outputs ... [16s] OK</span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>* checking PDF version of manual ... [20s] OK</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>* checking HTML version of manual ... [1s] OK</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>* checking for detritus in the temp directory ... OK</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>* DONE</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>Status: 1 NOTE</span></code></pre></div>
+<p>And the debian check was;</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>* using log directory ‘/srv/hornik/tmp/CRAN/collatz.Rcheck’</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>* using R Under development (unstable) (2022-08-25 r82762)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>* using platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>* using session charset: UTF-8</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>* checking for file ‘collatz/DESCRIPTION’ ... OK</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>* this is package ‘collatz’ version ‘1.0.0’</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>* package encoding: UTF-8</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>* checking CRAN incoming feasibility ... [3s/4s] NOTE</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>Maintainer: ‘Nathan Levett &lt;nathan.a.z.levett@gmail.com&gt;’</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>New submission</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>Possibly misspelled words in DESCRIPTION:</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  Collatz (5:33, 6:68)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>Found the following (possibly) invalid URLs:</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  URL: http://localhost:4321</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    From: README.md</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    Status: Error</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    Message: Failed to connect to localhost port 4321 after 0 ms: Connection refused</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  URL: https://skenvy.github.io/Collatz/R (moved to https://skenvy.github.io/Collatz/R/)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    From: DESCRIPTION</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    Status: 301</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    Message: Moved Permanently</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  URL: https://skenvy.github.io/Collatz/R/pdf (moved to https://skenvy.github.io/Collatz/R/pdf/)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    From: DESCRIPTION</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    Status: 301</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    Message: Moved Permanently</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>* checking package namespace information ... OK</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>* checking package dependencies ... OK</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>* checking if this is a source package ... OK</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>* checking if there is a namespace ... OK</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>* checking for executable files ... OK</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>* checking for hidden files and directories ... OK</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>* checking for portable file names ... OK</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>* checking for sufficient/correct file permissions ... OK</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>* checking whether package ‘collatz’ can be installed ... [1s/1s] OK</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>* checking package directory ... OK</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>* checking for future file timestamps ... OK</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>* checking ‘build’ directory ... OK</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>* checking DESCRIPTION meta-information ... OK</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>* checking top-level files ... OK</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>* checking for left-over files ... OK</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>* checking index information ... OK</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>* checking package subdirectories ... OK</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>* checking R files for non-ASCII characters ... OK</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>* checking R files for syntax errors ... OK</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>* checking whether the package can be loaded ... [0s/0s] OK</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>* checking whether the package can be loaded with stated dependencies ... [0s/0s] OK</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>* checking whether the package can be unloaded cleanly ... [0s/0s] OK</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>* checking whether the namespace can be loaded with stated dependencies ... [0s/0s] OK</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>* checking whether the namespace can be unloaded cleanly ... [0s/0s] OK</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>* checking loading without being on the library search path ... [0s/0s] OK</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>* checking use of S3 registration ... OK</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>* checking dependencies in R code ... OK</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>* checking S3 generic/method consistency ... OK</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>* checking replacement functions ... OK</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>* checking foreign function calls ... OK</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>* checking R code for possible problems ... [2s/2s] OK</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>* checking Rd files ... [0s/0s] OK</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>* checking Rd metadata ... OK</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>* checking Rd line widths ... OK</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>* checking Rd cross-references ... OK</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>* checking for missing documentation entries ... OK</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>* checking for code/documentation mismatches ... OK</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>* checking Rd \usage sections ... OK</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>* checking Rd contents ... OK</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>* checking for unstated dependencies in examples ... OK</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>* checking installed files from ‘inst/doc’ ... OK</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>* checking files in ‘vignettes’ ... OK</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>* checking examples ... NONE</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>* checking for unstated dependencies in ‘tests’ ... OK</span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>* checking tests ... [1s/1s] OK</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  Running ‘testthat.R’ [1s/1s]</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>* checking for unstated dependencies in vignettes ... OK</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>* checking package vignettes in ‘inst/doc’ ... OK</span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>* checking re-building of vignette outputs ... [3s/3s] OK</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>* checking PDF version of manual ... [2s/2s] OK</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>* checking HTML version of manual ... [0s/0s] OK</span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>* checking for non-standard things in the check directory ... OK</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>* checking for detritus in the temp directory ... OK</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>* DONE</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>Status: 1 NOTE</span></code></pre></div>
+<p>I do find it funny that the <code>x86_64-w64-mingw32</code> check included <code>parameterisation (7:9)</code> in <code>Possibly misspelled words in DESCRIPTION</code>, and both github pages in the notes yielded http 200, but in the <code>x86_64-pc-linux-gnu</code> check it did not complain about <code>parameterisation</code>, and both github pages links yielded a http 301.</p>
+<p>It’s now the following day, and I’ve already received a follow up email about fixing the links in the description that returned a 301. I don’t want to clog up my commit history on the gh-pages-R branch with 80+kb pdfs, but do want to keep the pdf’s generated up there when relevant, and would like R v1.0.0 to be the CRAN submission, rather than some v1.0.1+, so it might feel dirty, but I’m gonna force push removing the last commits on gh-pages and gh-pages-R and remove the v1.0.0 release and tag, so that merging this comment, with the fix in the description, recreates the “version 1.0.0”. This involved manually deleting the release on github, and;</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> tag <span class="at">-d</span> R-v1.0.0</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--delete</span> origin R-v1.0.0</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout gh-pages</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset HEAD~ <span class="at">--hard</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--force</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout gh-pages-R</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> reset HEAD~ <span class="at">--hard</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">--force</span></span></code></pre></div>
+<p>Well, it’s now after the second submission’s feedback requesting further changes. Like last time, it went through the <a href="https://cran.r-project.org/incoming/pretest/" class="external-link">incoming/pretest</a> section, before later appearing in <a href="https://cran.r-project.org/incoming/inspect/" class="external-link">incoming/inspect</a>). This time it sat in <a href="https://cran.r-project.org/incoming/newbies/" class="external-link">incoming/newbies</a> for a while, then <a href="https://cran.r-project.org/incoming/BA/" class="external-link">incoming/BA</a>. It seems that the top folders on there are simply the initials of the reviewers. The feedback this time included significantly more than last time, which makes me question how each of the volunteers does their checks – how automated they are, how much they are done in steps, and how consistent they are across each of the reviewers. I’ve seen several prominent blog posts on the trials and tribulations of reshaping a package <em>in ad infinitum</em> for certain members of the CRAN team to be happy with them, with some explicitly warning any reader to be prepared for feedback requesting the most minutiae of changes, although all greatful to the team. I’m certainly not suggesting that it’s not reasonable of the volunteer maintainers to have additive requests to align a package with what they expect or desire for those packages they will host on CRAN, after all it is a system they maintain that I am trying to craft something to meet the goals of and the burden to do so rests with me, although it does strike me as odd that the R language grew to the popularity it has with an environment so anti-conducive to the distribution of packages, via such a high barrier to entry into the ecosystem that is not only not automated, but it seems not down to a consistent means of confirming package suitability amongst the volunteers, unless the manner in which they provide feedback limits them to only provide the feedback that is relevant to them at some stage, i.e. if some numbered item on a checklist is invalid ahead of others, then only that would be included in the feedback, as opposed to all of the issues being mentioned in one check and reply.</p>
+<p>Climbing down from that soapbox, the specific feedback on this submission was three fold; 1. A request to add “references describing the methods in your package” – “in the description field of your DESCRIPTION file”. It does suggest that a <code>&lt;https:...&gt;</code> field would be accepted. Although browsing the “CRAN Task View: Numerical Mathematics” page for examples, it’s sparse to even find examples that include any notion of a reference let alone those with a structured referencing style similar to that requested by the email. It’s hard to know how much this one is a legitimate request versus a “nice to have”, but also seems very seldom used in the packages I’ve checked, so I’ll see about not adding any for now. The <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file" class="external-link">Writing R Extensions: The DESCRIPTION file</a> does not make mention of necessity of references, although does have one passing reference to the inclusion of URLs, which is “URLs should be enclosed in angle brackets, e.g. ‘<a href="https://www.r-project.org" class="external-link uri">https://www.r-project.org</a>’: see also Specifying URLs.”. 1. A request to remove ‘” | file LICENSE” and the file’ with the reason “This is only needed in case of attribution requirements or other possible restrictions. Hence please omit it.” I dug around looking for this requirment/expectation in <a href="https://cran.r-project.org/web/packages/policies.html" class="external-link">CRAN Repository Policy</a> and <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Licensing" class="external-link">Writing R Extensions: Licensing</a>, and it appears that the latter, after several paragraphs describing how to go about including the file LICENSE, and that there shouldn’t be any issues if it is added, and how to append it with <code>| file LICENSE</code> or modify standard license with <code>+ file LICENSE</code> it does make reference to not wanting submissions to include a license file unnecessarily, i.e. “please do not arrange to install yet another copy of the GNU COPYING or COPYING.LIB files but refer to the copies on <a href="https://www.R-project.org/Licenses/" class="external-link uri">https://www.R-project.org/Licenses/</a>” although the last sentence “A few “standard” licenses are rather license templates which need additional information to be completed via ‘+ file LICENSE’ (with the ‘+’ surrounded by spaces)” is in contest with that, so will have to wait for a reply from the volunteer who reviewed it. They replied confirming that despite the Apache License’s inclusion of a name / date field, that it should not be included with a <code>+ file LICENSE</code>. 1. To “Please add small executable examples in your Rd-files to illustrate the use of the exported function but also enable automatic testing.” This was not something I had really seem in the example packages I looked at earlier, with all the focus for this sort of content being on either the tests themselves for “automatic testing”, or in the vignettes, which are also tested automatically but also are more verbose explanations of how to use the functions. I had a bit of a look at some more packages, and some do appear to include examples on the function docs themselves. Arguably that just provides more clutter than anything else and doesn’t really make it easier to follow especially with an elsewise mechanism for displaying such content, <em>like the vignettes</em>, but <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Documenting-functions" class="external-link">Writing R Extensions: Documenting functions</a> does appear to include the possibility of adding examples, they are not stated to be required. I suppose I will add some, and also look at <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematics" class="external-link">Writing R Extensions: Mathematics</a> while doing so.</p>
 </div>
 
   </main></div>

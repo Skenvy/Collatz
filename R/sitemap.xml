@@ -7,6 +7,21 @@
     <loc>https://skenvy.github.io/Collatz/R/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>https://skenvy.github.io/Collatz/R/articles/collatz.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/articles/hailstones.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/articles/hailstones_576460752303423488.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/articles/treegraphs.html</loc>
+  </url>
+  <url>
     <loc>https://skenvy.github.io/Collatz/R/authors.html</loc>
   </url>
   <url>
@@ -16,18 +31,30 @@
     <loc>https://skenvy.github.io/Collatz/R/index.html</loc>
   </url>
   <url>
-    <loc>https://skenvy.github.io/Collatz/R/reference/assertSaneParameterication.html</loc>
+    <loc>https://skenvy.github.io/Collatz/R/reference/assert_sane_parameterication.html</loc>
   </url>
   <url>
     <loc>https://skenvy.github.io/Collatz/R/reference/collatz.html</loc>
   </url>
   <url>
-    <loc>https://skenvy.github.io/Collatz/R/reference/collatzFunction.html</loc>
+    <loc>https://skenvy.github.io/Collatz/R/reference/collatz_function.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/hailstone_sequence.html</loc>
   </url>
   <url>
     <loc>https://skenvy.github.io/Collatz/R/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://skenvy.github.io/Collatz/R/reference/reverseFunction.html</loc>
+    <loc>https://skenvy.github.io/Collatz/R/reference/reverse_function.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/stopping_time.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/stopping_time_terminus.html</loc>
+  </url>
+  <url>
+    <loc>https://skenvy.github.io/Collatz/R/reference/tree_graph.html</loc>
   </url>
 </urlset>
