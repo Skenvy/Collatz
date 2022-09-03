@@ -94,7 +94,7 @@ table.table-condensed {
   font-size: 11px;
 }</style>
   <div class="col-md-8 col-md-offset-2">
-    <h2>collatz coverage - 100.00%</h2>
+    <h2>collatz coverage - 92.86%</h2>
     <div class="tabbable">
       <ul class="nav nav-tabs" data-tabsetid="covr">
         <li class="active">
@@ -106,12 +106,2220 @@ table.table-condensed {
       </ul>
       <div class="tab-content" data-tabsetid="covr">
         <div class="tab-pane active" title="Files" data-value="Files" id="tab-covr-1">
-          <div id="htmlwidget-f583fcbe69cdbf1a87e3" style="width:100%;height:500px;" class="datatables html-widget"></div>
-          <script type="application/json" data-for="htmlwidget-f583fcbe69cdbf1a87e3">{"x":{"filter":"none","vertical":false,"fillContainer":true,"data":[["<a href=\"#\">R/Collatz.R<\/a>"],[128],[9],[9],[0],["11"],["100.00%"]],"container":"<table class=\"row-border fill-container\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}"},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
+          <div id="htmlwidget-86b9e6bfe588147e49c9" style="width:100%;height:500px;" class="datatables html-widget"></div>
+          <script type="application/json" data-for="htmlwidget-86b9e6bfe588147e49c9">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["<a href=\"#\">R/utils.R<\/a>","<a href=\"#\">R/hailstone_sequence.R<\/a>","<a href=\"#\">R/tree_graph.R<\/a>","<a href=\"#\">R/stopping_time.R<\/a>","<a href=\"#\">R/reverse_function.R<\/a>","<a href=\"#\">R/collatz_function.R<\/a>"],[97,142,73,80,56,41],[7,52,18,10,6,2],[6,46,18,10,6,2],[1,6,0,0,0,0],["168","785","48","44","113","782"],["85.71%","88.46%","100.00%","100.00%","100.00%","100.00%"]],"container":"<table class=\"row-border\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}"},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
         </div>
         <div class="tab-pane" title="Source" data-value="Source" id="tab-covr-2">
           <div id="files">
-            <div id="R/Collatz.R" class="hidden">
+            <div id="R/hailstone_sequence.R" class="hidden">
+              <table class="table-condensed">
+                <tbody>
+                  <tr class="never">
+                    <td class="num">1</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include utils.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">2</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include collatz_function.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">3</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">NULL</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">4</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">5</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Hailstone Sequencer</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">6</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">7</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Calculates the values of a hailstone sequence, from an initial value.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">8</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">9</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Returns a list of successive values obtained by iterating a Collatz-esque</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">10</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' function, until either 1 is reached, or the total amount of iterations</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">11</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' exceeds max_total_stopping_time, unless total_stopping_time is FALSE, which</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">12</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' will terminate the hailstone at the "stopping time" value, i.e. the first</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">13</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' value less than the initial value. While the sequence has the capability to</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">14</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' determine that it has encountered a cycle, the cycle from "1" wont be</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">15</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' attempted or reported as part of a cycle, regardless of default or custom</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">16</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' parameterisation, as "1" is considered a "total stop".</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">17</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">18</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param initial_value (numeric|bigz)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">19</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' The value to begin the hailstone sequence from.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">20</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param P (numeric|bigz): Modulus used to divide</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">21</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' n, iff n is equivalent to (0 mod P). Default is 2.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">22</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">23</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param b (numeric|bigz) Value to add</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">24</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' to the scaled value of n. Default is 1.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">25</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param max_total_stopping_time (int) Maximum amount of times to iterate the</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">26</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' function, if 1 is not reached. Default is 1000.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">27</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param total_stopping_time (bool) Whether or not to execute until the "total"</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">28</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping time (number of iterations to obtain 1) rather than the regular</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">29</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping time (number of iterations to reach a value less than the initial</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">30</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' value). Default is TRUE.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">31</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param verbose (bool) If set to verbose, the hailstone sequence will include</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">32</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' control string sequences to provide information about how the</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">33</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' sequence terminated, whether by reaching a stopping time or entering</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">34</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' a cycle. Default is TRUE.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">35</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @returns A keyed list consisting of a $values list of numeric | bigz</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">36</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' along with a $terminalCondition and $terminalStatus</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">37</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @examples</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">38</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Compute a hailstone sequence, which defaults to the total stopping time;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">39</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' hailstone_sequence(5)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">40</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Or only compute down to the regular stopping time;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">41</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' hailstone_sequence(5, total_stopping_time=FALSE)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">42</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Remove verbose messaging;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">43</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' hailstone_sequence(5, verbose=FALSE)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">44</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # It will also stop on finding a cycle;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">45</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' hailstone_sequence(-56)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">46</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # And can be parameterised;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">47</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' hailstone_sequence(3, -1, 3, 1)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">48</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # The hailstone sequence can run on `bigz`;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">49</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' hailstone_sequence(27+as.bigz("576460752303423488"))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">50</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @export</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">51</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">hailstone_sequence &lt;- function(initial_value, P=2, a=3, b=1,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">52</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    max_total_stopping_time=1000, total_stopping_time=TRUE, verbose=TRUE){</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">53</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # Call out the collatz_function before any magic returns to trap bad values.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">54</td>
+                    <td class="coverage">64<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    throwaway_test &lt;- collatz_function(initial_value,P=P,a=a,b=b)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">55</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # 0 is always an immediate stop.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">56</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    if (initial_value == 0){</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">57</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        if (verbose) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">58</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            return(list(values=list(0), terminalCondition=Collatz$SequenceState$ZERO_STOP, terminalStatus=0))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">59</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="missed">
+                    <td class="num">60</td>
+                    <td class="coverage">!</td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            return(list(0))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">61</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">62</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">63</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # 1 is always an immediate stop, with 0 stopping time.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">64</td>
+                    <td class="coverage">56<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    if (initial_value == 1){</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">65</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        if (verbose) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">66</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            return(list(values=list(1), terminalCondition=Collatz$SequenceState$TOTAL_STOPPING_TIME, terminalStatus=0))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">67</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="missed">
+                    <td class="num">68</td>
+                    <td class="coverage">!</td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            return(list(1))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">69</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">70</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">71</td>
+                    <td class="coverage">54<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    terminate &lt;- stopping_time_terminus(initial_value, total_stopping_time)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">72</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # Start the hailstone sequence.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">73</td>
+                    <td class="coverage">54<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    max_max_total_stopping_time &lt;- max(max_total_stopping_time, 1)</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">74</td>
+                    <td class="coverage">54<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    hailstone &lt;- list(values=vector(mode="list", length=max_max_total_stopping_time), terminalCondition=NA, terminalStatus=NA)</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">75</td>
+                    <td class="coverage">54<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    hailstone$values[[1]] &lt;- initial_value</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">76</td>
+                    <td class="coverage">54<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    for (k in 1:max_max_total_stopping_time){</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">77</td>
+                    <td class="coverage">1053<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        next_val &lt;- collatz_function(hailstone$values[[k]],P=P,a=a,b=b)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">78</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # Check if the next_val hailstone is either the stopping time, total</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">79</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # stopping time, the same as the initial value, or stuck at zero.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">80</td>
+                    <td class="coverage">1053<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        if (terminate(next_val)) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">81</td>
+                    <td class="coverage">14<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            hailstone$values[[k+1]] &lt;- next_val</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">82</td>
+                    <td class="coverage">14<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            hailstone$values &lt;- hailstone$values[1:(k+1)]</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">83</td>
+                    <td class="coverage">14<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            if (verbose) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">84</td>
+                    <td class="coverage">14<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                if (next_val == 1) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">85</td>
+                    <td class="coverage">5<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                    hailstone$terminalCondition &lt;- Collatz$SequenceState$TOTAL_STOPPING_TIME</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">86</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">87</td>
+                    <td class="coverage">9<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                    hailstone$terminalCondition &lt;- Collatz$SequenceState$STOPPING_TIME</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">88</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">89</td>
+                    <td class="coverage">14<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                hailstone$terminalStatus &lt;- k</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">90</td>
+                    <td class="coverage">14<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                return(hailstone)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">91</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="missed">
+                    <td class="num">92</td>
+                    <td class="coverage">!</td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                return(hailstone$values)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">93</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">94</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">95</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # Here is normally where cyclic &lt;- function(x){x %in% hailstone$values}</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">96</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # would be used to determine presence of a new value in previous values</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">97</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # but R's in-built tests for set membership all behave differently to</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">98</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # other languages when the input itself is a vector, which bigz raw is!</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">99</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # e.g. see how meaningless this is: `gmp::numerator(5) %in% list(5)`</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">100</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # So we need to always do to the inverse loop traversal and compare,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">101</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # as the compare on list elements against bigz | bigq _does_ work!</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">102</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">103</td>
+                    <td class="coverage">1039<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        cycle_init &lt;- -1</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">104</td>
+                    <td class="coverage">1039<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        for (j in 0:(k-1)) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">105</td>
+                    <td class="coverage">32753<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            if (hailstone$values[[k-j]] == next_val) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">106</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                cycle_init &lt;- j+1</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">107</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                break</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">108</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">109</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">110</td>
+                    <td class="coverage">1039<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        if (cycle_init &gt; 0) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">111</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            hailstone$values[[k+1]] &lt;- next_val</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">112</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            hailstone$values &lt;- hailstone$values[1:(k+1)]</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">113</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            if (verbose) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">114</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                hailstone$terminalCondition &lt;- Collatz$SequenceState$CYCLE_LENGTH</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">115</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                hailstone$terminalStatus &lt;- cycle_init</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">116</td>
+                    <td class="coverage">36<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                return(hailstone)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">117</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="missed">
+                    <td class="num">118</td>
+                    <td class="coverage">!</td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                return(hailstone$values)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">119</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">120</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">121</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">122</td>
+                    <td class="coverage">1003<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        if (next_val == 0) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">123</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            hailstone$values[[k+1]] &lt;- 0</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">124</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            hailstone$values &lt;- hailstone$values[1:(k+1)]</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">125</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            if (verbose) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">126</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                hailstone$terminalCondition &lt;- Collatz$SequenceState$ZERO_STOP</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">127</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                hailstone$terminalStatus &lt;- -k</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">128</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                return(hailstone)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">129</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="missed">
+                    <td class="num">130</td>
+                    <td class="coverage">!</td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                return(hailstone$values)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">131</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">132</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">133</td>
+                    <td class="coverage">1001<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        hailstone$values[[k+1]] &lt;- next_val</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">134</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">135</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    if (verbose) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">136</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        hailstone$terminalCondition &lt;- Collatz$SequenceState$MAX_STOP_OUT_OF_BOUNDS</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">137</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        hailstone$terminalStatus &lt;- max_max_total_stopping_time</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">138</td>
+                    <td class="coverage">2<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        return(hailstone)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">139</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="missed">
+                    <td class="num">140</td>
+                    <td class="coverage">!</td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        return(hailstone$values)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">141</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">142</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">}</pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="R/tree_graph.R" class="hidden">
+              <table class="table-condensed">
+                <tbody>
+                  <tr class="never">
+                    <td class="num">1</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include utils.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">2</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include reverse_function.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">3</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">NULL</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">4</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">5</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Tree Graph</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">6</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">7</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Determine the Tree Graph to some depth by iteratively reversing values.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">8</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">9</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Returns nested dictionaries that model the directed tree graph up to a</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">10</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' maximum nesting of max_orbit_distance, with the initial_value as the root.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">11</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param initial_value (int) The root value of the directed tree graph.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">12</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param max_orbit_distance (int) Maximum amount of times to iterate the</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">13</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse function. There is no natural termination to populating the tree</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">14</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' graph, equivalent to the termination of hailstone sequences or stopping time</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">15</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' attempts, so this is not an optional argument like max_stopping_time or</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">16</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' max_total_stopping_time, as it is the intended target of orbits to obtain,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">17</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' rather than a limit to avoid uncapped computation.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">18</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param P (numeric|bigz): Modulus used to divide</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">19</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' n, iff n is equivalent to (0 mod P). Default is 2.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">20</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">21</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param b (numeric|bigz) Value to add</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">22</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' to the scaled value of n. Default is 1.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">23</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param cycle_prevention (set[int]) Used to prevent cycles from precipitating</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">24</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' by keeping track of all values added across previous nest depths. Only to be</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">25</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' used internally by the function recursing. Does not expect input.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">26</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @returns A set of nested dictionaries.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">27</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @examples</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">28</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' #Compute a tree graph, which takes both a value to initialise the tree from,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">29</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # and an "orbit distance" for how many layers deep in the tree to compute;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">30</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' tree_graph(16, 3)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">31</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # It will also stop on finding a cycle;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">32</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' tree_graph(4, 3)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">33</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # And can be parameterised;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">34</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' tree_graph(1, 1, -3, -2, -5)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">35</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # If b is a multiple of a, but not of Pa, then 0 can have a reverse;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">36</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' tree_graph(0, 1, 17, 2, -6)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">37</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # The tree graph can run on `bigz`;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">38</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' tree_graph((27+as.bigz("576460752303423488")), 3)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">39</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @export</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">40</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">tree_graph &lt;- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_prevention=list()){</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">41</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # Call out the reverse_function before any magic returns to trap bad values.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">42</td>
+                    <td class="coverage">70<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    throwaway_test &lt;- reverse_function(initial_value,P=P,a=a,b=b)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">43</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # In R, if a numeric is used as the key in a K:V list, it will populate the</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">44</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # entire list up to that point as ascending numerics pointing to NULLs.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">45</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # To get around this, we can "as.character(numeric_val)" as it does not</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">46</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # do the same backfilling for string keys. Although this yields another</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">47</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # problem, that the syntax `list((as.character(some_num))=anything)`</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">48</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # complains of `Error: unexpected '=' in "list((as.character(some_num))="`</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">49</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # So rather than a syntactically concise one liner, we need a few lines..</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">50</td>
+                    <td class="coverage">67<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    tgraph &lt;- list()</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">51</td>
+                    <td class="coverage">67<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    tgraph[[as.character(initial_value)]] &lt;- NA</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">52</td>
+                    <td class="coverage">67<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    if (max(0, max_orbit_distance) == 0) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">53</td>
+                    <td class="coverage">28<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        return(tgraph)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">54</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    } else {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">55</td>
+                    <td class="coverage">39<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        tgraph[[as.character(initial_value)]] &lt;- list()</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">56</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">57</td>
+                    <td class="coverage">39<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    cycle_prevention &lt;- append(cycle_prevention, list(initial_value))</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">58</td>
+                    <td class="coverage">39<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    for (branch_value in reverse_function(initial_value, P=P, a=a, b=b)) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">59</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        no_cycle &lt;- TRUE</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">60</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        for (previous_value in cycle_prevention) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">61</td>
+                    <td class="coverage">101<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            if (branch_value == previous_value) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">62</td>
+                    <td class="coverage">10<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                tgraph[[as.character(initial_value)]][[Collatz$SequenceState$CYCLE_INIT]] &lt;- branch_value</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">63</td>
+                    <td class="coverage">10<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                no_cycle &lt;- FALSE</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">64</td>
+                    <td class="coverage">10<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                break</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">65</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">66</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">67</td>
+                    <td class="coverage">58<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        if (no_cycle) {</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">68</td>
+                    <td class="coverage">48<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">            tgraph[[as.character(initial_value)]][[as.character(branch_value)]] &lt;- tree_graph(branch_value,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">69</td>
+                    <td class="coverage">48<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">                max_orbit_distance-1, P=P, a=a, b=b, cycle_prevention=cycle_prevention)[[as.character(branch_value)]]</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">70</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        }</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">71</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">72</td>
+                    <td class="coverage">39<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    return(tgraph)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">73</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">}</pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="R/reverse_function.R" class="hidden">
+              <table class="table-condensed">
+                <tbody>
+                  <tr class="never">
+                    <td class="num">1</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include utils.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">2</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">NULL</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">3</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">4</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' The "inverse"/"reverse" Collatz function</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">5</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">6</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Calculates the values that would return the input under the Collatz function.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">7</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">8</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Returns the output of a single application of a Collatz-esque reverse</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">9</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' function. If only one value is returned, it is the value that would be</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">10</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' divided by P. If two values are returned, the first is the value that</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">11</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' would be divided by P, and the second value is that which would undergo</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">12</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' the multiply and add step, regardless of which is larger.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">13</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param n (numeric|bigz) The value on which</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">14</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' to perform the reverse Collatz function</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">15</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param P (numeric|bigz) Modulus used to divide</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">16</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' n, iff n is equivalent to (0 mod P) Default is 2.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">17</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">18</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param b (numeric|bigz) Value to add</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">19</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' to the scaled value of n. Default is 1.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">20</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @returns A list of either numeric or bigz type</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">21</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @examples</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">22</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Calculates the values that would return the input under the Collatz</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">23</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # function. Without `gmp` or parameterisation, we can try something</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">24</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # simple like</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">25</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse_function(1)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">26</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse_function(2)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">27</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse_function(4)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">28</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # If we want change the default parameterisation we can;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">29</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse_function(3, -3, -2, -5)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">30</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Or if we only want to change one of them</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">31</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse_function(16, a=5)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">32</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # All the above work fine, but the function doesn't offer protection against</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">33</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # overflowing integers by default. To venture into the world of arbitrary</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">34</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">35</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse_function(99999999999999999999)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">36</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' reverse_function(as.bigz("99999999999999999999"))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">37</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @export</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">38</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">reverse_function &lt;- function(n, P=2, a=3, b=1){</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">39</td>
+                    <td class="coverage">128<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    assert_sane_parameterication(P,a,b)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">40</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # Every input can be reversed as the result of "n/P" division, which yields</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">41</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # "Pn"... {f(n) = an + b}~={(f(n) - b)/a = n} ~ if n was such that the</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">42</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # muliplication step was taken instead of the division by the modulus, then</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">43</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we're</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">44</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # not placing restrictions on the parameters yet, although there is a better</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">45</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # way of shortcutting this for the default variables, we need to always</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">46</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # attempt (f(n) - b)/a)</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">47</td>
+                    <td class="coverage">122<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    pre_values &lt;- list(P*n)</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">48</td>
+                    <td class="coverage">122<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    n_minus_b &lt;- (n-b)</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">49</td>
+                    <td class="coverage">122<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    if (n_minus_b%%a == 0 &amp;&amp; n_minus_b%%(P*a) != 0){</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">50</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # bigq does not have a defined use for %%, so must be int or bigz</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">51</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # bigz/bigz returns a bigq even if that bigq has denominator 1</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">52</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        # so we do a divq, "%/%", instead of div, to just get the bigz.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">53</td>
+                    <td class="coverage">60<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        pre_values &lt;- append(pre_values, list(n_minus_b%/%a))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">54</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    }</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">55</td>
+                    <td class="coverage">122<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    pre_values</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">56</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">}</pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="R/collatz_function.R" class="hidden">
+              <table class="table-condensed">
+                <tbody>
+                  <tr class="never">
+                    <td class="num">1</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include utils.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">2</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">NULL</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">3</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">4</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' The Collatz function</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">5</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">6</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Returns the output of a single application of a Collatz-esque function.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">7</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">8</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' This function will compute and return the result of applying one iteration</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">9</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' of a parameterised Collatz-esque function. Although it will operate with</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">10</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' integer inputs, for overflow safety, provide a gmp Big Integer ('bigz').</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">11</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#'</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">12</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param n (numeric|bigz) The value on which</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">13</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' to perform the Collatz-esque function</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">14</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param P (numeric|bigz): Modulus used to divide</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">15</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' n, iff n is equivalent to (0 mod P). Default is 2.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">16</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">17</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param b (numeric|bigz) Value to add</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">18</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' to the scaled value of n. Default is 1.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">19</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @returns a numeric, either in-built or a bigz from the gmp library.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">20</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @examples</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">21</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Returns the output of a single application of a Collatz-esque function.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">22</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Without `gmp` or parameterisation, we can try something simple like</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">23</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' collatz_function(5)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">24</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' collatz_function(16)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">25</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # If we want change the default parameterisation we can;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">26</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' collatz_function(4, 5, 2, 3)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">27</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Or if we only want to change one of them</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">28</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' collatz_function(3, a=-2)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">29</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # All the above work fine, but the function doesn't offer protection against</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">30</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # overflowing integers by default. To venture into the world of arbitrary</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">31</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">32</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' collatz_function(99999999999999999999)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">33</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' collatz_function(as.bigz("99999999999999999999"))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">34</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @export</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">35</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">collatz_function &lt;- function(n, P=2, a=3, b=1){</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">36</td>
+                    <td class="coverage">1134<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    assert_sane_parameterication(P,a,b)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">37</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # bigq does not have a defined use for %%, so must be int or bigz</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">38</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # bigz/bigz returns a bigq even if that bigq has denominator 1</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">39</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # so we do a divq, "%/%", instead of div, to just get the bigz.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">40</td>
+                    <td class="coverage">431<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    if (n%%P == 0) (n%/%P) else ((a*n)+b)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">41</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">}</pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="R/utils.R" class="hidden">
               <table class="table-condensed">
                 <tbody>
                   <tr class="never">
@@ -398,613 +2606,962 @@ table.table-condensed {
                     <td class="num">41</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r"># verbose, or stopping time check.</pre>
+                      <pre class="language-r"># verbose, or stopping time check. Create as an S3 class.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">42</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">Collatz$SequenceState &lt;- list()</pre>
+                      <pre class="language-r">Collatz$SequenceState &lt;- list(</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">43</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r"></pre>
+                      <pre class="language-r">    STOPPING_TIME="STOPPING_TIME",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">44</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' Sane Parameter Check</pre>
+                      <pre class="language-r">    TOTAL_STOPPING_TIME="TOTAL_STOPPING_TIME",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">45</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">    CYCLE_INIT="CYCLE_INIT",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">46</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' Handles the sanity check for the parameterisation (P,a,b)</pre>
+                      <pre class="language-r">    CYCLE_LENGTH="CYCLE_LENGTH",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">47</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">    MAX_STOP_OUT_OF_BOUNDS="MAX_STOP_OUT_OF_BOUNDS",</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">48</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' Required by both the function and reverse function, to assert that they</pre>
+                      <pre class="language-r">    ZERO_STOP="ZERO_STOP")</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">49</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' have sane parameters, otherwise will force stop the execution.</pre>
+                      <pre class="language-r">lockBinding("SequenceState", Collatz)</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">50</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r"></pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">51</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param P Modulus used to devide n, iff n is equivalent to (0 mod P).</pre>
+                      <pre class="language-r">#' Sane Parameter Check</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">52</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param a Factor by which to multiply n.</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">53</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param b Value to add to the scaled value of n.</pre>
+                      <pre class="language-r">#' Handles the sanity check for the parameterisation (P,a,b)</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">54</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">assertSaneParameterication &lt;- function(P, a, b) {</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">55</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero</pre>
+                      <pre class="language-r">#' Required by both the function and reverse function, to assert that they</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">56</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # theoretically, although would violate the reversability (if ~a is 0 then a</pre>
+                      <pre class="language-r">#' have sane parameters, otherwise will force stop the execution.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">57</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # value of "b" as the input to the reverse function would have a pre-emptive</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">58</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # value of every number not divisible by P). The function doesn't _have_ to</pre>
+                      <pre class="language-r">#' @param P Modulus used to devide n, iff n is equivalent to (0 mod P).</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">59</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # be reversable, but we are only interested in dealing with the class of</pre>
+                      <pre class="language-r">#' @param a Factor by which to multiply n.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">60</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # functions that exhibit behaviour consistant with the collatz function. If</pre>
+                      <pre class="language-r">#' @param b Value to add to the scaled value of n.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">61</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # _every_ input not divisable by P went straight to "b", it would simply</pre>
+                      <pre class="language-r">assert_sane_parameterication &lt;- function(P, a, b) {</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">62</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # cause a cycle consisting of "b" and every b/P^z that is an integer. While</pre>
+                      <pre class="language-r">    # Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">63</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # P in [-1, 1] could also be a reasonable check, as it makes every value</pre>
+                      <pre class="language-r">    # theoretically, although would violate the reversability (if ~a is 0 then a</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">64</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # either a 1 or 2 length cycle, it's not strictly an illegal operation.</pre>
+                      <pre class="language-r">    # value of "b" as the input to the reverse function would have a pre-emptive</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">65</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # "b" being zero would cause behaviour not consistant with the collatz</pre>
+                      <pre class="language-r">    # value of every number not divisible by P). The function doesn't _have_ to</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">66</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # function, but would not violate the reversability, so no check either.</pre>
+                      <pre class="language-r">    # be reversable, but we are only interested in dealing with the class of</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">67</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    # " != 0" is redundant for python assertions.</pre>
+                      <pre class="language-r">    # functions that exhibit behaviour consistant with the collatz function. If</pre>
                     </td>
                   </tr>
-                  <tr class="covered">
+                  <tr class="never">
                     <td class="num">68</td>
-                    <td class="coverage">4<em>x</em></td>
+                    <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    if (P == 0) stop(Collatz$SaneParameterErrMsg$P)</pre>
+                      <pre class="language-r">    # _every_ input not divisable by P went straight to "b", it would simply</pre>
                     </td>
                   </tr>
-                  <tr class="covered">
+                  <tr class="never">
                     <td class="num">69</td>
-                    <td class="coverage">2<em>x</em></td>
+                    <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    if (a == 0) stop(Collatz$SaneParameterErrMsg$A)</pre>
+                      <pre class="language-r">    # cause a cycle consisting of "b" and every b/P^z that is an integer. While</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">70</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">}</pre>
+                      <pre class="language-r">    # P in [-1, 1] could also be a reasonable check, as it makes every value</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">71</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r"></pre>
+                      <pre class="language-r">    # either a 1 or 2 length cycle, it's not strictly an illegal operation.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">72</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' The Collatz function</pre>
+                      <pre class="language-r">    # "b" being zero would cause behaviour not consistant with the collatz</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">73</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">    # function, but would not violate the reversability, so no check either.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">74</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' Returns the output of a single application of a Collatz-esque function.</pre>
+                      <pre class="language-r">    # " != 0" is redundant for python assertions.</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">75</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">10<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">    if (P == 0) stop(Collatz$SaneParameterErrMsg$P)</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">76</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">5<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' This function will compute and return the result of applying one iteration</pre>
+                      <pre class="language-r">    if (a == 0) stop(Collatz$SaneParameterErrMsg$A)</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">77</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' of a parameterised Collatz-esque function. Although it will operate with</pre>
+                      <pre class="language-r">}</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">78</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' integer inputs, for overflow safety, provide a gmp Big Integer ('bigz').</pre>
+                      <pre class="language-r"></pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">79</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#'</pre>
+                      <pre class="language-r">#' Stopping Time Terminus</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">80</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param n (numeric|bigz|bigq) The value on which</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">81</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' to perform the Collatz-esque function</pre>
+                      <pre class="language-r">#' Provides the appropriate lambda to use to check if iterations on an initial</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">82</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param P (numeric|bigz|bigq): Modulus used to divide</pre>
+                      <pre class="language-r">#' value have reached either the stopping time, or total stopping time.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">83</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' n, iff n is equivalent to (0 mod P). Default is 2.</pre>
+                      <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">84</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.</pre>
+                      <pre class="language-r">#' @param n The initial value to confirm against a stopping time check.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">85</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param b (numeric|bigz|bigq) Value to add</pre>
+                      <pre class="language-r">#' @param total_stop If false, the lambda will confirm that iterations of n</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">86</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' to the scaled value of n. Default is 1.</pre>
+                      <pre class="language-r">#'    have reached the oriented stopping time to reach a value closer to 0.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">87</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @returns a numeric, either in-built or a bigz | bigq from the gmp library.</pre>
+                      <pre class="language-r">#'    If true, the lambda will simply check equality to 1.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">88</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' If either n or P are bigz, then the result of n/P will be a bigq</pre>
+                      <pre class="language-r">#' @returns An anonymous function to check for the stopping time.</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">89</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' although it's denominator(~) will return 1.</pre>
+                      <pre class="language-r">stopping_time_terminus &lt;- function(n, total_stop) {</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">90</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">54<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @export</pre>
+                      <pre class="language-r">	if (total_stop) {</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="covered">
                     <td class="num">91</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">561<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">collatzFunction &lt;- function(n, P=2, a=3, b=1){</pre>
+                      <pre class="language-r">		return(function(x) { return(x==1) })</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">92</td>
-                    <td class="coverage">17<em>x</em></td>
+                    <td class="coverage">54<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    assertSaneParameterication(P,a,b)</pre>
+                      <pre class="language-r">	} else if (n &gt;= 0) {</pre>
                     </td>
                   </tr>
                   <tr class="covered">
                     <td class="num">93</td>
-                    <td class="coverage">6<em>x</em></td>
+                    <td class="coverage">492<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    if (n%%P == 0) (n/P) else ((a*n)+b)</pre>
+                      <pre class="language-r">		return(function(x) { return ((x &lt; n) &amp;&amp; (x &gt; 0)) })</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">94</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">}</pre>
+                      <pre class="language-r">	} else {</pre>
                     </td>
                   </tr>
-                  <tr class="never">
+                  <tr class="missed">
                     <td class="num">95</td>
-                    <td class="coverage"></td>
+                    <td class="coverage">!</td>
                     <td class="col-sm-12">
-                      <pre class="language-r"></pre>
+                      <pre class="language-r">		return(function(x) { return ((x &gt; n) &amp;&amp; (x &lt; 0)) })</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">96</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' The "inverse"/"reverse" Collatz function</pre>
+                      <pre class="language-r">	}</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">97</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
+                      <pre class="language-r">}</pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="R/stopping_time.R" class="hidden">
+              <table class="table-condensed">
+                <tbody>
+                  <tr class="never">
+                    <td class="num">1</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include utils.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">2</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @include hailstone_sequence.R</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">3</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">NULL</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">4</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r"></pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">5</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' Stopping Time</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">6</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
                       <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">98</td>
+                    <td class="num">7</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' Calculates the values that would return the input under the Collatz function.</pre>
+                      <pre class="language-r">#' Determine the stopping time, or "total" stopping time, for an initial value.</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">99</td>
+                    <td class="num">8</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">#'</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">100</td>
+                    <td class="num">9</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' Returns the output of a single application of a Collatz-esque reverse</pre>
+                      <pre class="language-r">#' Returns the stopping time, the amount of iterations required to reach a</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">101</td>
+                    <td class="num">10</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' function. If only one value is returned, it is the value that would be</pre>
+                      <pre class="language-r">#' value less than the initial value, or NaN if max_stopping_time is exceeded.</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">102</td>
+                    <td class="num">11</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' divided by P. If two values are returned, the first is the value that</pre>
+                      <pre class="language-r">#' Alternatively, if total_stopping_time is TRUE, then it will instead count</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">103</td>
+                    <td class="num">12</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' would be divided by P, and the second value is that which would undergo</pre>
+                      <pre class="language-r">#' the amount of iterations to reach 1. If the sequence does not stop, but</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">104</td>
+                    <td class="num">13</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' the multiply and add step, regardless of which is larger.</pre>
+                      <pre class="language-r">#' instead ends in a cycle, the result will be (Inf). If (P,a,b) are such</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">105</td>
+                    <td class="num">14</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param n (numeric|bigz|bigq) The value on which</pre>
+                      <pre class="language-r">#' that it is possible to get stuck on zero, the result will be the negative of</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">106</td>
+                    <td class="num">15</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' to perform the reverse Collatz function</pre>
+                      <pre class="language-r">#' what would otherwise be the "total stopping time" to reach 1, where 0 is</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">107</td>
+                    <td class="num">16</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param P (numeric|bigz|bigq) Modulus used to divide</pre>
+                      <pre class="language-r">#' considered a "total stop" that should not occur as it does form a cycle of</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">108</td>
+                    <td class="num">17</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' n, iff n is equivalent to (0 mod P) Default is 2.</pre>
+                      <pre class="language-r">#' length 1.</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">109</td>
+                    <td class="num">18</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param a (numeric|bigz|bigq) Factor by which to multiply n. Default is 3.</pre>
+                      <pre class="language-r">#' @param initial_value (int): The value for which to find the stopping time.</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">110</td>
+                    <td class="num">19</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @param b (numeric|bigz|bigq) Value to add</pre>
+                      <pre class="language-r">#' @param P (numeric|bigz): Modulus used to divide</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">111</td>
+                    <td class="num">20</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' n, iff n is equivalent to (0 mod P). Default is 2.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">21</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param a (numeric|bigz) Factor by which to multiply n. Default is 3.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">22</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param b (numeric|bigz) Value to add</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">23</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">#' to the scaled value of n. Default is 1.</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">112</td>
+                    <td class="num">24</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' @returns A vector of either numeric or bigz | bigq type</pre>
+                      <pre class="language-r">#' @param max_stopping_time (int) Maximum amount of times to iterate the</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">113</td>
+                    <td class="num">25</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' function, if the stopping time is not reached. IF the max_stopping_time</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">26</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' is reached, the function will return NaN. Default is 1000.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">27</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @param total_stopping_time (bool) Whether or not to execute until the "total"</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">28</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping time (number of iterations to obtain 1) rather than the regular</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">29</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping time (number of iterations to reach a value less than the initial</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">30</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' value). Default is FALSE.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">31</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @returns An integer numeral if stopped, Inf if a cycle, NaN if OOB, else NA.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">32</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' @examples</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">33</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Calculates the "stopping time", or optionally the "total" stopping time.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">34</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Without `gmp` or parameterisation, we can try something simple like</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">35</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(27)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">36</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(27, total_stopping_time=TRUE)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">37</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # If we want change the default parameterisation we can;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">38</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(3, 5, 2, 1)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">39</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # Or if we only want to change one of them</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">40</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(17, a=5)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">41</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # All the above work fine, but the function doesn't offer protection against</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">42</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # overflowing integers by default. To venture into the world of arbitrary</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">43</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">44</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(99999999999999999999)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">45</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(as.bigz("99999999999999999999"))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">46</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # As an extra note, the original motivation for creating a range of Collatz</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">47</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # themed packages came from some earlier scripts for calculating the stopping</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">48</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # distances under certain parameterisations. An inconsequential result of</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">49</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # which was observing that all of the following, for however high `k` goes,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">50</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' # should equal `96`!</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">51</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(27)</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">52</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(27+as.bigz("576460752303423488"))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">53</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(27+(2*as.bigz("576460752303423488")))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">54</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(27+(3*as.bigz("576460752303423488")))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">55</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">#' stopping_time(27+(4*as.bigz("576460752303423488")))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">56</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">#' @export</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">114</td>
+                    <td class="num">57</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">reverseFunction &lt;- function(n, P=2, a=3, b=1){</pre>
+                      <pre class="language-r">stopping_time &lt;- function(initial_value, P=2, a=3, b=1,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">58</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    max_stopping_time=1000, total_stopping_time=FALSE){</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">59</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # The information is contained in the verbose form of a hailstone sequence.</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">60</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # Although the "max_~_time" for hailstones is name for "total stopping" time</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">61</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # and the "max_~_time" for this "stopping time" function is _not_ "total",</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">62</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # they are handled the same way, as the default for "total_stopping_time"</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">63</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # for hailstones is true, but for this, is false. Thus the naming difference</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">115</td>
-                    <td class="coverage">19<em>x</em></td>
+                    <td class="num">64</td>
+                    <td class="coverage">46<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    assertSaneParameterication(P,a,b)</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">116</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    # Every input can be reversed as the result of "n/P" division, which yields</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">117</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    # "Pn"... {f(n) = an + b}~={(f(n) - b)/a = n} ~ if n was such that the</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">118</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    # muliplication step was taken instead of the division by the modulus, then</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">119</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    # (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we're</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">120</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    # not placing restrictions on the parameters yet, although there is a better</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">121</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    # way of shortcutting this for the default variables, we need to always</pre>
-                    </td>
-                  </tr>
-                  <tr class="never">
-                    <td class="num">122</td>
-                    <td class="coverage"></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    # attempt (f(n) - b)/a)</pre>
+                      <pre class="language-r">    sequence &lt;- hailstone_sequence(initial_value, P=P, a=a, b=b, verbose=TRUE,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">123</td>
-                    <td class="coverage">16<em>x</em></td>
+                    <td class="num">65</td>
+                    <td class="coverage">46<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    pre.values &lt;- c(P*n)</pre>
+                      <pre class="language-r">                                   max_total_stopping_time=max_stopping_time,</pre>
                     </td>
                   </tr>
                   <tr class="covered">
-                    <td class="num">124</td>
-                    <td class="coverage">16<em>x</em></td>
+                    <td class="num">66</td>
+                    <td class="coverage">46<em>x</em></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    if ((n-b)%%a == 0 &amp;&amp; (n-b)%%(P*a) != 0){</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">125</td>
-                    <td class="coverage">6<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">        pre.values &lt;- append(pre.values, (n-b)/a)</pre>
+                      <pre class="language-r">                                   total_stopping_time=total_stopping_time)</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">126</td>
+                    <td class="num">67</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">    }</pre>
-                    </td>
-                  </tr>
-                  <tr class="covered">
-                    <td class="num">127</td>
-                    <td class="coverage">16<em>x</em></td>
-                    <td class="col-sm-12">
-                      <pre class="language-r">    pre.values</pre>
+                      <pre class="language-r">    # For total/regular/zero stopping time, the value is already the same as</pre>
                     </td>
                   </tr>
                   <tr class="never">
-                    <td class="num">128</td>
+                    <td class="num">68</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # that present, for cycles we report infinity instead of the cycle length,</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">69</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # and for max stop out of bounds, we report None instead of the max stop cap</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">70</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # An extra note here is that while other designs use the enum values as the</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">71</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    # comparitors in the switch, R is very unhappy with non-literal switch keys.</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">72</td>
+                    <td class="coverage">43<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    return(switch(sequence$terminalCondition,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">73</td>
+                    <td class="coverage">43<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        "TOTAL_STOPPING_TIME" = sequence$terminalStatus,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">74</td>
+                    <td class="coverage">43<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        "STOPPING_TIME" = sequence$terminalStatus,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">75</td>
+                    <td class="coverage">43<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        "CYCLE_LENGTH" = Inf,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">76</td>
+                    <td class="coverage">43<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        "ZERO_STOP" = sequence$terminalStatus,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">77</td>
+                    <td class="coverage">43<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        "MAX_STOP_OUT_OF_BOUNDS" = NaN,</pre>
+                    </td>
+                  </tr>
+                  <tr class="covered">
+                    <td class="num">78</td>
+                    <td class="coverage">43<em>x</em></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">        NA</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">79</td>
+                    <td class="coverage"></td>
+                    <td class="col-sm-12">
+                      <pre class="language-r">    ))</pre>
+                    </td>
+                  </tr>
+                  <tr class="never">
+                    <td class="num">80</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
                       <pre class="language-r">}</pre>
