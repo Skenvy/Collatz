@@ -108,7 +108,7 @@ jobs:
     #   with:
     #     name: some-artefacts
     #     path: ruby/some-artefacts
-    - name: 📦 Publish
+    # - name: 📦 Publish
     # TODO: run: or uses: something depending on the languges
   docs:
     name: Ruby 🔻💎🔻 Docs 📄
