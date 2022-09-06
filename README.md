@@ -1,7 +1,7 @@
 # Collatz
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), prospectively implemented in python/R/julia/go/java/? with notes in LaTeX.
 ## Badges
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6311/badge)](https://bestpractices.coreinfrastructure.org/projects/6311) [![Go Reference](https://pkg.go.dev/badge/github.com/Skenvy/Collatz/go.svg)](https://pkg.go.dev/github.com/Skenvy/Collatz/go)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6311/badge)](https://bestpractices.coreinfrastructure.org/projects/6311) [![Go Reference](https://pkg.go.dev/badge/github.com/Skenvy/Collatz/go.svg)](https://pkg.go.dev/github.com/Skenvy/Collatz/go) [![CRAN Version](https://www.r-pkg.org/badges/version/collatz)](https://cran.r-project.org/package=collatz)
 ## The gist
 Each language's implementation should share the same functionality, or as close to it as possible, such that a consistent usability is delivered across all languages' implementations.
 For a v1.0.0 release, handling arbitrary integers is a nice to have, but not required. Alternatively, all implementations in a language might use that languages arbitrary integer implementation, as speed / performance is specifically not a focus of this, in favour of generalisability or parameterisability.
@@ -15,7 +15,7 @@ For a v1.0.0 release, handling arbitrary integers is a nice to have, but not req
 | [LaTeX](https://github.com/Skenvy/Collatz/tree/main/LaTeX) | _N/A_ | **#TODO** | _N/A_ |
 | [Node.JS](https://github.com/Skenvy/Collatz/tree/main/node.js) | **#TODO** | **#TODO** | **#TODO** |
 | [Python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | **#TODO** | _N/A_ |
-| [R](https://github.com/Skenvy/Collatz/tree/main/R) | **#TODO** | [roxy+pkgd](https://skenvy.github.io/Collatz/R/)+[covr](https://skenvy.github.io/Collatz/R/covr/Collatz-report.html)+[PDF](https://skenvy.github.io/Collatz/R/pdf/) | _N/A_ |
+| [R](https://github.com/Skenvy/Collatz/tree/main/R) | [CRAN](https://cran.r-project.org/package=collatz) | [roxy+pkgd](https://skenvy.github.io/Collatz/R/)+[covr](https://skenvy.github.io/Collatz/R/covr/Collatz-report.html)+[PDF](https://skenvy.github.io/Collatz/R/pdf/) | _N/A_ |
 | [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) | **#TODO** | **#TODO** | **#TODO** |
 | [Rust](https://github.com/Skenvy/Collatz/tree/main/rust) | **#TODO** | **#TODO** | **#TODO** |
 ## Basic functionality.
