@@ -28,3 +28,48 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    # - name: 🧱 Install build dependencies
+    #   run: make <make-environment-dependencies>
+    # - name: 🦂 Test
+    #   run: make test
+  full-test:
+    name: Ruby 🔻💎🔻 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['2.7', '3.0', '3.1']
+        os: [ubuntu-latest] # , macOS-latest, windows-latest # < maybe.
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby ${{ matrix.version }}
+      uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
+      with:
+        ruby-version: ${{ matrix.version }}
+        bundler-cache: true
+    # TODO: Maybe another step to install test dependencies
+    # - name: 🦂 Test
+    # TODO: run: or uses: something depending on the languges
+  # Docs step is optional depending on language
+  # docs:
+  #   name: Ruby 🔻💎🔻 Docs 📄 Quick Test 🦂
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+  #   - name: 🔻💎🔻 Set up Ruby
+  #     uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
+  #     with:
+  #       ruby-version: '2.7'
+  #       bundler-cache: true
+  #   - name: 📄 Docs
+  #     run: make docs

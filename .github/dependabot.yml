@@ -34,7 +34,7 @@ updates:
 - package-ecosystem: bundler
   directory: "/ruby"
   schedule:
-    interval: monthly
+    interval: weekly
 - package-ecosystem: cargo
   directory: "/rust"
   schedule:
