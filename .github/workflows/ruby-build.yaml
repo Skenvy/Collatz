@@ -34,7 +34,7 @@ jobs:
     - name: Check if version files changed
       id: version-file-check
       run: |
-        export VERSION_FILE="ruby/<version-file>"
+        export VERSION_FILE="ruby/lib/collatz/version.rb"
         [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
     - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
@@ -42,7 +42,7 @@ jobs:
       id: version-tag-exists
       run: |
         git fetch --tags
-        export VER=$(<version-extracting-command>)
+        export VER=$(grep lib/collatz/version.rb -e "VERSION" | cut -d \" -f 2)
         [ -z "$(git tag -l "ruby-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
@@ -92,7 +92,7 @@ jobs:
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        export VER=$(some-version-obtaining-call)
+        export VER=$(grep lib/collatz/version.rb -e "VERSION" | cut -d \" -f 2)
         gh release create ruby-v$VER --generate-notes -t "Ruby: Version $VER"
   publish:
     name: Ruby 🔻💎🔻 Publish 📦
