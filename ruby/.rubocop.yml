@@ -1,5 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.7
+  UseCache: false
   # NewCops: enable # would silence the recommendation
   # # to enable new, but would hide which ones were run
   # SuggestExtensions: false # would silence the tips
