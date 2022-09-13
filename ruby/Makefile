@@ -3,7 +3,6 @@ SHELL:=/bin/bash
 
 # Assumes `gem install bundler`
 setup:
-	bundle clean
 	bundle install
 
 clean:
