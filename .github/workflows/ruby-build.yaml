@@ -67,13 +67,14 @@ jobs:
         bundler-cache: true
     - name: 🧱 Install build dependencies
       run: make setup
-    # Some step that uses `make build`
-    # - name: 🆙 Upload dists
-    #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
-    #   with:
-    #     name: some-artefacts
-    #     path: ruby/some-artefacts/
-    #     if-no-files-found: error
+    - name: 💎 Build gem
+      run: make build
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Gem
+        path: ruby/pkg/collatz-*.gem
+        if-no-files-found: error
   release:
     name: Ruby 🔻💎🔻 Release 🚰
     needs: [build]
@@ -83,17 +84,17 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-    #   with:
-    #     name: some-artefacts
-    #     path: ruby/some-artefacts
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Gem
+        path: ruby/pkg
     - name: 🚰 Release
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         export VER=$(grep lib/collatz/version.rb -e "VERSION" | cut -d \" -f 2)
-        gh release create ruby-v$VER --generate-notes -t "Ruby: Version $VER"
+        gh release create ruby-v$VER "$(find . | grep -e pkg/collatz-*\.gem)#Gem" --generate-notes -t "Ruby: Version $VER"
   publish:
     name: Ruby 🔻💎🔻 Publish 📦
     needs: [release]
@@ -103,13 +104,14 @@ jobs:
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-    #   with:
-    #     name: some-artefacts
-    #     path: ruby/some-artefacts
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Gem
+        path: ruby/pkg
     # - name: 📦 Publish
     # TODO: run: or uses: something depending on the languges
+    # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-rubygems-registry#publishing-a-package
   docs:
     name: Ruby 🔻💎🔻 Docs 📄
     needs: [release, publish]
