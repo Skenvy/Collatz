@@ -33,10 +33,10 @@ jobs:
       with:
         ruby-version: '2.7'
         bundler-cache: true
-    # - name: 🧱 Install build dependencies
-    #   run: make <make-environment-dependencies>
-    # - name: 🦂 Test
-    #   run: make test
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🦂 Test
+      run: make test
   full-test:
     name: Ruby 🔻💎🔻 Full Test 🦂
     if: >- 
@@ -56,9 +56,10 @@ jobs:
       with:
         ruby-version: ${{ matrix.version }}
         bundler-cache: true
-    # TODO: Maybe another step to install test dependencies
-    # - name: 🦂 Test
-    # TODO: run: or uses: something depending on the languges
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🦂 Test
+      run: make test
   # Docs step is optional depending on language
   # docs:
   #   name: Ruby 🔻💎🔻 Docs 📄 Quick Test 🦂

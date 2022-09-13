@@ -7,12 +7,11 @@ Gem::Specification.new do |spec|
   spec.version = Collatz::VERSION
   spec.authors = ["Skenvy"]
   spec.email = ["nathan.a.z.levett@gmail.com"]
-
   spec.summary = "Functions Related to the Collatz/Syracuse/3n+1 Problem"
   spec.description = "Provides the basic functionality to interact with the Collatz conjecture.
   The parameterisation uses the same (P,a,b) notation as Conway's generalisations.
   Besides the function and reverse function, there is also functionality to retrieve
-  the hailstone sequence, the \"stopping time\"/\"total stopping time\", or tree-graph. 
+  the hailstone sequence, the \"stopping time\"/\"total stopping time\", or tree-graph.
   The only restriction placed on parameters is that both P and a can't be 0."
   spec.homepage = "https://github.com/Skenvy/Collatz/tree/main/ruby"
   spec.required_ruby_version = ">= 2.7.0"

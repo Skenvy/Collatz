@@ -23,14 +23,14 @@ In terms of what it added, post merging down a folder, besides all the other dec
 * `~/.rspec` (RSpec testing)
 * `~/.rubocop.yml` (RuboCop linter)
 * `~/collatz.gemspec` (description file of the gem)
-* `~/Gemfile`
-* `~/Gemfile.lock`
+* `~/Gemfile` (Bundler declarative dependencies)
+* `~/Gemfile.lock` (Bundler imperative dependencies)
 * `~/Rakefile` (Ruby's official task running makefile)
-* `~/bin/console` (bundler script)
-* `~/bin/setup` (bundler script)
+* `~/bin/console` (Bundler script)
+* `~/bin/setup` (Bundler script)
 * `~/lib/collatz.rb` (what is loaded from a `require "collatz"` invocation)
 * `~/lib/collatz/version.rb` (project's version as an object instance _in-code_)
-* `~/sig/collatz.rbs`
+* `~/sig/collatz.rbs` (Signature)
 * `~/spec/collatz_spec.rb` (RSpec testing)
 * `~/spec/spec_helper.rb` (RSpec testing)
 
@@ -38,4 +38,6 @@ From the [Make your own Gem](https://guides.rubygems.org/make-your-own-gem/) gui
 
 Both files in the `~/spec/` folder and the `~/.rspec` file are RSpec testing files, which was what we chose in `bundle config gem.test` (out of `rspec/minitest/test-unit/(none)`) where `minitest` is the ruby default OotB testing framework. From looking at the examples on the guide using minitest versus what bundler generated for the choice of rspec, it seems that the choice impacts what is required in the rakefile, how it sets up the "test task" and how it knows where to look for the files to interpret under which ever testing framework was chosen. I'm not immediately a huge fan of the "acceptance testing" style of the rspec testing over the "expect"-esque style of the minitest framework, so I might swap to that later. Both `~/bin/` files are ignored by the `~/collatz.gemspec` dynamic determination of the `spec.files` field. The guide for creating a gem mentions bin files being included, so it seems the bundler default is to ignore the potential of wanting to add a binary file over what it considers the most beneficial way of setting itself up with the bin scripts. I'm not sure how easily they could be removed, i.e. how that would break bundler commands, but I imagine there'd be no way to keep them if wanting to remove the bin exclusion from the `spec.files` to actually include an executable with the gem.
 
-The `~/.rubocop.yml` is a config for the `rubocop` choice we made for `bundle config gem.linter` (out of `rubocop/standard/(none)`), and there is an entry for a task in the rakefile to run this linter. I'm not sure yet what requires or expects the `~/sig/collatz.rbs` file, but its [`rbs`](https://github.com/ruby/rbs) extension is ruby official.
+The `~/.rubocop.yml` is a config for the `rubocop` choice we made for `bundle config gem.linter` (out of `rubocop/standard/(none)`), and there is an entry for a task in the rakefile to run this linter. I'm not sure yet what requires or expects the `~/sig/collatz.rbs` file, but its [`rbs`](https://github.com/ruby/rbs) extension is ruby official. Asking the ruby discord reveals that it's a pretty new feature and entirely optional. Although signature / type interfacing has been provided by gems like sorbet for a long time, the ruby official rbs itself is new.
+
+Now that we have a small understanding of what is going on with the files, let's try and set up a "Hello World" package with v0.0.1 to release to GitHub packages to get that part of the workflow set up. After trying to run `bundle exec rake` a few times to test the output and verify that it works, I've realised how grossly verbose RuboCop is, and it might be worthwhile switching to standard instead. As much as I don't like [Black](https://black.readthedocs.io/en/stable/) (the python strict linter), I wonder if [standard](https://github.com/testdouble/standard), which is also strict, would be passable.

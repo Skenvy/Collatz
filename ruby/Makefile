@@ -1,4 +1,4 @@
-.PHONY: setup clean test build
+.PHONY: setup clean test build install
 SHELL:=/bin/bash
 
 # Assumes `gem install bundler`
@@ -6,7 +6,7 @@ setup:
 	bundle install
 
 clean:
-	rm collatz-*.gem
+	rm -f collatz-*.gem
 
 test: clean
 	bundle exec rake
