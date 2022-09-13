@@ -70,6 +70,8 @@ Lint/RequireRangeParentheses:
   Enabled: true
 Lint/RequireRelativeSelfPath:
   Enabled: true
+Lint/ScriptPermission:
+  Enabled: false
 Lint/SymbolConversion:
   Enabled: true
 Lint/ToEnumArguments:
