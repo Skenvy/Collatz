@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 2.7.0
   UseCache: false
   # NewCops: enable # would silence the recommendation
   # # to enable new, but would hide which ones were run
