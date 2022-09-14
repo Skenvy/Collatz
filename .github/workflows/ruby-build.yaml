@@ -117,8 +117,10 @@ jobs:
         name: Gem
         path: ruby/pkg
     - name: 📦 Publish to GitHub Packages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo -e "---\n:github: Bearer <PAT|TOKEN>" > ~/.gem/credentials
+        echo -e "---\n:github: Bearer $GITHUB_TOKEN" > ~/.gem/credentials
         chmod 0600 ~/.gem/credentials
         make push_github
         rm ~/.gem/credentials
