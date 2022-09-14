@@ -98,6 +98,8 @@ jobs:
   publish:
     name: Ruby 🔻💎🔻 Publish 📦
     needs: [release]
+    permissions:
+      packages: write
     runs-on: ubuntu-latest
     steps:
     # Although the dists are built uses checkout to satisfy refs/tags existence
