@@ -1,9 +1,12 @@
-.PHONY: setup clean test build install
+.PHONY: setup setup_github clean test build install push_rubygems push_github
 SHELL:=/bin/bash
 
 # Assumes `gem install bundler`
 setup:
 	bundle install
+
+setup_github:
+	gem install keycutter
 
 clean:
 	bundle exec rake clean
@@ -25,3 +28,12 @@ build: test
 # in the PATH to then use any gem executables that it may contain.
 install: build
 	gem install ./pkg/collatz-$$(grep lib/collatz/version.rb -e "VERSION" | cut -d \" -f 2).gem --user-install
+
+# Will be run with one "pkg/collatz-*.gem" file
+# rubygems_api_key and the rubygems host are the default
+push_rubygems:
+	gem push $$(find . | grep pkg/collatz-*.gem)
+
+# Will be run with one "pkg/collatz-*.gem" file
+push_github:
+	gem push --key github --host https://rubygems.pkg.github.com/Skenvy $$(find . | grep pkg/collatz-*.gem)

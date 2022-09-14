@@ -104,39 +104,57 @@ jobs:
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-      with:
-        name: Gem
-        path: ruby/pkg
-    # - name: 📦 Publish
-    # TODO: run: or uses: something depending on the languges
-    # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-rubygems-registry#publishing-a-package
-  docs:
-    name: Ruby 🔻💎🔻 Docs 📄
-    needs: [release, publish]
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-    - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
       with:
         ruby-version: '2.7'
         bundler-cache: true
-    - name: 📄 Docs
+    - name: 🔑 Keycutter for GitHub
+      run: make setup_github
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Gem
+        path: ruby/pkg
+    - name: 📦 Publish to GitHub Packages
       run: |
-        export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
-        # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-ruby'
+        echo -e "---\n:github: Bearer <PAT|TOKEN>" > ~/.gem/credentials
+        make push_github
+        rm ~/.gem/credentials
+    - name: 📦 Publish to RubyGems
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  docs-merge:
-    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
-    needs: [docs]
-    permissions:
-      contents: write
-    uses: ./.github/workflows/github-pages.yaml
-    with:
-      merge_from: 'gh-pages-ruby'
+        RUBYGEMS_API_KEY_BASE64: ${{ secrets.RUBYGEMS_API_KEY_BASE64 }}
+      run: |
+        echo -n "$RUBYGEMS_API_KEY_BASE64" | base64 --decode > ~/.gem/credentials
+        make push_rubygems
+        rm ~/.gem/credentials
+    # TODO: run: or uses: something depending on the languges
+    # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-rubygems-registry#publishing-a-package
+  # docs:
+  #   name: Ruby 🔻💎🔻 Docs 📄
+  #   needs: [release, publish]
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+  #   - name: 🔻💎🔻 Set up Ruby
+  #     uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
+  #     with:
+  #       ruby-version: '2.7'
+  #       bundler-cache: true
+  #   - name: 📄 Docs
+  #     run: |
+  #       export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
+  #       # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-ruby'
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # docs-merge:
+  #   name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+  #   needs: [docs]
+  #   permissions:
+  #     contents: write
+  #   uses: ./.github/workflows/github-pages.yaml
+  #   with:
+  #     merge_from: 'gh-pages-ruby'

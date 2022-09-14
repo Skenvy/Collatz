@@ -3,10 +3,11 @@
 require_relative "lib/collatz/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "collatz"
+  spec.name    = "collatz"
   spec.version = Collatz::VERSION
-  spec.authors = ["Skenvy"]
-  spec.email = ["nathan.a.z.levett@gmail.com"]
+  spec.license = "Apache-2.0"
+  spec.authors = ["Nathan Levett"]
+  spec.email   = ["nathan.a.z.levett@gmail.com"]
   spec.summary = "Functions Related to the Collatz/Syracuse/3n+1 Problem"
   spec.description = "Provides the basic functionality to interact with the Collatz conjecture.
   The parameterisation uses the same (P,a,b) notation as Conway's generalisations.
@@ -15,7 +16,6 @@ Gem::Specification.new do |spec|
   The only restriction placed on parameters is that both P and a can't be 0."
   spec.homepage = "https://github.com/Skenvy/Collatz/tree/main/ruby"
   spec.required_ruby_version = ">= 2.7.0"
-  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/Skenvy/Collatz/tree/main/ruby"
   # Specify which files should be added to the gem when it is released.
