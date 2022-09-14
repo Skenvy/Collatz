@@ -119,6 +119,7 @@ jobs:
     - name: 📦 Publish to GitHub Packages
       run: |
         echo -e "---\n:github: Bearer <PAT|TOKEN>" > ~/.gem/credentials
+        chmod 0600 ~/.gem/credentials
         make push_github
         rm ~/.gem/credentials
     - name: 📦 Publish to RubyGems
@@ -126,6 +127,7 @@ jobs:
         RUBYGEMS_API_KEY_BASE64: ${{ secrets.RUBYGEMS_API_KEY_BASE64 }}
       run: |
         echo -n "$RUBYGEMS_API_KEY_BASE64" | base64 --decode > ~/.gem/credentials
+        chmod 0600 ~/.gem/credentials
         make push_rubygems
         rm ~/.gem/credentials
     # TODO: run: or uses: something depending on the languges
