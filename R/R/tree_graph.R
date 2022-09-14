@@ -24,8 +24,19 @@ NULL
 #' by keeping track of all values added across previous nest depths. Only to be
 #' used internally by the function recursing. Does not expect input.
 #' @returns A set of nested dictionaries.
+#' @examples
+#' #Compute a tree graph, which takes both a value to initialise the tree from,
+#' # and an "orbit distance" for how many layers deep in the tree to compute;
+#' tree_graph(16, 3)
+#' # It will also stop on finding a cycle;
+#' tree_graph(4, 3)
+#' # And can be parameterised;
+#' tree_graph(1, 1, -3, -2, -5)
+#' # If b is a multiple of a, but not of Pa, then 0 can have a reverse;
+#' tree_graph(0, 1, 17, 2, -6)
+#' # The tree graph can run on `bigz`;
+#' tree_graph((27+as.bigz("576460752303423488")), 3)
 #' @export
-
 tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_prevention=list()){
     # Call out the reverse_function before any magic returns to trap bad values.
     throwaway_test <- reverse_function(initial_value,P=P,a=a,b=b)

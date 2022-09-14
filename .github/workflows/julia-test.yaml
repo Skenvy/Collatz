@@ -59,7 +59,7 @@ jobs:
         version: ${{ matrix.version }}
         arch: ${{ matrix.arch }}
     - name: 🧰 Cache
-      uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129 # v3.0.5
+      uses: actions/cache@fd5de65bc895cf536527842281bea11763fefd77 # v3.0.8
       env:
         cache-name: cache-artifacts
       with:
@@ -70,7 +70,7 @@ jobs:
           ${{ runner.os }}-test-
           ${{ runner.os }}-
     - name: 🦂 Test
-      uses: julia-actions/julia-runtest@161c97cbc529b36fae585928ed5db05b00fdf2bc # v1.7.0
+      uses: julia-actions/julia-runtest@7ea3b3e0bd2f7de6d8104e238f69a715c988a5d1 # v1.8.0
       with:
         project: julia
   docs:

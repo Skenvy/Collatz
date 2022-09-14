@@ -29,3 +29,18 @@ This function will compute and return the result of applying one iteration
 of a parameterised Collatz-esque function. Although it will operate with
 integer inputs, for overflow safety, provide a gmp Big Integer ('bigz').
 }
+\examples{
+# Returns the output of a single application of a Collatz-esque function.
+# Without `gmp` or parameterisation, we can try something simple like
+collatz_function(5)
+collatz_function(16)
+# If we want change the default parameterisation we can;
+collatz_function(4, 5, 2, 3)
+# Or if we only want to change one of them
+collatz_function(3, a=-2)
+# All the above work fine, but the function doesn't offer protection against
+# overflowing integers by default. To venture into the world of arbitrary
+# integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+collatz_function(99999999999999999999)
+collatz_function(as.bigz("99999999999999999999"))
+}
