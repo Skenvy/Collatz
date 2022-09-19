@@ -60,3 +60,4 @@ lib/collatz.rb:19:20: C: [Correctable] Style/NumericLiterals: Use underscores(_)
 VERIFIED_MAXIMUM = 295147905179352825856
                    ^^^^^^^^^^^^^^^^^^^^^
 ```
+We'll also have to add the cop `Naming/MethodParameterName: MinNameLength: 1` to stop it from complaining about all our uses of `"P"`, `"a"`, and `"b"`. Also worth mentioning is that, unlike other implementations, in ruby we can't use a capital letter to start a non-constant value, so we have to swap all capital `"P"` for lowercase `"p"`'s, lest we get the `"Formal argument cannot be a constant"` error.

@@ -1,10 +1,9 @@
 AllCops:
   TargetRubyVersion: 2.7.0
   UseCache: false
+  SuggestExtensions: false
   # NewCops: enable # would silence the recommendation
   # # to enable new, but would hide which ones were run
-  # SuggestExtensions: false # would silence the tips
-  # # for recommended suggested gems.
 
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
@@ -13,6 +12,8 @@ Gemspec/RequireMFA:
 
 Naming/BlockForwarding:
   Enabled: true
+Naming/MethodParameterName:
+  MinNameLength: 1
 
 Security/CompoundHash:
   Enabled: true
