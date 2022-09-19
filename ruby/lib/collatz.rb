@@ -65,6 +65,7 @@ end
 # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p)
 # @param [Integer] a Factor by which to multiply n.
 # @param [Integer] b Value to add to the scaled value of n.
+# @raise [FailedSaneParameterCheck] If p or a are 0.
 def assert_sane_parameterisation(p, a, _b)
   # Sanity check (p,a,b) ~ p absolutely can't be 0. a "could" be zero
   # theoretically, although would violate the reversability (if ~a is 0 then a
@@ -81,4 +82,33 @@ def assert_sane_parameterisation(p, a, _b)
   # " != 0" is redundant for python assertions.
   raise FailedSaneParameterCheck SaneParameterErrMsg::SANE_PARAMS_P unless p != 0
   raise FailedSaneParameterCheck SaneParameterErrMsg::SANE_PARAMS_A unless a != 0
+end
+
+# Returns the output of a single application of a Collatz-esque function.
+# @raise [FailedSaneParameterCheck] If p or a are 0.
+# @param [Integer] n The value on which to perform the Collatz-esque function.
+# @param [Integer] P Modulus used to devide n, iff n is equivalent to (0 mod P).
+# @param [Integer] a Factor by which to multiply n.
+# @param [Integer] b Value to add to the scaled value of n.
+# @return [Integer] The result of the function
+def function(n, p = 2, a = 3, b = 1)
+  assert_sane_parameterisation(p, a, b)
+  (n%p).zero? ? (n/p) : ((a*n)+b)
+end
+
+# Returns the output of a single application of a Collatz-esque reverse function. If
+# only one value is returned, it is the value that would be divided by p. If two values
+# are returned, the first is the value that would be divided by p, and the second value
+# is that which would undergo the multiply and add step, regardless of which is larger.
+# @raise [FailedSaneParameterCheck] If p or a are 0.
+# @param [Integer] n The value on which to perform the reverse Collatz function.
+# @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
+# @param [Integer] a Factor by which to multiply n.
+# @param [Integer] b Value to add to the scaled value of n.
+# @return [Integer] The result of the function
+def reverse_function(n, p = 2, a = 3, b = 1)
+  assert_sane_parameterisation(p, a, b)
+  pre_values = [p*n]
+  pre_values += [(n-b)/a] if ((n-b)%a).zero? && !((n-b)%(p*a)).zero?
+  pre_values
 end
