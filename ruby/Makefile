@@ -17,9 +17,10 @@ clean:
 docs: clean
 	bundle exec rake rdoc
 
-# default spec + rubocop
+# default (just `rake`) is spec + rubocop, but be pedantic in case this changes.
 test: clean
-	bundle exec rake
+	bundle exec rake spec
+	bundle exec rake rubocop
 
 # We can choose from `gem build collatz.gemspec` or `bundle exec rake build`.
 # The gem build command creates a ./collatz-$VER.gem file, and the rake build

@@ -115,7 +115,7 @@ end
 # @param [Integer] a Factor by which to multiply n.
 # @param [Integer] b Value to add to the scaled value of n.
 #
-# @return [Integer] The result of the function
+# @return [Integer] The values that would return the input if given to the function.
 def reverse_function(n, p: 2, a: 3, b: 1)
   assert_sane_parameterisation(p, a, b)
   pre_values = [p*n]
@@ -151,6 +151,9 @@ end
 # capability to determine that it has encountered a cycle, the cycle from "1"
 # wont be attempted or reported as part of a cycle, regardless of default or
 # custom parameterisation, as "1" is considered a "total stop".
+#
+# @raise [FailedSaneParameterCheck] If p or a are 0.
+#
 # @param [Integer] initial_value The value to begin the hailstone sequence from.
 # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
 # @param [Integer] a Factor by which to multiply n.
@@ -159,6 +162,7 @@ end
 # @param [Boolean] total_stopping_time Whether or not to execute until the "total" stopping time
 #     (number of iterations to obtain 1) rather than the regular stopping time (number
 #     of iterations to reach a value less than the initial value).
+#
 # @return [HailstoneSequence] A set of values that form the hailstone sequence.
 def hailstone_sequence(initial_value, p: 2, a: 3, b: 1, max_total_stopping_time: 1000, total_stopping_time: true)
   raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
@@ -173,6 +177,9 @@ end
 # will be the negative of what would otherwise be the "total stopping time"
 # to reach 1, where 0 is considered a "total stop" that should not occur as
 # it does form a cycle of length 1.
+#
+# @raise [FailedSaneParameterCheck] If p or a are 0.
+#
 # @param [Integer] initial_value The value for which to find the stopping time.
 # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
 # @param [Integer] a Factor by which to multiply n.
@@ -183,6 +190,7 @@ end
 # @param [Boolean] total_stopping_time Whether or not to execute until the "total" stopping
 #     time (number of iterations to obtain 1) rather than the regular stopping
 #     time (number of iterations to reach a value less than the initial value).
+#
 # @return [Integer] The stopping time, or, in a special case, infinity, nil or a negative.
 def stopping_time(initial_value, p: 2, a: 3, b: 1, max_stopping_time: 1000, total_stopping_time: false)
   raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
@@ -210,6 +218,9 @@ end
 
 # Returns a directed tree graph of the reverse function values up to a maximum
 # nesting of max_orbit_distance, with the initial_value as the root.
+#
+# @raise [FailedSaneParameterCheck] If p or a are 0.
+#
 # @param [Integer] initial_value The root value of the directed tree graph.
 # @param [Integer] max_orbit_distance Maximum amount of times to iterate the reverse
 #     function. There is no natural termination to populating the tree graph, equivalent
@@ -219,6 +230,8 @@ end
 # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
 # @param [Integer] a Factor by which to multiply n.
 # @param [Integer] b Value to add to the scaled value of n.
+#
+# @return [TreeGraph] The branches of the tree graph as determined by the reverse function.
 def tree_graph(initial_value, max_orbit_distance, p: 2, a: 3, b: 1, __cycle_prevention: nil)
   raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
 end

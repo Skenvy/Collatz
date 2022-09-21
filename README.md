@@ -16,7 +16,7 @@ For a v1.0.0 release, handling arbitrary integers is a nice to have, but not req
 | [Node.JS](https://github.com/Skenvy/Collatz/tree/main/node.js) | **#TODO** | **#TODO** | **#TODO** |
 | [Python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | **#TODO** | _N/A_ |
 | [R](https://github.com/Skenvy/Collatz/tree/main/R) | [CRAN](https://cran.r-project.org/package=collatz) | [roxy+pkgd](https://skenvy.github.io/Collatz/R/)+[covr](https://skenvy.github.io/Collatz/R/covr/Collatz-report.html)+[PDF](https://skenvy.github.io/Collatz/R/pdf/) | _N/A_ |
-| [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) | [RubyGems](https://rubygems.org/gems/collatz) | **#TODO** | [gems-gh](https://github.com/Skenvy/Collatz/packages/1636643) |
+| [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) | [RubyGems](https://rubygems.org/gems/collatz) | [RDoc](https://skenvy.github.io/Collatz/ruby/) | [gems-gh](https://github.com/Skenvy/Collatz/packages/1636643) |
 | [Rust](https://github.com/Skenvy/Collatz/tree/main/rust) | **#TODO** | **#TODO** | **#TODO** |
 ## Basic functionality.
 ### Core functionality for v1
