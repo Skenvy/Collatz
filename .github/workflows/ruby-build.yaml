@@ -134,33 +134,44 @@ jobs:
         chmod 0600 ~/.gem/credentials
         make push_rubygems
         rm ~/.gem/credentials
-    # TODO: run: or uses: something depending on the languges
-    # https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-rubygems-registry#publishing-a-package
-  # docs:
-  #   name: Ruby 🔻💎🔻 Docs 📄
-  #   needs: [release, publish]
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🔻💎🔻 Set up Ruby
-  #     uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
-  #     with:
-  #       ruby-version: '2.7'
-  #       bundler-cache: true
-  #   - name: 📄 Docs
-  #     run: |
-  #       export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
-  #       # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-ruby'
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # docs-merge:
-  #   name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
-  #   needs: [docs]
-  #   permissions:
-  #     contents: write
-  #   uses: ./.github/workflows/github-pages.yaml
-  #   with:
-  #     merge_from: 'gh-pages-ruby'
+  docs:
+    name: Ruby 🔻💎🔻 Docs 📄
+    needs: [release, publish]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 📄 Docs Publishing
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-ruby:gh-pages-ruby
+        git symbolic-ref HEAD refs/heads/gh-pages-ruby
+        cd .. && mv ruby/doc ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir ruby && mv ../MERGE_TARGET/* ruby/
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-ruby
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-ruby'
