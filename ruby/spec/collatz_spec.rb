@@ -122,22 +122,22 @@ RSpec.describe Collatz do
 
   context "hailstone_sequence" do
     # test_name
-    it "does something useful" do
-      expect(true).to eq(true)
+    it "is not implemented" do
+      expect { hailstone_sequence(0) }.to raise_error(NotImplementedError, "Will be implemented at, or before, v1.0.0")
     end
   end
 
   context "stopping_time" do
     # test_name
-    it "does something useful" do
-      expect(true).to eq(true)
+    it "is not implemented" do
+      expect { stopping_time(0) }.to raise_error(NotImplementedError, "Will be implemented at, or before, v1.0.0")
     end
   end
 
   context "tree_graph" do
     # test_name
-    it "does something useful" do
-      expect(true).to eq(true)
+    it "is not implemented" do
+      expect { tree_graph(0, 1) }.to raise_error(NotImplementedError, "Will be implemented at, or before, v1.0.0")
     end
   end
 end

@@ -35,6 +35,8 @@ Layout/SpaceBeforeBrackets:
 
 Metrics/BlockLength:
   AllowedMethods: ['describe', 'context']
+Metrics/ParameterLists:
+  Enabled: false
 
 Lint/AmbiguousAssignment:
   Enabled: true
