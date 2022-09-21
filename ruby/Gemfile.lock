@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    collatz (0.0.4)
+    collatz (0.1.0)
 
 GEM
   remote: https://rubygems.org/

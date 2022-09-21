@@ -1,4 +1,4 @@
-.PHONY: setup setup_github clean test build install push_rubygems push_github
+.PHONY: setup setup_github clean docs test build install push_rubygems push_github
 SHELL:=/bin/bash
 
 # Assumes `gem install bundler`
@@ -10,9 +10,14 @@ setup_github:
 
 clean:
 	bundle exec rake clean
+	bundle exec rake clobber
 	rm -f collatz-*.gem
 	rm -f pkg/collatz-*.gem
 
+docs: clean
+	bundle exec rake rdoc
+
+# default spec + rubocop
 test: clean
 	bundle exec rake
 
