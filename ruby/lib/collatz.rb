@@ -98,7 +98,7 @@ private :assert_sane_parameterisation
 # @param [Integer] b Value to add to the scaled value of n.
 #
 # @return [Integer] The result of the function
-def function(n, p = 2, a = 3, b = 1)
+def function(n, p: 2, a: 3, b: 1)
   assert_sane_parameterisation(p, a, b)
   (n%p).zero? ? (n/p) : ((a*n)+b)
 end
@@ -116,7 +116,7 @@ end
 # @param [Integer] b Value to add to the scaled value of n.
 #
 # @return [Integer] The result of the function
-def reverse_function(n, p = 2, a = 3, b = 1)
+def reverse_function(n, p: 2, a: 3, b: 1)
   assert_sane_parameterisation(p, a, b)
   pre_values = [p*n]
   pre_values += [(n-b)/a] if ((n-b)%a).zero? && !((n-b)%(p*a)).zero?
@@ -160,7 +160,7 @@ end
 #     (number of iterations to obtain 1) rather than the regular stopping time (number
 #     of iterations to reach a value less than the initial value).
 # @return [HailstoneSequence] A set of values that form the hailstone sequence.
-def hailstone_sequence(initial_value, p = 2, a = 3, b = 1, max_total_stopping_time = 1000, total_stopping_time = true)
+def hailstone_sequence(initial_value, p: 2, a: 3, b: 1, max_total_stopping_time: 1000, total_stopping_time: true)
   raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
 end
 
@@ -184,7 +184,7 @@ end
 #     time (number of iterations to obtain 1) rather than the regular stopping
 #     time (number of iterations to reach a value less than the initial value).
 # @return [Integer] The stopping time, or, in a special case, infinity, nil or a negative.
-def stopping_time(initial_value, p = 2, a = 3, b = 1, max_stopping_time = 1000, total_stopping_time = false)
+def stopping_time(initial_value, p: 2, a: 3, b: 1, max_stopping_time: 1000, total_stopping_time: false)
   raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
 end
 
@@ -219,6 +219,6 @@ end
 # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
 # @param [Integer] a Factor by which to multiply n.
 # @param [Integer] b Value to add to the scaled value of n.
-def tree_graph(initial_value, max_orbit_distance, p = 2, a = 3, b = 1, __cycle_prevention = nil)
+def tree_graph(initial_value, max_orbit_distance, p: 2, a: 3, b: 1, __cycle_prevention: nil)
   raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
 end

@@ -33,11 +33,11 @@ RSpec.describe Collatz do
     # testFunction_WiderModuloSweep
     it "handles parameterisation" do
       # Test a wider modulo sweep by upping p to 5, a to 2, and b to 3.
-      expect(function(1, 5, 2, 3)).to eq(5)
-      expect(function(2, 5, 2, 3)).to eq(7)
-      expect(function(3, 5, 2, 3)).to eq(9)
-      expect(function(4, 5, 2, 3)).to eq(11)
-      expect(function(5, 5, 2, 3)).to eq(1)
+      expect(function(1, p: 5, a: 2, b: 3)).to eq(5)
+      expect(function(2, p: 5, a: 2, b: 3)).to eq(7)
+      expect(function(3, p: 5, a: 2, b: 3)).to eq(9)
+      expect(function(4, p: 5, a: 2, b: 3)).to eq(11)
+      expect(function(5, p: 5, a: 2, b: 3)).to eq(1)
     end
 
     # testFunction_NegativeParamterisation
@@ -46,17 +46,19 @@ RSpec.describe Collatz do
       # rather than the more definite euclidean, but we only use it's (0 mod p)
       # conjugacy class to determine functionality, so the flooring for negative p
       # doesn't cause any issue.
-      expect(function(1, -3, -2, -5)).to eq(-7)
-      expect(function(2, -3, -2, -5)).to eq(-9)
-      expect(function(3, -3, -2, -5)).to eq(-1)
+      expect(function(1, p: -3, a: -2, b: -5)).to eq(-7)
+      expect(function(2, p: -3, a: -2, b: -5)).to eq(-9)
+      expect(function(3, p: -3, a: -2, b: -5)).to eq(-1)
     end
 
     # testFunction_AssertSaneParameterisation
     it "breaks on p or a being 0" do
       # Set p and a to 0 to assert on assertSaneParameterisation
-      expect { function(1, 0, 2, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
-      expect { function(1, 0, 0, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
-      expect { function(1, 1, 0, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A)
+      # rubocop:disable Layout/LineLength
+      expect { function(1, p: 0, a: 2, b: 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { function(1, p: 0, a: 0, b: 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { function(1, p: 1, a: 0, b: 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A)
+      # rubocop:enable Layout/LineLength
     end
   end
 
@@ -85,11 +87,11 @@ RSpec.describe Collatz do
     # testReverseFunction_WiderModuloSweep
     it "handles parameterisation" do
       # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
-      expect(reverse_function(1, 5, 2, 3)).to eq([5, -1])
-      expect(reverse_function(2, 5, 2, 3)).to eq([10])
-      expect(reverse_function(3, 5, 2, 3)).to eq([15]) # also tests !0
-      expect(reverse_function(4, 5, 2, 3)).to eq([20])
-      expect(reverse_function(5, 5, 2, 3)).to eq([25, 1])
+      expect(reverse_function(1, p: 5, a: 2, b: 3)).to eq([5, -1])
+      expect(reverse_function(2, p: 5, a: 2, b: 3)).to eq([10])
+      expect(reverse_function(3, p: 5, a: 2, b: 3)).to eq([15]) # also tests !0
+      expect(reverse_function(4, p: 5, a: 2, b: 3)).to eq([20])
+      expect(reverse_function(5, p: 5, a: 2, b: 3)).to eq([25, 1])
     end
 
     # testReverseFunction_NegativeParamterisation
@@ -97,25 +99,25 @@ RSpec.describe Collatz do
       # We only use the (0 mod P) conjugacy class to determine functionality,
       # so we aren't concerned whether the % modulo is flooring (for negative P)
       # or if it is the more sensible euclidean modulo.
-      expect(reverse_function(1, -3, -2, -5)).to eq([-3]) # != [-3, -3]
-      expect(reverse_function(2, -3, -2, -5)).to eq([-6])
-      expect(reverse_function(3, -3, -2, -5)).to eq([-9, -4])
+      expect(reverse_function(1, p: -3, a: -2, b: -5)).to eq([-3]) # != [-3, -3]
+      expect(reverse_function(2, p: -3, a: -2, b: -5)).to eq([-6])
+      expect(reverse_function(3, p: -3, a: -2, b: -5)).to eq([-9, -4])
     end
 
     # testReverseFunction_ZeroReversesOnB
     it "might be able to reverse zero" do
       # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
-      expect(reverse_function(0, 17, 2, -6)).to eq([0, 3])
-      expect(reverse_function(0, 17, 2, 102)).to eq([0])
+      expect(reverse_function(0, p: 17, a: 2, b: -6)).to eq([0, 3])
+      expect(reverse_function(0, p: 17, a: 2, b: 102)).to eq([0])
     end
 
     # testReverseFunction_AssertSaneParameterisation
     it "breaks on p or a being 0" do
       # Set P and a to 0 to assert on assert_sane_parameterisation
       # rubocop:disable Layout/LineLength
-      expect { reverse_function(1, 0, 2, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
-      expect { reverse_function(1, 0, 0, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
-      expect { reverse_function(1, 1, 0, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A)
+      expect { reverse_function(1, p: 0, a: 2, b: 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { reverse_function(1, p: 0, a: 0, b: 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { reverse_function(1, p: 1, a: 0, b: 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A)
       # rubocop:enable Layout/LineLength
     end
   end
