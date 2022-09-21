@@ -280,7 +280,7 @@ jobs:
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        export VER=$(some-version-obtaining-call)
+        export VER=$(<version-extracting-command>)
         gh release create <language>-v$VER --generate-notes -t "<Language>: Version $VER"
   publish:
     name: <Language> <language-emojis> Publish 📦
@@ -313,7 +313,6 @@ jobs:
         version: <language-version>
     - name: 📄 Docs
       run: |
-        export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
         # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-<language>'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

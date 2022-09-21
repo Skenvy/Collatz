@@ -60,17 +60,18 @@ jobs:
       run: make setup
     - name: 🦂 Test
       run: make test
-  # Docs step is optional depending on language
-  # docs:
-  #   name: Ruby 🔻💎🔻 Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🔻💎🔻 Set up Ruby
-  #     uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
-  #     with:
-  #       ruby-version: '2.7'
-  #       bundler-cache: true
-  #   - name: 📄 Docs
-  #     run: make docs
+  docs:
+    name: Ruby 🔻💎🔻 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs
+      run: make docs
