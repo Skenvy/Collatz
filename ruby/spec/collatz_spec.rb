@@ -9,10 +9,6 @@ RSpec.describe Collatz do
   end
 
   context "function" do
-    it "does something useful" do
-      expect(true).to eq(true)
-    end
-
     # testFunction_ZeroTrap
     it "gets trapped on 0" do
       # Default/Any (p,a,b); 0 trap
@@ -65,24 +61,81 @@ RSpec.describe Collatz do
   end
 
   context "reverse_function" do
-    it "does something useful" do
-      expect(true).to eq(true)
+    # testReverseFunction_ZeroTrap
+    it "gets trapped on 0" do
+      # Default (P,a,b); 0 trap [as b is not a multiple of a]
+      expect(reverse_function(0)).to eq([0])
+    end
+
+    # testReverseFunction_OneCycle
+    it "reverse iterates the 1 cycle" do
+      # Default (P,a,b); 1 cycle; positives
+      expect(reverse_function(1)).to eq([2])
+      expect(reverse_function(4)).to eq([8, 1])
+      expect(reverse_function(2)).to eq([4])
+    end
+
+    # testReverseFunction_NegativeOneCycle
+    it "reverse iterates the -1 cycle" do
+      # Default (P,a,b); -1 cycle; negatives
+      expect(reverse_function(-1)).to eq([-2])
+      expect(reverse_function(-2)).to eq([-4, -1])
+    end
+
+    # testReverseFunction_WiderModuloSweep
+    it "handles parameterisation" do
+      # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+      expect(reverse_function(1, 5, 2, 3)).to eq([5, -1])
+      expect(reverse_function(2, 5, 2, 3)).to eq([10])
+      expect(reverse_function(3, 5, 2, 3)).to eq([15]) # also tests !0
+      expect(reverse_function(4, 5, 2, 3)).to eq([20])
+      expect(reverse_function(5, 5, 2, 3)).to eq([25, 1])
+    end
+
+    # testReverseFunction_NegativeParamterisation
+    it "handles negative parameterisation" do
+      # We only use the (0 mod P) conjugacy class to determine functionality,
+      # so we aren't concerned whether the % modulo is flooring (for negative P)
+      # or if it is the more sensible euclidean modulo.
+      expect(reverse_function(1, -3, -2, -5)).to eq([-3]) # != [-3, -3]
+      expect(reverse_function(2, -3, -2, -5)).to eq([-6])
+      expect(reverse_function(3, -3, -2, -5)).to eq([-9, -4])
+    end
+
+    # testReverseFunction_ZeroReversesOnB
+    it "might be able to reverse zero" do
+      # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+      expect(reverse_function(0, 17, 2, -6)).to eq([0, 3])
+      expect(reverse_function(0, 17, 2, 102)).to eq([0])
+    end
+
+    # testReverseFunction_AssertSaneParameterisation
+    it "breaks on p or a being 0" do
+      # Set P and a to 0 to assert on assert_sane_parameterisation
+      # rubocop:disable Layout/LineLength
+      expect { reverse_function(1, 0, 2, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { reverse_function(1, 0, 0, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { reverse_function(1, 1, 0, 3) }.to raise_error(FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A)
+      # rubocop:enable Layout/LineLength
     end
   end
 
   context "hailstone_sequence" do
+    # test_name
     it "does something useful" do
       expect(true).to eq(true)
     end
   end
 
   context "stopping_time" do
+    # test_name
     it "does something useful" do
       expect(true).to eq(true)
     end
   end
 
   context "tree_graph" do
+    # test_name
     it "does something useful" do
       expect(true).to eq(true)
     end
