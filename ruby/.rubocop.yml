@@ -33,6 +33,9 @@ Layout/SpaceAroundOperators:
 Layout/SpaceBeforeBrackets:
   Enabled: true
 
+Metrics/BlockLength:
+  AllowedMethods: ['describe', 'context']
+
 Lint/AmbiguousAssignment:
   Enabled: true
 Lint/AmbiguousOperatorPrecedence:

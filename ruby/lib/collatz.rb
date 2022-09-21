@@ -62,10 +62,10 @@ end
 
 # Handles the sanity check for the parameterisation (p,a,b)
 # required by both the function and reverse function.
+# @raise [FailedSaneParameterCheck] If p or a are 0.
 # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p)
 # @param [Integer] a Factor by which to multiply n.
 # @param [Integer] b Value to add to the scaled value of n.
-# @raise [FailedSaneParameterCheck] If p or a are 0.
 def assert_sane_parameterisation(p, a, _b)
   # Sanity check (p,a,b) ~ p absolutely can't be 0. a "could" be zero
   # theoretically, although would violate the reversability (if ~a is 0 then a
@@ -80,8 +80,8 @@ def assert_sane_parameterisation(p, a, _b)
   # "b" being zero would cause behaviour not consistant with the collatz
   # function, but would not violate the reversability, so no check either.
   # " != 0" is redundant for python assertions.
-  raise FailedSaneParameterCheck SaneParameterErrMsg::SANE_PARAMS_P unless p != 0
-  raise FailedSaneParameterCheck SaneParameterErrMsg::SANE_PARAMS_A unless a != 0
+  raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P unless p != 0
+  raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A unless a != 0
 end
 
 # Returns the output of a single application of a Collatz-esque function.
