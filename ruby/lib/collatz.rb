@@ -11,9 +11,9 @@ require_relative "collatz/version"
 
 # The four known cycles for the standard parameterisation.
 KNOWN_CYCLES = [
-  [1, 4, 2].freeze, [-1, -2].freeze, [-5, -14, -7, -20, -10].freeze,
-  [-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34].freeze
-].freeze
+  [1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10],
+  [-17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34]
+].each(&:freeze).freeze
 # The current value up to which the standard parameterisation has been verified.
 VERIFIED_MAXIMUM = 295147905179352825856
 # The current value down to which the standard parameterisation has been verified.
@@ -82,8 +82,8 @@ def assert_sane_parameterisation(p, a, _b)
   # "b" being zero would cause behaviour not consistant with the collatz
   # function, but would not violate the reversability, so no check either.
   # " != 0" is redundant for python assertions.
-  raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P unless p != 0
-  raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A unless a != 0
+  raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P if p.zero?
+  raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A if a.zero?
 end
 
 private :assert_sane_parameterisation
@@ -118,9 +118,11 @@ end
 # @return [Integer] The values that would return the input if given to the function.
 def reverse_function(n, p: 2, a: 3, b: 1)
   assert_sane_parameterisation(p, a, b)
-  pre_values = [p*n]
-  pre_values += [(n-b)/a] if ((n-b)%a).zero? && !((n-b)%(p*a)).zero?
-  pre_values
+  if ((n-b)%a).zero? && ((n-b)%(p*a)).nonzero?
+    [p*n, (n-b)/a]
+  else
+    [p*n]
+  end
 end
 
 # Provides the appropriate lambda to use to check if iterations on an initial
