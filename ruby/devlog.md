@@ -89,3 +89,52 @@ Well, v0.1.0 has been released, with the function and reverse function. The ruby
 1. Instead of setting methods to private with `private :stopping_time_terminus` following the method declaration, simply add `private` before the def (e.g. `private def stopping_time_terminus`). A few sites indicated the same concern another user noted that doing so would make all the methods declared after it also private, however this concern was dissuaded with the assurance that it would not behave that way, instead asserting that the `def something` would return a `Symbol`, which would make `private def something` the same as subsequently passing the symbol of the method to the private modifier.
 1. The abuse of `NotImplementedError`, which is meant to be ruby internal only, was mentioned. I was aware of this ahead of time, and probably could have done without adding the function headers before implementing them.
 1. On the `KNOWN_CYCLES`, rather than apply the `.freeze` to all elements in the list individually, set `.each(&:freeze).freeze` on the final outer closing bracket `]` of the whole list.
+
+I've fixed most of the above, although some aren't operable at the moment. Setting methods private via `private def method_name` instead of `private :method_name` after the method declaration is causing rubocop to break. I'll get an error message `An error occurred while Style/AccessModifierDeclarations cop was inspecting /mnt/c/Workspaces/GitHub_Skenvy/Collatz/ruby/lib/collatz.rb:71:0.` for both lines, which is then followed by this stack trace.
+```
+uninitialized constant RuboCop::Version::Server
+Did you mean?  TCPServer
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/version.rb:22:in `version'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/command/execute_runner.rb:82:in `display_error_summary'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/command/execute_runner.rb:58:in `display_summary'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/command/execute_runner.rb:27:in `block in execute_runner'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/command/execute_runner.rb:52:in `with_redirect'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/command/execute_runner.rb:25:in `execute_runner'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/command/execute_runner.rb:17:in `run'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/command.rb:11:in `run'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli/environment.rb:18:in `run'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli.rb:72:in `run_command'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli.rb:79:in `execute_runners'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/cli.rb:48:in `run'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/rake_task.rb:51:in `run_cli'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/rake_task.rb:26:in `block (2 levels) in initialize'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/file_utils_ext.rb:58:in `verbose'
+/var/lib/gems/2.7.0/gems/rubocop-1.36.0/lib/rubocop/rake_task.rb:24:in `block in initialize'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/task.rb:281:in `block in execute'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/task.rb:281:in `each'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/task.rb:281:in `execute'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/task.rb:219:in `block in invoke_with_call_chain'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/task.rb:199:in `synchronize'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/task.rb:199:in `invoke_with_call_chain'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/task.rb:188:in `invoke'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:160:in `invoke_task'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:116:in `block (2 levels) in top_level'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:116:in `each'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:116:in `block in top_level'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:125:in `run_with_threads'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:110:in `top_level'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:83:in `block in run'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:186:in `standard_exception_handling'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/lib/rake/application.rb:80:in `run'
+/var/lib/gems/2.7.0/gems/rake-13.0.6/exe/rake:27:in `<top (required)>'
+/usr/local/bin/rake:23:in `load'
+/usr/local/bin/rake:23:in `<main>'
+RuboCop failed!
+```
+It appears though that this error may have already had a bug raised and fixed at [rubocop/issues/10994](https://github.com/rubocop/rubocop/issues/10994). It appears in the meantime however that the `Style/AccessModifierDeclarations` cop isn't working as intended. Setting the below does not cause it to error on the `private :method_name` after the method declaration, which is what `AllowModifiersOnSymbols: false` is supposed to disallow.
+```yaml
+Style/AccessModifierDeclarations:
+  EnforcedStyle: inline
+  AllowModifiersOnSymbols: false
+```
+Even though it is not causing it to throw a cop error on the modifier on symbol pattern `private :method_name`, having the above config _is_ preventing it from throwing the hard error above `uninitialized constant RuboCop::Version::Server` that stopped the whole rubocop process, and indeed it passes with `no offenses detected`.

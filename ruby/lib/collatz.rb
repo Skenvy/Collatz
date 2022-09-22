@@ -68,7 +68,7 @@ end
 # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p)
 # @param [Integer] a Factor by which to multiply n.
 # @param [Integer] b Value to add to the scaled value of n.
-def assert_sane_parameterisation(p, a, _b)
+private def assert_sane_parameterisation(p, a, _b)
   # Sanity check (p,a,b) ~ p absolutely can't be 0. a "could" be zero
   # theoretically, although would violate the reversability (if ~a is 0 then a
   # value of "b" as the input to the reverse function would have a pre-emptive
@@ -85,8 +85,6 @@ def assert_sane_parameterisation(p, a, _b)
   raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_P if p.zero?
   raise FailedSaneParameterCheck, SaneParameterErrMsg::SANE_PARAMS_A if a.zero?
 end
-
-private :assert_sane_parameterisation
 
 # Returns the output of a single application of a Collatz-esque function.
 #
@@ -132,11 +130,9 @@ end
 #     have reached the oriented stopping time to reach a value closer to 0.
 #     If true, the lambda will simply check equality to 1.
 # @return [Method(Integer)->(Boolean)] The lambda to check for the stopping time.
-def stopping_time_terminus(n, total_stop)
+private def stopping_time_terminus(n, total_stop)
   raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
 end
-
-private :stopping_time_terminus
 
 # Contains the results of computing a hailstone sequence via hailstone_sequence(~).
 class HailstoneSequence
