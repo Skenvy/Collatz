@@ -144,51 +144,48 @@ RSpec.describe Collatz do
       assert_hailstone_sequence(Collatz.hailstone_sequence(16), [16, 8, 4, 2, 1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 4)
     end
 
-    # it "testHailstoneSequence_KnownCycles" do
-    #   HailstoneSequence hail
-    #   # Test the 3 known default parameter's cycles (ignoring [1,4,2])
-    #   for(BigInteger[] kc : Collatz.KNOWN_CYCLES){
-    #     if(!Arrays.asList(kc).contains(BigInteger.ONE)){
-    #       hail = Collatz.hailstoneSequence(kc[0], 1000)
-    #       BigInteger[] expected = new BigInteger[kc.length+1]
-    #       for(int k = 0; k < kc.length; k++){
-    #         expected[k] = kc[k]
-    #       }
-    #       expected[kc.length] = kc[0]
-    #       assert_hailstone_sequence(hail, wrapBigIntArr(expected), Collatz::SequenceState::CYCLE_LENGTH, kc.length)
-    #     }
-    #   }
-    # end
+    it "testHailstoneSequence_KnownCycles" do
+      # Test the 3 known default parameter's cycles (ignoring [1,4,2])
+      Collatz::KNOWN_CYCLES.each do |kc|
+        unless kc.include? 1
+          hail = Collatz.hailstone_sequence(kc[0])
+          expected = Array.new(kc.length+1)
+          for k in 0..(kc.length-1)
+            expected[k] = kc[k]
+          end
+          expected[kc.length] = kc[0]
+          assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
+        end
+      end
+    end
 
-    # it "testHailstoneSequence_Minus56" do
-    #   # Test the lead into a cycle by entering two of the cycles; -5
-    #   BigInteger[] seq = Collatz.KNOWN_CYCLES[2].clone()
-    #   ArrayList<BigInteger> _seq = new ArrayList<BigInteger>()
-    #   _seq.add(seq[1].multiply(BigInteger.valueOf(4)))
-    #   _seq.add(seq[1].multiply(BigInteger.valueOf(2)))
-    #   List<BigInteger> _rotInnerSeq = Arrays.asList(seq)
-    #   Collections.rotate(_rotInnerSeq, -1)
-    #   _seq.addAll(_rotInnerSeq)
-    #   _seq.add(seq[0]); # The rotate also acts on seq, so we add [0] instead of [1]
-    #   long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new))
-    #   HailstoneSequence hail = wrapHailstoneSequence(-56)
-    #   assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, seq.length)
-    # end
+    it "testHailstoneSequence_Minus56" do
+      # Test the lead into a cycle by entering two of the cycles; -5
+      kc = Collatz::KNOWN_CYCLES[2]
+      expected = Array.new(kc.length+3)
+      expected[0] = kc[1]*4
+      expected[1] = kc[1]*2
+      for k in 0..(kc.length-1) do
+        expected[2+k] = kc[(k+1)%kc.length]
+      end
+      expected[kc.length+2] = kc[1]
+      hail = Collatz.hailstone_sequence(-56)
+      assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
+    end
 
-    # it "testHailstoneSequence_Minus200" do
-    #   # Test the lead into a cycle by entering two of the cycles; -17
-    #   BigInteger[] seq = Collatz.KNOWN_CYCLES[3].clone()
-    #   ArrayList<BigInteger> _seq = new ArrayList<BigInteger>()
-    #   _seq.add(seq[1].multiply(BigInteger.valueOf(4)))
-    #   _seq.add(seq[1].multiply(BigInteger.valueOf(2)))
-    #   List<BigInteger> _rotInnerSeq = Arrays.asList(seq)
-    #   Collections.rotate(_rotInnerSeq, -1)
-    #   _seq.addAll(_rotInnerSeq)
-    #   _seq.add(seq[0]); # The rotate also acts on seq, so we add [0] instead of [1]
-    #   long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new))
-    #   HailstoneSequence hail = wrapHailstoneSequence(-200)
-    #   assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, seq.length)
-    # end
+    it "testHailstoneSequence_Minus200" do
+      # Test the lead into a cycle by entering two of the cycles; -17
+      kc = Collatz::KNOWN_CYCLES[3]
+      expected = Array.new(kc.length+3)
+      expected[0] = kc[1]*4
+      expected[1] = kc[1]*2
+      for k in 0..(kc.length-1) do
+        expected[2+k] = kc[(k+1)%kc.length]
+      end
+      expected[kc.length+2] = kc[1]
+      hail = Collatz.hailstone_sequence(-200)
+      assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
+    end
 
     it "testHailstoneSequence_RegularStoppingTime" do
       # Test the regular stopping time check.
