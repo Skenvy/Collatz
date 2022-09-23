@@ -122,10 +122,105 @@ RSpec.describe Collatz do
     end
   end
 
+  def assert_hailstone_sequence(hail, values, terminal_condition, terminal_status)
+    expect(hail.values).to eq(values)
+    expect(hail.terminal_condition).to eq(terminal_condition)
+    expect(hail.terminal_status).to eq(terminal_status)
+  end
+
   context "hailstone_sequence" do
-    # test_name
-    it "is not implemented" do
-      expect { Collatz.hailstone_sequence(0) }.to raise_error(NotImplementedError, "Will be implemented at, or before, v1.0.0") # rubocop:disable Layout/LineLength
+    it "testHailstoneSequence_ZeroTrap" do
+      # Test 0's immediated termination.
+      assert_hailstone_sequence(Collatz.hailstone_sequence(0), [0], Collatz::SequenceState::ZERO_STOP, 0)
+    end
+
+    it "testHailstoneSequence_OnesCycleOnlyYieldsATotalStop" do
+      # The cycle containing 1 wont yield a cycle termination, as 1 is considered
+      # the "total stop" that is the special case termination.
+      assert_hailstone_sequence(Collatz.hailstone_sequence(1), [1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 0)
+      # 1's cycle wont yield a description of it being a "cycle" as far as the
+      # hailstones are concerned, which is to be expected, so..
+      assert_hailstone_sequence(Collatz.hailstone_sequence(4), [4, 2, 1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 2)
+      assert_hailstone_sequence(Collatz.hailstone_sequence(16), [16, 8, 4, 2, 1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 4)
+    end
+
+    # it "testHailstoneSequence_KnownCycles" do
+    #   HailstoneSequence hail
+    #   # Test the 3 known default parameter's cycles (ignoring [1,4,2])
+    #   for(BigInteger[] kc : Collatz.KNOWN_CYCLES){
+    #     if(!Arrays.asList(kc).contains(BigInteger.ONE)){
+    #       hail = Collatz.hailstoneSequence(kc[0], 1000)
+    #       BigInteger[] expected = new BigInteger[kc.length+1]
+    #       for(int k = 0; k < kc.length; k++){
+    #         expected[k] = kc[k]
+    #       }
+    #       expected[kc.length] = kc[0]
+    #       assert_hailstone_sequence(hail, wrapBigIntArr(expected), Collatz::SequenceState::CYCLE_LENGTH, kc.length)
+    #     }
+    #   }
+    # end
+
+    # it "testHailstoneSequence_Minus56" do
+    #   # Test the lead into a cycle by entering two of the cycles; -5
+    #   BigInteger[] seq = Collatz.KNOWN_CYCLES[2].clone()
+    #   ArrayList<BigInteger> _seq = new ArrayList<BigInteger>()
+    #   _seq.add(seq[1].multiply(BigInteger.valueOf(4)))
+    #   _seq.add(seq[1].multiply(BigInteger.valueOf(2)))
+    #   List<BigInteger> _rotInnerSeq = Arrays.asList(seq)
+    #   Collections.rotate(_rotInnerSeq, -1)
+    #   _seq.addAll(_rotInnerSeq)
+    #   _seq.add(seq[0]); # The rotate also acts on seq, so we add [0] instead of [1]
+    #   long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new))
+    #   HailstoneSequence hail = wrapHailstoneSequence(-56)
+    #   assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, seq.length)
+    # end
+
+    # it "testHailstoneSequence_Minus200" do
+    #   # Test the lead into a cycle by entering two of the cycles; -17
+    #   BigInteger[] seq = Collatz.KNOWN_CYCLES[3].clone()
+    #   ArrayList<BigInteger> _seq = new ArrayList<BigInteger>()
+    #   _seq.add(seq[1].multiply(BigInteger.valueOf(4)))
+    #   _seq.add(seq[1].multiply(BigInteger.valueOf(2)))
+    #   List<BigInteger> _rotInnerSeq = Arrays.asList(seq)
+    #   Collections.rotate(_rotInnerSeq, -1)
+    #   _seq.addAll(_rotInnerSeq)
+    #   _seq.add(seq[0]); # The rotate also acts on seq, so we add [0] instead of [1]
+    #   long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new))
+    #   HailstoneSequence hail = wrapHailstoneSequence(-200)
+    #   assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, seq.length)
+    # end
+
+    it "testHailstoneSequence_RegularStoppingTime" do
+      # Test the regular stopping time check.
+      assert_hailstone_sequence(Collatz.hailstone_sequence(4, total_stopping_time: false), [4, 2], Collatz::SequenceState::STOPPING_TIME, 1)
+      assert_hailstone_sequence(Collatz.hailstone_sequence(5, total_stopping_time: false), [5, 16, 8, 4], Collatz::SequenceState::STOPPING_TIME, 3)
+    end
+
+    it "testHailstoneSequence_NegativeMaxTotalStoppingTime" do
+      # Test small max total stopping time: (minimum internal value is one)
+      assert_hailstone_sequence(Collatz.hailstone_sequence(4, max_total_stopping_time: -100), [4, 2], Collatz::SequenceState::MAX_STOP_OUT_OF_BOUNDS, 1)
+    end
+
+    it "testHailstoneSequence_ZeroStopMidHail" do
+      # Test the zero stop mid hailing. This wont happen with default params tho.
+      assert_hailstone_sequence(Collatz.hailstone_sequence(3, p: 2, a: 3, b: -9), [3, 0], Collatz::SequenceState::ZERO_STOP, -1)
+    end
+
+    it "testHailstoneSequence_UnitaryPCausesAlmostImmediateCycles" do
+      # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
+      # still allowed, although they will generate immediate 1 or 2 length cycles
+      # respectively, so confirm the behaviour of each of these hailstones.
+      assert_hailstone_sequence(Collatz.hailstone_sequence(3, p: 1, a: 3, b: 1), [3, 3], Collatz::SequenceState::CYCLE_LENGTH, 1)
+      assert_hailstone_sequence(Collatz.hailstone_sequence(3, p: -1, a: 3, b: 1), [3, -3, 3], Collatz::SequenceState::CYCLE_LENGTH, 2)
+    end
+
+    it "testHailstoneSequence_AssertSaneParameterisation" do
+      # Set P and a to 0 to assert on assert_sane_parameterisation
+      # rubocop:disable Layout/LineLength
+      expect { Collatz.hailstone_sequence(1, p: 0, a: 2, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { Collatz.hailstone_sequence(1, p: 0, a: 0, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { Collatz.hailstone_sequence(1, p: 1, a: 0, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_A)
+      # rubocop:enable Layout/LineLength
     end
   end
 
