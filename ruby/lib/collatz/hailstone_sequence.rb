@@ -15,9 +15,15 @@ module Collatz # rubocop:disable Style/Documentation
   # @param [Boolean] total_stop If false, the lambda will confirm that iterations of n
   #     have reached the oriented stopping time to reach a value closer to 0.
   #     If true, the lambda will simply check equality to 1.
-  # @return [Method(Integer)->(Boolean)] The lambda to check for the stopping time.
+  # @return [lambda(Integer)->(Boolean)] The lambda to check for the stopping time.
   private def stopping_time_terminus(n, total_stop)
-    raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
+    if total_stop
+      lambda { |x| x == 1 }
+    elsif n >= 0
+      lambda { |x| (x < n && x.positive?) }
+    else
+      lambda { |x| (x > n && x.negative?) }
+    end
   end
 
   # Contains the results of computing a hailstone sequence via hailstone_sequence(~).

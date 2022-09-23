@@ -129,6 +129,8 @@ Style/IfWithBooleanLiteralBranches:
   Enabled: true
 Style/InPatternThen:
   Enabled: true
+Style/Lambda:
+  EnforcedStyle: lambda
 Style/MagicCommentFormat:
   Enabled: true
 Style/MapCompactWithConditionalBlock:
