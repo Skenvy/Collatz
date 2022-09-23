@@ -129,37 +129,45 @@ RSpec.describe Collatz do
   end
 
   context "hailstone_sequence" do
-    it "testHailstoneSequence_ZeroTrap" do
+    # testHailstoneSequence_ZeroTrap
+    it "gets trapped on 0" do
       # Test 0's immediated termination.
-      assert_hailstone_sequence(Collatz.hailstone_sequence(0), [0], Collatz::SequenceState::ZERO_STOP, 0)
+      actual = Collatz.hailstone_sequence(0)
+      assert_hailstone_sequence(actual, [0], Collatz::SequenceState::ZERO_STOP, 0)
     end
 
-    it "testHailstoneSequence_OnesCycleOnlyYieldsATotalStop" do
+    # testHailstoneSequence_OnesCycleOnlyYieldsATotalStop
+    it "yields a total stop from the 1 cycle" do
       # The cycle containing 1 wont yield a cycle termination, as 1 is considered
       # the "total stop" that is the special case termination.
-      assert_hailstone_sequence(Collatz.hailstone_sequence(1), [1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 0)
+      actual = Collatz.hailstone_sequence(1)
+      assert_hailstone_sequence(actual, [1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 0)
       # 1's cycle wont yield a description of it being a "cycle" as far as the
       # hailstones are concerned, which is to be expected, so..
-      assert_hailstone_sequence(Collatz.hailstone_sequence(4), [4, 2, 1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 2)
-      assert_hailstone_sequence(Collatz.hailstone_sequence(16), [16, 8, 4, 2, 1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 4)
+      actual = Collatz.hailstone_sequence(4)
+      assert_hailstone_sequence(actual, [4, 2, 1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 2)
+      actual = Collatz.hailstone_sequence(16)
+      assert_hailstone_sequence(actual, [16, 8, 4, 2, 1], Collatz::SequenceState::TOTAL_STOPPING_TIME, 4)
     end
 
-    it "testHailstoneSequence_KnownCycles" do
+    # testHailstoneSequence_KnownCycles
+    it "detects a cycle for every other known cycle" do
       # Test the 3 known default parameter's cycles (ignoring [1,4,2])
       Collatz::KNOWN_CYCLES.each do |kc|
         unless kc.include? 1
-          hail = Collatz.hailstone_sequence(kc[0])
+          actual = Collatz.hailstone_sequence(kc[0])
           expected = Array.new(kc.length+1)
           for k in 0..(kc.length-1)
             expected[k] = kc[k]
           end
           expected[kc.length] = kc[0]
-          assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
+          assert_hailstone_sequence(actual, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
         end
       end
     end
 
-    it "testHailstoneSequence_Minus56" do
+    # testHailstoneSequence_Minus56
+    it "detects the -5 cycle from an external value" do
       # Test the lead into a cycle by entering two of the cycles; -5
       kc = Collatz::KNOWN_CYCLES[2]
       expected = Array.new(kc.length+3)
@@ -169,11 +177,12 @@ RSpec.describe Collatz do
         expected[2+k] = kc[(k+1)%kc.length]
       end
       expected[kc.length+2] = kc[1]
-      hail = Collatz.hailstone_sequence(-56)
-      assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
+      actual = Collatz.hailstone_sequence(-56)
+      assert_hailstone_sequence(actual, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
     end
 
-    it "testHailstoneSequence_Minus200" do
+    # testHailstoneSequence_Minus200
+    it "detects the -17 cycle from an external value" do
       # Test the lead into a cycle by entering two of the cycles; -17
       kc = Collatz::KNOWN_CYCLES[3]
       expected = Array.new(kc.length+3)
@@ -183,35 +192,46 @@ RSpec.describe Collatz do
         expected[2+k] = kc[(k+1)%kc.length]
       end
       expected[kc.length+2] = kc[1]
-      hail = Collatz.hailstone_sequence(-200)
-      assert_hailstone_sequence(hail, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
+      actual = Collatz.hailstone_sequence(-200)
+      assert_hailstone_sequence(actual, expected, Collatz::SequenceState::CYCLE_LENGTH, kc.length)
     end
 
-    it "testHailstoneSequence_RegularStoppingTime" do
+    # testHailstoneSequence_RegularStoppingTime
+    it "appropriately stops at the stopping time if not a total stop" do
       # Test the regular stopping time check.
-      assert_hailstone_sequence(Collatz.hailstone_sequence(4, total_stopping_time: false), [4, 2], Collatz::SequenceState::STOPPING_TIME, 1)
-      assert_hailstone_sequence(Collatz.hailstone_sequence(5, total_stopping_time: false), [5, 16, 8, 4], Collatz::SequenceState::STOPPING_TIME, 3)
+      actual = Collatz.hailstone_sequence(4, total_stopping_time: false)
+      assert_hailstone_sequence(actual, [4, 2], Collatz::SequenceState::STOPPING_TIME, 1)
+      actual = Collatz.hailstone_sequence(5, total_stopping_time: false)
+      assert_hailstone_sequence(actual, [5, 16, 8, 4], Collatz::SequenceState::STOPPING_TIME, 3)
     end
 
-    it "testHailstoneSequence_NegativeMaxTotalStoppingTime" do
+    # testHailstoneSequence_NegativeMaxTotalStoppingTime
+    it "Quickly exits OoB on a negative max total stopping time" do
       # Test small max total stopping time: (minimum internal value is one)
-      assert_hailstone_sequence(Collatz.hailstone_sequence(4, max_total_stopping_time: -100), [4, 2], Collatz::SequenceState::MAX_STOP_OUT_OF_BOUNDS, 1)
+      actual = Collatz.hailstone_sequence(4, max_total_stopping_time: -100)
+      assert_hailstone_sequence(actual, [4, 2], Collatz::SequenceState::MAX_STOP_OUT_OF_BOUNDS, 1)
     end
 
-    it "testHailstoneSequence_ZeroStopMidHail" do
+    # testHailstoneSequence_ZeroStopMidHail
+    it "Stops on the 0 trap while hailing" do
       # Test the zero stop mid hailing. This wont happen with default params tho.
-      assert_hailstone_sequence(Collatz.hailstone_sequence(3, p: 2, a: 3, b: -9), [3, 0], Collatz::SequenceState::ZERO_STOP, -1)
+      actual = Collatz.hailstone_sequence(3, p: 2, a: 3, b: -9)
+      assert_hailstone_sequence(actual, [3, 0], Collatz::SequenceState::ZERO_STOP, -1)
     end
 
-    it "testHailstoneSequence_UnitaryPCausesAlmostImmediateCycles" do
+    # testHailstoneSequence_UnitaryPCausesAlmostImmediateCycles
+    it "|P| values of 1 cause semi-immediate cycles" do
       # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
       # still allowed, although they will generate immediate 1 or 2 length cycles
       # respectively, so confirm the behaviour of each of these hailstones.
-      assert_hailstone_sequence(Collatz.hailstone_sequence(3, p: 1, a: 3, b: 1), [3, 3], Collatz::SequenceState::CYCLE_LENGTH, 1)
-      assert_hailstone_sequence(Collatz.hailstone_sequence(3, p: -1, a: 3, b: 1), [3, -3, 3], Collatz::SequenceState::CYCLE_LENGTH, 2)
+      actual = Collatz.hailstone_sequence(3, p: 1, a: 3, b: 1)
+      assert_hailstone_sequence(actual, [3, 3], Collatz::SequenceState::CYCLE_LENGTH, 1)
+      actual = Collatz.hailstone_sequence(3, p: -1, a: 3, b: 1)
+      assert_hailstone_sequence(actual, [3, -3, 3], Collatz::SequenceState::CYCLE_LENGTH, 2)
     end
 
-    it "testHailstoneSequence_AssertSaneParameterisation" do
+    # testHailstoneSequence_AssertSaneParameterisation
+    it "breaks on p or a being 0" do
       # Set P and a to 0 to assert on assert_sane_parameterisation
       # rubocop:disable Layout/LineLength
       expect { Collatz.hailstone_sequence(1, p: 0, a: 2, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)

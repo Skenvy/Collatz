@@ -12,19 +12,19 @@ module Collatz # rubocop:disable Style/Documentation
   # Contains the results of computing a hailstone sequence via hailstone_sequence(~).
   class HailstoneSequence
     # The set of values that comprise the hailstone sequence.
-    @values
-    # The terminal condition lambda
-    @terminate
+    attr_reader :values
+
     # A terminal condition that reflects the final state of the hailstone sequencing,
     # whether than be that it succeeded at determining the stopping time, the total
     # stopping time, found a cycle, or got stuck on zero (or surpassed the max total). */
-    @terminal_condition # SequenceState
+    attr_reader :terminal_condition # SequenceState
+
     # A status value that has different meanings depending on what the terminal condition
     # was. If the sequence completed either via reaching the stopping or total stopping time,
     # or getting stuck on zero, then this value is the stopping/terminal time. If the sequence
     # got stuck on a cycle, then this value is the cycle length. If the sequencing passes the
     # maximum stopping time then this is the value that was provided as that maximum. */
-    @terminal_status
+    attr_reader :terminal_status
 
     # Initialise and compute a new Hailstone Sequence.
     # @param [Integer] initial_value The value to begin the hailstone sequence from.
@@ -36,7 +36,7 @@ module Collatz # rubocop:disable Style/Documentation
     #     (number of iterations to obtain 1) rather than the regular stopping time (number
     #     of iterations to reach a value less than the initial value).
     def initialize(initial_value, p, a, b, max_total_stopping_time, total_stopping_time)
-      @terminate = stopping_time_terminus(initial_value, total_stopping_time)
+      terminate = stopping_time_terminus(initial_value, total_stopping_time)
       if initial_value.zero?
         # 0 is always an immediate stop.
         @values = [0]
@@ -56,11 +56,11 @@ module Collatz # rubocop:disable Style/Documentation
           next_value = Collatz.function(pre_values[k-1], p: p, a: a, b: b)
           # Check if the next_value hailstone is either the stopping time, total
           # stopping time, the same as the initial value, or stuck at zero.
-          if @terminate.call(next_value)
+          if terminate.call(next_value)
             pre_values[k] = next_value
             if next_value == 1
               @terminal_condition = SequenceState::TOTAL_STOPPING_TIME
-            else 
+            else
               @terminal_condition = SequenceState::STOPPING_TIME
             end
             @terminal_status = k
@@ -112,8 +112,6 @@ module Collatz # rubocop:disable Style/Documentation
         lambda { |x| (x > n && x.negative?) }
       end
     end
-
-    attr_reader :values, :terminal_condition, :terminal_status
   end
 
   # Returns a list of successive values obtained by iterating a Collatz-esque

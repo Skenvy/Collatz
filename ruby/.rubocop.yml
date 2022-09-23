@@ -33,9 +33,19 @@ Layout/SpaceAroundOperators:
 Layout/SpaceBeforeBrackets:
   Enabled: true
 
+Metrics/AbcSize:
+  Enabled: false
 Metrics/BlockLength:
   AllowedMethods: ['describe', 'context']
+Metrics/BlockNesting:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
 Metrics/ParameterLists:
+  Enabled: false
+Metrics/PerceivedComplexity:
   Enabled: false
 
 Lint/AmbiguousAssignment:
@@ -107,6 +117,8 @@ Style/ArgumentsForwarding:
   Enabled: true
 Style/CollectionCompact:
   Enabled: true
+Style/ConditionalAssignment:
+  Enabled: false
 Style/DocumentDynamicEvalDefinition:
   Enabled: true
 Style/EmptyHeredoc:
@@ -121,6 +133,8 @@ Style/FileRead:
   Enabled: true
 Style/FileWrite:
   Enabled: true
+Style/For:
+  Enabled: false
 Style/HashConversion:
   Enabled: true
 Style/HashExcept:
@@ -143,6 +157,8 @@ Style/NegatedIfElseCondition:
   Enabled: true
 Style/NestedFileDirname:
   Enabled: true
+Style/Next:
+  Enabled: false
 Style/NilLambda:
   Enabled: true
 Style/NumberedParameters:
