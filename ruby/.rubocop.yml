@@ -20,6 +20,8 @@ Security/CompoundHash:
 Security/IoMethods:
   Enabled: true
 
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
 Layout/LineLength:
   Max: 120
 Layout/LineContinuationLeadingSpace:
@@ -179,6 +181,8 @@ Style/RedundantArgument:
   Enabled: true
 Style/RedundantInitialize:
   Enabled: true
+Style/RedundantSelf:
+  Enabled: false
 Style/RedundantSelfAssignmentBranch:
   Enabled: true
 Style/SelectByRegexp:

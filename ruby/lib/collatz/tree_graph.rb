@@ -52,25 +52,25 @@ module Collatz # rubocop:disable Style/Documentation
         @pre_an_plus_b_node = pre_an_plus_b_node
         return
       end
+      # Handle cycle prevention for recursive calls
+      if cycle_check.nil?
+        cycle_check = { @node_value => self }
+      elsif !cycle_check[@node_value].nil?
+        # The value already exists in the cycle so this is a cyclic terminal
+        cycle_check[@node_value].terminal_sequence_state = SequenceState::CYCLE_INIT
+        @terminal_sequence_state = SequenceState::CYCLE_LENGTH
+        @pre_n_div_p_node = nil
+        @pre_an_plus_b_node = nil
+        return
+      else
+        cycle_check[@node_value] = self
+      end
       if [0, max_orbit_distance].max.zero?
         @terminal_sequence_state = SequenceState::MAX_STOP_OUT_OF_BOUNDS
         @pre_n_div_p_node = nil
         @pre_an_plus_b_node = nil
       else
         reverses = Collatz.reverse_function(node_value, p: p, a: a, b: b)
-        # Handle cycle prevention for recursive calls
-        if cycle_check.nil?
-          cycle_check = { @node_value => self }
-        elsif !cycle_check[@node_value].nil?
-          # The value already exists in the cycle so this is a cyclic terminal
-          cycle_check[@node_value].terminal_sequence_state = SequenceState::CYCLE_INIT
-          @terminal_sequence_state = SequenceState::CYCLE_LENGTH
-          @pre_n_div_p_node = nil
-          @pre_an_plus_b_node = nil
-          return
-        else
-          cycle_check[@node_value] = self
-        end
         @pre_n_div_p_node = TreeGraphNode.new(reverses[0], max_orbit_distance-1, p, a, b, cycle_check: cycle_check)
         if reverses.length == 2
           @pre_an_plus_b_node = TreeGraphNode.new(reverses[1], max_orbit_distance-1, p, a, b, cycle_check: cycle_check)
@@ -91,7 +91,7 @@ module Collatz # rubocop:disable Style/Documentation
       return false if !self.pre_n_div_p_node.nil? && !self.pre_n_div_p_node.sub_tree_equals(tgn.pre_n_div_p_node)
       return false if self.pre_an_plus_b_node.nil? && !tgn.pre_an_plus_b_node.nil?
       return false if !self.pre_an_plus_b_node.nil? && !self.pre_an_plus_b_node.sub_tree_equals(tgn.pre_an_plus_b_node)
-      return true
+      true
     end
   end
 
@@ -117,18 +117,14 @@ module Collatz # rubocop:disable Style/Documentation
       end
     end
 
-    # The equality between TreeGraph's is determined by the equality check on subtrees. 
+    # The equality between TreeGraph's is determined by the equality check on subtrees.
     # A subtree check will be done on both TreeGraph's root nodes.
-    def ==(obj)
+    def ==(other)
       # Generic checks
-      if obj.nil?
-        return false
-      end
-      if !obj.is_a?(self.class)
-        return false
-      end
+      return false if other.nil?
+      return false unless other.is_a?(self.class)
       # Actual check
-      self.root.sub_tree_equals(obj.root)
+      self.root.sub_tree_equals(other.root)
     end
   end
 

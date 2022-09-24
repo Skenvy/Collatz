@@ -335,14 +335,14 @@ RSpec.describe Collatz do
   # @param [Integer] n
   # @return TreeGraphNode
   def wrap_tgn_terminal_node(n)
-    return Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true, terminal_sequence_state: Collatz::SequenceState::MAX_STOP_OUT_OF_BOUNDS)
+    Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true, terminal_sequence_state: Collatz::SequenceState::MAX_STOP_OUT_OF_BOUNDS) # rubocop:disable Layout/LineLength
   end
 
   # Create a "cyclic terminal" graph node with nil children and the "cycle termination" condition.
   # @param [Integer] n
   # @return TreeGraphNode
   def wrap_tgn_cyclic_terminal(n)
-    return Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true, terminal_sequence_state: Collatz::SequenceState::CYCLE_LENGTH)
+    Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true, terminal_sequence_state: Collatz::SequenceState::CYCLE_LENGTH) # rubocop:disable Layout/LineLength
   end
 
   # Create a "cyclic start" graph node with given children and the "cycle start" condition.
@@ -351,8 +351,11 @@ RSpec.describe Collatz do
   # @param [TreeGraphNode] pre_an_plus_b_node
   # @return TreeGraphNode
   def wrap_tgn_cyclic_start(n, pre_n_div_p_node, pre_an_plus_b_node)
-    return Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true, terminal_sequence_state: Collatz::SequenceState::CYCLE_INIT,
-                             pre_n_div_p_node: pre_n_div_p_node, pre_an_plus_b_node: pre_an_plus_b_node)
+    Collatz::TreeGraphNode.new(n, 0, 0, 0, 0,
+                               create_raw: true,
+                               terminal_sequence_state: Collatz::SequenceState::CYCLE_INIT,
+                               pre_n_div_p_node: pre_n_div_p_node,
+                               pre_an_plus_b_node: pre_an_plus_b_node)
   end
 
   # Create a graph node with no terminal state, with given children.
@@ -361,8 +364,10 @@ RSpec.describe Collatz do
   # @param [TreeGraphNode] pre_an_plus_b_node
   # @return TreeGraphNode
   def wrap_tgn_generic(n, pre_n_div_p_node, pre_an_plus_b_node)
-    return Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true, pre_n_div_p_node: pre_n_div_p_node,
-                             pre_an_plus_b_node: pre_an_plus_b_node)
+    Collatz::TreeGraphNode.new(n, 0, 0, 0, 0,
+                               create_raw: true,
+                               pre_n_div_p_node: pre_n_div_p_node,
+                               pre_an_plus_b_node: pre_an_plus_b_node)
   end
 
   # Create the tree graph with a root node
@@ -382,8 +387,8 @@ RSpec.describe Collatz do
       expect(Collatz.tree_graph(0, 0)).to eq(wrap_tgn_root(expected_root))
       # {0:{C:0}}
       expected_root = wrap_tgn_cyclic_start(0, wrap_tgn_cyclic_terminal(0), nil)
-      expect(Collatz.tree_graph(0, 2)).to eq(wrap_tgn_root(expected_root))
       expect(Collatz.tree_graph(0, 1)).to eq(wrap_tgn_root(expected_root))
+      expect(Collatz.tree_graph(0, 2)).to eq(wrap_tgn_root(expected_root))
     end
     
     # it "testTreeGraph_RootOfOneYieldsTheOneCycle" do
