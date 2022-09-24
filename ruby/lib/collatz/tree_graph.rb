@@ -72,7 +72,7 @@ module Collatz # rubocop:disable Style/Documentation
   # Contains the results of computing the Tree Graph via tree_graph(~).
   # Contains the root node of a tree of TreeGraphNode's.
   class TreeGraph
-    #The root node of the tree of TreeGraphNode's.
+    # The root node of the tree of TreeGraphNode's.
     attr_reader :root
 
     # Create a new TreeGraph with the root node defined by the inputs.

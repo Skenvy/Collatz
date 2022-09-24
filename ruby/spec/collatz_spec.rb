@@ -327,6 +327,7 @@ RSpec.describe Collatz do
     end
   end
 
+  # rubocop:disable Layout/LineLength, Layout/TrailingWhitespace
   context "tree_graph" do
     # it "testTreeGraph_ZeroTrap" do
     #   # ":D" for terminal, "C:" for cyclic end
@@ -432,11 +433,12 @@ RSpec.describe Collatz do
     # testTreeGraph_AssertSaneParameterisation
     it "breaks on p or a being 0" do
       # Set p and a to 0 to assert on assert_sane_parameterisation
-      # rubocop:disable Layout/LineLength
+      # rubocop:disable Layout/LineLength, Lint/RedundantCopDisableDirective
       expect { Collatz.tree_graph(1, 1, p: 0, a: 2, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)
       expect { Collatz.tree_graph(1, 1, p: 0, a: 0, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)
       expect { Collatz.tree_graph(1, 1, p: 1, a: 0, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_A)
-      # rubocop:enable Layout/LineLength
+      # rubocop:enable Layout/LineLength, Lint/RedundantCopDisableDirective
     end
   end
+  # rubocop:enable Layout/LineLength, Layout/TrailingWhitespace
 end
