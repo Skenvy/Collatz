@@ -247,67 +247,65 @@ RSpec.describe Collatz do
       expect(Collatz.stopping_time(0)).to eq(0)
     end
 
-    # it "testStoppingTime_OnesCycleOnlyYieldsATotalStop" do
-    #   # The cycle containing 1 wont yield a cycle termination, as 1 is considered
-    #   # the "total stop" that is the special case termination.
-    #   assertEquals(Double.valueOf(0), wrapStoppingTime(1));
-    #   # 1's cycle wont yield a description of it being a "cycle" as far as the
-    #   # hailstones are concerned, which is to be expected, so..
-    #   assertEquals(Double.valueOf(2), wrapStoppingTime(4, 100, true));
-    #   assertEquals(Double.valueOf(4), wrapStoppingTime(16, 100, true));
-    # end
+    it "testStoppingTime_OnesCycleOnlyYieldsATotalStop" do
+      # The cycle containing 1 wont yield a cycle termination, as 1 is considered
+      # the "total stop" that is the special case termination.
+      expect(Collatz.stopping_time(1)).to eq(0)
+      # 1's cycle wont yield a description of it being a "cycle" as far as the
+      # hailstones are concerned, which is to be expected, so..
+      expect(Collatz.stopping_time(4, max_stopping_time: 100, total_stopping_time: true)).to eq(2)
+      expect(Collatz.stopping_time(16, max_stopping_time: 100, total_stopping_time: true)).to eq(4)
+    end
 
-    # it "testStoppingTime_KnownCyclesYieldInfinity" do
-    #   # Test the 3 known default parameter's cycles (ignoring [1,4,2])
-    #   for(BigInteger[] kc : Collatz.KNOWN_CYCLES){
-    #       if(!Arrays.asList(kc).contains(BigInteger.ONE)){
-    #           for(BigInteger c : kc){
-    #               assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(c.longValue(), 100, true));
-    #           }
-    #       }
-    #   }
-    # end
+    it "testStoppingTime_KnownCyclesYieldInfinity" do
+      # Test the 3 known default parameter's cycles (ignoring [1,4,2])
+      Collatz::KNOWN_CYCLES.each do |kc|
+        unless kc.include? 1
+          kc.each do |c|
+            expect(Collatz.stopping_time(c, max_stopping_time: 100, total_stopping_time: true)).to eq(Float::INFINITY)
+          end
+        end
+      end
+    end
 
-    # it "testStoppingTime_KnownCycleLeadIns" do
-    #   # Test the lead into a cycle by entering two of the cycles. -56;-5, -200;-17
-    #   assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(-56, 100, true));
-    #   assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(-200, 100, true));
-    # end
+    it "testStoppingTime_KnownCycleLeadIns" do
+      # Test the lead into a cycle by entering two of the cycles. -56;-5, -200;-17
+      expect(Collatz.stopping_time(-56, max_stopping_time: 100, total_stopping_time: true)).to eq(Float::INFINITY)
+      expect(Collatz.stopping_time(-200, max_stopping_time: 100, total_stopping_time: true)).to eq(Float::INFINITY)
+    end
 
-    # it "testStoppingTime_RegularStoppingTime" do
-    #   # Test the regular stopping time check.
-    #   assertEquals(Double.valueOf(1), wrapStoppingTime(4));
-    #   assertEquals(Double.valueOf(3), wrapStoppingTime(5));
-    # end
+    it "testStoppingTime_RegularStoppingTime" do
+      # Test the regular stopping time check.
+      expect(Collatz.stopping_time(4)).to eq(1)
+      expect(Collatz.stopping_time(5)).to eq(3)
+    end
 
-    # it "testStoppingTime_NegativeMaxTotalStoppingTime" do
-    #   # Test small max total stopping time: (minimum internal value is one)
-    #   assertEquals(null, wrapStoppingTime(5, -100, true));
-    # end
+    it "testStoppingTime_NegativeMaxTotalStoppingTime" do
+      # Test small max total stopping time: (minimum internal value is one)
+      expect(Collatz.stopping_time(5, max_stopping_time: -100, total_stopping_time: true)).to eq(nil)
+    end
 
-    # it "testStoppingTime_ZeroStopMidHail" do
-    #   # Test the zero stop mid hailing. This wont happen with default params tho.
-    #   assertEquals(Double.valueOf(-1), wrapStoppingTime(3, 2, 3, -9, 100, false));
-    # end
+    it "testStoppingTime_ZeroStopMidHail" do
+      # Test the zero stop mid hailing. This wont happen with default params tho.
+      expect(Collatz.stopping_time(3, p: 2, a: 3, b: -9, max_stopping_time: 100)).to eq(-1)
+    end
 
-    # it "testStoppingTime_UnitaryPCausesAlmostImmediateCycles" do
-    #   # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
-    #   # still allowed, although they will generate immediate 1 or 2 length cycles
-    #   # respectively, so confirm the behaviour of each of these stopping times.
-    #   assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(3, 1, 3, 1, 100, false));
-    #   assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(3, -1, 3, 1, 100, false));
-    # end
+    it "testStoppingTime_UnitaryPCausesAlmostImmediateCycles" do
+      # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
+      # still allowed, although they will generate immediate 1 or 2 length cycles
+      # respectively, so confirm the behaviour of each of these stopping times.
+      expect(Collatz.stopping_time(3, p: 1, a: 3, b: 1, max_stopping_time: 100)).to eq(Float::INFINITY)
+      expect(Collatz.stopping_time(3, p: -1, a: 3, b: 1, max_stopping_time: 100)).to eq(Float::INFINITY)
+    end
 
-    # it "testStoppingTime_MultiplesOf576460752303423488Plus27" do
-    #   # One last one for the fun of it..
-    #   assertEquals(Double.valueOf(111), wrapStoppingTime(27, 1000, true));
-    #   # # And for a bit more fun, common trajectories on
-    #   for(int k = 0; k < 5; k++){
-    #       BigInteger input = BigInteger.valueOf(27).add(BigInteger.valueOf(k).multiply(new BigInteger("576460752303423488")));
-    #       Double stop = Collatz.stoppingTime(input, Collatz.DEFAULT_P, Collatz.DEFAULT_A, Collatz.DEFAULT_B, 1000, false);
-    #       assertEquals(Double.valueOf(96), stop);
-    #   }
-    # end
+    it "testStoppingTime_MultiplesOf576460752303423488Plus27" do
+      # One last one for the fun of it..
+      expect(Collatz.stopping_time(27, max_stopping_time: 120, total_stopping_time: true)).to eq(111)
+      # # And for a bit more fun, common trajectories on
+      for k in 0..5 do
+        expect(Collatz.stopping_time(27+(k*576460752303423488), max_stopping_time: 100)).to eq(96)
+      end
+    end
 
     # testStoppingTime_AssertSaneParameterisation
     it "breaks on p or a being 0" do

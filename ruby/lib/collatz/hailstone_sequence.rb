@@ -172,9 +172,11 @@ module Collatz # rubocop:disable Style/Documentation
     # and the "max_~_time" for this "stopping time" function is _not_ "total",
     # they are handled the same way, as the default for "total_stopping_time"
     # for hailstones is true, but for this, is false. Thus the naming difference.
+    # rubocop:disable Layout/HashAlignment
     hail = hailstone_sequence(initial_value, p: p, a: a, b: b,
                               max_total_stopping_time: max_stopping_time,
                               total_stopping_time: total_stopping_time)
+    # rubocop:enable Layout/HashAlignment
     # For total/regular/zero stopping time, the value is already the same as
     # that present, for cycles we report infinity instead of the cycle length,
     # and for max stop out of bounds, we report None instead of the max stop cap
