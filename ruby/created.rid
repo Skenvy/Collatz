@@ -1,3 +1,9 @@
-Wed, 21 Sep 2022 17:18:05 +0000
-README.md	Wed, 21 Sep 2022 17:17:52 +0000
-lib/collatz.rb	Wed, 21 Sep 2022 17:17:52 +0000
+Sat, 24 Sep 2022 22:18:33 +0000
+README.md	Sat, 24 Sep 2022 22:18:19 +0000
+lib/collatz.rb	Sat, 24 Sep 2022 22:18:19 +0000
+lib/collatz/constants.rb	Sat, 24 Sep 2022 22:18:19 +0000
+lib/collatz/function.rb	Sat, 24 Sep 2022 22:18:19 +0000
+lib/collatz/hailstone_sequence.rb	Sat, 24 Sep 2022 22:18:19 +0000
+lib/collatz/tree_graph.rb	Sat, 24 Sep 2022 22:18:19 +0000
+lib/collatz/utilities.rb	Sat, 24 Sep 2022 22:18:19 +0000
+lib/collatz/version.rb	Sat, 24 Sep 2022 22:18:19 +0000

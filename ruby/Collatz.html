@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>module Collatz - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    
+<!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    <li ><a href="#method-i-function">#function</a>
+    <li ><a href="#method-i-hailstone_sequence">#hailstone_sequence</a>
+    <li ><a href="#method-i-reverse_function">#reverse_function</a>
+    <li ><a href="#method-i-stopping_time">#stopping_time</a>
+    <li ><a href="#method-i-tree_graph">#tree_graph</a>
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-Collatz">
+  <h1 id="module-Collatz" class="module">
+    module Collatz
+  </h1>
+
+  <section class="description">
+    
+<p>Provides the basic functionality to interact with the <a href="Collatz.html"><code>Collatz</code></a> conjecture. The parameterisation uses the same (p,a,b) notation as Conway’s generalisations. Besides the function and reverse function, there is also functionality to retrieve the hailstone sequence, the “stopping time”/“total stopping time”, or tree-graph.</p>
+
+  </section>
+
+  <section id="5Buntitled-5D" class="documentation-section">
+
+
+    <section class="constants-list">
+      <header>
+        <h3>Constants</h3>
+      </header>
+      <dl>
+        <dt id="KNOWN_CYCLES">KNOWN_CYCLES
+        <dd><p>The four known cycles for the standard parameterisation.</p>
+        <dt id="VERIFIED_MAXIMUM">VERIFIED_MAXIMUM
+        <dd><p>The current value up to which the standard parameterisation has been verified.</p>
+        <dt id="VERIFIED_MINIMUM">VERIFIED_MINIMUM
+        <dd><p>The current value down to which the standard parameterisation has been verified.</p>
+        <dt id="VERSION">VERSION
+        <dd><p>The current semver version.</p>
+      </dl>
+    </section>
+
+
+
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+      <div id="method-i-function" class="method-detail ">
+        <div class="method-heading">
+          <span class="method-name">function</span><span
+            class="method-args">(n, p: 2, a: 3, b: 1)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+
+        <div class="method-description">
+          <p>Returns the output of a single application of a Collatz-esque function.</p>
+
+<p>@raise <a href="Collatz/FailedSaneParameterCheck.html"><code>FailedSaneParameterCheck</code></a> If p or a are 0.</p>
+
+<p>@param <code>Integer</code> <strong>n:</strong> The value on which to perform the Collatz-esque function.</p>
+
+<p>@param <code>Integer</code> <strong>p:</strong> Modulus used to devide n, iff n is equivalent to (0 mod p).</p>
+
+<p>@param <code>Integer</code> <strong>a:</strong> Factor by which to multiply n.</p>
+
+<p>@param <code>Integer</code> <strong>b:</strong> Value to add to the scaled value of n.</p>
+
+<p>@return <code>Integer</code> The result of the function</p>
+
+          <div class="method-source-code" id="function-source">
+            <pre><span class="ruby-comment"># File lib/collatz/function.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">function</span>(<span class="ruby-identifier">n</span>, <span class="ruby-value">p:</span> <span class="ruby-value">2</span>, <span class="ruby-value">a:</span> <span class="ruby-value">3</span>, <span class="ruby-value">b:</span> <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">assert_sane_parameterisation</span>(<span class="ruby-identifier">p</span>, <span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>)
+  (<span class="ruby-identifier">n</span><span class="ruby-operator">%</span><span class="ruby-identifier">p</span>).<span class="ruby-identifier">zero?</span> <span class="ruby-operator">?</span> (<span class="ruby-identifier">n</span><span class="ruby-operator">/</span><span class="ruby-identifier">p</span>) <span class="ruby-operator">:</span> ((<span class="ruby-identifier">a</span><span class="ruby-operator">*</span><span class="ruby-identifier">n</span>)<span class="ruby-operator">+</span><span class="ruby-identifier">b</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-hailstone_sequence" class="method-detail ">
+        <div class="method-heading">
+          <span class="method-name">hailstone_sequence</span><span
+            class="method-args">(initial_value, p: 2, a: 3, b: 1, max_total_stopping_time: 1000, total_stopping_time: true)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+
+        <div class="method-description">
+          <p>Returns a list of successive values obtained by iterating a Collatz-esque function, until either 1 is reached, or the total amount of iterations exceeds max_total_stopping_time, unless total_stopping_time is False, which will terminate the hailstone at the “stopping time” value, i.e. the first value less than the initial value. While the sequence has the capability to determine that it has encountered a cycle, the cycle from “1” wont be attempted or reported as part of a cycle, regardless of default or custom parameterisation, as “1” is considered a “total stop”.</p>
+
+<p>@raise <a href="Collatz/FailedSaneParameterCheck.html"><code>FailedSaneParameterCheck</code></a> If p or a are 0.</p>
+
+<p>@param <code>Integer</code> <strong>initial_value:</strong> The value to begin the hailstone sequence from.</p>
+
+<p>@param <code>Integer</code> <strong>p:</strong> Modulus used to devide n, iff n is equivalent to (0 mod p).</p>
+
+<p>@param <code>Integer</code> <strong>a:</strong> Factor by which to multiply n.</p>
+
+<p>@param <code>Integer</code> <strong>b:</strong> Value to add to the scaled value of n.</p>
+
+<p>@param <code>Integer</code> <strong>max_total_stopping_time:</strong> Maximum amount of times to iterate the function, if 1 is not reached.</p>
+
+<p>@param <code>Boolean</code> <strong>total_stopping_time:</strong> Whether or not to execute until the “total” stopping time (number of iterations to obtain 1) rather than the regular stopping time (number of iterations to reach a value less than the initial value).</p>
+
+<p>@return <a href="Collatz/HailstoneSequence.html"><code>HailstoneSequence</code></a> A set of values that form the hailstone sequence.</p>
+
+          <div class="method-source-code" id="hailstone_sequence-source">
+            <pre><span class="ruby-comment"># File lib/collatz/hailstone_sequence.rb, line 151</span>
+                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">hailstone_sequence</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-value">p:</span> <span class="ruby-value">2</span>, <span class="ruby-value">a:</span> <span class="ruby-value">3</span>, <span class="ruby-value">b:</span> <span class="ruby-value">1</span>, <span class="ruby-value">max_total_stopping_time:</span> <span class="ruby-value">1000</span>, <span class="ruby-value">total_stopping_time:</span> <span class="ruby-keyword">true</span>) <span class="ruby-comment"># rubocop:disable Layout/LineLength</span>
+  <span class="ruby-comment"># Prior to starting the hailstone, which has some magic case handling,</span>
+  <span class="ruby-comment"># call the function to trigger any assert_sane_parameterisation flags.</span>
+  <span class="ruby-identifier">_throwaway</span> = <span class="ruby-identifier">function</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-value">p:</span> <span class="ruby-identifier">p</span>, <span class="ruby-value">a:</span> <span class="ruby-identifier">a</span>, <span class="ruby-value">b:</span> <span class="ruby-identifier">b</span>)
+  <span class="ruby-comment"># Return the hailstone sequence.</span>
+  <span class="ruby-constant">HailstoneSequence</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-identifier">p</span>, <span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>, <span class="ruby-identifier">max_total_stopping_time</span>, <span class="ruby-identifier">total_stopping_time</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-reverse_function" class="method-detail ">
+        <div class="method-heading">
+          <span class="method-name">reverse_function</span><span
+            class="method-args">(n, p: 2, a: 3, b: 1)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+
+        <div class="method-description">
+          <p>Returns the output of a single application of a Collatz-esque reverse function. If only one value is returned, it is the value that would be divided by p. If two values are returned, the first is the value that would be divided by p, and the second value is that which would undergo the multiply and add step, regardless of which is larger.</p>
+
+<p>@raise <a href="Collatz/FailedSaneParameterCheck.html"><code>FailedSaneParameterCheck</code></a> If p or a are 0.</p>
+
+<p>@param <code>Integer</code> <strong>n:</strong> The value on which to perform the reverse <a href="Collatz.html"><code>Collatz</code></a> function.</p>
+
+<p>@param <code>Integer</code> <strong>p:</strong> Modulus used to devide n, iff n is equivalent to (0 mod p).</p>
+
+<p>@param <code>Integer</code> <strong>a:</strong> Factor by which to multiply n.</p>
+
+<p>@param <code>Integer</code> <strong>b:</strong> Value to add to the scaled value of n.</p>
+
+<p>@return +List&lt;Integer&gt;+ The values that would return the input if given to the function.</p>
+
+          <div class="method-source-code" id="reverse_function-source">
+            <pre><span class="ruby-comment"># File lib/collatz/function.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">reverse_function</span>(<span class="ruby-identifier">n</span>, <span class="ruby-value">p:</span> <span class="ruby-value">2</span>, <span class="ruby-value">a:</span> <span class="ruby-value">3</span>, <span class="ruby-value">b:</span> <span class="ruby-value">1</span>)
+  <span class="ruby-identifier">assert_sane_parameterisation</span>(<span class="ruby-identifier">p</span>, <span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>)
+  <span class="ruby-keyword">if</span> ((<span class="ruby-identifier">n</span><span class="ruby-operator">-</span><span class="ruby-identifier">b</span>)<span class="ruby-operator">%</span><span class="ruby-identifier">a</span>).<span class="ruby-identifier">zero?</span> <span class="ruby-operator">&amp;&amp;</span> ((<span class="ruby-identifier">n</span><span class="ruby-operator">-</span><span class="ruby-identifier">b</span>)<span class="ruby-operator">%</span>(<span class="ruby-identifier">p</span><span class="ruby-operator">*</span><span class="ruby-identifier">a</span>)).<span class="ruby-identifier">nonzero?</span>
+    [<span class="ruby-identifier">p</span><span class="ruby-operator">*</span><span class="ruby-identifier">n</span>, (<span class="ruby-identifier">n</span><span class="ruby-operator">-</span><span class="ruby-identifier">b</span>)<span class="ruby-operator">/</span><span class="ruby-identifier">a</span>]
+  <span class="ruby-keyword">else</span>
+    [<span class="ruby-identifier">p</span><span class="ruby-operator">*</span><span class="ruby-identifier">n</span>]
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-stopping_time" class="method-detail ">
+        <div class="method-heading">
+          <span class="method-name">stopping_time</span><span
+            class="method-args">(initial_value, p: 2, a: 3, b: 1, max_stopping_time: 1000, total_stopping_time: false)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+
+        <div class="method-description">
+          <p>Returns the stopping time, the amount of iterations required to reach a value less than the initial value, or nil if max_stopping_time is exceeded. Alternatively, if total_stopping_time is true, then it will instead count the amount of iterations to reach 1. If the sequence does not stop, but instead ends in a cycle, the result will be infinity. If (p,a,b) are such that it is possible to get stuck on zero, the result will be the negative of what would otherwise be the “total stopping time” to reach 1, where 0 is considered a “total stop” that should not occur as it does form a cycle of length 1.</p>
+
+<p>@raise <a href="Collatz/FailedSaneParameterCheck.html"><code>FailedSaneParameterCheck</code></a> If p or a are 0.</p>
+
+<p>@param <code>Integer</code> <strong>initial_value:</strong> The value for which to find the stopping time.</p>
+
+<p>@param <code>Integer</code> <strong>p:</strong> Modulus used to devide n, iff n is equivalent to (0 mod p).</p>
+
+<p>@param <code>Integer</code> <strong>a:</strong> Factor by which to multiply n.</p>
+
+<p>@param <code>Integer</code> <strong>b:</strong> Value to add to the scaled value of n.</p>
+
+<p>@param <code>Integer</code> <strong>max_stopping_time:</strong> Maximum amount of times to iterate the function, if the stopping time is not reached. IF the max_stopping_time is reached, the function will return nil.</p>
+
+<p>@param <code>Boolean</code> <strong>total_stopping_time:</strong> Whether or not to execute until the “total” stopping time (number of iterations to obtain 1) rather than the regular stopping time (number of iterations to reach a value less than the initial value).</p>
+
+<p>@return <code>Integer</code> The stopping time, or, in a special case, infinity, nil or a negative.</p>
+
+          <div class="method-source-code" id="stopping_time-source">
+            <pre><span class="ruby-comment"># File lib/collatz/hailstone_sequence.rb, line 188</span>
+                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">stopping_time</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-value">p:</span> <span class="ruby-value">2</span>, <span class="ruby-value">a:</span> <span class="ruby-value">3</span>, <span class="ruby-value">b:</span> <span class="ruby-value">1</span>, <span class="ruby-value">max_stopping_time:</span> <span class="ruby-value">1000</span>, <span class="ruby-value">total_stopping_time:</span> <span class="ruby-keyword">false</span>) <span class="ruby-comment"># rubocop:disable Layout/LineLength</span>
+  <span class="ruby-comment"># Although the &quot;max_~_time&quot; for hailstones is named for &quot;total stopping&quot; time</span>
+  <span class="ruby-comment"># and the &quot;max_~_time&quot; for this &quot;stopping time&quot; function is _not_ &quot;total&quot;,</span>
+  <span class="ruby-comment"># they are handled the same way, as the default for &quot;total_stopping_time&quot;</span>
+  <span class="ruby-comment"># for hailstones is true, but for this, is false. Thus the naming difference.</span>
+  <span class="ruby-comment"># rubocop:disable Layout/HashAlignment</span>
+  <span class="ruby-identifier">hail</span> = <span class="ruby-identifier">hailstone_sequence</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-value">p:</span> <span class="ruby-identifier">p</span>, <span class="ruby-value">a:</span> <span class="ruby-identifier">a</span>, <span class="ruby-value">b:</span> <span class="ruby-identifier">b</span>,
+                            <span class="ruby-value">max_total_stopping_time:</span> <span class="ruby-identifier">max_stopping_time</span>,
+                            <span class="ruby-value">total_stopping_time:</span> <span class="ruby-identifier">total_stopping_time</span>)
+  <span class="ruby-comment"># rubocop:enable Layout/HashAlignment</span>
+  <span class="ruby-comment"># For total/regular/zero stopping time, the value is already the same as</span>
+  <span class="ruby-comment"># that present, for cycles we report infinity instead of the cycle length,</span>
+  <span class="ruby-comment"># and for max stop out of bounds, we report None instead of the max stop cap</span>
+  { <span class="ruby-constant">SequenceState</span><span class="ruby-operator">::</span><span class="ruby-constant">TOTAL_STOPPING_TIME</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">hail</span>.<span class="ruby-identifier">terminal_status</span>,
+    <span class="ruby-constant">SequenceState</span><span class="ruby-operator">::</span><span class="ruby-constant">STOPPING_TIME</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">hail</span>.<span class="ruby-identifier">terminal_status</span>,
+    <span class="ruby-constant">SequenceState</span><span class="ruby-operator">::</span><span class="ruby-constant">CYCLE_LENGTH</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-constant">Float</span><span class="ruby-operator">::</span><span class="ruby-constant">INFINITY</span>,
+    <span class="ruby-constant">SequenceState</span><span class="ruby-operator">::</span><span class="ruby-constant">ZERO_STOP</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">hail</span>.<span class="ruby-identifier">terminal_status</span>,
+    <span class="ruby-constant">SequenceState</span><span class="ruby-operator">::</span><span class="ruby-constant">MAX_STOP_OUT_OF_BOUNDS</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-keyword">nil</span>
+  }.<span class="ruby-identifier">fetch</span>(<span class="ruby-identifier">hail</span>.<span class="ruby-identifier">terminal_condition</span>, <span class="ruby-keyword">nil</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div id="method-i-tree_graph" class="method-detail ">
+        <div class="method-heading">
+          <span class="method-name">tree_graph</span><span
+            class="method-args">(initial_value, max_orbit_distance, p: 2, a: 3, b: 1)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+
+        <div class="method-description">
+          <p>Returns a directed tree graph of the reverse function values up to a maximum nesting of max_orbit_distance, with the initial_value as the root.</p>
+
+<p>@raise <a href="Collatz/FailedSaneParameterCheck.html"><code>FailedSaneParameterCheck</code></a> If p or a are 0.</p>
+
+<p>@param <code>Integer</code> <strong>initial_value:</strong> The root value of the directed tree graph.</p>
+
+<p>@param <code>Integer</code> <strong>max_orbit_distance:</strong> Maximum amount of times to iterate the reverse function. There is no natural termination to populating the tree graph, equivalent to the termination of hailstone sequences or stopping time attempts, so this is not an optional argument like max_stopping_time / max_total_stopping_time, as it is the intended target of orbits to obtain, rather than a limit to avoid uncapped computation.</p>
+
+<p>@param <code>Integer</code> <strong>p:</strong> Modulus used to devide n, iff n is equivalent to (0 mod p).</p>
+
+<p>@param <code>Integer</code> <strong>a:</strong> Factor by which to multiply n.</p>
+
+<p>@param <code>Integer</code> <strong>b:</strong> Value to add to the scaled value of n.</p>
+
+<p>@return <a href="Collatz/TreeGraph.html"><code>TreeGraph</code></a> The branches of the tree graph as determined by the reverse function.</p>
+
+          <div class="method-source-code" id="tree_graph-source">
+            <pre><span class="ruby-comment"># File lib/collatz/tree_graph.rb, line 177</span>
+                <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">tree_graph</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-identifier">max_orbit_distance</span>, <span class="ruby-value">p:</span> <span class="ruby-value">2</span>, <span class="ruby-value">a:</span> <span class="ruby-value">3</span>, <span class="ruby-value">b:</span> <span class="ruby-value">1</span>)
+  <span class="ruby-comment"># Prior to starting the tree graph, which has some magic case handling, call</span>
+  <span class="ruby-comment"># the reverse_function to trigger any assert_sane_parameterisation flags.</span>
+  <span class="ruby-identifier">_throwaway</span> = <span class="ruby-identifier">reverse_function</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-value">p:</span> <span class="ruby-identifier">p</span>, <span class="ruby-value">a:</span> <span class="ruby-identifier">a</span>, <span class="ruby-value">b:</span> <span class="ruby-identifier">b</span>)
+  <span class="ruby-constant">TreeGraph</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">initial_value</span>, <span class="ruby-identifier">max_orbit_distance</span>, <span class="ruby-identifier">p</span>, <span class="ruby-identifier">a</span>, <span class="ruby-identifier">b</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+        </div>
+
+
+      </div>
+
+    </section>
+
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.4.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+
