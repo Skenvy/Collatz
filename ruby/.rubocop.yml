@@ -28,6 +28,8 @@ Layout/LineContinuationSpacing:
   Enabled: true
 Layout/LineEndStringConcatenationIndentation:
   Enabled: true
+Layout/MultilineHashBraceLayout:
+  Enabled: false
 Layout/SpaceAroundOperators:
   Enabled: false
 Layout/SpaceBeforeBrackets:

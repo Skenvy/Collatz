@@ -136,6 +136,8 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @return [HailstoneSequence] A set of values that form the hailstone sequence.
   def hailstone_sequence(initial_value, p: 2, a: 3, b: 1, max_total_stopping_time: 1000, total_stopping_time: true)
+    # Prior to starting the hailstone, which has some magic case handling,
+    # call the function to trigger any assert_sane_parameterisation flags.
     _throwaway = function(initial_value, p: p, a: a, b: b)
     # Return the hailstone sequence.
     HailstoneSequence.new(initial_value, p, a, b, max_total_stopping_time, total_stopping_time)
@@ -166,6 +168,21 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @return [Integer] The stopping time, or, in a special case, infinity, nil or a negative.
   def stopping_time(initial_value, p: 2, a: 3, b: 1, max_stopping_time: 1000, total_stopping_time: false)
-    raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
+    # Although the "max_~_time" for hailstones is named for "total stopping" time
+    # and the "max_~_time" for this "stopping time" function is _not_ "total",
+    # they are handled the same way, as the default for "total_stopping_time"
+    # for hailstones is true, but for this, is false. Thus the naming difference.
+    hail = hailstone_sequence(initial_value, p: p, a: a, b: b,
+                              max_total_stopping_time: max_stopping_time,
+                              total_stopping_time: total_stopping_time)
+    # For total/regular/zero stopping time, the value is already the same as
+    # that present, for cycles we report infinity instead of the cycle length,
+    # and for max stop out of bounds, we report None instead of the max stop cap
+    { SequenceState::TOTAL_STOPPING_TIME => hail.terminal_status,
+      SequenceState::STOPPING_TIME => hail.terminal_status,
+      SequenceState::CYCLE_LENGTH => Float::INFINITY,
+      SequenceState::ZERO_STOP => hail.terminal_status,
+      SequenceState::MAX_STOP_OUT_OF_BOUNDS => nil
+    }.fetch(hail.terminal_condition, nil)
   end
 end
