@@ -22,7 +22,7 @@ module Collatz # rubocop:disable Style/Documentation
     # The terminal SequenceState; nil if not a terminal node, MAX_STOP_OUT_OF_BOUNDS if the max_orbit_distance
     # has been reached, CYCLE_LENGTH if the node's value is found to have occured previously, or
     # CYCLE_INIT, retroactively applied when a CYCLE_LENGTH state node is found.
-    attr_reader :terminal_sequence_state
+    attr_accessor :terminal_sequence_state
 
     # The "Pre N/P" TreeGraphNode child of this node that
     # is always present if this is not a terminal node.
@@ -30,7 +30,7 @@ module Collatz # rubocop:disable Style/Documentation
 
     # The "Pre aN+b" TreeGraphNode child of this node that is
     # present if it exists and this is not a terminal node.
-    attr_reader :pre_a_n_plus_b_node
+    attr_reader :pre_an_plus_b_node
 
     # Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
     # @param [Integer] node_value The value for which to find the tree graph node reversal.
@@ -38,12 +38,24 @@ module Collatz # rubocop:disable Style/Documentation
     # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
     # @param [Integer] a Factor by which to multiply n.
     # @param [Integer] b Value to add to the scaled value of n.
-    def initialize(node_value, max_orbit_distance, p, a, b, cycle_check: nil)
+    # @param [Hash] cycle_check A hash used to keep track of already graphed values
+    # @param [Boolean] create_raw Used to instruct the initialiser method to take 1:1 inputs, used in testing.
+    # @param [SequenceState] terminal_sequence_state
+    # @param [TreeGraphNode] pre_n_div_p_node
+    # @param [TreeGraphNode] pre_an_plus_b_node
+    def initialize(node_value, max_orbit_distance, p, a, b, cycle_check: nil, create_raw: false,
+                   terminal_sequence_state: nil, pre_n_div_p_node: nil, pre_an_plus_b_node: nil)
       @node_value = node_value
+      if create_raw
+        @terminal_sequence_state = terminal_sequence_state
+        @pre_n_div_p_node = pre_n_div_p_node
+        @pre_an_plus_b_node = pre_an_plus_b_node
+        return
+      end
       if [0, max_orbit_distance].max.zero?
         @terminal_sequence_state = SequenceState::MAX_STOP_OUT_OF_BOUNDS
         @pre_n_div_p_node = nil
-        @pre_a_n_plus_b_node = nil
+        @pre_an_plus_b_node = nil
       else
         reverses = Collatz.reverse_function(node_value, p: p, a: a, b: b)
         # Handle cycle prevention for recursive calls
@@ -54,18 +66,32 @@ module Collatz # rubocop:disable Style/Documentation
           cycle_check[@node_value].terminal_sequence_state = SequenceState::CYCLE_INIT
           @terminal_sequence_state = SequenceState::CYCLE_LENGTH
           @pre_n_div_p_node = nil
-          @pre_a_n_plus_b_node = nil
+          @pre_an_plus_b_node = nil
           return
         else
           cycle_check[@node_value] = self
         end
         @pre_n_div_p_node = TreeGraphNode.new(reverses[0], max_orbit_distance-1, p, a, b, cycle_check: cycle_check)
         if reverses.length == 2
-          @pre_a_n_plus_b_node = TreeGraphNode.new(reverses[1], max_orbit_distance-1, p, a, b, cycle_check: cycle_check)
+          @pre_an_plus_b_node = TreeGraphNode.new(reverses[1], max_orbit_distance-1, p, a, b, cycle_check: cycle_check)
         else
-          @pre_a_n_plus_b_node = nil
+          @pre_an_plus_b_node = nil
         end
       end
+    end
+
+    # This will only confirm an equality if the whole subtree of both nodes, including
+    # node values, sequence states, and child nodes, checked recursively, are equal.
+    # @param [TreeGraphNode] tgn The TreeGraphNode with which to compare equality.
+    # @return true, if the entire sub-trees are equal.
+    def sub_tree_equals(tgn)
+      return false if self.node_value != tgn.node_value
+      return false if self.terminal_sequence_state != tgn.terminal_sequence_state
+      return false if self.pre_n_div_p_node.nil? && !tgn.pre_n_div_p_node.nil?
+      return false if !self.pre_n_div_p_node.nil? && !self.pre_n_div_p_node.sub_tree_equals(tgn.pre_n_div_p_node)
+      return false if self.pre_an_plus_b_node.nil? && !tgn.pre_an_plus_b_node.nil?
+      return false if !self.pre_an_plus_b_node.nil? && !self.pre_an_plus_b_node.sub_tree_equals(tgn.pre_an_plus_b_node)
+      return true
     end
   end
 
@@ -81,8 +107,28 @@ module Collatz # rubocop:disable Style/Documentation
     # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
     # @param [Integer] a Factor by which to multiply n.
     # @param [Integer] b Value to add to the scaled value of n.
-    def initialize(node_value, max_orbit_distance, p, a, b)
-      @root = TreeGraphNode.new(node_value, max_orbit_distance, p, a, b)
+    # @param [Boolean] create_raw Used to instruct the initialiser method to take 1:1 inputs, used in testing.
+    # @param [TreeGraphNode] root A node that will be set to the root of this tree
+    def initialize(node_value, max_orbit_distance, p, a, b, create_raw: false, root: nil)
+      if create_raw && !root.nil?
+        @root = root
+      else
+        @root = TreeGraphNode.new(node_value, max_orbit_distance, p, a, b)
+      end
+    end
+
+    # The equality between TreeGraph's is determined by the equality check on subtrees. 
+    # A subtree check will be done on both TreeGraph's root nodes.
+    def ==(obj)
+      # Generic checks
+      if obj.nil?
+        return false
+      end
+      if !obj.is_a?(self.class)
+        return false
+      end
+      # Actual check
+      self.root.sub_tree_equals(obj.root)
     end
   end
 
@@ -103,6 +149,9 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @return [TreeGraph] The branches of the tree graph as determined by the reverse function.
   def tree_graph(initial_value, max_orbit_distance, p: 2, a: 3, b: 1)
+    # Prior to starting the tree graph, which has some magic case handling, call
+    # the reverse_function to trigger any assert_sane_parameterisation flags.
+    _throwaway = reverse_function(initial_value, p: p, a: a, b: b)
     TreeGraph.new(initial_value, max_orbit_distance, p, a, b)
   end
 end
