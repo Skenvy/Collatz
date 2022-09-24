@@ -16,8 +16,56 @@ module Collatz # rubocop:disable Style/Documentation
   # as an "out of bounds" stop, which is the regularly expected terminal state. Other
   # terminal states possible however include the cycle state and cycle length (end) states.
   class TreeGraphNode
-    def initialize
-      raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
+    # The value of this node in the tree.
+    attr_reader :node_value
+
+    # The terminal SequenceState; nil if not a terminal node, MAX_STOP_OUT_OF_BOUNDS if the max_orbit_distance
+    # has been reached, CYCLE_LENGTH if the node's value is found to have occured previously, or
+    # CYCLE_INIT, retroactively applied when a CYCLE_LENGTH state node is found.
+    attr_reader :terminal_sequence_state
+
+    # The "Pre N/P" TreeGraphNode child of this node that
+    # is always present if this is not a terminal node.
+    attr_reader :pre_n_div_p_node
+
+    # The "Pre aN+b" TreeGraphNode child of this node that is
+    # present if it exists and this is not a terminal node.
+    attr_reader :pre_a_n_plus_b_node
+
+    # Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
+    # @param [Integer] node_value The value for which to find the tree graph node reversal.
+    # @param [Integer] max_orbit_distance The maximum distance/orbit/branch length to travel.
+    # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
+    # @param [Integer] a Factor by which to multiply n.
+    # @param [Integer] b Value to add to the scaled value of n.
+    def initialize(node_value, max_orbit_distance, p, a, b, cycle_check: nil)
+      @node_value = node_value
+      if [0, max_orbit_distance].max.zero?
+        @terminal_sequence_state = SequenceState::MAX_STOP_OUT_OF_BOUNDS
+        @pre_n_div_p_node = nil
+        @pre_a_n_plus_b_node = nil
+      else
+        reverses = reverse_function(node_value, p: p, a: a, b: b)
+        # Handle cycle prevention for recursive calls
+        if cycle_check.nil?
+          cycle_check = { @node_value => self }
+        elsif !cycle_check[@node_value].nil?
+          # The value already exists in the cycle so this is a cyclic terminal
+          cycle_check[@node_value].terminal_sequence_state = SequenceState::CYCLE_INIT
+          @terminal_sequence_state = SequenceState::CYCLE_LENGTH
+          @pre_n_div_p_node = nil
+          @pre_a_n_plus_b_node = nil
+          return
+        else
+          cycle_check[@node_value] = self
+        end
+        @pre_n_div_p_node = TreeGraphNode.new(reverses[0], max_orbit_distance-1, p, a, b, cycle_check: cycle_check)
+        if reverses.length == 2
+          @pre_a_n_plus_b_node = TreeGraphNode.new(reverses[1], max_orbit_distance-1, p, a, b, cycle_check: cycle_check)
+        else
+          @pre_a_n_plus_b_node = nil
+        end
+      end
     end
   end
 
