@@ -334,7 +334,7 @@ RSpec.describe Collatz do
   # rubocop:disable Layout/HashAlignment, Layout/ArgumentAlignment
   # Create a "terminal" graph node with nil children and the terminal
   # condition that indicates it has reached the maximum orbit of the tree.
-  # @param [Integer] n
+  # @param +Integer+ n
   # @return TreeGraphNode
   def wrap_tgn_terminal_node(n)
     Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true,
@@ -342,7 +342,7 @@ RSpec.describe Collatz do
   end
 
   # Create a "cyclic terminal" graph node with nil children and the "cycle termination" condition.
-  # @param [Integer] n
+  # @param +Integer+ n
   # @return TreeGraphNode
   def wrap_tgn_cyclic_terminal(n)
     Collatz::TreeGraphNode.new(n, 0, 0, 0, 0, create_raw: true,
@@ -350,7 +350,7 @@ RSpec.describe Collatz do
   end
 
   # Create a "cyclic start" graph node with given children and the "cycle start" condition.
-  # @param [Integer] n
+  # @param +Integer+ n
   # @param [TreeGraphNode] pre_n_div_p_node
   # @param [TreeGraphNode] pre_an_plus_b_node
   # @return TreeGraphNode
@@ -362,7 +362,7 @@ RSpec.describe Collatz do
   end
 
   # Create a graph node with no terminal state, with given children.
-  # @param [Integer] n
+  # @param +Integer+ n
   # @param [TreeGraphNode] pre_n_div_p_node
   # @param [TreeGraphNode] pre_an_plus_b_node
   # @return TreeGraphNode
