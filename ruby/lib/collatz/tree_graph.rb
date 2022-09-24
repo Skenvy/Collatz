@@ -45,7 +45,7 @@ module Collatz # rubocop:disable Style/Documentation
         @pre_n_div_p_node = nil
         @pre_a_n_plus_b_node = nil
       else
-        reverses = reverse_function(node_value, p: p, a: a, b: b)
+        reverses = Collatz.reverse_function(node_value, p: p, a: a, b: b)
         # Handle cycle prevention for recursive calls
         if cycle_check.nil?
           cycle_check = { @node_value => self }
@@ -72,8 +72,17 @@ module Collatz # rubocop:disable Style/Documentation
   # Contains the results of computing the Tree Graph via tree_graph(~).
   # Contains the root node of a tree of TreeGraphNode's.
   class TreeGraph
-    def initialize
-      raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
+    #The root node of the tree of TreeGraphNode's.
+    attr_reader :root
+
+    # Create a new TreeGraph with the root node defined by the inputs.
+    # @param [Integer] node_value The value for which to find the tree graph node reversal.
+    # @param [Integer] max_orbit_distance The maximum distance/orbit/branch length to travel.
+    # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
+    # @param [Integer] a Factor by which to multiply n.
+    # @param [Integer] b Value to add to the scaled value of n.
+    def initialize(node_value, max_orbit_distance, p, a, b)
+      @root = TreeGraphNode.new(node_value, max_orbit_distance, p, a, b)
     end
   end
 
@@ -93,7 +102,7 @@ module Collatz # rubocop:disable Style/Documentation
   # @param [Integer] b Value to add to the scaled value of n.
   #
   # @return [TreeGraph] The branches of the tree graph as determined by the reverse function.
-  def tree_graph(initial_value, max_orbit_distance, p: 2, a: 3, b: 1, __cycle_prevention: nil)
-    raise NotImplementedError, "Will be implemented at, or before, v1.0.0"
+  def tree_graph(initial_value, max_orbit_distance, p: 2, a: 3, b: 1)
+    TreeGraph.new(initial_value, max_orbit_distance, p, a, b)
   end
 end

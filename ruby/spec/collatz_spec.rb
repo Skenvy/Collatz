@@ -242,12 +242,14 @@ RSpec.describe Collatz do
   end
 
   context "stopping_time" do
-    it "testStoppingTime_ZeroTrap" do
+    # testStoppingTime_ZeroTrap
+    it "gets trapped on 0" do
       # Test 0's immediated termination.
       expect(Collatz.stopping_time(0)).to eq(0)
     end
 
-    it "testStoppingTime_OnesCycleOnlyYieldsATotalStop" do
+    # testStoppingTime_OnesCycleOnlyYieldsATotalStop
+    it "yields a total stopping time from the 1 cycle" do
       # The cycle containing 1 wont yield a cycle termination, as 1 is considered
       # the "total stop" that is the special case termination.
       expect(Collatz.stopping_time(1)).to eq(0)
@@ -257,7 +259,8 @@ RSpec.describe Collatz do
       expect(Collatz.stopping_time(16, max_stopping_time: 100, total_stopping_time: true)).to eq(4)
     end
 
-    it "testStoppingTime_KnownCyclesYieldInfinity" do
+    # testStoppingTime_KnownCyclesYieldInfinity
+    it "detects a cycle rather than stopping for every other known cycle" do
       # Test the 3 known default parameter's cycles (ignoring [1,4,2])
       Collatz::KNOWN_CYCLES.each do |kc|
         unless kc.include? 1
@@ -268,29 +271,34 @@ RSpec.describe Collatz do
       end
     end
 
-    it "testStoppingTime_KnownCycleLeadIns" do
+    # testStoppingTime_KnownCycleLeadIns
+    it "detects the -5 and -17 cycles from an external value" do
       # Test the lead into a cycle by entering two of the cycles. -56;-5, -200;-17
       expect(Collatz.stopping_time(-56, max_stopping_time: 100, total_stopping_time: true)).to eq(Float::INFINITY)
       expect(Collatz.stopping_time(-200, max_stopping_time: 100, total_stopping_time: true)).to eq(Float::INFINITY)
     end
 
-    it "testStoppingTime_RegularStoppingTime" do
+    # testStoppingTime_RegularStoppingTime
+    it "appropriately stops at the regular stopping time by default" do
       # Test the regular stopping time check.
       expect(Collatz.stopping_time(4)).to eq(1)
       expect(Collatz.stopping_time(5)).to eq(3)
     end
 
-    it "testStoppingTime_NegativeMaxTotalStoppingTime" do
+    # testStoppingTime_NegativeMaxTotalStoppingTime
+    it "Quickly exits OoB on a negative max stopping time" do
       # Test small max total stopping time: (minimum internal value is one)
       expect(Collatz.stopping_time(5, max_stopping_time: -100, total_stopping_time: true)).to eq(nil)
     end
 
-    it "testStoppingTime_ZeroStopMidHail" do
+    # testStoppingTime_ZeroStopMidHail
+    it "Stops on the 0 trap while hailing" do
       # Test the zero stop mid hailing. This wont happen with default params tho.
       expect(Collatz.stopping_time(3, p: 2, a: 3, b: -9, max_stopping_time: 100)).to eq(-1)
     end
 
-    it "testStoppingTime_UnitaryPCausesAlmostImmediateCycles" do
+    # testStoppingTime_UnitaryPCausesAlmostImmediateCycles
+    it "|P| values of 1 cause semi-immediate cycles" do
       # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
       # still allowed, although they will generate immediate 1 or 2 length cycles
       # respectively, so confirm the behaviour of each of these stopping times.
@@ -298,7 +306,8 @@ RSpec.describe Collatz do
       expect(Collatz.stopping_time(3, p: -1, a: 3, b: 1, max_stopping_time: 100)).to eq(Float::INFINITY)
     end
 
-    it "testStoppingTime_MultiplesOf576460752303423488Plus27" do
+    # testStoppingTime_MultiplesOf576460752303423488Plus27
+    it "Yields a stopping time of 96 for multiples of 576460752303423488 plus 27" do
       # One last one for the fun of it..
       expect(Collatz.stopping_time(27, max_stopping_time: 120, total_stopping_time: true)).to eq(111)
       # # And for a bit more fun, common trajectories on
@@ -319,9 +328,115 @@ RSpec.describe Collatz do
   end
 
   context "tree_graph" do
-    # test_name
-    it "is not implemented" do
-      expect { Collatz.tree_graph(0, 1) }.to raise_error(NotImplementedError, "Will be implemented at, or before, v1.0.0") # rubocop:disable Layout/LineLength
+    # it "testTreeGraph_ZeroTrap" do
+    #   # ":D" for terminal, "C:" for cyclic end
+    #   TreeGraphNode expectedRoot;
+    #   # The default zero trap
+    #   # {0:D}
+    #   expectedRoot = wrapTGN_TerminalNode(0);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 0));
+    #   # {0:{C:0}}
+    #   expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 1));
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 2));
+    # end
+    
+    # it "testTreeGraph_RootOfOneYieldsTheOneCycle" do
+    #   # ":D" for terminal, "C:" for cyclic end
+    #   TreeGraphNode expectedRoot;
+    #   # The roundings of the 1 cycle.
+    #   # {1:D}
+    #   expectedRoot = wrapTGN_TerminalNode(1);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 0));
+    #   # {1:{2:D}}
+    #   expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(2), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 1));
+    #   # {1:{2:{4:D}}}
+    #   expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_TerminalNode(4), null), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 2));
+    #   # {1:{2:{4:{C:1,8:D}}}}
+    #   expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(2, wrapTGN_Generic(4, wrapTGN_TerminalNode(8), wrapTGN_CyclicTerminal(1)), null), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3));
+    # end
+    
+    # it "testTreeGraph_RootOfTwoAndFourYieldTheOneCycle" do
+    #   # ":D" for terminal, "C:" for cyclic end
+    #   TreeGraphNode expectedRoot;
+    #   # {2:{4:{1:{C:2},8:{16:D}}}}
+    #   expectedRoot = wrapTGN_CyclicStart(2, wrapTGN_Generic(4, wrapTGN_Generic(8, wrapTGN_TerminalNode(16), null),
+    #                                                            wrapTGN_Generic(1, wrapTGN_CyclicTerminal(2), null)), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(2, 3));
+    #   # {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
+    #   expectedRoot = wrapTGN_CyclicStart(4, wrapTGN_Generic(8, wrapTGN_Generic(16, wrapTGN_TerminalNode(32), wrapTGN_TerminalNode(5)), null),
+    #                                         wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_CyclicTerminal(4), null), null));
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(4, 3));
+    # end
+    
+    # it "testTreeGraph_RootOfMinusOneYieldsTheMinusOneCycle" do
+    #   # ":D" for terminal, "C:" for cyclic end
+    #   TreeGraphNode expectedRoot;
+    #   # The roundings of the -1 cycle
+    #   # {-1:{-2:D}}
+    #   expectedRoot = wrapTGN_Generic(-1, wrapTGN_TerminalNode(-2), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(-1, 1));
+    #   # {-1:{-2:{-4:D,C:-1}}}
+    #   expectedRoot = wrapTGN_CyclicStart(-1, wrapTGN_Generic(-2, wrapTGN_TerminalNode(-4), wrapTGN_CyclicTerminal(-1)), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(-1, 2));
+    # end
+    
+    # it "testTreeGraph_WiderModuloSweep" do
+    #   # ":D" for terminal, "C:" for cyclic end
+    #   TreeGraphNode expectedRoot;
+    #   # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+    #   # Orbit distance of 1 ~= {1:{-1:D,5:D}}
+    #   expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(5), wrapTGN_TerminalNode(-1));
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 1, 5, 2, 3));
+    #   # Orbit distance of 2 ~= {1:{-1:{-5:D,-2:D},5:{C:1,25:D}}}
+    #   expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_TerminalNode(25), wrapTGN_CyclicTerminal(1)),
+    #                                         wrapTGN_Generic(-1, wrapTGN_TerminalNode(-5), wrapTGN_TerminalNode(-2)));
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 2, 5, 2, 3));
+    #   # Orbit distance of 3 ~=  {1:{-1:{-5:{-25:D,-4:D},-2:{-10:D}},5:{C:1,25:{11:D,125:D}}}}
+    #   expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_Generic(25, wrapTGN_TerminalNode(125), wrapTGN_TerminalNode(11)), wrapTGN_CyclicTerminal(1)),
+    #                                         wrapTGN_Generic(-1, wrapTGN_Generic(-5, wrapTGN_TerminalNode(-25), wrapTGN_TerminalNode(-4)), wrapTGN_Generic(-2, wrapTGN_TerminalNode(-10), null)));
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3, 5, 2, 3));
+    # end
+    
+    # it "testTreeGraph_NegativeParamterisation" do
+    #   # ":D" for terminal, "C:" for cyclic end
+    #   TreeGraphNode expectedRoot;
+    #   # Test negative P, a and b ~ P=-3, a=-2, b=-5
+    #   # Orbit distance of 1 ~= {1:{-3:D}}
+    #   expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(-3), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 1, -3, -2, -5));
+    #   # Orbit distance of 2 ~= {1:{-3:{-1:D,9:D}}}
+    #   expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_TerminalNode(9), wrapTGN_TerminalNode(-1)), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 2, -3, -2, -5));
+    #   # Orbit distance of 3 ~= {1:{-3:{-1:{-2:D,3:D},9:{-27:D,-7:D}}}}
+    #   expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_Generic(9, wrapTGN_TerminalNode(-27), wrapTGN_TerminalNode(-7)),
+    #                                                         wrapTGN_Generic(-1, wrapTGN_TerminalNode(3), wrapTGN_TerminalNode(-2))), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3, -3, -2, -5));
+    # end
+
+    # it "testTreeGraph_ZeroReversesOnB" do
+    #   # ":D" for terminal, "C:" for cyclic end
+    #   TreeGraphNode expectedRoot;
+    #   # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+    #   # {0:{C:0,3:D}}
+    #   expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), wrapTGN_TerminalNode(3));
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 1, 17, 2, -6));
+    #   # {0:{C:0}}
+    #   expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), null);
+    #   assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 1, 17, 2, 102));
+    # end
+
+    # testTreeGraph_AssertSaneParameterisation
+    it "breaks on p or a being 0" do
+      # Set p and a to 0 to assert on assert_sane_parameterisation
+      # rubocop:disable Layout/LineLength
+      expect { Collatz.tree_graph(1, 1, p: 0, a: 2, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { Collatz.tree_graph(1, 1, p: 0, a: 0, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)
+      expect { Collatz.tree_graph(1, 1, p: 1, a: 0, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_A)
+      # rubocop:enable Layout/LineLength
     end
   end
 end
