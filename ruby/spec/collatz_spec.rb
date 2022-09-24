@@ -377,101 +377,102 @@ RSpec.describe Collatz do
     Collatz::TreeGraph.new(0, 0, 0, 0, 0, create_raw: true, root: expected_root)
   end
 
-  # rubocop:disable Layout/LineLength, Layout/TrailingWhitespace
+  # rubocop:disable Layout/LineLength, Layout/TrailingWhitespace, Layout/ArgumentAlignment
   context "tree_graph" do
     it "testTreeGraph_ZeroTrap" do
       # ":D" for terminal, "C:" for cyclic end
       # The default zero trap
       # {0:D}
-      expected_root = wrap_tgn_terminal_node(0)
-      expect(Collatz.tree_graph(0, 0)).to eq(wrap_tgn_root(expected_root))
+      expected_tree = wrap_tgn_root(wrap_tgn_terminal_node(0))
+      expect(Collatz.tree_graph(0, 0)).to eq(expected_tree)
       # {0:{C:0}}
-      expected_root = wrap_tgn_cyclic_start(0, wrap_tgn_cyclic_terminal(0), nil)
-      expect(Collatz.tree_graph(0, 1)).to eq(wrap_tgn_root(expected_root))
-      expect(Collatz.tree_graph(0, 2)).to eq(wrap_tgn_root(expected_root))
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(0, wrap_tgn_cyclic_terminal(0), nil))
+      expect(Collatz.tree_graph(0, 1)).to eq(expected_tree)
+      expect(Collatz.tree_graph(0, 2)).to eq(expected_tree)
     end
     
-    # it "testTreeGraph_RootOfOneYieldsTheOneCycle" do
-    #   # ":D" for terminal, "C:" for cyclic end
-    #   # The roundings of the 1 cycle.
-    #   # {1:D}
-    #   expected_root = wrap_tgn_terminal_node(1);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 0));
-    #   # {1:{2:D}}
-    #   expected_root = wrap_tgn_generic(1, wrap_tgn_terminal_node(2), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 1));
-    #   # {1:{2:{4:D}}}
-    #   expected_root = wrap_tgn_generic(1, wrap_tgn_generic(2, wrap_tgn_terminal_node(4), nil), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 2));
-    #   # {1:{2:{4:{C:1,8:D}}}}
-    #   expected_root = wrap_tgn_cyclic_start(1, wrap_tgn_generic(2, wrap_tgn_generic(4, wrap_tgn_terminal_node(8), wrap_tgn_cyclic_terminal(1)), nil), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 3));
-    # end
+    it "testTreeGraph_RootOfOneYieldsTheOneCycle" do
+      # ":D" for terminal, "C:" for cyclic end
+      # The roundings of the 1 cycle.
+      # {1:D}
+      expected_tree = wrap_tgn_root(wrap_tgn_terminal_node(1))
+      expect(Collatz.tree_graph(1, 0)).to eq(expected_tree)
+      # {1:{2:D}}
+      expected_tree = wrap_tgn_root(wrap_tgn_generic(1, wrap_tgn_terminal_node(2), nil))
+      expect(Collatz.tree_graph(1, 1)).to eq(expected_tree)
+      # {1:{2:{4:D}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_generic(1, wrap_tgn_generic(2, wrap_tgn_terminal_node(4), nil), nil))
+      expect(Collatz.tree_graph(1, 2)).to eq(expected_tree)
+      # {1:{2:{4:{C:1,8:D}}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(1, wrap_tgn_generic(2, wrap_tgn_generic(4,
+                      wrap_tgn_terminal_node(8), wrap_tgn_cyclic_terminal(1)), nil), nil))
+      expect(Collatz.tree_graph(1, 3)).to eq(expected_tree)
+    end
     
-    # it "testTreeGraph_RootOfTwoAndFourYieldTheOneCycle" do
-    #   # ":D" for terminal, "C:" for cyclic end
-    #   # {2:{4:{1:{C:2},8:{16:D}}}}
-    #   expected_root = wrap_tgn_cyclic_start(2, wrap_tgn_generic(4, wrap_tgn_generic(8, wrap_tgn_terminal_node(16), nil),
-    #                                                            wrap_tgn_generic(1, wrap_tgn_cyclic_terminal(2), nil)), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(2, 3));
-    #   # {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
-    #   expected_root = wrap_tgn_cyclic_start(4, wrap_tgn_generic(8, wrap_tgn_generic(16, wrap_tgn_terminal_node(32), wrap_tgn_terminal_node(5)), nil),
-    #                                         wrap_tgn_generic(1, wrap_tgn_generic(2, wrap_tgn_cyclic_terminal(4), nil), nil));
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(4, 3));
-    # end
+    it "testTreeGraph_RootOfTwoAndFourYieldTheOneCycle" do
+      # ":D" for terminal, "C:" for cyclic end
+      # {2:{4:{1:{C:2},8:{16:D}}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(2, wrap_tgn_generic(4, wrap_tgn_generic(8,
+                      wrap_tgn_terminal_node(16), nil), wrap_tgn_generic(1, wrap_tgn_cyclic_terminal(2), nil)), nil))
+      expect(Collatz.tree_graph(2, 3)).to eq(expected_tree)
+      # {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(4, wrap_tgn_generic(8, wrap_tgn_generic(16, wrap_tgn_terminal_node(32),
+                      wrap_tgn_terminal_node(5)), nil), wrap_tgn_generic(1, wrap_tgn_generic(2, wrap_tgn_cyclic_terminal(4), nil), nil)))
+      expect(Collatz.tree_graph(4, 3)).to eq(expected_tree)
+    end
     
-    # it "testTreeGraph_RootOfMinusOneYieldsTheMinusOneCycle" do
-    #   # ":D" for terminal, "C:" for cyclic end
-    #   # The roundings of the -1 cycle
-    #   # {-1:{-2:D}}
-    #   expected_root = wrap_tgn_generic(-1, wrap_tgn_terminal_node(-2), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(-1, 1));
-    #   # {-1:{-2:{-4:D,C:-1}}}
-    #   expected_root = wrap_tgn_cyclic_start(-1, wrap_tgn_generic(-2, wrap_tgn_terminal_node(-4), wrap_tgn_cyclic_terminal(-1)), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(-1, 2));
-    # end
+    it "testTreeGraph_RootOfMinusOneYieldsTheMinusOneCycle" do
+      # ":D" for terminal, "C:" for cyclic end
+      # The roundings of the -1 cycle
+      # {-1:{-2:D}}
+      expected_tree = wrap_tgn_root(wrap_tgn_generic(-1, wrap_tgn_terminal_node(-2), nil))
+      expect(Collatz.tree_graph(-1, 1)).to eq(expected_tree)
+      # {-1:{-2:{-4:D,C:-1}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(-1, wrap_tgn_generic(-2, wrap_tgn_terminal_node(-4), wrap_tgn_cyclic_terminal(-1)), nil))
+      expect(Collatz.tree_graph(-1, 2)).to eq(expected_tree)
+    end
     
-    # it "testTreeGraph_WiderModuloSweep" do
-    #   # ":D" for terminal, "C:" for cyclic end
-    #   # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
-    #   # Orbit distance of 1 ~= {1:{-1:D,5:D}}
-    #   expected_root = wrap_tgn_generic(1, wrap_tgn_terminal_node(5), wrap_tgn_terminal_node(-1));
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 1, 5, 2, 3));
-    #   # Orbit distance of 2 ~= {1:{-1:{-5:D,-2:D},5:{C:1,25:D}}}
-    #   expected_root = wrap_tgn_cyclic_start(1, wrap_tgn_generic(5, wrap_tgn_terminal_node(25), wrap_tgn_cyclic_terminal(1)),
-    #                                         wrap_tgn_generic(-1, wrap_tgn_terminal_node(-5), wrap_tgn_terminal_node(-2)));
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 2, 5, 2, 3));
-    #   # Orbit distance of 3 ~=  {1:{-1:{-5:{-25:D,-4:D},-2:{-10:D}},5:{C:1,25:{11:D,125:D}}}}
-    #   expected_root = wrap_tgn_cyclic_start(1, wrap_tgn_generic(5, wrap_tgn_generic(25, wrap_tgn_terminal_node(125), wrap_tgn_terminal_node(11)), wrap_tgn_cyclic_terminal(1)),
-    #                                         wrap_tgn_generic(-1, wrap_tgn_generic(-5, wrap_tgn_terminal_node(-25), wrap_tgn_terminal_node(-4)), wrap_tgn_generic(-2, wrap_tgn_terminal_node(-10), nil)));
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 3, 5, 2, 3));
-    # end
+    it "testTreeGraph_WiderModuloSweep" do
+      # ":D" for terminal, "C:" for cyclic end
+      # Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
+      # Orbit distance of 1 ~= {1:{-1:D,5:D}}
+      expected_tree = wrap_tgn_root(wrap_tgn_generic(1, wrap_tgn_terminal_node(5), wrap_tgn_terminal_node(-1)))
+      expect(Collatz.tree_graph(1, 1, p: 5, a: 2, b: 3)).to eq(expected_tree)
+      # Orbit distance of 2 ~= {1:{-1:{-5:D,-2:D},5:{C:1,25:D}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(1, wrap_tgn_generic(5, wrap_tgn_terminal_node(25), wrap_tgn_cyclic_terminal(1)),
+                                            wrap_tgn_generic(-1, wrap_tgn_terminal_node(-5), wrap_tgn_terminal_node(-2))))
+      expect(Collatz.tree_graph(1, 2, p: 5, a: 2, b: 3)).to eq(expected_tree)
+      # Orbit distance of 3 ~=  {1:{-1:{-5:{-25:D,-4:D},-2:{-10:D}},5:{C:1,25:{11:D,125:D}}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(1, wrap_tgn_generic(5, wrap_tgn_generic(25, wrap_tgn_terminal_node(125), wrap_tgn_terminal_node(11)), wrap_tgn_cyclic_terminal(1)),
+                                            wrap_tgn_generic(-1, wrap_tgn_generic(-5, wrap_tgn_terminal_node(-25), wrap_tgn_terminal_node(-4)), wrap_tgn_generic(-2, wrap_tgn_terminal_node(-10), nil))))
+      expect(Collatz.tree_graph(1, 3, p: 5, a: 2, b: 3)).to eq(expected_tree)
+    end
     
-    # it "testTreeGraph_NegativeParamterisation" do
-    #   # ":D" for terminal, "C:" for cyclic end
-    #   # Test negative P, a and b ~ P=-3, a=-2, b=-5
-    #   # Orbit distance of 1 ~= {1:{-3:D}}
-    #   expected_root = wrap_tgn_generic(1, wrap_tgn_terminal_node(-3), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 1, -3, -2, -5));
-    #   # Orbit distance of 2 ~= {1:{-3:{-1:D,9:D}}}
-    #   expected_root = wrap_tgn_generic(1, wrap_tgn_generic(-3, wrap_tgn_terminal_node(9), wrap_tgn_terminal_node(-1)), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 2, -3, -2, -5));
-    #   # Orbit distance of 3 ~= {1:{-3:{-1:{-2:D,3:D},9:{-27:D,-7:D}}}}
-    #   expected_root = wrap_tgn_generic(1, wrap_tgn_generic(-3, wrap_tgn_generic(9, wrap_tgn_terminal_node(-27), wrap_tgn_terminal_node(-7)),
-    #                                                         wrap_tgn_generic(-1, wrap_tgn_terminal_node(3), wrap_tgn_terminal_node(-2))), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(1, 3, -3, -2, -5));
-    # end
+    it "testTreeGraph_NegativeParamterisation" do
+      # ":D" for terminal, "C:" for cyclic end
+      # Test negative P, a and b ~ P=-3, a=-2, b=-5
+      # Orbit distance of 1 ~= {1:{-3:D}}
+      expected_tree = wrap_tgn_root(wrap_tgn_generic(1, wrap_tgn_terminal_node(-3), nil))
+      expect(Collatz.tree_graph(1, 1, p: -3, a: -2, b: -5)).to eq(expected_tree)
+      # Orbit distance of 2 ~= {1:{-3:{-1:D,9:D}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_generic(1, wrap_tgn_generic(-3, wrap_tgn_terminal_node(9), wrap_tgn_terminal_node(-1)), nil))
+      expect(Collatz.tree_graph(1, 2, p: -3, a: -2, b: -5)).to eq(expected_tree)
+      # Orbit distance of 3 ~= {1:{-3:{-1:{-2:D,3:D},9:{-27:D,-7:D}}}}
+      expected_tree = wrap_tgn_root(wrap_tgn_generic(1, wrap_tgn_generic(-3, wrap_tgn_generic(9, wrap_tgn_terminal_node(-27), wrap_tgn_terminal_node(-7)),
+                                                            wrap_tgn_generic(-1, wrap_tgn_terminal_node(3), wrap_tgn_terminal_node(-2))), nil))
+      expect(Collatz.tree_graph(1, 3, p: -3, a: -2, b: -5)).to eq(expected_tree)
+    end
 
-    # it "testTreeGraph_ZeroReversesOnB" do
-    #   # ":D" for terminal, "C:" for cyclic end
-    #   # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
-    #   # {0:{C:0,3:D}}
-    #   expected_root = wrap_tgn_cyclic_start(0, wrap_tgn_cyclic_terminal(0), wrap_tgn_terminal_node(3));
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(0, 1, 17, 2, -6));
-    #   # {0:{C:0}}
-    #   expected_root = wrap_tgn_cyclic_start(0, wrap_tgn_cyclic_terminal(0), nil);
-    #   assertEquals(TreeGraph.new(expected_root), Collatz.tree_graph(0, 1, 17, 2, 102));
-    # end
+    it "testTreeGraph_ZeroReversesOnB" do
+      # ":D" for terminal, "C:" for cyclic end
+      # If b is a multiple of a, but not of Pa, then 0 can have a reverse.
+      # {0:{C:0,3:D}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(0, wrap_tgn_cyclic_terminal(0), wrap_tgn_terminal_node(3)))
+      expect(Collatz.tree_graph(0, 1, p: 17, a: 2, b: -6)).to eq(expected_tree)
+      # {0:{C:0}}
+      expected_tree = wrap_tgn_root(wrap_tgn_cyclic_start(0, wrap_tgn_cyclic_terminal(0), nil))
+      expect(Collatz.tree_graph(0, 1, p: 17, a: 2, b: 102)).to eq(expected_tree)
+    end
 
     # testTreeGraph_AssertSaneParameterisation
     it "breaks on p or a being 0" do
@@ -483,5 +484,5 @@ RSpec.describe Collatz do
       # rubocop:enable Layout/LineLength, Lint/RedundantCopDisableDirective
     end
   end
-  # rubocop:enable Layout/LineLength, Layout/TrailingWhitespace
+  # rubocop:enable Layout/LineLength, Layout/TrailingWhitespace, Layout/ArgumentAlignment
 end
