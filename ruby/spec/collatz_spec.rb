@@ -56,7 +56,7 @@ RSpec.describe Collatz do
 
     # testFunction_AssertSaneParameterisation
     it "breaks on p or a being 0" do
-      # Set p and a to 0 to assert on assertSaneParameterisation
+      # Set p and a to 0 to assert on assert_sane_parameterisation
       # rubocop:disable Layout/LineLength
       expect { Collatz.function(1, p: 0, a: 2, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)
       expect { Collatz.function(1, p: 0, a: 0, b: 3) }.to raise_error(Collatz::FailedSaneParameterCheck, Collatz::SaneParameterErrMsg::SANE_PARAMS_P)

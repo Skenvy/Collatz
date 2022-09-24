@@ -3,10 +3,7 @@
 require_relative "utilities"
 
 module Collatz # rubocop:disable Style/Documentation
-  # Using a module to proctor a namespace for the functions, none of which
-  # are instance methods. All are "class" methods, so set this globally;
-  # https://github.com/rubocop/ruby-style-guide#modules-vs-classes
-  module_function # rubocop:disable Layout/EmptyLinesAroundAccessModifier, Style/AccessModifierDeclarations
+  module_function # rubocop:disable Style/AccessModifierDeclarations
 
   # Handles the sanity check for the parameterisation (p,a,b)
   # required by both the function and reverse function.
@@ -61,7 +58,7 @@ module Collatz # rubocop:disable Style/Documentation
   # @param [Integer] a Factor by which to multiply n.
   # @param [Integer] b Value to add to the scaled value of n.
   #
-  # @return [Integer] The values that would return the input if given to the function.
+  # @return [List[Integer]] The values that would return the input if given to the function.
   def reverse_function(n, p: 2, a: 3, b: 1)
     assert_sane_parameterisation(p, a, b)
     if ((n-b)%a).zero? && ((n-b)%(p*a)).nonzero?

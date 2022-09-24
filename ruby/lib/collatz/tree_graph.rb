@@ -4,10 +4,7 @@ require_relative "utilities"
 require_relative "function"
 
 module Collatz # rubocop:disable Style/Documentation
-  # Using a module to proctor a namespace for the functions, none of which
-  # are instance methods. All are "class" methods, so set this globally;
-  # https://github.com/rubocop/ruby-style-guide#modules-vs-classes
-  module_function # rubocop:disable Layout/EmptyLinesAroundAccessModifier, Style/AccessModifierDeclarations
+  module_function # rubocop:disable Style/AccessModifierDeclarations
 
   # Nodes that form a "tree graph", structured as a tree, with their own node's value,
   # as well as references to either possible child node, where a node can only ever have
@@ -33,6 +30,9 @@ module Collatz # rubocop:disable Style/Documentation
     attr_reader :pre_an_plus_b_node
 
     # Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
+    #
+    # @raise [FailedSaneParameterCheck] If p or a are 0.
+    #
     # @param [Integer] node_value The value for which to find the tree graph node reversal.
     # @param [Integer] max_orbit_distance The maximum distance/orbit/branch length to travel.
     # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
@@ -43,6 +43,8 @@ module Collatz # rubocop:disable Style/Documentation
     # @param [SequenceState] terminal_sequence_state
     # @param [TreeGraphNode] pre_n_div_p_node
     # @param [TreeGraphNode] pre_an_plus_b_node
+    #
+    # @return [TreeGraphNode] A computed tree graph node
     def initialize(node_value, max_orbit_distance, p, a, b, cycle_check: nil, create_raw: false,
                    terminal_sequence_state: nil, pre_n_div_p_node: nil, pre_an_plus_b_node: nil)
       @node_value = node_value
@@ -82,8 +84,10 @@ module Collatz # rubocop:disable Style/Documentation
 
     # This will only confirm an equality if the whole subtree of both nodes, including
     # node values, sequence states, and child nodes, checked recursively, are equal.
+    #
     # @param [TreeGraphNode] tgn The TreeGraphNode with which to compare equality.
-    # @return true, if the entire sub-trees are equal.
+    #
+    # @return [Boolean] true, if the entire sub-trees are equal.
     def sub_tree_equals(tgn)
       return false if self.node_value != tgn.node_value
       return false if self.terminal_sequence_state != tgn.terminal_sequence_state
@@ -102,6 +106,9 @@ module Collatz # rubocop:disable Style/Documentation
     attr_reader :root
 
     # Create a new TreeGraph with the root node defined by the inputs.
+    #
+    # @raise [FailedSaneParameterCheck] If p or a are 0.
+    #
     # @param [Integer] node_value The value for which to find the tree graph node reversal.
     # @param [Integer] max_orbit_distance The maximum distance/orbit/branch length to travel.
     # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
@@ -109,6 +116,8 @@ module Collatz # rubocop:disable Style/Documentation
     # @param [Integer] b Value to add to the scaled value of n.
     # @param [Boolean] create_raw Used to instruct the initialiser method to take 1:1 inputs, used in testing.
     # @param [TreeGraphNode] root A node that will be set to the root of this tree
+    #
+    # @return [TreeGraph] A tree graph, with a computed root node.
     def initialize(node_value, max_orbit_distance, p, a, b, create_raw: false, root: nil)
       if create_raw && !root.nil?
         @root = root
@@ -117,8 +126,12 @@ module Collatz # rubocop:disable Style/Documentation
       end
     end
 
-    # The equality between TreeGraph's is determined by the equality check on subtrees.
-    # A subtree check will be done on both TreeGraph's root nodes.
+    # The equality between TreeGraph's is determined by the equality check on
+    # subtrees. A subtree check will be done on both TreeGraph's root nodes.
+    #
+    # @param [TreeGraph]
+    #
+    # @return [Boolean] true, if both are TreeGraphs, with the entire root's sub-trees being equal.
     def ==(other)
       # Generic checks
       return false if other.nil?
@@ -135,10 +148,10 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @param [Integer] initial_value The root value of the directed tree graph.
   # @param [Integer] max_orbit_distance Maximum amount of times to iterate the reverse
-  #     function. There is no natural termination to populating the tree graph, equivalent
-  #     to the termination of hailstone sequences or stopping time attempts, so this is not
-  #     an optional argument like max_stopping_time / max_total_stopping_time, as it is the intended
-  #     target of orbits to obtain, rather than a limit to avoid uncapped computation.
+  # function. There is no natural termination to populating the tree graph, equivalent
+  # to the termination of hailstone sequences or stopping time attempts, so this is not
+  # an optional argument like max_stopping_time / max_total_stopping_time, as it is the
+  # intended target of orbits to obtain, rather than a limit to avoid uncapped computation.
   # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
   # @param [Integer] a Factor by which to multiply n.
   # @param [Integer] b Value to add to the scaled value of n.

@@ -4,10 +4,7 @@ require_relative "utilities"
 require_relative "function"
 
 module Collatz # rubocop:disable Style/Documentation
-  # Using a module to proctor a namespace for the functions, none of which
-  # are instance methods. All are "class" methods, so set this globally;
-  # https://github.com/rubocop/ruby-style-guide#modules-vs-classes
-  module_function # rubocop:disable Layout/EmptyLinesAroundAccessModifier, Style/AccessModifierDeclarations
+  module_function # rubocop:disable Style/AccessModifierDeclarations
 
   # Contains the results of computing a hailstone sequence via hailstone_sequence(~).
   class HailstoneSequence
@@ -16,25 +13,30 @@ module Collatz # rubocop:disable Style/Documentation
 
     # A terminal condition that reflects the final state of the hailstone sequencing,
     # whether than be that it succeeded at determining the stopping time, the total
-    # stopping time, found a cycle, or got stuck on zero (or surpassed the max total). */
+    # stopping time, found a cycle, or got stuck on zero (or surpassed the max total).
     attr_reader :terminal_condition # SequenceState
 
     # A status value that has different meanings depending on what the terminal condition
     # was. If the sequence completed either via reaching the stopping or total stopping time,
     # or getting stuck on zero, then this value is the stopping/terminal time. If the sequence
     # got stuck on a cycle, then this value is the cycle length. If the sequencing passes the
-    # maximum stopping time then this is the value that was provided as that maximum. */
+    # maximum stopping time then this is the value that was provided as that maximum.
     attr_reader :terminal_status
 
     # Initialise and compute a new Hailstone Sequence.
+    #
+    # @raise [FailedSaneParameterCheck] If p or a are 0.
+    #
     # @param [Integer] initial_value The value to begin the hailstone sequence from.
     # @param [Integer] p Modulus used to devide n, iff n is equivalent to (0 mod p).
     # @param [Integer] a Factor by which to multiply n.
     # @param [Integer] b Value to add to the scaled value of n.
     # @param [Integer] max_total_stopping_time Maximum amount of times to iterate the function, if 1 is not reached.
     # @param [Boolean] total_stopping_time Whether or not to execute until the "total" stopping time
-    #     (number of iterations to obtain 1) rather than the regular stopping time (number
-    #     of iterations to reach a value less than the initial value).
+    # (number of iterations to obtain 1) rather than the regular stopping time (number
+    # of iterations to reach a value less than the initial value).
+    #
+    # @return [HailstoneSequence] An initialised, and computed, hailstone sequence
     def initialize(initial_value, p, a, b, max_total_stopping_time, total_stopping_time)
       terminate = stopping_time_terminus(initial_value, total_stopping_time)
       if initial_value.zero?
@@ -98,10 +100,12 @@ module Collatz # rubocop:disable Style/Documentation
 
     # Provides the appropriate lambda to use to check if iterations on an initial
     # value have reached either the stopping time, or total stopping time.
+    #
     # @param [Integer] n The initial value to confirm against a stopping time check.
     # @param [Boolean] total_stop If false, the lambda will confirm that iterations of n
-    #     have reached the oriented stopping time to reach a value closer to 0.
-    #     If true, the lambda will simply check equality to 1.
+    # have reached the oriented stopping time to reach a value closer to 0.
+    # If true, the lambda will simply check equality to 1.
+    #
     # @return [lambda(Integer)->(Boolean)] The lambda to check for the stopping time.
     private def stopping_time_terminus(n, total_stop)
       if total_stop
@@ -131,8 +135,8 @@ module Collatz # rubocop:disable Style/Documentation
   # @param [Integer] b Value to add to the scaled value of n.
   # @param [Integer] max_total_stopping_time Maximum amount of times to iterate the function, if 1 is not reached.
   # @param [Boolean] total_stopping_time Whether or not to execute until the "total" stopping time
-  #     (number of iterations to obtain 1) rather than the regular stopping time (number
-  #     of iterations to reach a value less than the initial value).
+  # (number of iterations to obtain 1) rather than the regular stopping time (number
+  # of iterations to reach a value less than the initial value).
   #
   # @return [HailstoneSequence] A set of values that form the hailstone sequence.
   def hailstone_sequence(initial_value, p: 2, a: 3, b: 1, max_total_stopping_time: 1000, total_stopping_time: true)
@@ -145,7 +149,7 @@ module Collatz # rubocop:disable Style/Documentation
 
   # Returns the stopping time, the amount of iterations required to reach a
   # value less than the initial value, or nil if max_stopping_time is exceeded.
-  # Alternatively, if total_stopping_time is True, then it will instead count
+  # Alternatively, if total_stopping_time is true, then it will instead count
   # the amount of iterations to reach 1. If the sequence does not stop, but
   # instead ends in a cycle, the result will be infinity.
   # If (p,a,b) are such that it is possible to get stuck on zero, the result
@@ -160,11 +164,11 @@ module Collatz # rubocop:disable Style/Documentation
   # @param [Integer] a Factor by which to multiply n.
   # @param [Integer] b Value to add to the scaled value of n.
   # @param [Integer] max_stopping_time Maximum amount of times to iterate the function, if
-  #     the stopping time is not reached. IF the max_stopping_time is reached,
-  #     the function will return nil.
+  # the stopping time is not reached. IF the max_stopping_time is reached,
+  # the function will return nil.
   # @param [Boolean] total_stopping_time Whether or not to execute until the "total" stopping
-  #     time (number of iterations to obtain 1) rather than the regular stopping
-  #     time (number of iterations to reach a value less than the initial value).
+  # time (number of iterations to obtain 1) rather than the regular stopping
+  # time (number of iterations to reach a value less than the initial value).
   #
   # @return [Integer] The stopping time, or, in a special case, infinity, nil or a negative.
   def stopping_time(initial_value, p: 2, a: 3, b: 1, max_stopping_time: 1000, total_stopping_time: false)
