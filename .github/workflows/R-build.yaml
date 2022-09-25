@@ -58,7 +58,7 @@ jobs:
       github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
     runs-on: ubuntu-latest
     container:
-      image: rocker/tidyverse:4.2.1
+      image: rocker/tidyverse:4.2.0
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
@@ -103,7 +103,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     container:
-      image: rocker/tidyverse:4.2.1
+      image: rocker/tidyverse:4.2.0
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
