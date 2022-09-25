@@ -330,3 +330,5 @@ jobs:
 Wraps echoing the [github context](https://docs.github.com/en/actions/learn-github-actions/contexts)
 ## [`github-pages.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-pages.yaml)
 Unambiguously merges from some `gh-pages-*` branch into the `gh-pages` branch, with the assumed expectation that the `gh-pages-*` branch will be a `gh-pages-<language>` branch that only contains anything in a `<language>` subdirectory, and so only merge on top of its own previous merges.
+## [`github-codeql.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-codeql.yaml)
+Detects and lists code scanning violations and uploads the SARIF files to populate the security [code scanning](https://github.com/Skenvy/Collatz/security/code-scanning).
