@@ -14,6 +14,12 @@
 # patch version that happened to be released when development started as it ties
 # to the container of tidyverse, discussed below, that is used in-tandem.
 ################################################################################
+# https://github.com/rocker-org/rocker-versioned2 on line 16 in the commit
+# 30c72e028f4c6cf4d3c031fb64b5b0d63cc94cf7 has an issue r-ver_4.2.1.Dockerfile
+# -- the "focal/latest" in the CRAN ENV which can cause the error
+# "cannot open URL '<CRAN:ENV>/src/contrib/Meta/current.rds': HTTP status was
+# '404 Not Found'" -- so use 4.2.0, which fixes "focal/2022-06-22" for ubuntu.
+################################################################################
 # This workflow makes use of the rocker/tidyverse container to avoid the lengthy 
 # and cumbersome installation of debian packages and the compilation of every
 # package that devtools requires as the rocker/tidyverse container in the
@@ -74,22 +80,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
+        version: ['3.5.0', '4.0.0', '4.2.0', 'devel']
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     - name: 🧱 Dependencies - GMP version
       run: make setup_debian_gmp
     - name: 🧱 Dependencies for Full Test + Suggests
-      if: ${{ matrix.version == '4.2.1' || matrix.version == 'devel' }}
+      if: ${{ matrix.version == '4.2.0' || matrix.version == 'devel' }}
       run: make setup_docs
     - name: 🦂 Test (not cran, no manual)
-      if: ${{ matrix.version != '4.2.1' }}
+      if: ${{ matrix.version != '4.2.0' }}
       run: make setup_libraries && make quick_check
     - name: Add the repo as a safe repo inside the job container
       run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 🦂 Test (cran, manual)
-      if: ${{ matrix.version == '4.2.1' }}
+      if: ${{ matrix.version == '4.2.0' }}
       run: make check
   mac-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Mac)
