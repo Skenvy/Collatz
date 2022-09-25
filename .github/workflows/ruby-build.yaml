@@ -1,0 +1,177 @@
+name: Ruby 🔻💎🔻 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
+on:
+  push:
+    branches:
+    - 'main'
+    paths:
+    - 'ruby/**'
+    - '!ruby/**.md'
+    - '.github/workflows/ruby-*'
+  workflow_dispatch:
+permissions: {}
+defaults:
+  run:
+    shell: bash
+    working-directory: ruby
+jobs:
+  context:
+    name: GitHub 🐱‍👤 Context 📑
+    uses: ./.github/workflows/github-context.yaml
+  test:
+    name: Ruby 🔻💎🔻 Test 🦂
+    uses: ./.github/workflows/ruby-test.yaml
+  workflow-conditions:
+    name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
+    runs-on: ubuntu-latest
+    outputs:
+      version-file-changed: ${{ steps.version-file-check.outputs.version-file-changed }}
+      version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      with:
+        fetch-depth: 2
+    - name: Check if version files changed
+      id: version-file-check
+      run: |
+        export VERSION_FILE="ruby/lib/collatz/version.rb"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+    - name: Notify on version-file-check
+      run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
+    - name: Check if version specified in version file has not released.
+      id: version-tag-exists
+      run: |
+        git fetch --tags
+        export VER=$(grep lib/collatz/version.rb -e "VERSION" | cut -d \" -f 2)
+        [ -z "$(git tag -l "ruby-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+    - name: Notify on version-tag-exists
+      run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
+  # Now any step that should only run on the version change can use
+  # "needs: [workflow-conditions]" Which will yield the condition checks below.
+  # We want to "release" automatically if "version-file-changed" is true on push
+  # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
+  build:
+    name: Ruby 🔻💎🔻 Build 🧱
+    needs: [test, workflow-conditions]
+    if: >-
+      ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
+      github.event_name == 'workflow_dispatch') && fromJSON(needs.workflow-conditions.outputs.version-tag-exists) == false }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 💎 Build gem
+      run: make build
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Gem
+        path: ruby/pkg/collatz-*.gem
+        if-no-files-found: error
+  release:
+    name: Ruby 🔻💎🔻 Release 🚰
+    needs: [build]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Gem
+        path: ruby/pkg
+    - name: 🚰 Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        export VER=$(grep lib/collatz/version.rb -e "VERSION" | cut -d \" -f 2)
+        gh release create ruby-v$VER "$(find . | grep -e pkg/collatz-*\.gem)#Gem" --generate-notes -t "Ruby: Version $VER"
+  publish:
+    name: Ruby 🔻💎🔻 Publish 📦
+    needs: [release]
+    permissions:
+      packages: write
+    runs-on: ubuntu-latest
+    steps:
+    # Although the dists are built uses checkout to satisfy refs/tags existence
+    # which were created by the release, prior to uploading to pypi.
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    - name: 🔑 Keycutter for GitHub
+      run: make setup_github
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Gem
+        path: ruby/pkg
+    - name: 📦 Publish to GitHub Packages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo -e "---\n:github: Bearer $GITHUB_TOKEN" > ~/.gem/credentials
+        chmod 0600 ~/.gem/credentials
+        make push_github
+        rm ~/.gem/credentials
+    - name: 📦 Publish to RubyGems
+      env:
+        RUBYGEMS_API_KEY_BASE64: ${{ secrets.RUBYGEMS_API_KEY_BASE64 }}
+      run: |
+        echo -n "$RUBYGEMS_API_KEY_BASE64" | base64 --decode > ~/.gem/credentials
+        chmod 0600 ~/.gem/credentials
+        make push_rubygems
+        rm ~/.gem/credentials
+  docs:
+    name: Ruby 🔻💎🔻 Docs 📄
+    needs: [release, publish]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 📄 Docs Publishing
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-ruby:gh-pages-ruby
+        git symbolic-ref HEAD refs/heads/gh-pages-ruby
+        cd .. && mv ruby/doc ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir ruby && mv ../MERGE_TARGET/* ruby/
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-ruby
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-ruby'

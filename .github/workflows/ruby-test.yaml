@@ -28,3 +28,50 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🦂 Test
+      run: make test
+  full-test:
+    name: Ruby 🔻💎🔻 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['2.7.0', '3.0', '3.1']
+        os: [ubuntu-latest, macOS-latest, windows-latest] #  # < maybe.
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby ${{ matrix.version }}
+      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      with:
+        ruby-version: ${{ matrix.version }}
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🦂 Test
+      run: make test
+  docs:
+    name: Ruby 🔻💎🔻 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      with:
+        ruby-version: '2.7'
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs
+      run: make docs
