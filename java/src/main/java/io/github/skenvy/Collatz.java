@@ -462,7 +462,7 @@ public final class Collatz {
 
         /** A map of previous graph nodes which maps instances of
          *  TreeGraphNode to themselves, to enable cycle detection. */
-        private final Map<TreeGraphNode,TreeGraphNode> cycleCheck;
+        private final Map<BigInteger,TreeGraphNode> cycleCheck;
 
         /**
          * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
@@ -481,8 +481,8 @@ public final class Collatz {
                 this.cycleCheck = null;
             } else {
                 BigInteger[] reverses = reverseFunction(nodeValue, P, a, b);
-                cycleCheck = new HashMap<TreeGraphNode,TreeGraphNode>();
-                this.cycleCheck.put(this, this);
+                cycleCheck = new HashMap<BigInteger,TreeGraphNode>();
+                this.cycleCheck.put(this.nodeValue, this);
                 this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck);
                 if(reverses.length == 2){
                     this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck);
@@ -504,11 +504,11 @@ public final class Collatz {
          * @param b (BigInteger): Value to add to the scaled value of n.
          * @param cycleCheck (Map<TreeGraphNode,TreeGraphNode>): Checks if this node's value already occurred.
          */
-        private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b, Map<TreeGraphNode,TreeGraphNode> cycleCheck){
+        private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b, Map<BigInteger,TreeGraphNode> cycleCheck){
             this.nodeValue = nodeValue;
             this.cycleCheck = cycleCheck;
-            if (this.cycleCheck.keySet().contains(this)){
-                this.cycleCheck.get(this).terminalSequenceState = SequenceState.CYCLE_INIT;
+            if (this.cycleCheck.keySet().contains(this.nodeValue)){
+                this.cycleCheck.get(this.nodeValue).terminalSequenceState = SequenceState.CYCLE_INIT;
                 this.terminalSequenceState = SequenceState.CYCLE_LENGTH;
                 this.preNDivPNode = null;
                 this.preANplusBNode = null;
@@ -517,7 +517,7 @@ public final class Collatz {
                 this.preNDivPNode = null;
                 this.preANplusBNode = null;
             } else {
-                this.cycleCheck.put(this, this);
+                this.cycleCheck.put(this.nodeValue, this);
                 this.terminalSequenceState = null;
                 BigInteger[] reverses = reverseFunction(nodeValue, P, a, b);
                 this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck);
@@ -562,12 +562,15 @@ public final class Collatz {
             return this.nodeValue.equals(tgn.nodeValue);
         }
 
-        /** The hashCode of a TreeGraphNode is determined exclusively by the
-         *  node's value, independent of the child nodes or sequence states that
-         *  would be relevant to the node's status relative to the tree. */
+        /** The hashCode of a TreeGraphNode is determined by the
+         *  node's value, the child nodes and sequence state. */
         @Override
         public int hashCode() {
-            return this.nodeValue.hashCode();
+            int hash = this.nodeValue.hashCode();
+            hash = 17 * hash + (this.terminalSequenceState != null ? this.terminalSequenceState.hashCode() : 0);
+            hash = 17 * hash + (this.preNDivPNode != null ? this.preNDivPNode.hashCode() : 0);
+            hash = 17 * hash + (this.preANplusBNode != null ? this.preANplusBNode.hashCode() : 0);
+            return hash;
         }
 
         /**
@@ -623,6 +626,13 @@ public final class Collatz {
          */
         public TreeGraph(TreeGraphNode root){
             this.root = root;
+        }
+
+        /** The hashCode of a TreeGraph is determined
+         *  by the hash of the root node. */
+        @Override
+        public int hashCode() {
+            return 29 * this.root.hashCode();
         }
 
         /** The equality between {@code TreeGraph}'s is determined by the equality check on subtrees. 
