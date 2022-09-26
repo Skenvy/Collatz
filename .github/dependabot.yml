@@ -22,7 +22,7 @@ updates:
 # Julia has no supported ecosystem
 # https://github.com/dependabot/dependabot-core/issues/2105
 - package-ecosystem: npm
-  directory: "/node.js"
+  directory: "/javascript"
   schedule:
     interval: monthly
 - package-ecosystem: pip
