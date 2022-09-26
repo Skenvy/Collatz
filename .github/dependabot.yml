@@ -19,12 +19,12 @@ updates:
   directory: "/java"
   schedule:
     interval: weekly
-# Julia has no supported ecosystem
-# https://github.com/dependabot/dependabot-core/issues/2105
 - package-ecosystem: npm
   directory: "/javascript"
   schedule:
-    interval: monthly
+    interval: weekly
+# Julia has no supported ecosystem
+# https://github.com/dependabot/dependabot-core/issues/2105
 - package-ecosystem: pip
   directory: "/python"
   schedule:
