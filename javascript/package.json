@@ -1,0 +1,12 @@
+{
+  "name": "@skenvy/collatz",
+  "version": "0.0.1",
+  "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
