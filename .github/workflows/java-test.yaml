@@ -27,9 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@d854b6da19cdadd9a010605529e522c2393ebd38 # v3.5.0
+      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
       with:
         distribution: 'adopt'
         java-version: '11'
@@ -52,9 +52,9 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
-      uses: actions/setup-java@d854b6da19cdadd9a010605529e522c2393ebd38 # v3.5.0
+      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
       with:
         distribution: ${{ matrix.java-distribution }}
         java-version: ${{ matrix.java-version }}
@@ -67,9 +67,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@d854b6da19cdadd9a010605529e522c2393ebd38 # v3.5.0
+      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
       with:
         distribution: 'adopt'
         java-version: '11'
