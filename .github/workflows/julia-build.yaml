@@ -69,7 +69,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
-      uses: Skenvy/julia-release@8531021313f6e5dcb445f3188b366ebcd48417ff # v1.0.1-md
+      uses: Skenvy/julia-release@8531021313f6e5dcb445f3188b366ebcd48417ff # v1.1.0
       id: release_step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
