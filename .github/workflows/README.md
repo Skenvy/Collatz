@@ -171,7 +171,20 @@ jobs:
     # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
     # TODO: run: or uses: something depending on the languges
-  # Docs step is optional depending on language
+  # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
+  # codeql:
+  #   name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
+  #   if: >- 
+  #     ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+  #     (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
+  #   uses: ./.github/workflows/github-codeql.yaml
+  #   with:
+  #     language: 'lLanguage>'
+  # # Docs step is optional depending on language
   # docs:
   #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
   #   runs-on: ubuntu-latest
