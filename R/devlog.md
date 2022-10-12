@@ -53,3 +53,209 @@ If the list is initialised with a numeric, `f <- list(1)`, then appending a `big
 Big Integer ('bigz') :
 [1] 1
 ```
+
+After releasing version 1 of this R implementation, I've uploaded it to CRAN, which resulted in an email "CRAN Submission of collatz 1.0.0 - Confirmation Link" with a link `https://<some_cran_mirror>/cransubmit/conf_mail.php?code=<unique_submission_code>` to confirm the submission, and included the comments on the submission. After confirming the upload, the tarball appeared in the [incoming/pretest](https://cran.r-project.org/incoming/pretest/) section, before then 8 minutes later recieving a "package collatz_1.0.0.tar.gz has been auto-processed and is pending a manual inspection" email, which included (along with the upload now instead appearing in [incoming/inspect](https://cran.r-project.org/incoming/inspect/))
+```txt
+Log dir: <https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/>
+The files will be removed after roughly 7 days.
+Installation time in seconds: 5
+Check time in seconds: 88
+R Under development (unstable) (2022-08-25 r82762 ucrt)
+
+Pretests results:
+Windows: <https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/Windows/00check.log>
+Status: 1 NOTE
+Debian: <https://win-builder.r-project.org/incoming_pretest/collatz_1.0.0_20220827_180118/Debian/00check.log>
+Status: 1 NOTE
+```
+The windows check was;
+```txt
+* using log directory 'd:/RCompile/CRANincoming/R-devel/collatz.Rcheck'
+* using R Under development (unstable) (2022-08-25 r82762 ucrt)
+* using platform: x86_64-w64-mingw32 (64-bit)
+* using session charset: UTF-8
+* checking for file 'collatz/DESCRIPTION' ... OK
+* this is package 'collatz' version '1.0.0'
+* package encoding: UTF-8
+* checking CRAN incoming feasibility ... [14s] NOTE
+Maintainer: 'Nathan Levett <nathan.a.z.levett@gmail.com>'
+
+New submission
+
+Possibly misspelled words in DESCRIPTION:
+  Collatz (5:33, 6:68)
+  parameterisation (7:9)
+
+Found the following (possibly) invalid URLs:
+  URL: http://localhost:4321
+    From: README.md
+    Status: Error
+    Message: Failed to connect to localhost port 4321: Connection refused
+  URL: https://skenvy.github.io/Collatz/R (moved to https://skenvy.github.io/Collatz/R/)
+    From: DESCRIPTION
+    Status: 200
+    Message: OK
+  URL: https://skenvy.github.io/Collatz/R/pdf (moved to https://skenvy.github.io/Collatz/R/pdf/)
+    From: DESCRIPTION
+    Status: 200
+    Message: OK
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking whether package 'collatz' can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking 'build' directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... [1s] OK
+* checking whether the package can be loaded with stated dependencies ... [0s] OK
+* checking whether the package can be unloaded cleanly ... [0s] OK
+* checking whether the namespace can be loaded with stated dependencies ... [0s] OK
+* checking whether the namespace can be unloaded cleanly ... [1s] OK
+* checking loading without being on the library search path ... [1s] OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [5s] OK
+* checking Rd files ... [1s] OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from 'inst/doc' ... OK
+* checking files in 'vignettes' ... OK
+* checking examples ... NONE
+* checking for unstated dependencies in 'tests' ... OK
+* checking tests ... [4s] OK
+  Running 'testthat.R' [4s]
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in 'inst/doc' ... OK
+* checking re-building of vignette outputs ... [16s] OK
+* checking PDF version of manual ... [20s] OK
+* checking HTML version of manual ... [1s] OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE
+```
+And the debian check was;
+```txt
+* using log directory ‘/srv/hornik/tmp/CRAN/collatz.Rcheck’
+* using R Under development (unstable) (2022-08-25 r82762)
+* using platform: x86_64-pc-linux-gnu (64-bit)
+* using session charset: UTF-8
+* checking for file ‘collatz/DESCRIPTION’ ... OK
+* this is package ‘collatz’ version ‘1.0.0’
+* package encoding: UTF-8
+* checking CRAN incoming feasibility ... [3s/4s] NOTE
+Maintainer: ‘Nathan Levett <nathan.a.z.levett@gmail.com>’
+
+New submission
+
+Possibly misspelled words in DESCRIPTION:
+  Collatz (5:33, 6:68)
+
+Found the following (possibly) invalid URLs:
+  URL: http://localhost:4321
+    From: README.md
+    Status: Error
+    Message: Failed to connect to localhost port 4321 after 0 ms: Connection refused
+  URL: https://skenvy.github.io/Collatz/R (moved to https://skenvy.github.io/Collatz/R/)
+    From: DESCRIPTION
+    Status: 301
+    Message: Moved Permanently
+  URL: https://skenvy.github.io/Collatz/R/pdf (moved to https://skenvy.github.io/Collatz/R/pdf/)
+    From: DESCRIPTION
+    Status: 301
+    Message: Moved Permanently
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘collatz’ can be installed ... [1s/1s] OK
+* checking package directory ... OK
+* checking for future file timestamps ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... [0s/0s] OK
+* checking whether the package can be loaded with stated dependencies ... [0s/0s] OK
+* checking whether the package can be unloaded cleanly ... [0s/0s] OK
+* checking whether the namespace can be loaded with stated dependencies ... [0s/0s] OK
+* checking whether the namespace can be unloaded cleanly ... [0s/0s] OK
+* checking loading without being on the library search path ... [0s/0s] OK
+* checking use of S3 registration ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... [2s/2s] OK
+* checking Rd files ... [0s/0s] OK
+* checking Rd metadata ... OK
+* checking Rd line widths ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... NONE
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... [1s/1s] OK
+  Running ‘testthat.R’ [1s/1s]
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... OK
+* checking re-building of vignette outputs ... [3s/3s] OK
+* checking PDF version of manual ... [2s/2s] OK
+* checking HTML version of manual ... [0s/0s] OK
+* checking for non-standard things in the check directory ... OK
+* checking for detritus in the temp directory ... OK
+* DONE
+Status: 1 NOTE
+```
+I do find it funny that the `x86_64-w64-mingw32` check included `parameterisation (7:9)` in `Possibly misspelled words in DESCRIPTION`, and both github pages in the notes yielded http 200, but in the `x86_64-pc-linux-gnu` check it did not complain about `parameterisation`, and both github pages links yielded a http 301.
+
+It's now the following day, and I've already received a follow up email about fixing the links in the description that returned a 301. I don't want to clog up my commit history on the gh-pages-R branch with 80+kb pdfs, but do want to keep the pdf's generated up there when relevant, and would like R v1.0.0 to be the CRAN submission, rather than some v1.0.1+, so it might feel dirty, but I'm gonna force push removing the last commits on gh-pages and gh-pages-R and remove the v1.0.0 release and tag, so that merging this comment, with the fix in the description, recreates the "version 1.0.0". This involved manually deleting the release on github, and;
+```sh
+git tag -d R-v1.0.0
+git push --delete origin R-v1.0.0
+git checkout gh-pages
+git reset HEAD~ --hard
+git push --force
+git checkout gh-pages-R
+git reset HEAD~ --hard
+git push --force
+```
+
+Well, it's now after the second submission's feedback requesting further changes. Like last time, it went through the [incoming/pretest](https://cran.r-project.org/incoming/pretest/) section, before later appearing in [incoming/inspect](https://cran.r-project.org/incoming/inspect/)). This time it sat in [incoming/newbies](https://cran.r-project.org/incoming/newbies/) for a while, then [incoming/BA](https://cran.r-project.org/incoming/BA/). It seems that the top folders on there are simply the initials of the reviewers. The feedback this time included significantly more than last time, which makes me question how each of the volunteers does their checks -- how automated they are, how much they are done in steps, and how consistent they are across each of the reviewers. I've seen several prominent blog posts on the trials and tribulations of reshaping a package _in ad infinitum_ for certain members of the CRAN team to be happy with them, with some explicitly warning any reader to be prepared for feedback requesting the most minutiae of changes, although all greatful to the team. I'm certainly not suggesting that it's not reasonable of the volunteer maintainers to have additive requests to align a package with what they expect or desire for those packages they will host on CRAN, after all it is a system they maintain that I am trying to craft something to meet the goals of and the burden to do so rests with me, although it does strike me as odd that the R language grew to the popularity it has with an environment so anti-conducive to the distribution of packages, via such a high barrier to entry into the ecosystem that is not only not automated, but it seems not down to a consistent means of confirming package suitability amongst the volunteers, unless the manner in which they provide feedback limits them to only provide the feedback that is relevant to them at some stage, i.e. if some numbered item on a checklist is invalid ahead of others, then only that would be included in the feedback, as opposed to all of the issues being mentioned in one check and reply.
+
+Climbing down from that soapbox, the specific feedback on this submission was three fold;
+1. A request to add "references describing the methods in your package" -- "in the description field of your DESCRIPTION file". It does suggest that a `<https:...>` field would be accepted. Although browsing the "CRAN Task View: Numerical Mathematics" page for examples, it's sparse to even find examples that include any notion of a reference let alone those with a structured referencing style similar to that requested by the email. It's hard to know how much this one is a legitimate request versus a "nice to have", but also seems very seldom used in the packages I've checked, so I'll see about not adding any for now. The [Writing R Extensions: The DESCRIPTION file](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file) does not make mention of necessity of references, although does have one passing reference to the inclusion of URLs, which is "URLs should be enclosed in angle brackets, e.g. ‘<https://www.r-project.org>’: see also Specifying URLs.".
+1. A request to remove '" | file LICENSE" and the file' with the reason "This is only needed in case of attribution requirements or other possible restrictions. Hence please omit it." I dug around looking for this requirment/expectation in [CRAN Repository Policy](https://cran.r-project.org/web/packages/policies.html) and [Writing R Extensions: Licensing](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Licensing), and it appears that the latter, after several paragraphs describing how to go about including the file LICENSE, and that there shouldn't be any issues if it is added, and how to append it with `| file LICENSE` or modify standard license with `+ file LICENSE` it does make reference to not wanting submissions to include a license file unnecessarily, i.e. "please do not arrange to install yet another copy of the GNU COPYING or COPYING.LIB files but refer to the copies on https://www.R-project.org/Licenses/" although the last sentence "A few “standard” licenses are rather license templates which need additional information to be completed via ‘+ file LICENSE’ (with the ‘+’ surrounded by spaces)" is in contest with that, so will have to wait for a reply from the volunteer who reviewed it. They replied confirming that despite the Apache License's inclusion of a name / date field, that it should not be included with a `+ file LICENSE`.
+1. To "Please add small executable examples in your Rd-files to illustrate the use of the exported function but also enable automatic testing." This was not something I had really seem in the example packages I looked at earlier, with all the focus for this sort of content being on either the tests themselves for "automatic testing", or in the vignettes, which are also tested automatically but also are more verbose explanations of how to use the functions. I had a bit of a look at some more packages, and some do appear to include examples on the function docs themselves. Arguably that just provides more clutter than anything else and doesn't really make it easier to follow especially with an elsewise mechanism for displaying such content, _like the vignettes_, but [Writing R Extensions: Documenting functions](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Documenting-functions) does appear to include the possibility of adding examples, they are not stated to be required. I suppose I will add some, and also look at [Writing R Extensions: Mathematics](https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Mathematics) while doing so.

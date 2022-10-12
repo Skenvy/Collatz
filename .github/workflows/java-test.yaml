@@ -27,9 +27,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3 # v3.4.1
+      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
       with:
         distribution: 'adopt'
         java-version: '11'
@@ -52,9 +52,9 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
-      uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3 # v3.4.1
+      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
       with:
         distribution: ${{ matrix.java-distribution }}
         java-version: ${{ matrix.java-version }}
@@ -62,14 +62,26 @@ jobs:
         cache: maven
     - name: 🦂 Test
       run: make test_noninteractive
+  codeql:
+    name: Java ☕🦆🌞 CodeQL 🛡👨‍💻🛡
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/github-codeql.yaml
+    with:
+      language: 'java'
   docs:
     name: Java ☕🦆🌞 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@2c7a4878f5d120bd643426d54ae1209b29cc01a3 # v3.4.1
+      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
       with:
         distribution: 'adopt'
         java-version: '11'

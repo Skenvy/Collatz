@@ -29,8 +29,31 @@ NULL
 #' stopping time (number of iterations to reach a value less than the initial
 #' value). Default is FALSE.
 #' @returns An integer numeral if stopped, Inf if a cycle, NaN if OOB, else NA.
+#' @examples
+#' # Calculates the "stopping time", or optionally the "total" stopping time.
+#' # Without `gmp` or parameterisation, we can try something simple like
+#' stopping_time(27)
+#' stopping_time(27, total_stopping_time=TRUE)
+#' # If we want change the default parameterisation we can;
+#' stopping_time(3, 5, 2, 1)
+#' # Or if we only want to change one of them
+#' stopping_time(17, a=5)
+#' # All the above work fine, but the function doesn't offer protection against
+#' # overflowing integers by default. To venture into the world of arbitrary
+#' # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+#' stopping_time(99999999999999999999)
+#' stopping_time(as.bigz("99999999999999999999"))
+#' # As an extra note, the original motivation for creating a range of Collatz
+#' # themed packages came from some earlier scripts for calculating the stopping
+#' # distances under certain parameterisations. An inconsequential result of
+#' # which was observing that all of the following, for however high `k` goes,
+#' # should equal `96`!
+#' stopping_time(27)
+#' stopping_time(27+as.bigz("576460752303423488"))
+#' stopping_time(27+(2*as.bigz("576460752303423488")))
+#' stopping_time(27+(3*as.bigz("576460752303423488")))
+#' stopping_time(27+(4*as.bigz("576460752303423488")))
 #' @export
-
 stopping_time <- function(initial_value, P=2, a=3, b=1,
     max_stopping_time=1000, total_stopping_time=FALSE){
     # The information is contained in the verbose form of a hailstone sequence.

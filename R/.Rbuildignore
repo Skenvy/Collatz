@@ -1,7 +1,8 @@
 .gitignore
 ..Rcheck/
-devlog.md
-Makefile
+^LICENSE$
+^devlog.md$
+^Makefile$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
