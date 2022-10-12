@@ -171,7 +171,20 @@ jobs:
     # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
     # TODO: run: or uses: something depending on the languges
-  # Docs step is optional depending on language
+  # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
+  # codeql:
+  #   name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
+  #   if: >- 
+  #     ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+  #     (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
+  #   uses: ./.github/workflows/github-codeql.yaml
+  #   with:
+  #     language: 'lLanguage>'
+  # # Docs step is optional depending on language
   # docs:
   #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
   #   runs-on: ubuntu-latest
@@ -330,3 +343,5 @@ jobs:
 Wraps echoing the [github context](https://docs.github.com/en/actions/learn-github-actions/contexts)
 ## [`github-pages.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-pages.yaml)
 Unambiguously merges from some `gh-pages-*` branch into the `gh-pages` branch, with the assumed expectation that the `gh-pages-*` branch will be a `gh-pages-<language>` branch that only contains anything in a `<language>` subdirectory, and so only merge on top of its own previous merges.
+## [`github-codeql.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-codeql.yaml)
+Detects and lists code scanning violations and uploads the SARIF files to populate the security [code scanning](https://github.com/Skenvy/Collatz/security/code-scanning).
