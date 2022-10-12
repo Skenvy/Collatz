@@ -1,15 +1,16 @@
 # Devlog
 The aim is to package as close to as the same functionality as possible across a range of languages, both as a way to be authoritative about "collatz packages" and as a learning opportunity in several languages I have not worked in before, and to serve as a future example for packaging in multiple languages.
 ## Devlogs
-* [C#](https://github.com/Skenvy/Collatz/blob/main/C#/devlog.md)
+* [C#](https://github.com/Skenvy/Collatz/blob/main/C%23/devlog.md)
 * [Go](https://github.com/Skenvy/Collatz/blob/main/go/devlog.md)
 * [Java](https://github.com/Skenvy/Collatz/blob/main/java/devlog.md)
+* [JavaScript](https://github.com/Skenvy/Collatz/blob/main/javascript/devlog.md)
 * [Julia](https://github.com/Skenvy/Collatz/blob/main/julia/devlog.md)
 * [LaTeX](https://github.com/Skenvy/Collatz/blob/main/LaTeX/devlog.md)
-* [Node.JS](https://github.com/Skenvy/Collatz/blob/main/node.js/devlog.md)
 * [Python](https://github.com/Skenvy/Collatz/blob/main/python/devlog.md)
 * [R](https://github.com/Skenvy/Collatz/blob/main/R/devlog.md)
 * [Ruby](https://github.com/Skenvy/Collatz/blob/main/ruby/devlog.md)
+* [Rust](https://github.com/Skenvy/Collatz/blob/main/rust/devlog.md)
 ## Motivation
 I've always appreciated the "Rosetta Stone"-esque compilations of similar tasks across multiple languages, including but not limited to;
 * [Rosetta Code](http://www.rosettacode.org/wiki/Rosetta_Code)

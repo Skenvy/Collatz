@@ -1,4 +1,6 @@
 version: 2
+# Any missing ecosystem willn't be accepted / added.
+# https://github.com/dependabot/dependabot-core/issues/3943
 updates:
 # Workflow files stored in the default location of `.github/workflows`
 - package-ecosystem: github-actions
@@ -20,7 +22,7 @@ updates:
 # Julia has no supported ecosystem
 # https://github.com/dependabot/dependabot-core/issues/2105
 - package-ecosystem: npm
-  directory: "/node.js"
+  directory: "/javascript"
   schedule:
     interval: monthly
 - package-ecosystem: pip
@@ -31,5 +33,9 @@ updates:
 # https://github.com/dependabot/dependabot-core/issues/2042
 - package-ecosystem: bundler
   directory: "/ruby"
+  schedule:
+    interval: weekly
+- package-ecosystem: cargo
+  directory: "/rust"
   schedule:
     interval: monthly
