@@ -28,7 +28,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: ☕🦆🌞 Set up Java
       uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.0
       with:
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: 🆒 Download dists
       uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
       with:
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: ☕🦆🌞 Set up Java; for publishing to Maven Central Repository
       uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.0
       with:
@@ -138,7 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: ☕🦆🌞 Set up Java
       uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.0
       with:

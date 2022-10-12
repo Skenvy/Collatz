@@ -28,7 +28,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -61,7 +61,7 @@ jobs:
       image: rocker/tidyverse:4.2.0
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: 🧱 Dependencies for Full Test + Suggests
       run: make setup_docs
     - name: Add the repo as a safe repo inside the job container
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: 🆒 Download dists
       uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
       with:
@@ -106,7 +106,7 @@ jobs:
       image: rocker/tidyverse:4.2.0
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: 🥔 Setup
       run: make setup_docs
     - name: Add the repo as a safe repo inside the job container
@@ -127,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
     - name: 🆒 Download dists
       uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
       with:
