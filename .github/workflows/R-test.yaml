@@ -66,7 +66,7 @@ jobs:
       image: rocker/tidyverse:4
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🦂 Test
       run: make setup_libraries && make full_test
   full-test:
@@ -83,7 +83,7 @@ jobs:
         version: ['3.5.0', '4.0.0', '4.2.0', 'devel']
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🧱 Dependencies - GMP version
       run: make setup_debian_gmp
     - name: 🧱 Dependencies for Full Test + Suggests
@@ -109,7 +109,7 @@ jobs:
         version: ['3.5.0', '4.0.0', '4.2.1'] # , 'devel' # requires installing knitr and rmarkdown from src which takes ~ 20 minutes
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🏴‍☠️🔵🦜 Set up R
       uses: r-lib/actions/setup-r@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
       with:
@@ -142,7 +142,7 @@ jobs:
         version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🏴‍☠️🔵🦜 Set up R
       uses: r-lib/actions/setup-r@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
       with:
@@ -167,7 +167,7 @@ jobs:
       image: rocker/tidyverse:4.2.1
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🥔 Setup
       run: make setup_docs
     - name: Add the repo as a safe repo inside the job container
