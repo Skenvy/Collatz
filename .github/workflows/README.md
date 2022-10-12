@@ -171,7 +171,20 @@ jobs:
     # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
     # TODO: run: or uses: something depending on the languges
-  # Docs step is optional depending on language
+  # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
+  # codeql:
+  #   name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
+  #   if: >- 
+  #     ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+  #     (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+  #   permissions:
+  #     actions: read
+  #     contents: read
+  #     security-events: write
+  #   uses: ./.github/workflows/github-codeql.yaml
+  #   with:
+  #     language: 'lLanguage>'
+  # # Docs step is optional depending on language
   # docs:
   #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
   #   runs-on: ubuntu-latest
@@ -272,7 +285,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -280,7 +293,7 @@ jobs:
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        export VER=$(some-version-obtaining-call)
+        export VER=$(<version-extracting-command>)
         gh release create <language>-v$VER --generate-notes -t "<Language>: Version $VER"
   publish:
     name: <Language> <language-emojis> Publish 📦
@@ -292,7 +305,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741# v3.0.0
+    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -313,7 +326,6 @@ jobs:
         version: <language-version>
     - name: 📄 Docs
       run: |
-        export GITHUB_REF="refs/tags/v${{ needs.release-and-register.outputs.new_version }}"
         # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-<language>'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -331,3 +343,5 @@ jobs:
 Wraps echoing the [github context](https://docs.github.com/en/actions/learn-github-actions/contexts)
 ## [`github-pages.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-pages.yaml)
 Unambiguously merges from some `gh-pages-*` branch into the `gh-pages` branch, with the assumed expectation that the `gh-pages-*` branch will be a `gh-pages-<language>` branch that only contains anything in a `<language>` subdirectory, and so only merge on top of its own previous merges.
+## [`github-codeql.yaml`](https://github.com/Skenvy/Collatz/blob/main/.github/workflows/github-codeql.yaml)
+Detects and lists code scanning violations and uploads the SARIF files to populate the security [code scanning](https://github.com/Skenvy/Collatz/security/code-scanning).
