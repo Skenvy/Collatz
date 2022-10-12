@@ -19,6 +19,10 @@ jobs:
     uses: ./.github/workflows/github-context.yaml
   test:
     name: Go 🔷🐀🔷 Test 🦂
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     uses: ./.github/workflows/go-test.yaml
   workflow-conditions:
     name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
