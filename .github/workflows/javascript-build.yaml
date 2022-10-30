@@ -60,7 +60,7 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🟨🟩🟥 Set up JavaScript
+    - name: 🟨🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: 12
@@ -83,43 +83,71 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-    #   with:
-    #     name: some-artefacts
-    #     path: javascript/some-artefacts
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Package
+        path: javascript/
     - name: 🚰 Release
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         export VER=$(grep package.json -e "\"version\":" | cut -d \" -f 4)
         gh release create javascript-v$VER --generate-notes -t "JavaScript: Version $VER"
-  publish:
+  publish-github:
     name: JavaScript 🟨🟩🟥 Publish 📦
     needs: [release]
     runs-on: ubuntu-latest
     steps:
-    # Although the dists are built uses checkout to satisfy refs/tags existence
-    # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
-    #   with:
-    #     name: some-artefacts
-    #     path: javascript/some-artefacts
-    # - name: 📦 Publish
-    # TODO: run: or uses: something depending on the languges
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      with:
+        name: Package
+        path: javascript/
+    - name: 🟨🟩🟥 Set up Node
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      with:
+        node-version: 12
+        registry-url: 'https://npm.pkg.github.com'
+        scope: '@skenvy'
+    - name: 📦 Publish
+      run: make publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # publish-npm:
+  #   name: JavaScript 🟨🟩🟥 Publish 📦
+  #   needs: [release]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+  #   - name: 🆒 Download dists
+  #     uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+  #     with:
+  #       name: Package
+  #       path: javascript/
+  #   - name: 🟨🟩🟥 Set up Node
+  #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+  #     with:
+  #       node-version: 12
+  #       registry-url: 'https://registry.npmjs.org'
+  #       scope: '@skenvy'
+  #   - name: 📦 Publish
+  #     run: make publish
+  #     env:
+  #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   # docs:
   #   name: JavaScript 🟨🟩🟥 Docs 📄
-  #   needs: [release, publish]
+  #   needs: [release, publish-github, publish-npm]
   #   permissions:
   #     contents: write
   #   runs-on: ubuntu-latest
   #   steps:
   #   - name: 🏁 Checkout
   #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🟨🟩🟥 Set up JavaScript
+  #   - name: 🟨🟩🟥 Set up Node
   #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
   #     with:
   #       node-version: 12

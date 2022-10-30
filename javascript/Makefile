@@ -26,3 +26,4 @@ build: clean test
 
 # https://docs.npmjs.com/cli/v8/commands/npm-publish
 publish: clean
+	npm publish --access=public skenvy-collatz-*.tgz
