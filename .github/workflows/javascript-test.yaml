@@ -32,8 +32,6 @@ jobs:
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: 12
-        cache: 'npm'
-        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
@@ -56,8 +54,6 @@ jobs:
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: '${{ matrix.version }}'
-        cache: 'npm'
-        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
@@ -85,7 +81,5 @@ jobs:
   #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
   #     with:
   #       node-version: 12
-  #       cache: 'npm'
-  #       cache-dependency-path: javascript/package-lock.json
   #   - name: 📄 Docs
   #     run: make docs
