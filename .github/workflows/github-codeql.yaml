@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       # https://aka.ms/codeql-docs/language-support
-      # # TODO csharp, javascript
+      # # TODO csharp
       language:
         description: 'The language to run CodeQL on'
         required: true

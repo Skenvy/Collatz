@@ -183,7 +183,7 @@ jobs:
   #     security-events: write
   #   uses: ./.github/workflows/github-codeql.yaml
   #   with:
-  #     language: 'lLanguage>'
+  #     language: '<Language>'
   # # Docs step is optional depending on language
   # docs:
   #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
