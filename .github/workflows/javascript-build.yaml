@@ -65,16 +65,17 @@ jobs:
       with:
         node-version: 12
         cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🧱 Build
       run: make build
-    # - name: 🆙 Upload dists
-    #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
-    #   with:
-    #     name: some-artefacts
-    #     path: javascript/some-artefacts/
-    #     if-no-files-found: error
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      with:
+        name: Package
+        path: javascript/skenvy-collatz-*.tgz
+        if-no-files-found: error
   release:
     name: JavaScript 🟨🟩🟥 Release 🚰
     needs: [build]
@@ -109,7 +110,7 @@ jobs:
     #   with:
     #     name: some-artefacts
     #     path: javascript/some-artefacts
-    - name: 📦 Publish
+    # - name: 📦 Publish
     # TODO: run: or uses: something depending on the languges
   # docs:
   #   name: JavaScript 🟨🟩🟥 Docs 📄
@@ -125,6 +126,7 @@ jobs:
   #     with:
   #       node-version: 12
   #       cache: 'npm'
+  #       cache-dependency-path: javascript/package-lock.json
   #   - name: 📄 Docs
   #     run: |
   #       # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-javascript'

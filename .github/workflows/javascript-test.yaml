@@ -33,6 +33,7 @@ jobs:
       with:
         node-version: 12
         cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
@@ -56,6 +57,7 @@ jobs:
       with:
         node-version: '${{ matrix.version }}'
         cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
@@ -84,5 +86,6 @@ jobs:
   #     with:
   #       node-version: 12
   #       cache: 'npm'
+  #       cache-dependency-path: javascript/package-lock.json
   #   - name: 📄 Docs
   #     run: make docs

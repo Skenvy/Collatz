@@ -2,7 +2,6 @@
 SHELL:=/bin/bash
 
 # https://docs.npmjs.com/cli/v8/commands/npm-ci
-# Requires 
 setup:
 	npm ci
 
@@ -17,12 +16,12 @@ clean:
 
 # https://docs.npmjs.com/cli/v8/commands/npm-test
 # https://docs.npmjs.com/cli/v8/commands/npm-publish
-test: clean setup
+test: clean
 	npm test
 	npm publish --dry-run
 
 # https://docs.npmjs.com/cli/v8/commands/npm-pack
-build: clean setup test
+build: clean test
 	npm pack
 
 # https://docs.npmjs.com/cli/v8/commands/npm-publish
