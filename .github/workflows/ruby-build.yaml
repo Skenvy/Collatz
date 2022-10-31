@@ -65,7 +65,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      uses: ruby/setup-ruby@ece82769428359c077b5a5eaff268902a303c101 # v1.120.0
       with:
         ruby-version: '2.7'
         bundler-cache: true
@@ -89,7 +89,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: Gem
         path: ruby/pkg
@@ -111,14 +111,14 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      uses: ruby/setup-ruby@ece82769428359c077b5a5eaff268902a303c101 # v1.120.0
       with:
         ruby-version: '2.7'
         bundler-cache: true
     - name: 🔑 Keycutter for GitHub
       run: make setup_github
     - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: Gem
         path: ruby/pkg
@@ -148,7 +148,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9 # v1.117.0
+      uses: ruby/setup-ruby@ece82769428359c077b5a5eaff268902a303c101 # v1.120.0
       with:
         ruby-version: '2.7'
         bundler-cache: true
