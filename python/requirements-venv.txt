@@ -7,7 +7,7 @@ build>=0.7.0,<1
 # friendly README doc above, although the current tip used is 3.8.0
 twine>=1.11.0
 # pytest breaks heavily between minor versions, so only allow patch drift.
-pytest>=7.1.0,<7.2
+pytest>=7.1.0,<7.3
 # Allow patch drift for tox as well.
 tox>=3.24.5,<3.28
 # Other version mins specd by the PyPi friendly README doc.
