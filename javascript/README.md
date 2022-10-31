@@ -1,8 +1,21 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟩🟥
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [JavaScript](https://tc39.es/ecma262/).
-## Pre development notes.
-* [Node.JS](https://nodejs.org/)
-* [The node package index](https://www.npmjs.com/)
-* [search results for collatz](https://www.npmjs.com/search?q=collatz)
-* [which has an exact match that is 10 years old](https://www.npmjs.com/package/collatz)
-* [from this repo](https://github.com/partkyle/collatz)
+## Getting Started
+[To install the latest from npm](<package-website-specific>);
+```sh
+<installion-command>
+```
+## Usage
+Provides the basic functionality to interact with the Collatz conjecture.
+The parameterisation uses the same `(P,a,b)` notation as Conway's generalisations.
+Besides the function and reverse function, there is also functionality to retrieve the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph. 
+The only restriction placed on parameters is that both `P` and `a` can't be `0`.
+## [<lang-docs-name> generated docs](https://skenvy.github.io/Collatz/javascript)
+## Developing
+### The first time setup
+```sh
+git clone https://github.com/Skenvy/Collatz.git && cd Collatz/javascript && <localised-setup-command>
+```
+### Iterative development
+*<list-worthwhile-recipes>
+## [Open Source Insights](<deps-dev-link>)

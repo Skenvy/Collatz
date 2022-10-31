@@ -1,0 +1,29 @@
+{
+  "name": "@skenvy/collatz",
+  "version": "0.0.1",
+  "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
+  "keywords": ["Collatz", "Ulam", "Kakutani's", "Thwaites", "Hasse's", "Syracuse"],
+  "homepage": "https://github.com/Skenvy/Collatz/tree/main/javascript",
+  "bugs": {
+    "url" : "https://github.com/Skenvy/Collatz/issues/new/choose",
+    "email" : "nathan.a.z.levett@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "author": "Nathan Levett <nathan.a.z.levett@gmail.com> (https://github.com/Skenvy)",
+  "contributors": [],
+  "funding": [
+    {
+      "type" : "GitHub Sponsors",
+      "url" : "https://github.com/sponsors/Skenvy"
+    }
+  ],
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Skenvy/Collatz.git",
+    "directory": "javascript"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 0"
+  }
+}

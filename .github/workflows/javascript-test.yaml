@@ -28,3 +28,58 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🟨🟩🟥 Set up Node
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      with:
+        node-version: 12
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🦂 Test
+      run: make test
+  full-test:
+    name: JavaScript 🟨🟩🟥 Full Test 🦂
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ['12', '13', '14', '15', '16']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🟨🟩🟥 Set up Node ${{ matrix.version }}
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      with:
+        node-version: '${{ matrix.version }}'
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🦂 Test
+      run: make test
+  codeql:
+    name: JavaScript 🟨🟩🟥 CodeQL 🛡👨‍💻🛡
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/github-codeql.yaml
+    with:
+      language: 'javascript'
+  # # Docs step is optional depending on language
+  # docs:
+  #   name: JavaScript 🟨🟩🟥 Docs 📄 Quick Test 🦂
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: 🏁 Checkout
+  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+  #   - name: 🟨🟩🟥 Set up Node
+  #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+  #     with:
+  #       node-version: 12
+  #   - name: 📄 Docs
+  #     run: make docs
