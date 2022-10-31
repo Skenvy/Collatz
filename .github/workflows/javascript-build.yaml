@@ -99,8 +99,10 @@ jobs:
         export VER=$(grep package.json -e "\"version\":" | cut -d \" -f 4)
         gh release create javascript-v$VER "$(find . | grep -e skenvy-collatz-*\.tgz)#Package" --generate-notes -t "JavaScript: Version $VER"
   publish-github:
-    name: JavaScript 🟨🟩🟥 Publish 📦
+    name: JavaScript 🟨🟩🟥 Publish 📦 GitHub 🐱‍👤
     needs: [release]
+    permissions:
+      packages: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -121,7 +123,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-npm:
-    name: JavaScript 🟨🟩🟥 Publish 📦
+    name: JavaScript 🟨🟩🟥 Publish 📦 NPM 🟥
     needs: [release]
     runs-on: ubuntu-latest
     steps:

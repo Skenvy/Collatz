@@ -1,9 +1,9 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟩🟥
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [JavaScript](https://tc39.es/ecma262/).
 ## Getting Started
-[To install the latest from npm](<package-website-specific>);
+[To install the latest from npm](https://www.npmjs.com/package/@skenvy/collatz);
 ```sh
-<installion-command>
+npm i @skenvy/collatz
 ```
 ## Usage
 Provides the basic functionality to interact with the Collatz conjecture.
@@ -18,4 +18,4 @@ git clone https://github.com/Skenvy/Collatz.git && cd Collatz/javascript && make
 ```
 ### Iterative development
 *<list-worthwhile-recipes>
-## [Open Source Insights](<deps-dev-link>)
+## [Open Source Insights](https://deps.dev/npm/%40skenvy%2Fcollatz)

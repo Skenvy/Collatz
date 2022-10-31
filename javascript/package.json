@@ -1,6 +1,6 @@
 {
   "name": "@skenvy/collatz",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
   "keywords": ["Collatz", "Ulam", "Kakutani's", "Thwaites", "Hasse's", "Syracuse"],
   "homepage": "https://github.com/Skenvy/Collatz/tree/main/javascript",
