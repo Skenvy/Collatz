@@ -91,13 +91,13 @@ jobs:
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: Package
-        path: javascript/
+        path: javascript
     - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         export VER=$(grep package.json -e "\"version\":" | cut -d \" -f 4)
-        gh release create javascript-v$VER --generate-notes -t "JavaScript: Version $VER"
+        gh release create javascript-v$VER "$(find . | grep -e skenvy-collatz-*\.tgz)#Package" --generate-notes -t "JavaScript: Version $VER"
   publish-github:
     name: JavaScript 🟨🟩🟥 Publish 📦
     needs: [release]
