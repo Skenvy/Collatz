@@ -14,7 +14,7 @@ The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ## Developing
 ### The first time setup
 ```sh
-git clone https://github.com/Skenvy/Collatz.git && cd Collatz/javascript && <localised-setup-command>
+git clone https://github.com/Skenvy/Collatz.git && cd Collatz/javascript && make setup
 ```
 ### Iterative development
 *<list-worthwhile-recipes>
