@@ -25,7 +25,7 @@
 # package that devtools requires as the rocker/tidyverse container in the
 # minimum spec per https://github.com/rocker-org/rocker that includes devtools.
 # The alternative is to use the action to install R;
-# r-lib/actions/setup-r@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
+# r-lib/actions/setup-r@39e9a0570b6e2a453fea41585670223e80528eb3 # v2.3.0
 # And then install dependencies, packages, and libraries on top. For Mac, we
 # simply need to setup R and run the ordinary CMD Check. For windows, we need to
 # install rtools to allow the 3.5.0 test to use C:\rtools40\usr\bin\bash.EXE
@@ -111,15 +111,15 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🏴‍☠️🔵🦜 Set up R
-      uses: r-lib/actions/setup-r@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
+      uses: r-lib/actions/setup-r@39e9a0570b6e2a453fea41585670223e80528eb3 # v2.3.0
       with:
         r-version: ${{ matrix.version }}
     - name: 🐼 Pandoc
-      uses: r-lib/actions/setup-pandoc@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
+      uses: r-lib/actions/setup-pandoc@39e9a0570b6e2a453fea41585670223e80528eb3 # v2.3.0
       with:
         pandoc-version: '2.17.1'
     - name: TinyTex
-      uses: r-lib/actions/setup-tinytex@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
+      uses: r-lib/actions/setup-tinytex@39e9a0570b6e2a453fea41585670223e80528eb3 # v2.3.0
     - name: TinyTex MakeIndex
       run: tlmgr install makeindex
     - name: 🧱 Dependencies
@@ -144,12 +144,12 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🏴‍☠️🔵🦜 Set up R
-      uses: r-lib/actions/setup-r@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
+      uses: r-lib/actions/setup-r@39e9a0570b6e2a453fea41585670223e80528eb3 # v2.3.0
       with:
         r-version: ${{ matrix.version }}
         rtools-version: '40'
     - name: 🐼 Pandoc
-      uses: r-lib/actions/setup-pandoc@cc43801a5c7c7730c2bb132cc3b245281df03764 # v2.2.8
+      uses: r-lib/actions/setup-pandoc@39e9a0570b6e2a453fea41585670223e80528eb3 # v2.3.0
       with:
         pandoc-version: '2.17.1'
     - name: 🧱 Dependencies
