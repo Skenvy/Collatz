@@ -1,2 +1,29 @@
-.PHONY: clean test
+.PHONY: setup update clean test build publish
 SHELL:=/bin/bash
+
+# https://docs.npmjs.com/cli/v8/commands/npm-ci
+setup:
+	npm ci
+
+# https://docs.npmjs.com/cli/v8/commands/npm-outdated
+# https://docs.npmjs.com/cli/v8/commands/npm-install
+update:
+	npm outdated
+	npm install
+
+clean:
+	rm -f skenvy-collatz-*.tgz
+
+# https://docs.npmjs.com/cli/v8/commands/npm-test
+# https://docs.npmjs.com/cli/v8/commands/npm-publish
+test: clean
+	npm test
+	npm publish --dry-run
+
+# https://docs.npmjs.com/cli/v8/commands/npm-pack
+build: clean test
+	npm pack
+
+# https://docs.npmjs.com/cli/v8/commands/npm-publish
+publish:
+	npm publish --access=public skenvy-collatz-*.tgz

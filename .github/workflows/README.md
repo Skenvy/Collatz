@@ -183,7 +183,7 @@ jobs:
   #     security-events: write
   #   uses: ./.github/workflows/github-codeql.yaml
   #   with:
-  #     language: 'lLanguage>'
+  #     language: '<Language>'
   # # Docs step is optional depending on language
   # docs:
   #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
@@ -221,6 +221,11 @@ jobs:
     uses: ./.github/workflows/github-context.yaml
   test:
     name: <Language> <language-emojis> Test 🦂
+    # Needs these permissions if the test workflow runs a CodeQL step
+    # permissions:
+    #   actions: read
+    #   contents: read
+    #   security-events: write
     uses: ./.github/workflows/<language>-test.yaml
   workflow-conditions:
     name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
