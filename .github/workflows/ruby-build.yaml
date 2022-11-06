@@ -39,7 +39,7 @@ jobs:
       id: version-file-check
       run: |
         export VERSION_FILE="ruby/lib/collatz/version.rb"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "version-file-changed=${{toJSON(true)}}" >> $GITHUB_OUTPUT || echo "version-file-changed=${{toJSON(false)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
     - name: Check if version specified in version file has not released.
@@ -47,7 +47,7 @@ jobs:
       run: |
         git fetch --tags
         export VER=$(grep lib/collatz/version.rb -e "VERSION" | cut -d \" -f 2)
-        [ -z "$(git tag -l "ruby-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+        [ -z "$(git tag -l "ruby-v$VER")" ] && echo "version-tag-exists=${{toJSON(false)}}" >> $GITHUB_OUTPUT || echo "version-tag-exists=${{toJSON(true)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
   # Now any step that should only run on the version change can use
@@ -74,7 +74,7 @@ jobs:
     - name: 💎 Build gem
       run: make build
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
       with:
         name: Gem
         path: ruby/pkg/collatz-*.gem
