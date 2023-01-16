@@ -2,28 +2,59 @@
   "name": "@skenvy/collatz",
   "version": "0.0.2",
   "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
-  "keywords": ["Collatz", "Ulam", "Kakutani's", "Thwaites", "Hasse's", "Syracuse"],
+  "keywords": [
+    "Collatz",
+    "Ulam",
+    "Kakutani's",
+    "Thwaites",
+    "Hasse's",
+    "Syracuse"
+  ],
   "homepage": "https://github.com/Skenvy/Collatz/tree/main/javascript",
   "bugs": {
-    "url" : "https://github.com/Skenvy/Collatz/issues/new/choose",
-    "email" : "nathan.a.z.levett@gmail.com"
+    "url": "https://github.com/Skenvy/Collatz/issues/new/choose",
+    "email": "nathan.a.z.levett@gmail.com"
   },
   "license": "Apache-2.0",
   "author": "Nathan Levett <nathan.a.z.levett@gmail.com> (https://github.com/Skenvy)",
   "contributors": [],
   "funding": [
     {
-      "type" : "GitHub Sponsors",
-      "url" : "https://github.com/sponsors/Skenvy"
+      "type": "GitHub Sponsors",
+      "url": "https://github.com/sponsors/Skenvy"
     }
   ],
-  "main": "index.js",
+  "files": [
+    "./lib/**/*"
+  ],
+  "main": "./lib/cjs/index.js",
+  "types": "./lib/cjs/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/esm/types/index.d.ts",
+        "default": "./lib/esm/index.mjs"
+      },
+      "require": {
+        "types": "./lib/cjs/types/index.d.ts",
+        "default": "./lib/cjs/index.js"
+      }
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Skenvy/Collatz.git",
     "directory": "javascript"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified yet\" && exit 0"
+    "clean": "rm -rf ./lib",
+    "test": "echo \"Error: no test specified yet\" && exit 0",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
   }
 }

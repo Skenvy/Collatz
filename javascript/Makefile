@@ -13,12 +13,13 @@ update:
 
 clean:
 	rm -f skenvy-collatz-*.tgz
+	npm run clean
 
 # https://docs.npmjs.com/cli/v8/commands/npm-test
 # https://docs.npmjs.com/cli/v8/commands/npm-publish
 test: clean
 	npm test
-	npm publish --dry-run
+	# npm publish --dry-run
 
 # https://docs.npmjs.com/cli/v8/commands/npm-pack
 build: clean test
