@@ -1,6 +1,7 @@
 "use strict";
 // This is an example src from
 // https://github.com/snyk-snippets/modern-npm-package/blob/main/src/index.ts
+// MIT: https://github.com/snyk-snippets/modern-npm-package/blob/main/LICENSE
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.goodBye = exports.helloWorld = void 0;
 function helloWorld() {
