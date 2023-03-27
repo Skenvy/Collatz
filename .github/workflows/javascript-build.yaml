@@ -1,4 +1,4 @@
-name: JavaScript 🟨🟩🟥 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
+name: JavaScript 🟨🟦🟩🟥 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
 on:
   push:
     branches:
@@ -18,7 +18,7 @@ jobs:
     name: GitHub 🐱‍👤 Context 📑
     uses: ./.github/workflows/github-context.yaml
   test:
-    name: JavaScript 🟨🟩🟥 Test 🦂
+    name: JavaScript 🟨🟦🟩🟥 Test 🦂
     permissions:
       actions: read
       contents: read
@@ -55,7 +55,7 @@ jobs:
   # We want to "release" automatically if "version-file-changed" is true on push
   # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
   build:
-    name: JavaScript 🟨🟩🟥 Build 🧱
+    name: JavaScript 🟨🟦🟩🟥 Build 🧱
     needs: [test, workflow-conditions]
     if: >-
       ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
@@ -64,7 +64,7 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🟨🟩🟥 Set up Node
+    - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: 12
@@ -79,7 +79,7 @@ jobs:
         path: javascript/skenvy-collatz-*.tgz
         if-no-files-found: error
   release:
-    name: JavaScript 🟨🟩🟥 Release 🚰
+    name: JavaScript 🟨🟦🟩🟥 Release 🚰
     needs: [build]
     permissions:
       contents: write
@@ -99,7 +99,7 @@ jobs:
         export VER=$(grep package.json -e "\"version\":" | cut -d \" -f 4)
         gh release create javascript-v$VER "$(find . | grep -e skenvy-collatz-*\.tgz)#Package" --generate-notes -t "JavaScript: Version $VER"
   publish-github:
-    name: JavaScript 🟨🟩🟥 Publish 📦 GitHub 🐱‍👤
+    name: JavaScript 🟨🟦🟩🟥 Publish 📦 GitHub 🐱‍👤
     needs: [release]
     permissions:
       packages: write
@@ -112,7 +112,7 @@ jobs:
       with:
         name: Package
         path: javascript/
-    - name: 🟨🟩🟥 Set up Node
+    - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: 12
@@ -123,7 +123,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-npm:
-    name: JavaScript 🟨🟩🟥 Publish 📦 NPM 🟥
+    name: JavaScript 🟨🟦🟩🟥 Publish 📦 NPM 🟥
     needs: [release]
     runs-on: ubuntu-latest
     steps:
@@ -134,7 +134,7 @@ jobs:
       with:
         name: Package
         path: javascript/
-    - name: 🟨🟩🟥 Set up Node
+    - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: 12
@@ -145,7 +145,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   # docs:
-  #   name: JavaScript 🟨🟩🟥 Docs 📄
+  #   name: JavaScript 🟨🟦🟩🟥 Docs 📄
   #   needs: [release, publish-github, publish-npm]
   #   permissions:
   #     contents: write
@@ -153,7 +153,7 @@ jobs:
   #   steps:
   #   - name: 🏁 Checkout
   #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🟨🟩🟥 Set up Node
+  #   - name: 🟨🟦🟩🟥 Set up Node
   #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
   #     with:
   #       node-version: 12
