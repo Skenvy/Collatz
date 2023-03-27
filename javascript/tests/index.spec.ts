@@ -1,5 +1,6 @@
 // This is an example test suite from
 // https://github.com/snyk-snippets/modern-npm-package/blob/main/tests/index.spec.ts
+// MIT: https://github.com/snyk-snippets/modern-npm-package/blob/main/LICENSE
 
 import 'mocha';
 import { assert } from 'chai';
