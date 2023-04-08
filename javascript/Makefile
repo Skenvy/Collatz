@@ -21,6 +21,7 @@ bump_patch:
 # https://docs.npmjs.com/cli/v8/commands/npm-ci
 setup:
 	npm ci
+	npm list
 
 # https://docs.npmjs.com/cli/v8/commands/npm-outdated
 # https://docs.npmjs.com/cli/v8/commands/npm-install
