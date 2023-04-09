@@ -36,6 +36,8 @@ jobs:
       run: make setup
     - name: 🦂 Test
       run: make test
+    - name: 🧹 Lint
+      run: make lint
   full-test:
     name: JavaScript 🟨🟦🟩🟥 Full Test 🦂
     if: >- 
@@ -58,6 +60,8 @@ jobs:
       run: make setup
     - name: 🦂 Test
       run: make test
+    - name: 🧹 Lint
+      run: make lint
   codeql:
     name: JavaScript 🟨🟦🟩🟥 CodeQL 🛡👨‍💻🛡
     if: >- 

@@ -1,4 +1,4 @@
-.PHONY: bump_major bump_minor bump_patch setup update clean test build publish
+.PHONY: bump_major bump_minor bump_patch setup update clean test lint build publish
 SHELL:=/bin/bash
 
 # Versions can be manually changed where they appear in the package json and
@@ -20,6 +20,7 @@ bump_patch:
 
 # https://docs.npmjs.com/cli/v8/commands/npm-ci
 setup:
+	npm list -g --depth 0
 	npm ci
 	npm list
 
@@ -39,8 +40,11 @@ test: clean
 	npm test
 	npm publish --dry-run
 
+lint: clean
+	npm run lint
+
 # https://docs.npmjs.com/cli/v8/commands/npm-pack
-build: clean test
+build: clean test lint
 	npm pack
 
 # https://docs.npmjs.com/cli/v8/commands/npm-publish

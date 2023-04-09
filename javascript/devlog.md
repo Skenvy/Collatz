@@ -121,4 +121,14 @@ Along with this, there is also a [TSLint](https://palantir.github.io/tslint/) ([
 [typescript-eslint's "Getting Started"](https://typescript-eslint.io/getting-started) begins with the developer dependency installation `npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript`, which immediately pops out an error of;
 > npm ERR! notsup Required: {"node":"^12.22.0 || ^14.17.0 || >=16.0.0"}
 
-So I guess we've gotta take the intersection of that and the current requirement of being `>=14.0.0` to limit to engines in `{"node":"^14.17.0 || >=16.0.0"}`. Aftering a quick `n 4.17.0` the installation works fine.
+So I guess we've gotta take the intersection of that and the current requirement of being `>=14.0.0` to limit to engines in `{"node":"^14.17.0 || >=16.0.0"}`. Aftering a quick `n 4.17.0` the installation works fine. Before seeing if we want to use [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb), we'll try out the recommended config from [typescript-eslint's "Getting Started"](https://typescript-eslint.io/getting-started).
+
+First running the `npx eslint .` that is suggested yields an error
+> /mnt/c/Workspaces/GitHub_Skenvy/Collatz/javascript/.eslintrc.js  
+1:1  error  'module' is not defined  no-undef
+
+Google reveals that this issue likely comes from not having told ESLint via its rc that we want to run this in a node environement, and must add `env: {"node": true}`. This does get rid of that warning. I imagine for the popularity of ESLint as the recommended tool, it's surprising [the stackoverflow question](https://stackoverflow.com/a/52094784) to this doesn't have more traffic.
+
+Secondary to the `.eslintrc.*` file, we can also add a `.eslintignore` to prevent files we don't want to lint from being included. This would include the `./node_modules` folder as well as the folder our transpiled JavaScript result goes into.
+
+I was temporarily confused as I also tried to run `eslint .` without `npx` as some sites offer in snippets, and it was not working. I was relying on the assumption that because my devDependency of TypeScript allows me to use `tsc` in the `scripts` that can be used with `npm run ...` I should be able to also use ESLint in a similar manner, but was only trying to do so in my terminal rather than adding it to my `scripts`. It took a while of googling around to stumble on [the simple answer](https://docs.npmjs.com/cli/v8/commands/npm-run-script?v=true) that `./node_modules/.bin`, which contains these invocable scripts, is added to the `PATH` when invoking `npm run ...`. Sure enough, `tsc` which has been working for while in my `npm run ...`'s also does not work as "just" `tsc` outside of `npm run ...`. So we can easily add an `npm run ...` that will use the version installed by the package lock. So we can now simply use an `npm run lint`.
