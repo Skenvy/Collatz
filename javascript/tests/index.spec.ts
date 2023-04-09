@@ -1,7 +1,7 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import { Collatz } from '../src/index';
+import * as Collatz from '../src/index';
 import defaultExport from '../src/index';
 
 describe('NPM Package', () => {
@@ -14,13 +14,7 @@ describe('NPM Package', () => {
   });
 });
 
-describe('Collatz', () => {
-  it('should be a namespace', () => {
-    assert.isObject(Collatz);
-  });
-});
-
-describe('Collatz.Function', () => {
+describe('Function', () => {
   it('should be a function', () => {
     assert.isFunction(Collatz.Function);
   });
