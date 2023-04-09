@@ -9,8 +9,8 @@ describe('NPM Package', () => {
     assert.isObject(defaultExport);
   });
 
-  it('should have a Collatz property', () => {
-    assert.property(defaultExport, 'Collatz');
+  it('should have a Function property', () => {
+    assert.property(defaultExport, 'Function');
   });
 });
 

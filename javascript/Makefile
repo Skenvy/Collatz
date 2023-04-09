@@ -40,7 +40,7 @@ test: clean
 	npm test
 	npm publish --dry-run
 
-lint: clean
+lint:
 	npm run lint
 
 # https://docs.npmjs.com/cli/v8/commands/npm-pack
