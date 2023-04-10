@@ -35,7 +35,7 @@ clean:
 	rm -rf docs
 	npm run clean
 
-docs: clean
+docs:
 	npm run docs
 
 # https://docs.npmjs.com/cli/v8/commands/npm-test

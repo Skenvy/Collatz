@@ -53,8 +53,9 @@
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
     "build:cjs": "tsc -p ./tsconfig.cjs.json",
-    "docs": "npm run clean && npm run docs:typedoc",
-    "docs:typedoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.cjs.json",
+    "docs": "npm run docs:clean && npm run docs:tsdoc",
+    "docs:clean": "rm -rf ./docs",
+    "docs:tsdoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.cjs.json",
     "prepack": "npm run build"
   },
   "devDependencies": {
