@@ -32,7 +32,11 @@ update:
 
 clean:
 	rm -f skenvy-collatz-*.tgz
+	rm -rf docs
 	npm run clean
+
+docs: clean
+	npm run docs
 
 # https://docs.npmjs.com/cli/v8/commands/npm-test
 # https://docs.npmjs.com/cli/v8/commands/npm-publish
