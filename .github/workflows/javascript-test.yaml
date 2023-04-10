@@ -31,11 +31,15 @@ jobs:
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: 12
+        node-version: 14.17.0
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
       run: make test
+    - name: 🧹 Lint
+      run: make lint
+    - name: ⚖ Does the checked in JS match the transpiled TS? 
+      run: make verify_transpiled_checkin
   full-test:
     name: JavaScript 🟨🟦🟩🟥 Full Test 🦂
     if: >- 
@@ -45,7 +49,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['12', '13', '14', '15', '16', '17', '18', '19']
+        version: ['14', '16', '17', '18', '19'] # See package.json's "engines"
         os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
@@ -58,6 +62,12 @@ jobs:
       run: make setup
     - name: 🦂 Test
       run: make test
+    - name: 🧹 Lint
+      run: make lint
+    # I'm not sure what benefit there is to doing this check in the whole matrix
+    # but it'd be interesting if it shook something loose I didn't expect!
+    - name: ⚖ Does the checked in JS match the transpiled TS? 
+      run: make verify_transpiled_checkin
   codeql:
     name: JavaScript 🟨🟦🟩🟥 CodeQL 🛡👨‍💻🛡
     if: >- 
@@ -70,16 +80,17 @@ jobs:
     uses: ./.github/workflows/github-codeql.yaml
     with:
       language: 'javascript'
-  # # Docs step is optional depending on language
-  # docs:
-  #   name: JavaScript 🟨🟦🟩🟥 Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🟨🟦🟩🟥 Set up Node
-  #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
-  #     with:
-  #       node-version: 12
-  #   - name: 📄 Docs
-  #     run: make docs
+  docs:
+    name: JavaScript 🟨🟦🟩🟥 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🟨🟦🟩🟥 Set up Node
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      with:
+        node-version: 14.17.0
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs
+      run: make docs

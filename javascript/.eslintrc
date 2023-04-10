@@ -1,0 +1,37 @@
+{
+  "env": {"node": true},
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint/eslint-plugin",
+    "eslint-plugin-tsdoc"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb"
+  ],
+  "rules": {
+    "tsdoc/syntax": 1,
+    "max-len": ["error", { "code": 200 }],
+    "@typescript-eslint/no-inferrable-types": 0,
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": 1,
+    "no-shadow": 0,
+    "@typescript-eslint/no-shadow": 2,
+    "import/extensions": 1,
+    "no-else-return": 0,
+    "object-curly-newline": ["error", {
+      "ObjectExpression": { "consistent": true },
+      "ObjectPattern": { "consistent": true }
+    }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
+}
