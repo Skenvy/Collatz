@@ -193,3 +193,10 @@ And when I tested it on the CommonJS version, `npx jsdoc lib/cjs/index.js -d doc
 
 So JSDoc is already too much of an uphill battle to work with.
 ### Evaluate the TypeDoc output
+We can install a simple server with `npm install --save-dev http-server`, run it with `npx http-server`, and navigate to http://127.0.0.1:8080/docs/tsdoc.
+### Empty Orphan
+We're now ready to add once again create an empty orphan branch;
+1. `git checkout --orphan gh-pages-javascript`
+1. `rm .git/index ; git clean -fdx`
+1. `git commit -m "Initial empty orphan" --allow-empty`
+1. `git push --set-upstream origin gh-pages-javascript`
