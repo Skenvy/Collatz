@@ -80,16 +80,15 @@ jobs:
     uses: ./.github/workflows/github-codeql.yaml
     with:
       language: 'javascript'
-  # # Docs step is optional depending on language
-  # docs:
-  #   name: JavaScript 🟨🟦🟩🟥 Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🟨🟦🟩🟥 Set up Node
-  #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
-  #     with:
-  #       node-version: 14.17.0
-  #   - name: 📄 Docs
-  #     run: make docs
+  docs:
+    name: JavaScript 🟨🟦🟩🟥 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+    - name: 🟨🟦🟩🟥 Set up Node
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      with:
+        node-version: 14.17.0
+    - name: 📄 Docs
+      run: make docs

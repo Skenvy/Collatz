@@ -182,3 +182,14 @@ Further down the page, rather visually hidden, is mention of, and not a link to,
 The two new packages we want to add can be included with `npm install --save-dev typedoc eslint-plugin-tsdoc`
 
 After adding both of these and following the [current ReadMe for `eslint-plugin-tsdoc`](https://github.com/microsoft/tsdoc/blob/c758984fb4e088e69d7ea34ccab07e9def01448d/eslint-plugin/README.md) (adding the plugin and rule), it's not immediately obvious why it isn't flashing up warnings about the documentation styling that currently exists. If we look at [what it appears to currently be doing](https://github.com/microsoft/tsdoc/blob/dc670ecf835b1305d246c69609f2a67a16370b61/eslint-plugin/src/index.ts#L84-L122), the first thing it's doing is not linting any comment that is _not_ a block comment; none of my comments are block comments. So to get it to comment on anything we need to add some block comments `/*<comment>*/` but we need to style it as `/**<comment>*/`.
+
+With comments now in place, we'll just need to keep using [these sorts of references](https://tsdoc.org/pages/tags/param/).
+### JSDoc?
+I tried testing jsdoc, `npm install --save-dev jsdoc`, however when I tested it on the ECMAScript version, `npx jsdoc lib/esm/index.mjs -d docs/esm`, I got;
+> There are no input files to process.
+
+And when I tested it on the CommonJS version, `npx jsdoc lib/cjs/index.js -d docs/cjs`, it returns;
+> Do not know how to serialize a BigInt
+
+So JSDoc is already too much of an uphill battle to work with.
+### Evaluate the TypeDoc output
