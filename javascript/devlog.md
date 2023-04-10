@@ -118,7 +118,7 @@ At this stage of having the first "Function" present in the TypeScript, we shoul
 > and possibly look at [ESLint](https://eslint.org/docs/latest/user-guide/getting-started) (which may include looking at [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb), because the [Airbnb JavaScript Style Guide](https://airbnb.io/javascript/) is supposedly noteworthy).
 
 Along with this, there is also a [TSLint](https://palantir.github.io/tslint/) ([archived repo](https://github.com/palantir/tslint)), although per their [roadmap](https://github.com/palantir/tslint/issues/4534) and [blog](https://blog.palantir.com/tslint-in-2019-1a144c2317a9), in an effort to make TypeScript and JavaScript development more cohesive, they now recommend [typescript-eslint](https://typescript-eslint.io/) which _is_ ESLint running on TypeScript code, such that ESLint is the "standard" linter. So I guess that's likely the best choice.
-#### Install [typescript-eslint](https://typescript-eslint.io/)
+### Install [typescript-eslint](https://typescript-eslint.io/)
 To start with we'll look at [typescript-eslint's "Getting Started"](https://typescript-eslint.io/getting-started), which begins with the developer dependency installation `npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript`; which immediately pops out an error of;
 > npm ERR! notsup Required: {"node":"^12.22.0 || ^14.17.0 || >=16.0.0"}
 
@@ -133,7 +133,7 @@ Google reveals that this issue likely comes from not having told ESLint via its 
 Secondary to the `.eslintrc.*` file, we can also add a `.eslintignore` to prevent files we don't want to lint from being included. This would include the `./node_modules` folder as well as the folder our transpiled JavaScript result goes into.
 ### `npm run lint`
 I was temporarily confused as I also tried to run `eslint .` without `npx` as some sites offer in snippets, and it was not working. I was relying on the assumption that because my devDependency of TypeScript allows me to use `tsc` in the `scripts` that can be used with `npm run ...` I should be able to also use ESLint in a similar manner, but was only trying to do so in my terminal rather than adding it to my `scripts`. It took a while of googling around to stumble on [the simple answer](https://docs.npmjs.com/cli/v8/commands/npm-run-script?v=true) that `./node_modules/.bin`, which contains these invocable scripts, is added to the `PATH` when invoking `npm run ...`. Sure enough, `tsc` which has been working for while in my `npm run ...`'s also does not work as "just" `tsc` outside of `npm run ...`. So we can easily add an `npm run ...` that will use the version installed by the package lock. So we can now simply use an `npm run lint`.
-# Add [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb)
+### Add [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb)
 As we've followed the instructions up until here, we'll swap to the recommendations of [this blog](https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/), as it uses json for the `.eslintrc`, and provides an explanation for adding "rules" to it. We can also use this to try and add [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb).
 
 We'll use `npx install-peerdeps --dev eslint-config-airbnb`, which generates the "peerDeps" installation command `npm install eslint-config-airbnb@19.0.4 eslint@^8.2.0 eslint-plugin-import@^2.25.3 eslint-plugin-jsx-a11y@^6.5.1 eslint-plugin-react@^7.28.0 eslint-plugin-react-hooks@^4.3.0 --save-dev`. We also need to add `"airbnb"` to the `"extends"` of the `.eslintrc`.
@@ -165,3 +165,17 @@ The `import/no-unresolved` error can be avoided by adding this to the `.eslintrc
 }
 ```
 Followed by setting `import/extensions` to a warning.
+
+---
+## Setting up documentation
+Now that there is some relevant code in here, as TS being consistently transpiled to JS, tested with mocha and linted with eslint, it's time we look at adding the last main "feature" of all (or _most_) of the implementations; **documentation comments** and tools that compile generated documentation as webpages that we can add to our GitHub pages -- similar to our [GoDoc](https://skenvy.github.io/Collatz/go/), [JavaDoc](https://skenvy.github.io/Collatz/java/apidocs/io/github/skenvy/package-summary.html), [Documenter.jl](https://skenvy.github.io/Collatz/julia/), [Roxygen+Pkgdown](https://skenvy.github.io/Collatz/R/), and [RDoc](https://skenvy.github.io/Collatz/ruby/) sites.
+### How do you even document JS or TS code??
+A long standing project to standardise JS documentation comments is [JSDoc](https://github.com/jsdoc/jsdoc). TypeScript has a similarly named [TSDoc](https://github.com/microsoft/tsdoc). Whilst it would be interesting to serve documentation generated for both the transpiled JS code as well as the source TS code, as we are directly controllowing the source (although from what I've seen the comments are 1-to-1 copied to the transpiled output) our _target_ will be to write TSDoc styled comments. Although without testing either out, purely from reading their descriptions, JSDoc actually generates docs pages, but TSDoc simply specifies a recommended format to be consumed by other tools that will use the TSDoc format to do the docs generation. So while JSDoc just "does the whole thing", if we want to pick TSDoc as a "standard" to document the source, being TS, we'll still need to pick one of the tools that will read the TSDoc comments to generate the docs pages. Besides both of these, there also appears to be an [ESDoc](https://github.com/esdoc/esdoc), which claims to be a JS documenter.
+### Compile TSDoc comments into _something_
+The [TSDoc site](https://tsdoc.org/) links to several "popular tools" that use TSDoc comments, one of which is eslint, and another vs code, but the first tool mentioned is [TypeDoc](https://typedoc.org/) ([repo](https://github.com/TypeStrong/typedoc)), a;
+> Documentation generator for TypeScript projects.
+
+_So our primary goal is to write TSDoc styled comments, and use TypeDoc to compile them into the generated documentation._
+
+Further down the page, rather visually hidden, is mention of, and not a link to, an `eslint-plugin-tsdoc` ([repo](https://github.com/bafolts/eslint-plugin-tsdoc), though), an eslint plugin to, I assume, lint the TSDoc comments. That repository has not been touched in a few years, but it appears from visitng the [npm page for eslint-plugin-tsdoc](https://www.npmjs.com/package/eslint-plugin-tsdoc), which links back to the [Microsoft TSDoc repo](https://github.com/microsoft/tsdoc), that it is indeed a _monorepo_, which contains as a project within it, the most recent state of the plugin [`eslint-plugin-tsdoc`](https://github.com/microsoft/tsdoc/tree/main/eslint-plugin). So I guess we'll be able to use that!
+### Setup TypeDoc
