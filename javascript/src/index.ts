@@ -102,13 +102,14 @@ export function ReverseFunction({ n, P = 2n, a = 3n, b = 1n }: Parameterised): b
   // not placing restrictions on the parameters yet, although there is a better
   // way of shortcutting this for the default variables, we need to always
   // attempt (f(n) - b)/a)
-  if ((n - b) % a == 0n && (n - b) % (P * a) != 0n) {
-    return [P*n, ((n - b) / a)];
+  if ((n - b) % a === 0n && (n - b) % (P * a) !== 0n) {
+    return [(P * n), ((n - b) / a)];
   } else {
-    return [P*n];
+    return [P * n];
   }
 }
 
 export default {
   Function,
+  ReverseFunction,
 };

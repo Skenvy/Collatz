@@ -79,37 +79,37 @@ describe('ReverseFunction', () => {
   it('should return the Default (P,a,b); 0 trap', () => {
     const expected = [0n];
     const actual = Collatz.ReverseFunction({ n: 0n });
-    assert.equal(actual, expected);
+    assert.deepEqual(actual, expected);
   });
 
   // Default (P,a,b); 1 cycle; positives
   it('should return the Default (P,a,b); 1 cycle; positives', () => {
-    assert.equal(Collatz.ReverseFunction({ n: 1n }), [2n]);
-    assert.equal(Collatz.ReverseFunction({ n: 4n }), [8n, 1n]);
-    assert.equal(Collatz.ReverseFunction({ n: 2n }), [4n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 1n }), [2n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 4n }), [8n, 1n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 2n }), [4n]);
   });
 
   // Default (P,a,b); -1 cycle; negatives
   it('should return the Default (P,a,b); -1 cycle; negatives', () => {
-    assert.equal(Collatz.ReverseFunction({ n: -1n }), [-2n]);
-    assert.equal(Collatz.ReverseFunction({ n: -2n }), [-4n, -1n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: -1n }), [-2n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: -2n }), [-4n, -1n]);
   });
 
   // Test a wider modulo sweep by upping P to 5, a to 2, and b to 3
   it('should return the Test a wider modulo sweep by upping P to 5, a to 2, and b to 3', () => {
-    assert.equal(Collatz.ReverseFunction({ n: 1n, P: 5n, a: 2n, b: 3n }), [5n, -1n]);
-    assert.equal(Collatz.ReverseFunction({ n: 2n, P: 5n, a: 2n, b: 3n }), [10n]);
-    assert.equal(Collatz.ReverseFunction({ n: 3n, P: 5n, a: 2n, b: 3n }), [15n]); // also tests !0
-    assert.equal(Collatz.ReverseFunction({ n: 4n, P: 5n, a: 2n, b: 3n }), [20n]);
-    assert.equal(Collatz.ReverseFunction({ n: 5n, P: 5n, a: 2n, b: 3n }), [25n, 1n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 1n, P: 5n, a: 2n, b: 3n }), [5n, -1n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 2n, P: 5n, a: 2n, b: 3n }), [10n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 3n, P: 5n, a: 2n, b: 3n }), [15n]); // also tests !0
+    assert.deepEqual(Collatz.ReverseFunction({ n: 4n, P: 5n, a: 2n, b: 3n }), [20n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 5n, P: 5n, a: 2n, b: 3n }), [25n, 1n]);
   });
 
   // Test negative P, a and b. We only use the (0 mod P) conjugacy class to
   // determine functionality, so flooring negative P doesn't cause any issue.
   it('should return the Test negative P, a and b.', () => {
-    assert.equal(Collatz.ReverseFunction({ n: 1n, P: -3n, a: -2n, b: -5n }), [-3n]); // != [-3, -3]
-    assert.equal(Collatz.ReverseFunction({ n: 2n, P: -3n, a: -2n, b: -5n }), [-6n]);
-    assert.equal(Collatz.ReverseFunction({ n: 3n, P: -3n, a: -2n, b: -5n }), [-9n, -4n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 1n, P: -3n, a: -2n, b: -5n }), [-3n]); // != [-3, -3]
+    assert.deepEqual(Collatz.ReverseFunction({ n: 2n, P: -3n, a: -2n, b: -5n }), [-6n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 3n, P: -3n, a: -2n, b: -5n }), [-9n, -4n]);
   });
 
   // Set P and a to 0 to assert on assertSaneParameterisation
@@ -121,7 +121,7 @@ describe('ReverseFunction', () => {
 
   // If b is a multiple of a, but not of Pa, then 0 can have a reverse.
   it('should return the If b is a multiple of a, but not of Pa, then 0 can have a reverse.', () => {
-    assert.equal(Collatz.ReverseFunction({ n: 0n, P: 17n, a: 2n, b: -6n }), [0n, 3n]);
-    assert.equal(Collatz.ReverseFunction({ n: 0n, P: 17n, a: 2n, b: 102n }), [0n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 0n, P: 17n, a: 2n, b: -6n }), [0n, 3n]);
+    assert.deepEqual(Collatz.ReverseFunction({ n: 0n, P: 17n, a: 2n, b: 102n }), [0n]);
   });
 });

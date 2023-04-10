@@ -24,8 +24,10 @@ export interface Parameterised {
     b?: bigint;
 }
 export declare function Function({ n, P, a, b }: Parameterised): bigint;
+export declare function ReverseFunction({ n, P, a, b }: Parameterised): bigint[];
 declare const _default: {
     Function: typeof Function;
+    ReverseFunction: typeof ReverseFunction;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map
