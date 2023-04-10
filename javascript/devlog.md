@@ -179,3 +179,4 @@ _So our primary goal is to write TSDoc styled comments, and use TypeDoc to compi
 
 Further down the page, rather visually hidden, is mention of, and not a link to, an `eslint-plugin-tsdoc` ([repo](https://github.com/bafolts/eslint-plugin-tsdoc), though), an eslint plugin to, I assume, lint the TSDoc comments. That repository has not been touched in a few years, but it appears from visitng the [npm page for eslint-plugin-tsdoc](https://www.npmjs.com/package/eslint-plugin-tsdoc), which links back to the [Microsoft TSDoc repo](https://github.com/microsoft/tsdoc), that it is indeed a _monorepo_, which contains as a project within it, the most recent state of the plugin [`eslint-plugin-tsdoc`](https://github.com/microsoft/tsdoc/tree/main/eslint-plugin). So I guess we'll be able to use that!
 ### Setup TypeDoc
+The two new packages we want to add can be included with `npm install --save-dev typedoc eslint-plugin-tsdoc`
