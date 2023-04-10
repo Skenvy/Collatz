@@ -38,6 +38,8 @@ jobs:
       run: make test
     - name: 🧹 Lint
       run: make lint
+    - name: ⚖ Does the checked in JS match the transpiled TS? 
+      run: make verify_transpiled_checkin
   full-test:
     name: JavaScript 🟨🟦🟩🟥 Full Test 🦂
     if: >- 
@@ -62,6 +64,10 @@ jobs:
       run: make test
     - name: 🧹 Lint
       run: make lint
+    # I'm not sure what benefit there is to doing this check in the whole matrix
+    # but it'd be interesting if it shook something loose I didn't expect!
+    - name: ⚖ Does the checked in JS match the transpiled TS? 
+      run: make verify_transpiled_checkin
   codeql:
     name: JavaScript 🟨🟦🟩🟥 CodeQL 🛡👨‍💻🛡
     if: >- 
