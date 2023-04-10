@@ -86,7 +86,6 @@ export function assertSaneParameterisation(P:bigint, a:bigint, b:bigint): void {
   // either a 1 or 2 length cycle, it's not strictly an illegal operation.
   // "b" being zero would cause behaviour not consistant with the collatz
   // function, but would not violate the reversability, so no check either.
-  // " != 0" is redundant for python assertions.
   if (P === 0n) {
     throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_P);
   }
