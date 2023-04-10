@@ -113,32 +113,55 @@ But it leaves me with the question of, knowing what features you want in your Ja
 
 ---
 ## Add linting
+### Choose a linter
 At this stage of having the first "Function" present in the TypeScript, we should consider investing in a linter. Using a combination of the code snippets from the java, julia, and python implementations and gluing them together here has probably led already to some gross stylisation that would require eye-bleach after looking at it. Previously it was mentioned;
 > and possibly look at [ESLint](https://eslint.org/docs/latest/user-guide/getting-started) (which may include looking at [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb), because the [Airbnb JavaScript Style Guide](https://airbnb.io/javascript/) is supposedly noteworthy).
 
 Along with this, there is also a [TSLint](https://palantir.github.io/tslint/) ([archived repo](https://github.com/palantir/tslint)), although per their [roadmap](https://github.com/palantir/tslint/issues/4534) and [blog](https://blog.palantir.com/tslint-in-2019-1a144c2317a9), in an effort to make TypeScript and JavaScript development more cohesive, they now recommend [typescript-eslint](https://typescript-eslint.io/) which _is_ ESLint running on TypeScript code, such that ESLint is the "standard" linter. So I guess that's likely the best choice.
-
+#### Install [typescript-eslint](https://typescript-eslint.io/)
 To start with we'll look at [typescript-eslint's "Getting Started"](https://typescript-eslint.io/getting-started), which begins with the developer dependency installation `npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript`; which immediately pops out an error of;
 > npm ERR! notsup Required: {"node":"^12.22.0 || ^14.17.0 || >=16.0.0"}
 
 So I guess we've gotta take the intersection of that and the current requirement of being `>=14.0.0` to limit to engines in `{"node":"^14.17.0 || >=16.0.0"}`. Aftering a quick `n 4.17.0` the installation works fine. Before seeing if we want to use [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb), we'll try out the recommended config from [typescript-eslint's "Getting Started"](https://typescript-eslint.io/getting-started).
-
+### [ESLint Environments](https://eslint.org/docs/latest/use/configure/language-options#specifying-environments)
 First running the `npx eslint .` that is suggested yields an error
 > /mnt/c/Workspaces/GitHub_Skenvy/Collatz/javascript/.eslintrc.js  
 1:1  error  'module' is not defined  no-undef
 
 Google reveals that this issue likely comes from not having told ESLint via its rc that we want to run this in a node environement, and must add `env: {"node": true}`. This does get rid of that warning. I imagine for the popularity of ESLint as the recommended tool, it's surprising [the stackoverflow question](https://stackoverflow.com/a/52094784) to this doesn't have more traffic.
-
+### `.eslintignore`
 Secondary to the `.eslintrc.*` file, we can also add a `.eslintignore` to prevent files we don't want to lint from being included. This would include the `./node_modules` folder as well as the folder our transpiled JavaScript result goes into.
-
+### `npm run lint`
 I was temporarily confused as I also tried to run `eslint .` without `npx` as some sites offer in snippets, and it was not working. I was relying on the assumption that because my devDependency of TypeScript allows me to use `tsc` in the `scripts` that can be used with `npm run ...` I should be able to also use ESLint in a similar manner, but was only trying to do so in my terminal rather than adding it to my `scripts`. It took a while of googling around to stumble on [the simple answer](https://docs.npmjs.com/cli/v8/commands/npm-run-script?v=true) that `./node_modules/.bin`, which contains these invocable scripts, is added to the `PATH` when invoking `npm run ...`. Sure enough, `tsc` which has been working for while in my `npm run ...`'s also does not work as "just" `tsc` outside of `npm run ...`. So we can easily add an `npm run ...` that will use the version installed by the package lock. So we can now simply use an `npm run lint`.
+# Add [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb)
+As we've followed the instructions up until here, we'll swap to the recommendations of [this blog](https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/), as it uses json for the `.eslintrc`, and provides an explanation for adding "rules" to it. We can also use this to try and add [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb).
 
-As we've followed the instructions up until here, we'll swap to the recommendations of [this blog](https://khalilstemmler.com/blogs/typescript/eslint-for-typescript/), as it uses json for the `.eslintrc`, and provides an explanation for adding "rules" to it. We can also use this to try and add [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb). We'll use `npx install-peerdeps --dev eslint-config-airbnb`, which generates the "peerDeps" installation command `npm install eslint-config-airbnb@19.0.4 eslint@^8.2.0 eslint-plugin-import@^2.25.3 eslint-plugin-jsx-a11y@^6.5.1 eslint-plugin-react@^7.28.0 eslint-plugin-react-hooks@^4.3.0 --save-dev`.
+We'll use `npx install-peerdeps --dev eslint-config-airbnb`, which generates the "peerDeps" installation command `npm install eslint-config-airbnb@19.0.4 eslint@^8.2.0 eslint-plugin-import@^2.25.3 eslint-plugin-jsx-a11y@^6.5.1 eslint-plugin-react@^7.28.0 eslint-plugin-react-hooks@^4.3.0 --save-dev`. We also need to add `"airbnb"` to the `"extends"` of the `.eslintrc`.
+### Refine linting with rules
+Well, now we've got some linting set up, and using an extensive collection of recommended rules, it's time to run it and iteratively see what I've done differently from what the [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb) recommends. These differences can be added as modifications to the sets of rules that are extended in the `./.eslintrc` through a `"rules"` map. One that I will definitely allow is [`object-curly-newline`](https://eslint.org/docs/latest/rules/object-curly-newline). Although [`no-underscore-dangle`](https://eslint.org/docs/latest/rules/no-underscore-dangle) is something that I've avoided changing where possible, I have removed the "private" underscores from some previous implementations.
 
-Well, now we've got some linting set up, and using an extensive collection of recommended rules, it's time to run it and iteratively see what I've done differently from what the [Airbnb's .eslintrc](https://www.npmjs.com/package/eslint-config-airbnb) recommends. These differences can be added as modifications to the sets of rules that are extended in the `./.eslintrc` through a `"rules"` map. One that I will definitely allow is [`object-curly-newline`](https://eslint.org/docs/latest/rules/object-curly-newline). Although [`no-underscore-dangle`](https://eslint.org/docs/latest/rules/no-underscore-dangle) is something that I've avoided changing where possible, I have removed the "private" underscores from some previous implementations. One that is was a slight problem was a bunch of lines in my `./tests/index.spec.ts` popping up with;
+One that is was a slight problem was a bunch of lines in my `./tests/index.spec.ts` popping up with;
 >   23:3   error  'it' is not defined                                    no-undef
-
+### [ESLint Environments](https://eslint.org/docs/latest/use/configure/language-options#specifying-environments) 2: Electric Boogaloo
 The [`no-undef`](https://eslint.org/docs/latest/rules/no-undef) error appears to be complaining that the `it` inside the function blocks of a `describe` (as well as the `describe` in other linter errors) are not declared and or defined. An answer on [this stackoverflow question](https://stackoverflow.com/a/38667441) provides the context and a link to some ESLint docs on [Specifying Environments](https://eslint.org/docs/latest/use/configure/language-options#specifying-environments) with the context being that there are _many_ environments, and;
 > An environment provides predefined global variables.
 
 Which means we can add a `/* eslint-env mocha */` comment at the top of our `./tests/index.spec.ts` and get rid of these errors.
+### Import resolution errors
+I'm still routinely getting the errors;
+> 6:26  error  Unable to resolve path to module '../src/index'  import/no-unresolved  
+6:26  error  Missing file extension for "../src/index"        import/extensions  
+7:27  error  Unable to resolve path to module '../src/index'  import/no-unresolved  
+7:27  error  Missing file extension for "../src/index"        import/extensions
+
+The `import/no-unresolved` error can be avoided by adding this to the `.eslintrc`.
+```json
+"settings": {
+  "import/resolver": {
+    "node": {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"]
+    }
+  }
+}
+```
+Followed by setting `import/extensions` to a warning.
