@@ -1,41 +1,76 @@
-// The four known cycles (besides 0->0), for the default parameterisation.
+/** The four known cycles (besides 0 cycling to itself), for the default parameterisation. */
 export const KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
     [-17n, -50n, -25n, -74n, -37n, -110n, -55n, -164n, -82n, -41n, -122n, -61n, -182n, -91n, -272n, -136n, -68n, -34n]];
-// The value up to which has been proven numerically, for the default parameterisation."
+/** The current value up to which has been proven numerically, for the default parameterisation. */
 export const VERIFIED_MAXIMUM = 295147905179352825856n;
-// The value down to which has been proven numerically, for the default parameterisation."
+/** The current value down to which has been proven numerically, for the default parameterisation. */
 export const VERIFIED_MINIMUM = -272n; // TODO: Check the actual lowest bound.
-// Error message constant.
+/**
+ * Error message constants.
+ * @remarks
+ * To be used as input to the FailedSaneParameterCheck.
+ */
 export var SaneParameterErrMsg;
 (function (SaneParameterErrMsg) {
+    /** Message to print in the FailedSaneParameterCheck if P, the modulus, is zero. */
     SaneParameterErrMsg["SANE_PARAMS_P"] = "'P' should not be 0 ~ violates modulo being non-zero.";
+    /** Message to print in the FailedSaneParameterCheck if a, the multiplicand, is zero. */
     SaneParameterErrMsg["SANE_PARAMS_A"] = "'a' should not be 0 ~ violates the reversability.";
 })(SaneParameterErrMsg || (SaneParameterErrMsg = {}));
+/**
+ * FailedSaneParameterCheck
+ * @remarks
+ * An Error thrown when assertSaneParameterisation determines invalid parameterisation.
+ * This is when either P, the modulus, or a, the multiplicand, are zero.
+ */
 export class FailedSaneParameterCheck extends Error {
+    /**
+     * Construct a FailedSaneParameterCheck with a message associated with the provided enum.
+     * @param message - The enum from which to extract the message.
+     */
     constructor(message) {
         super(message);
         this.name = 'FailedSaneParameterCheck';
     }
 }
-// Cycle Control: Descriptive flags to indicate when some event occurs in the
-// hailstone sequences, when set to verbose, or stopping time check.
+/**
+ * SequenceState for Cycle Control
+ * @remarks
+ * Descriptive flags to indicate when some event occurs in the hailstone sequences
+ * or tree graph reversal, when set to verbose, or stopping time check.
+ */
 export var SequenceState;
 (function (SequenceState) {
+    /** A Hailstone sequence state that indicates the stopping
+     *  time, a value less than the initial, has been reached. */
     SequenceState["STOPPING_TIME"] = "STOPPING_TIME";
+    /** A Hailstone sequence state that indicates the total
+     *  stopping time, a value of 1, has been reached. */
     SequenceState["TOTAL_STOPPING_TIME"] = "TOTAL_STOPPING_TIME";
+    /** A Hailstone and TreeGraph sequence state that indicates the
+     *  first occurence of a value that subsequently forms a cycle. */
     SequenceState["CYCLE_INIT"] = "CYCLE_INIT";
+    /** A Hailstone and TreeGraph sequence state that indicates the
+     *  last occurence of a value that has already formed a cycle. */
     SequenceState["CYCLE_LENGTH"] = "CYCLE_LENGTH";
+    /** A Hailstone and TreeGraph sequence state that indicates the sequence
+     *  or traversal has executed some imposed 'maximum' amount of times. */
     SequenceState["MAX_STOP_OUT_OF_BOUNDS"] = "MAX_STOP_OUT_OF_BOUNDS";
+    /** A Hailstone sequence state that indicates the sequence terminated
+     *  by reaching "0", a special type of "stopping time". */
     SequenceState["ZERO_STOP"] = "ZERO_STOP";
 })(SequenceState || (SequenceState = {}));
-// """
-// Handles the sanity check for the parameterisation (P,a,b) required by both
-// the function and reverse function.
-// Args:
-//     P (bigint): Modulus used to devide n, iff n is equivalent to (0 mod P).
-//     a (bigint): Factor by which to multiply n.
-//     b (bigint): Value to add to the scaled value of n.
-// """
+/**
+ * Assert Sane Parameters
+ * @remarks
+ * Handles the sanity check for the parameterisation (P,a,b) required by both
+ * the function and reverse function.
+ * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
+ * @param a - Factor by which to multiply n.
+ * @param b - Value to add to the scaled value of n.
+ * @throws FailedSaneParameterCheck
+ * Thrown if either P or a are 0.
+ */
 export function assertSaneParameterisation(P, a, b) {
     // Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
     // theoretically, although would violate the reversability (if ~a is 0 then a
@@ -57,31 +92,30 @@ export function assertSaneParameterisation(P, a, b) {
         throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_A);
     }
 }
-// """
-// Returns the output of a single application of a Collatz-esque function.
-// Args:
-//     n (bigint): The value on which to perform the Collatz-esque function
-// Kwargs:
-//     P (bigint): Modulus used to devide n, iff n is equivalent to (0 mod P).
-//         Default is 2.
-//     a (bigint): Factor by which to multiply n. Default is 3.
-//     b (bigint): Value to add to the scaled value of n. Default is 1.
-// """
+/**
+ * Parameterised Collatz Function
+ * @param n - The value on which to perform the Collatz-esque function
+ * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param a - Factor by which to multiply n. Default is 3.
+ * @param b - Value to add to the scaled value of n. Default is 1.
+ * @returns the output of a single application of a Collatz-esque function.
+ * @throws FailedSaneParameterCheck
+ * Thrown if either P or a are 0.
+ */
 export function Function({ n, P = 2n, a = 3n, b = 1n }) {
     assertSaneParameterisation(P, a, b);
     return n % P === 0n ? n / P : (a * n + b);
 }
-// """
-// Returns the output of a single application of a Collatz-esque reverse
-// function.
-// Args:
-//     n (int): The value on which to perform the reverse Collatz function
-// Kwargs:
-//     P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
-//         Default is 2.
-//     a (int): Factor by which to multiply n. Default is 3.
-//     b (int): Value to add to the scaled value of n. Default is 1.
-// """
+/**
+ * Parameterised Collatz Inverse Function
+ * @param n - The value on which to perform the reverse Collatz function
+ * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param a - Factor by which to multiply n. Default is 3.
+ * @param b - Value to add to the scaled value of n. Default is 1.
+ * @returns the output of a single application of a Collatz-esque reverse function.
+ * @throws FailedSaneParameterCheck
+ * Thrown if either P or a are 0.
+ */
 export function ReverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
     assertSaneParameterisation(P, a, b);
     // Every input can be reversed as the result of "n/P" division, which yields

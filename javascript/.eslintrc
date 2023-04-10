@@ -2,9 +2,9 @@
   "env": {"node": true},
   "root": true,
   "parser": "@typescript-eslint/parser",
-  
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint/eslint-plugin",
+    "eslint-plugin-tsdoc"
   ],
   "extends": [
     "eslint:recommended",
@@ -13,6 +13,7 @@
     "airbnb"
   ],
   "rules": {
+    "tsdoc/syntax": 1,
     "max-len": ["error", { "code": 200 }],
     "@typescript-eslint/no-inferrable-types": 0,
     "no-unused-vars": 0,
