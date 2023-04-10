@@ -1,33 +1,33 @@
 // The four known cycles (besides 0->0), for the default parameterisation.
-export const _KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
+export const KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
     [-17n, -50n, -25n, -74n, -37n, -110n, -55n, -164n, -82n, -41n, -122n, -61n, -182n, -91n, -272n, -136n, -68n, -34n]];
 // The value up to which has been proven numerically, for the default parameterisation."
-export const __VERIFIED_MAXIMUM = 295147905179352825856n;
+export const VERIFIED_MAXIMUM = 295147905179352825856n;
 // The value down to which has been proven numerically, for the default parameterisation."
-export const __VERIFIED_MINIMUM = -272n; // TODO: Check the actual lowest bound.
+export const VERIFIED_MINIMUM = -272n; // TODO: Check the actual lowest bound.
 // Error message constant.
-export var _ErrMsg;
-(function (_ErrMsg) {
-    _ErrMsg["SANE_PARAMS_P"] = "'P' should not be 0 ~ violates modulo being non-zero.";
-    _ErrMsg["SANE_PARAMS_A"] = "'a' should not be 0 ~ violates the reversability.";
-})(_ErrMsg || (_ErrMsg = {}));
+export var SaneParameterErrMsg;
+(function (SaneParameterErrMsg) {
+    SaneParameterErrMsg["SANE_PARAMS_P"] = "'P' should not be 0 ~ violates modulo being non-zero.";
+    SaneParameterErrMsg["SANE_PARAMS_A"] = "'a' should not be 0 ~ violates the reversability.";
+})(SaneParameterErrMsg || (SaneParameterErrMsg = {}));
 export class FailedSaneParameterCheck extends Error {
     constructor(message) {
         super(message);
-        this.name = "FailedSaneParameterCheck";
+        this.name = 'FailedSaneParameterCheck';
     }
 }
 // Cycle Control: Descriptive flags to indicate when some event occurs in the
 // hailstone sequences, when set to verbose, or stopping time check.
-export var _CC;
-(function (_CC) {
-    _CC["STOPPING_TIME"] = "STOPPING_TIME";
-    _CC["TOTAL_STOPPING_TIME"] = "TOTAL_STOPPING_TIME";
-    _CC["CYCLE_INIT"] = "CYCLE_INIT";
-    _CC["CYCLE_LENGTH"] = "CYCLE_LENGTH";
-    _CC["MAX_STOP_OUT_OF_BOUNDS"] = "MAX_STOP_OUT_OF_BOUNDS";
-    _CC["ZERO_STOP"] = "ZERO_STOP";
-})(_CC || (_CC = {}));
+export var SequenceState;
+(function (SequenceState) {
+    SequenceState["STOPPING_TIME"] = "STOPPING_TIME";
+    SequenceState["TOTAL_STOPPING_TIME"] = "TOTAL_STOPPING_TIME";
+    SequenceState["CYCLE_INIT"] = "CYCLE_INIT";
+    SequenceState["CYCLE_LENGTH"] = "CYCLE_LENGTH";
+    SequenceState["MAX_STOP_OUT_OF_BOUNDS"] = "MAX_STOP_OUT_OF_BOUNDS";
+    SequenceState["ZERO_STOP"] = "ZERO_STOP";
+})(SequenceState || (SequenceState = {}));
 // """
 // Handles the sanity check for the parameterisation (P,a,b) required by both
 // the function and reverse function.
@@ -36,7 +36,7 @@ export var _CC;
 //     a (bigint): Factor by which to multiply n.
 //     b (bigint): Value to add to the scaled value of n.
 // """
-export function __assert_sane_parameterisation(P, a, b) {
+export function assertSaneParameterisation(P, a, b) {
     // Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
     // theoretically, although would violate the reversability (if ~a is 0 then a
     // value of "b" as the input to the reverse function would have a pre-emptive
@@ -51,10 +51,10 @@ export function __assert_sane_parameterisation(P, a, b) {
     // function, but would not violate the reversability, so no check either.
     // " != 0" is redundant for python assertions.
     if (P === 0n) {
-        throw new FailedSaneParameterCheck(_ErrMsg.SANE_PARAMS_P);
+        throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_P);
     }
     if (a === 0n) {
-        throw new FailedSaneParameterCheck(_ErrMsg.SANE_PARAMS_A);
+        throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_A);
     }
 }
 // """
@@ -68,7 +68,7 @@ export function __assert_sane_parameterisation(P, a, b) {
 //     b (bigint): Value to add to the scaled value of n. Default is 1.
 // """
 export function Function({ n, P = 2n, a = 3n, b = 1n }) {
-    __assert_sane_parameterisation(P, a, b);
+    assertSaneParameterisation(P, a, b);
     return n % P === 0n ? n / P : (a * n + b);
 }
 export default {

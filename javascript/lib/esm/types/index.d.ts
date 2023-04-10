@@ -1,14 +1,14 @@
-export declare const _KNOWN_CYCLES: bigint[][];
-export declare const __VERIFIED_MAXIMUM: bigint;
-export declare const __VERIFIED_MINIMUM: bigint;
-export declare enum _ErrMsg {
+export declare const KNOWN_CYCLES: bigint[][];
+export declare const VERIFIED_MAXIMUM: bigint;
+export declare const VERIFIED_MINIMUM: bigint;
+export declare enum SaneParameterErrMsg {
     SANE_PARAMS_P = "'P' should not be 0 ~ violates modulo being non-zero.",
     SANE_PARAMS_A = "'a' should not be 0 ~ violates the reversability."
 }
 export declare class FailedSaneParameterCheck extends Error {
-    constructor(message: _ErrMsg);
+    constructor(message: SaneParameterErrMsg);
 }
-export declare enum _CC {
+export declare enum SequenceState {
     STOPPING_TIME = "STOPPING_TIME",
     TOTAL_STOPPING_TIME = "TOTAL_STOPPING_TIME",
     CYCLE_INIT = "CYCLE_INIT",
@@ -16,7 +16,7 @@ export declare enum _CC {
     MAX_STOP_OUT_OF_BOUNDS = "MAX_STOP_OUT_OF_BOUNDS",
     ZERO_STOP = "ZERO_STOP"
 }
-export declare function __assert_sane_parameterisation(P: bigint, a: bigint, b: bigint): void;
+export declare function assertSaneParameterisation(P: bigint, a: bigint, b: bigint): void;
 export interface Parameterised {
     n: bigint;
     P?: bigint;

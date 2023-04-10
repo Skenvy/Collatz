@@ -10,5 +10,17 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "airbnb"
-  ]
+  ],
+  "rules": {
+    "max-len": ["error", { "code": 200 }],
+    "@typescript-eslint/no-inferrable-types": 0,
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-unused-vars": 1,
+    "no-shadow": 0,
+    "@typescript-eslint/no-shadow": 2,
+    "object-curly-newline": ["error", {
+      "ObjectExpression": { "consistent": true },
+      "ObjectPattern": { "consistent": true }
+    }]
+  }
 }
