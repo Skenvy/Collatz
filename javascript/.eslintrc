@@ -2,6 +2,7 @@
   "env": {"node": true},
   "root": true,
   "parser": "@typescript-eslint/parser",
+  
   "plugins": [
     "@typescript-eslint"
   ],
@@ -18,9 +19,17 @@
     "@typescript-eslint/no-unused-vars": 1,
     "no-shadow": 0,
     "@typescript-eslint/no-shadow": 2,
+    "import/extensions": 1,
     "object-curly-newline": ["error", {
       "ObjectExpression": { "consistent": true },
       "ObjectPattern": { "consistent": true }
     }]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }
