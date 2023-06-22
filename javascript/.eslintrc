@@ -25,7 +25,8 @@
     "object-curly-newline": ["error", {
       "ObjectExpression": { "consistent": true },
       "ObjectPattern": { "consistent": true }
-    }]
+    }],
+    "arrow-body-style": ["error", "always"]
   },
   "settings": {
     "import/resolver": {
