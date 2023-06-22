@@ -19,7 +19,7 @@ var SaneParameterErrMsg;
     SaneParameterErrMsg["SANE_PARAMS_P"] = "'P' should not be 0 ~ violates modulo being non-zero.";
     /** Message to print in the FailedSaneParameterCheck if a, the multiplicand, is zero. */
     SaneParameterErrMsg["SANE_PARAMS_A"] = "'a' should not be 0 ~ violates the reversability.";
-})(SaneParameterErrMsg = exports.SaneParameterErrMsg || (exports.SaneParameterErrMsg = {}));
+})(SaneParameterErrMsg || (exports.SaneParameterErrMsg = SaneParameterErrMsg = {}));
 /**
  * FailedSaneParameterCheck
  * @remarks
@@ -63,7 +63,7 @@ var SequenceState;
     /** A Hailstone sequence state that indicates the sequence terminated
      *  by reaching "0", a special type of "stopping time". */
     SequenceState["ZERO_STOP"] = "ZERO_STOP";
-})(SequenceState = exports.SequenceState || (exports.SequenceState = {}));
+})(SequenceState || (exports.SequenceState = SequenceState = {}));
 /**
  * Assert Sane Parameters
  * @remarks
@@ -138,6 +138,26 @@ function ReverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
     }
 }
 exports.ReverseFunction = ReverseFunction;
+/**
+ * Provides the appropriate lambda to use to check if iterations on an initial
+ * value have reached either the stopping time, or total stopping time.
+ * @param n (BigInteger): The initial value to confirm against a stopping time check.
+ * @param total_stop (boolean): If false, the lambda will confirm that iterations of n
+ *          have reached the oriented stopping time to reach a value closer to 0.
+ *          If true, the lambda will simply check equality to 1.
+ * @return (Function<BigInteger, Boolean>): The lambda to check for the stopping time.
+ */
+function stoppingTimeTerminus(n, totalStop) {
+    if (totalStop) {
+        return (x) => { return x === 1n; };
+    }
+    else if (n >= 0n) {
+        return (x) => { return x < n && x > 0; };
+    }
+    else {
+        return (x) => { return x > n && x < 0; };
+    }
+}
 exports.default = {
     Function,
     ReverseFunction,
