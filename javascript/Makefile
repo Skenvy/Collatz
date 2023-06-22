@@ -25,7 +25,9 @@ setup:
 	npm list
 
 # https://docs.npmjs.com/cli/v8/commands/npm-outdated
+# https://docs.npmjs.com/cli/v8/commands/npm-update
 # https://docs.npmjs.com/cli/v8/commands/npm-install
+# If outdated fails, try install. If outdated still fails, manually run `npm up`
 update:
 	npm outdated
 	npm install
