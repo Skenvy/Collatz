@@ -102,7 +102,7 @@ export interface Parameterised {
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export declare function Function({ n, P, a, b }: Parameterised): bigint;
+export declare function collatzFunction({ n, P, a, b }: Parameterised): bigint;
 /**
  * Parameterised Collatz Inverse Function
  * @param n - The value on which to perform the reverse Collatz function
@@ -113,10 +113,60 @@ export declare function Function({ n, P, a, b }: Parameterised): bigint;
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export declare function ReverseFunction({ n, P, a, b }: Parameterised): bigint[];
+export declare function reverseFunction({ n, P, a, b }: Parameterised): bigint[];
+/** Contains the results of computing a hailstone sequence. */
+export declare class HailstoneSequence {
+    /** The set of values that comprise the hailstone sequence. */
+    readonly values: bigint[];
+    readonly terminate: (_: bigint) => boolean;
+    /** A terminal condition that reflects the final state of the hailstone sequencing,
+     *  whether than be that it succeeded at determining the stopping time, the total
+     *  stopping time, found a cycle, or got stuck on zero (or surpassed the max total). */
+    readonly terminalCondition: SequenceState;
+    /** A status value that has different meanings depending on what the terminal condition
+     *  was. If the sequence completed either via reaching the stopping or total stopping time,
+     *  or getting stuck on zero, then this value is the stopping/terminal time. If the sequence
+     *  got stuck on a cycle, then this value is the cycle length. If the sequencing passes the
+     *  maximum stopping time then this is the value that was provided as that maximum. */
+    readonly terminalStatus: number;
+    /**
+     * Initialise and compute a new Hailstone Sequence.
+     * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
+     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a (BigInteger): Factor by which to multiply n.
+     * @param b (BigInteger): Value to add to the scaled value of n.
+     * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
+     * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+     *          (number of iterations to obtain 1) rather than the regular stopping time (number
+     *          of iterations to reach a value less than the initial value).
+     */
+    constructor(initialValue: bigint, P: bigint, a: bigint, b: bigint, maxTotalStoppingTime: number, totalStoppingTime: boolean);
+}
+/**
+ * Returns a list of successive values obtained by iterating a Collatz-esque
+ * function, until either 1 is reached, or the total amount of iterations
+ * exceeds maxTotalStoppingTime, unless totalStoppingTime is False,
+ * which will terminate the hailstone at the "stopping time" value, i.e. the
+ * first value less than the initial value. While the sequence has the
+ * capability to determine that it has encountered a cycle, the cycle from "1"
+ * wont be attempted or reported as part of a cycle, regardless of default or
+ * custom parameterisation, as "1" is considered a "total stop".
+ * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
+ * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
+ * @param a (BigInteger): Factor by which to multiply n.
+ * @param b (BigInteger): Value to add to the scaled value of n.
+ * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
+ * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+ *          (number of iterations to obtain 1) rather than the regular stopping time (number
+ *          of iterations to reach a value less than the initial value).
+ * @return (HailstoneSequence): A set of values that form the hailstone sequence.
+ */
+export declare function hailstoneSequence({ n, P, a, b }: Parameterised, maxTotalStoppingTime: number, totalStoppingTime: boolean): HailstoneSequence;
 declare const _default: {
-    Function: typeof Function;
-    ReverseFunction: typeof ReverseFunction;
+    collatzFunction: typeof collatzFunction;
+    reverseFunction: typeof reverseFunction;
+    HailstoneSequence: typeof HailstoneSequence;
+    hailstoneSequence: typeof hailstoneSequence;
 };
 export default _default;
 //# sourceMappingURL=index.d.ts.map

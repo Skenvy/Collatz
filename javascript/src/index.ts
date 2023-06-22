@@ -233,7 +233,7 @@ export class HailstoneSequence {
         next = collatzFunction({ n: this.values[k - 1], P: P, a: a, b: b });
         // Check if the next hailstone is either the stopping time, total
         // stopping time, the same as the initial value, or stuck at zero.
-        if (this.terminate.apply(next)) {
+        if (this.terminate(next)) {
           this.values.push(next);
           if (next === 1n) {
             this.terminalCondition = SequenceState.TOTAL_STOPPING_TIME;

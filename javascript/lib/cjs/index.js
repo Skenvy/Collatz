@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReverseFunction = exports.Function = exports.assertSaneParameterisation = exports.SequenceState = exports.FailedSaneParameterCheck = exports.SaneParameterErrMsg = exports.VERIFIED_MINIMUM = exports.VERIFIED_MAXIMUM = exports.KNOWN_CYCLES = void 0;
+exports.hailstoneSequence = exports.HailstoneSequence = exports.reverseFunction = exports.collatzFunction = exports.assertSaneParameterisation = exports.SequenceState = exports.FailedSaneParameterCheck = exports.SaneParameterErrMsg = exports.VERIFIED_MINIMUM = exports.VERIFIED_MAXIMUM = exports.KNOWN_CYCLES = void 0;
 /** The four known cycles (besides 0 cycling to itself), for the default parameterisation. */
 exports.KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
     [-17n, -50n, -25n, -74n, -37n, -110n, -55n, -164n, -82n, -41n, -122n, -61n, -182n, -91n, -272n, -136n, -68n, -34n]];
@@ -106,11 +106,11 @@ exports.assertSaneParameterisation = assertSaneParameterisation;
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-function Function({ n, P = 2n, a = 3n, b = 1n }) {
+function collatzFunction({ n, P = 2n, a = 3n, b = 1n }) {
     assertSaneParameterisation(P, a, b);
     return n % P === 0n ? n / P : (a * n + b);
 }
-exports.Function = Function;
+exports.collatzFunction = collatzFunction;
 /**
  * Parameterised Collatz Inverse Function
  * @param n - The value on which to perform the reverse Collatz function
@@ -121,7 +121,7 @@ exports.Function = Function;
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-function ReverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
+function reverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
     assertSaneParameterisation(P, a, b);
     // Every input can be reversed as the result of "n/P" division, which yields
     // "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
@@ -137,7 +137,7 @@ function ReverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
         return [P * n];
     }
 }
-exports.ReverseFunction = ReverseFunction;
+exports.reverseFunction = reverseFunction;
 /**
  * Provides the appropriate lambda to use to check if iterations on an initial
  * value have reached either the stopping time, or total stopping time.
@@ -158,7 +158,109 @@ function stoppingTimeTerminus(n, totalStop) {
         return (x) => { return x > n && x < 0; };
     }
 }
+/** Contains the results of computing a hailstone sequence. */
+class HailstoneSequence {
+    /**
+     * Initialise and compute a new Hailstone Sequence.
+     * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
+     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a (BigInteger): Factor by which to multiply n.
+     * @param b (BigInteger): Value to add to the scaled value of n.
+     * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
+     * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+     *          (number of iterations to obtain 1) rather than the regular stopping time (number
+     *          of iterations to reach a value less than the initial value).
+     */
+    constructor(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime) {
+        this.terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
+        if (initialValue === 0n) {
+            // 0 is always an immediate stop.
+            this.values = [0n];
+            this.terminalCondition = SequenceState.ZERO_STOP;
+            this.terminalStatus = 0;
+        }
+        else if (initialValue === 1n) {
+            // 1 is always an immediate stop, with 0 stopping time.
+            this.values = [1n];
+            this.terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
+            this.terminalStatus = 0;
+        }
+        else {
+            // Otherwise, hail!
+            const minMaxTotalStoppingTime = Math.max(maxTotalStoppingTime, 1);
+            this.values = [initialValue];
+            let next;
+            for (let k = 1; k <= minMaxTotalStoppingTime; k += 1) {
+                next = collatzFunction({ n: this.values[k - 1], P: P, a: a, b: b });
+                // Check if the next hailstone is either the stopping time, total
+                // stopping time, the same as the initial value, or stuck at zero.
+                if (this.terminate(next)) {
+                    this.values.push(next);
+                    if (next === 1n) {
+                        this.terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
+                    }
+                    else {
+                        this.terminalCondition = SequenceState.STOPPING_TIME;
+                    }
+                    this.terminalStatus = k;
+                    return;
+                }
+                if (this.values.includes(next)) {
+                    this.values.push(next);
+                    let cycleInit = 1;
+                    for (let j = 1; j <= k; j += 1) {
+                        if (this.values[k - j] === next) {
+                            cycleInit = j;
+                            break;
+                        }
+                    }
+                    this.terminalCondition = SequenceState.CYCLE_LENGTH;
+                    this.terminalStatus = cycleInit;
+                    return;
+                }
+                if (next === 0n) {
+                    this.values.push(0n);
+                    this.terminalCondition = SequenceState.ZERO_STOP;
+                    this.terminalStatus = -k;
+                    return;
+                }
+                this.values.push(next);
+            }
+            this.terminalCondition = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
+            this.terminalStatus = minMaxTotalStoppingTime;
+        }
+    }
+}
+exports.HailstoneSequence = HailstoneSequence;
+/**
+ * Returns a list of successive values obtained by iterating a Collatz-esque
+ * function, until either 1 is reached, or the total amount of iterations
+ * exceeds maxTotalStoppingTime, unless totalStoppingTime is False,
+ * which will terminate the hailstone at the "stopping time" value, i.e. the
+ * first value less than the initial value. While the sequence has the
+ * capability to determine that it has encountered a cycle, the cycle from "1"
+ * wont be attempted or reported as part of a cycle, regardless of default or
+ * custom parameterisation, as "1" is considered a "total stop".
+ * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
+ * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
+ * @param a (BigInteger): Factor by which to multiply n.
+ * @param b (BigInteger): Value to add to the scaled value of n.
+ * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
+ * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+ *          (number of iterations to obtain 1) rather than the regular stopping time (number
+ *          of iterations to reach a value less than the initial value).
+ * @return (HailstoneSequence): A set of values that form the hailstone sequence.
+ */
+function hailstoneSequence({ n, P = 2n, a = 3n, b = 1n }, maxTotalStoppingTime, totalStoppingTime) {
+    // Call out the function before any magic returns to trap bad values.
+    const throwaway = collatzFunction({ n: n, P: P, a: a, b: b });
+    // Return the hailstone sequence.
+    return new HailstoneSequence(n, P, a, b, maxTotalStoppingTime, totalStoppingTime);
+}
+exports.hailstoneSequence = hailstoneSequence;
 exports.default = {
-    Function,
-    ReverseFunction,
+    collatzFunction,
+    reverseFunction,
+    HailstoneSequence,
+    hailstoneSequence,
 };
