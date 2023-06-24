@@ -98,10 +98,11 @@ function assertSaneParameterisation(P, a, b) {
 exports.assertSaneParameterisation = assertSaneParameterisation;
 /**
  * Parameterised Collatz Function
- * @param n - The value on which to perform the Collatz-esque function
- * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param a - Factor by which to multiply n. Default is 3.
- * @param b - Value to add to the scaled value of n. Default is 1.
+ * @param AnyNameHere - various options
+ * @param AnyNameHere.n - The value on which to perform the Collatz-esque function
+ * @param AnyNameHere.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param AnyNameHere.a - Factor by which to multiply n. Default is 3.
+ * @param AnyNameHere.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
@@ -141,11 +142,11 @@ exports.reverseFunction = reverseFunction;
 /**
  * Provides the appropriate lambda to use to check if iterations on an initial
  * value have reached either the stopping time, or total stopping time.
- * @param n (BigInteger): The initial value to confirm against a stopping time check.
- * @param total_stop (boolean): If false, the lambda will confirm that iterations of n
- *          have reached the oriented stopping time to reach a value closer to 0.
- *          If true, the lambda will simply check equality to 1.
- * @return (Function<BigInteger, Boolean>): The lambda to check for the stopping time.
+ * @param n - The initial value to confirm against a stopping time check.
+ * @param totalStop - If false, the lambda will confirm that iterations of n
+ *     have reached the oriented stopping time to reach a value closer to 0.
+ *     If true, the lambda will simply check equality to 1.
+ * @returns the lambda (arrow function expression) to check for the stopping time.
  */
 function stoppingTimeTerminus(n, totalStop) {
     if (totalStop) {
@@ -162,14 +163,14 @@ function stoppingTimeTerminus(n, totalStop) {
 class HailstoneSequence {
     /**
      * Initialise and compute a new Hailstone Sequence.
-     * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
-     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-     * @param a (BigInteger): Factor by which to multiply n.
-     * @param b (BigInteger): Value to add to the scaled value of n.
-     * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
-     * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
-     *          (number of iterations to obtain 1) rather than the regular stopping time (number
-     *          of iterations to reach a value less than the initial value).
+     * @param initialValue - The value to begin the hailstone sequence from.
+     * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a - Factor by which to multiply n.
+     * @param b - Value to add to the scaled value of n.
+     * @param maxTotalStoppingTime - Maximum amount of times to iterate the function, if 1 is not reached.
+     * @param totalStoppingTime - Whether or not to execute until the "total" stopping time
+     *    (number of iterations to obtain 1) rather than the regular stopping time (number
+     *    of iterations to reach a value less than the initial value).
      */
     constructor(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime) {
         this.terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
@@ -241,14 +242,14 @@ exports.HailstoneSequence = HailstoneSequence;
  * capability to determine that it has encountered a cycle, the cycle from "1"
  * wont be attempted or reported as part of a cycle, regardless of default or
  * custom parameterisation, as "1" is considered a "total stop".
- * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
- * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
- * @param a (BigInteger): Factor by which to multiply n.
- * @param b (BigInteger): Value to add to the scaled value of n.
- * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
- * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
- *          (number of iterations to obtain 1) rather than the regular stopping time (number
- *          of iterations to reach a value less than the initial value).
+ * @param initialValue - The value to begin the hailstone sequence from.
+ * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
+ * @param a - Factor by which to multiply n.
+ * @param b - Value to add to the scaled value of n.
+ * @param maxTotalStoppingTime - Maximum amount of times to iterate the function, if 1 is not reached.
+ * @param totalStoppingTime - Whether or not to execute until the "total" stopping time
+ *     (number of iterations to obtain 1) rather than the regular stopping time (number
+ *     of iterations to reach a value less than the initial value).
  * @return (HailstoneSequence): A set of values that form the hailstone sequence.
  */
 function hailstoneSequence({ n, P = 2n, a = 3n, b = 1n }, maxTotalStoppingTime, totalStoppingTime) {
