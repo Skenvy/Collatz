@@ -1,4 +1,4 @@
-.PHONY: bump_major bump_minor bump_patch setup update clean test lint verify_transpiled_checkin build publish
+.PHONY: bump_major bump_minor bump_patch setup update clean docs docs_server test lint verify_transpiled_checkin build publish
 SHELL:=/bin/bash
 
 # Versions can be manually changed where they appear in the package json and
@@ -25,7 +25,9 @@ setup:
 	npm list
 
 # https://docs.npmjs.com/cli/v8/commands/npm-outdated
+# https://docs.npmjs.com/cli/v8/commands/npm-update
 # https://docs.npmjs.com/cli/v8/commands/npm-install
+# If outdated fails, try install. If outdated still fails, manually run `npm up`
 update:
 	npm outdated
 	npm install
@@ -37,6 +39,10 @@ clean:
 
 docs:
 	npm run docs
+
+# http://127.0.0.1:8080/docs/tsdoc
+docs_server: docs
+	npm run docs:server
 
 # https://docs.npmjs.com/cli/v8/commands/npm-test
 # https://docs.npmjs.com/cli/v8/commands/npm-publish

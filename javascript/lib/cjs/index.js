@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReverseFunction = exports.Function = exports.assertSaneParameterisation = exports.SequenceState = exports.FailedSaneParameterCheck = exports.SaneParameterErrMsg = exports.VERIFIED_MINIMUM = exports.VERIFIED_MAXIMUM = exports.KNOWN_CYCLES = void 0;
+exports.hailstoneSequence = exports.HailstoneSequence = exports.reverseFunction = exports.collatzFunction = exports.assertSaneParameterisation = exports.SequenceState = exports.FailedSaneParameterCheck = exports.SaneParameterErrMsg = exports.VERIFIED_MINIMUM = exports.VERIFIED_MAXIMUM = exports.KNOWN_CYCLES = void 0;
 /** The four known cycles (besides 0 cycling to itself), for the default parameterisation. */
 exports.KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
     [-17n, -50n, -25n, -74n, -37n, -110n, -55n, -164n, -82n, -41n, -122n, -61n, -182n, -91n, -272n, -136n, -68n, -34n]];
@@ -19,7 +19,7 @@ var SaneParameterErrMsg;
     SaneParameterErrMsg["SANE_PARAMS_P"] = "'P' should not be 0 ~ violates modulo being non-zero.";
     /** Message to print in the FailedSaneParameterCheck if a, the multiplicand, is zero. */
     SaneParameterErrMsg["SANE_PARAMS_A"] = "'a' should not be 0 ~ violates the reversability.";
-})(SaneParameterErrMsg = exports.SaneParameterErrMsg || (exports.SaneParameterErrMsg = {}));
+})(SaneParameterErrMsg || (exports.SaneParameterErrMsg = SaneParameterErrMsg = {}));
 /**
  * FailedSaneParameterCheck
  * @remarks
@@ -63,7 +63,7 @@ var SequenceState;
     /** A Hailstone sequence state that indicates the sequence terminated
      *  by reaching "0", a special type of "stopping time". */
     SequenceState["ZERO_STOP"] = "ZERO_STOP";
-})(SequenceState = exports.SequenceState || (exports.SequenceState = {}));
+})(SequenceState || (exports.SequenceState = SequenceState = {}));
 /**
  * Assert Sane Parameters
  * @remarks
@@ -98,30 +98,32 @@ function assertSaneParameterisation(P, a, b) {
 exports.assertSaneParameterisation = assertSaneParameterisation;
 /**
  * Parameterised Collatz Function
- * @param n - The value on which to perform the Collatz-esque function
- * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param a - Factor by which to multiply n. Default is 3.
- * @param b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs - Allows non-default (P,a,b)
+ * @param parameterisedInputs.n - The value on which to perform the Collatz-esque function
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-function Function({ n, P = 2n, a = 3n, b = 1n }) {
+function collatzFunction({ n, P = 2n, a = 3n, b = 1n }) {
     assertSaneParameterisation(P, a, b);
     return n % P === 0n ? n / P : (a * n + b);
 }
-exports.Function = Function;
+exports.collatzFunction = collatzFunction;
 /**
  * Parameterised Collatz Inverse Function
- * @param n - The value on which to perform the reverse Collatz function
- * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param a - Factor by which to multiply n. Default is 3.
- * @param b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs - Allows non-default (P,a,b)
+ * @param parameterisedInputs.n - The value on which to perform the reverse Collatz function
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque reverse function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-function ReverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
+function reverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
     assertSaneParameterisation(P, a, b);
     // Every input can be reversed as the result of "n/P" division, which yields
     // "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
@@ -137,8 +139,136 @@ function ReverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
         return [P * n];
     }
 }
-exports.ReverseFunction = ReverseFunction;
+exports.reverseFunction = reverseFunction;
+/**
+ * Provides the appropriate lambda to use to check if iterations on an initial
+ * value have reached either the stopping time, or total stopping time.
+ * @param n - The initial value to confirm against a stopping time check.
+ * @param totalStop - If false, the lambda will confirm that iterations of n
+ *     have reached the oriented stopping time to reach a value closer to 0.
+ *     If true, the lambda will simply check equality to 1.
+ * @returns the lambda (arrow function expression) to check for the stopping time.
+ */
+function stoppingTimeTerminus(n, totalStop) {
+    if (totalStop) {
+        return (x) => { return x === 1n; };
+    }
+    else if (n >= 0n) {
+        return (x) => { return x < n && x > 0; };
+    }
+    else {
+        return (x) => { return x > n && x < 0; };
+    }
+}
+/** Contains the results of computing a hailstone sequence. */
+class HailstoneSequence {
+    /**
+     * Initialise and compute a new Hailstone Sequence.
+     * @param initialValue - The value to begin the hailstone sequence from.
+     * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a - Factor by which to multiply n.
+     * @param b - Value to add to the scaled value of n.
+     * @param maxTotalStoppingTime - Maximum amount of times to iterate the function, if 1 is not reached.
+     * @param totalStoppingTime - Whether or not to execute until the "total" stopping time
+     *    (number of iterations to obtain 1) rather than the regular stopping time (number
+     *    of iterations to reach a value less than the initial value).
+     * @returns the hailstone sequence computed for the parameters provided.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
+     */
+    constructor(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime) {
+        this.terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
+        if (initialValue === 0n) {
+            // 0 is always an immediate stop.
+            this.values = [0n];
+            this.terminalCondition = SequenceState.ZERO_STOP;
+            this.terminalStatus = 0;
+        }
+        else if (initialValue === 1n) {
+            // 1 is always an immediate stop, with 0 stopping time.
+            this.values = [1n];
+            this.terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
+            this.terminalStatus = 0;
+        }
+        else {
+            // Otherwise, hail!
+            const minMaxTotalStoppingTime = Math.max(maxTotalStoppingTime, 1);
+            this.values = [initialValue];
+            let next;
+            for (let k = 1; k <= minMaxTotalStoppingTime; k += 1) {
+                next = collatzFunction({ n: this.values[k - 1], P: P, a: a, b: b });
+                // Check if the next hailstone is either the stopping time, total
+                // stopping time, the same as the initial value, or stuck at zero.
+                if (this.terminate(next)) {
+                    this.values.push(next);
+                    if (next === 1n) {
+                        this.terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
+                    }
+                    else {
+                        this.terminalCondition = SequenceState.STOPPING_TIME;
+                    }
+                    this.terminalStatus = k;
+                    return;
+                }
+                if (this.values.includes(next)) {
+                    this.values.push(next);
+                    let cycleInit = 1;
+                    for (let j = 1; j <= k; j += 1) {
+                        if (this.values[k - j] === next) {
+                            cycleInit = j;
+                            break;
+                        }
+                    }
+                    this.terminalCondition = SequenceState.CYCLE_LENGTH;
+                    this.terminalStatus = cycleInit;
+                    return;
+                }
+                if (next === 0n) {
+                    this.values.push(0n);
+                    this.terminalCondition = SequenceState.ZERO_STOP;
+                    this.terminalStatus = -k;
+                    return;
+                }
+                this.values.push(next);
+            }
+            this.terminalCondition = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
+            this.terminalStatus = minMaxTotalStoppingTime;
+        }
+    }
+}
+exports.HailstoneSequence = HailstoneSequence;
+/**
+ * Returns a list of successive values obtained by iterating a Collatz-esque
+ * function, until either 1 is reached, or the total amount of iterations
+ * exceeds maxTotalStoppingTime, unless totalStoppingTime is False,
+ * which will terminate the hailstone at the "stopping time" value, i.e. the
+ * first value less than the initial value. While the sequence has the
+ * capability to determine that it has encountered a cycle, the cycle from "1"
+ * wont be attempted or reported as part of a cycle, regardless of default or
+ * custom parameterisation, as "1" is considered a "total stop".
+ * @param parameterisedInputs - Allows non-default (P,a,b); and other options.
+ * @param parameterisedInputs.initialValue - The value to begin the hailstone sequence from.
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs.maxTotalStoppingTime - Maximum amount of times to iterate the function, if 1 is not reached.
+ * @param parameterisedInputs.totalStoppingTime - Whether or not to execute until the "total" stopping time
+ *     (number of iterations to obtain 1) rather than the regular stopping time (number
+ *     of iterations to reach a value less than the initial value).
+ * @returns A HailstoneSequence, a set of values that form the hailstone sequence.
+ * @throws FailedSaneParameterCheck
+ * Thrown if either P or a are 0.
+ */
+function hailstoneSequence({ initialValue, P = 2n, a = 3n, b = 1n, maxTotalStoppingTime = 1000, totalStoppingTime = true }) {
+    // Call out the function before any magic returns to trap bad values.
+    const throwaway = collatzFunction({ n: initialValue, P: P, a: a, b: b });
+    // Return the hailstone sequence.
+    return new HailstoneSequence(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime);
+}
+exports.hailstoneSequence = hailstoneSequence;
 exports.default = {
-    Function,
-    ReverseFunction,
+    collatzFunction,
+    reverseFunction,
+    HailstoneSequence,
+    hailstoneSequence,
 };

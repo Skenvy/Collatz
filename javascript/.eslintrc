@@ -25,7 +25,10 @@
     "object-curly-newline": ["error", {
       "ObjectExpression": { "consistent": true },
       "ObjectPattern": { "consistent": true }
-    }]
+    }],
+    "arrow-body-style": ["error", "always"],
+    "object-shorthand": ["error", "consistent"],
+    "max-classes-per-file": ["error", 10]
   },
   "settings": {
     "import/resolver": {
