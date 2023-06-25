@@ -265,7 +265,8 @@ export class HailstoneSequence {
  *     of iterations to reach a value less than the initial value).
  * @return (HailstoneSequence): A set of values that form the hailstone sequence.
  */
-export function hailstoneSequence({ initialValue, P = 2n, a = 3n, b = 1n, maxTotalStoppingTime = 1000, totalStoppingTime = true }: {initialValue: bigint, P?: bigint, a?: bigint, b?: bigint, maxTotalStoppingTime?: number, totalStoppingTime?: boolean}): HailstoneSequence {
+export function hailstoneSequence({ initialValue, P = 2n, a = 3n, b = 1n, maxTotalStoppingTime = 1000, totalStoppingTime = true }:
+  {initialValue: bigint, P?: bigint, a?: bigint, b?: bigint, maxTotalStoppingTime?: number, totalStoppingTime?: boolean}): HailstoneSequence {
   // Call out the function before any magic returns to trap bad values.
   const throwaway = collatzFunction({ n: initialValue, P: P, a: a, b: b });
   // Return the hailstone sequence.
