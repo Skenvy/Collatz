@@ -261,7 +261,7 @@ export class HailstoneSequence {
  * @param parameterisedInputs.totalStoppingTime - Whether or not to execute until the "total" stopping time
  *     (number of iterations to obtain 1) rather than the regular stopping time (number
  *     of iterations to reach a value less than the initial value).
- * @return A HailstoneSequence, a set of values that form the hailstone sequence.
+ * @returns A HailstoneSequence, a set of values that form the hailstone sequence.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */

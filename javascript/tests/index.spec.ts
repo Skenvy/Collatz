@@ -201,66 +201,105 @@ describe('hailstoneSequence', () => {
     });
   });
 
-  it('Minus56', () => {
-  // // Test the lead into a cycle by entering two of the cycles; -5
-  // BigInteger[] seq = Collatz.KNOWN_CYCLES[2].clone();
-  // ArrayList<BigInteger> _seq = new ArrayList<BigInteger>();
-  // _seq.add(seq[1].multiply(BigInteger.valueOf(4)));
-  // _seq.add(seq[1].multiply(BigInteger.valueOf(2)));
-  // List<BigInteger> _rotInnerSeq = Arrays.asList(seq);
-  // Collections.rotate(_rotInnerSeq, -1);
-  // _seq.addAll(_rotInnerSeq);
-  // _seq.add(seq[0]); // The rotate also acts on seq, so we add [0] instead of [1]
-  // long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new));
-  // const actual = Collatz.hailstoneSequence({ initialValue: -56n });
-  // assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, seq.length);
+  // Default (P,a,b); cycle traps a lead in to the -5 cycle
+  it('yields the -5 cycle when hailing from -56', () => {
+    let sequence: bigint[] = [];
+    let test_cycle = Collatz.KNOWN_CYCLES[2];
+    sequence.push(test_cycle[1] * 4n);
+    sequence.push(test_cycle[1] * 2n);
+    for (let i = 1; i < test_cycle.length; i += 1) { 
+      sequence.push(test_cycle[i]);
+    }
+    sequence.push(test_cycle[0]);
+    sequence.push(test_cycle[1]);
+    const actual = Collatz.hailstoneSequence({ initialValue: -56n });
+    const expected = {
+      values: sequence,
+      terminalCondition: Collatz.SequenceState.CYCLE_LENGTH,
+      terminalStatus: test_cycle.length
+    };
+    assertHailstoneSequence(actual, expected);
   });
 
-  it('Minus200', () => {
-  // // Test the lead into a cycle by entering two of the cycles; -17
-  // BigInteger[] seq = Collatz.KNOWN_CYCLES[3].clone();
-  // ArrayList<BigInteger> _seq = new ArrayList<BigInteger>();
-  // _seq.add(seq[1].multiply(BigInteger.valueOf(4)));
-  // _seq.add(seq[1].multiply(BigInteger.valueOf(2)));
-  // List<BigInteger> _rotInnerSeq = Arrays.asList(seq);
-  // Collections.rotate(_rotInnerSeq, -1);
-  // _seq.addAll(_rotInnerSeq);
-  // _seq.add(seq[0]); // The rotate also acts on seq, so we add [0] instead of [1]
-  // long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new));
-  // const actual = Collatz.hailstoneSequence({ initialValue: -200n });
-  // assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, seq.length);
+  // Default (P,a,b); cycle traps a lead in to the -17 cycle
+  it('yields the -17 cycle when hailing from -200', () => {
+    let sequence: bigint[] = [];
+    let test_cycle = Collatz.KNOWN_CYCLES[3];
+    sequence.push(test_cycle[1] * 4n);
+    sequence.push(test_cycle[1] * 2n);
+    for (let i = 1; i < test_cycle.length; i += 1) { 
+      sequence.push(test_cycle[i]);
+    }
+    sequence.push(test_cycle[0]);
+    sequence.push(test_cycle[1]);
+    const actual = Collatz.hailstoneSequence({ initialValue: -200n });
+    const expected = {
+      values: sequence,
+      terminalCondition: Collatz.SequenceState.CYCLE_LENGTH,
+      terminalStatus: test_cycle.length
+    };
+    assertHailstoneSequence(actual, expected);
   });
 
-  it('RegularStoppingTime', () => {
-  // HailstoneSequence hail;
-  // // Test the regular stopping time check.
-  // const actual = Collatz.hailstoneSequence({ initialValue: 4, maxTotalStoppingTime: 1000, totalStoppingTime: false });
-  // assertHailstoneSequence(hail, new long[]{4, 2}, Collatz.SequenceState.STOPPING_TIME, 1);
-  // const actual = Collatz.hailstoneSequence({ initialValue: 5, maxTotalStoppingTime: 1000, totalStoppingTime: false });
-  // assertHailstoneSequence(hail, new long[]{5, 16, 8, 4}, Collatz.SequenceState.STOPPING_TIME, 3);
+  // Default (P,a,b); stops at the "non-total" stopping time if total stopping time is false.
+  it('should halt at the regular stopping time, if total stopping time is false', () => {
+    // Test the regular stopping time check.
+    let expected = {
+      values: [4n, 2n],
+      terminalCondition: Collatz.SequenceState.STOPPING_TIME,
+      terminalStatus: 1
+    };
+    let actual = Collatz.hailstoneSequence({ initialValue: 4n, maxTotalStoppingTime: 1000, totalStoppingTime: false });
+    assertHailstoneSequence(actual, expected);
+    expected = {
+      values: [5n, 16n, 8n, 4n],
+      terminalCondition: Collatz.SequenceState.STOPPING_TIME,
+      terminalStatus: 3
+    };
+    actual = Collatz.hailstoneSequence({ initialValue: 5n, maxTotalStoppingTime: 1000, totalStoppingTime: false });
+    assertHailstoneSequence(actual, expected);
   });
 
-  it('NegativeMaxTotalStoppingTime', () => {
-  // // Test small max total stopping time: (minimum internal value is one)
-  // const actual = Collatz.hailstoneSequence({ initialValue: 4, maxTotalStoppingTime: -100, totalStoppingTime: true });
-  // assertHailstoneSequence(hail, new long[]{4, 2}, Collatz.SequenceState.MAX_STOP_OUT_OF_BOUNDS, 1);
+  it('should yield a maximum stopping time "out of bounds" result for a negative stopping time', () => {
+    // Test small max total stopping time: (minimum internal value is one)
+    const expected = {
+      values: [4n, 2n],
+      terminalCondition: Collatz.SequenceState.MAX_STOP_OUT_OF_BOUNDS,
+      terminalStatus: 1
+    };
+    const actual = Collatz.hailstoneSequence({ initialValue: 4n, maxTotalStoppingTime: -100, totalStoppingTime: true });
+    assertHailstoneSequence(actual, expected);
   });
 
-  it('ZeroStopMidHail', () => {
-  // // Test the zero stop mid hailing. This wont happen with default params tho.
-  // const actual = Collatz.hailstoneSequence({ initialValue: 3, P: 2, a: 3, b: -9, maxTotalStoppingTime: 100, totalStoppingTime: true });
-  // assertHailstoneSequence(hail, new long[]{3, 0}, Collatz.SequenceState.ZERO_STOP, -1);
+  it('should hard stop on 0 if the parameters allow it to land on zero', () => {
+    // Test the zero stop mid hailing. This wont happen with default params tho.
+    const expected = {
+      values: [3n, 0n],
+      terminalCondition: Collatz.SequenceState.ZERO_STOP,
+      terminalStatus: -1
+    };
+    const actual = Collatz.hailstoneSequence({ initialValue: 3n, P: 2n, a: 3n, b: -9n, maxTotalStoppingTime: 100, totalStoppingTime: true });
+    assertHailstoneSequence(actual, expected);
   });
 
-  it('UnitaryPCausesAlmostImmediateCycles', () => {
-  // HailstoneSequence hail;
-  // // Lastly, while the function wont let you use a P value of 0, 1 and -1 are
-  // // still allowed, although they will generate immediate 1 or 2 length cycles
-  // // respectively, so confirm the behaviour of each of these hailstones.
-  // const actual = Collatz.hailstoneSequence({ initialValue: 3, P: 1, a: 3, b: 1, maxTotalStoppingTime: 100, totalStoppingTime: true });
-  // assertHailstoneSequence(hail, new long[]{3, 3}, Collatz.SequenceState.CYCLE_LENGTH, 1);
-  // const actual = Collatz.hailstoneSequence({ initialValue: 3, P: -1, a: 3, b: 1, maxTotalStoppingTime: 100, totalStoppingTime: true });
-  // assertHailstoneSequence(hail, new long[]{3, -3, 3}, Collatz.SequenceState.CYCLE_LENGTH, 2);
+  it('should exhibit a cycle of length 1 or at most 2, if P is 1 or -1', () => {
+    // Lastly, while the function wont let you use a P value of 0, 1 and -1 are
+    // still allowed, although they will generate immediate 1 or 2 length cycles
+    // respectively, so confirm the behaviour of each of these hailstones.
+    let expected = {
+      values: [3n, 3n],
+      terminalCondition: Collatz.SequenceState.CYCLE_LENGTH,
+      terminalStatus: 1
+    };
+    let actual = Collatz.hailstoneSequence({ initialValue: 3n, P: 1n, a: 3n, b: 1n, maxTotalStoppingTime: 100, totalStoppingTime: true });
+    assertHailstoneSequence(actual, expected);
+    expected = {
+      values: [3n, -3n, 3n],
+      terminalCondition: Collatz.SequenceState.CYCLE_LENGTH,
+      terminalStatus: 2
+    };
+    actual = Collatz.hailstoneSequence({ initialValue: 3n, P: -1n, a: 3n, b: 1n, maxTotalStoppingTime: 100, totalStoppingTime: true });
+    assertHailstoneSequence(actual, expected);
   });
 
   // Set P and a to 0 to assert on assertSaneParameterisation
