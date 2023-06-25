@@ -67,38 +67,12 @@ export declare enum SequenceState {
  */
 export declare function assertSaneParameterisation(P: bigint, a: bigint, b: bigint): void;
 /**
- * Parameterised inputs
- * @remarks
- * Allow (P,a,b) to be optional, keyword inputs.
- */
-export interface CollatzParameters {
-    /**
-     * The value on which to perform the operations; singular or iteratively.
-     */
-    n: bigint;
-    /**
-     * The modulus. Modulus used to devide n, iff n is equivalent to (0 mod P).
-     * @defaultValue 2n
-     */
-    P?: bigint;
-    /**
-     * The multiplicand. Factor by which to multiply n.
-     * @defaultValue 3n
-     */
-    a?: bigint;
-    /**
-     * The addend. Value to add to the scaled value of n.
-     * @defaultValue 1n
-     */
-    b?: bigint;
-}
-/**
  * Parameterised Collatz Function
- * @param AnyNameHere - various options
- * @param AnyNameHere.n - The value on which to perform the Collatz-esque function
- * @param AnyNameHere.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param AnyNameHere.a - Factor by which to multiply n. Default is 3.
- * @param AnyNameHere.b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs - Allows non-default (P,a,b)
+ * @param parameterisedInputs.n - The value on which to perform the Collatz-esque function
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
@@ -111,15 +85,21 @@ export declare function collatzFunction({ n, P, a, b }: {
 }): bigint;
 /**
  * Parameterised Collatz Inverse Function
- * @param n - The value on which to perform the reverse Collatz function
- * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param a - Factor by which to multiply n. Default is 3.
- * @param b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs - Allows non-default (P,a,b)
+ * @param parameterisedInputs.n - The value on which to perform the reverse Collatz function
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque reverse function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export declare function reverseFunction({ n, P, a, b }: CollatzParameters): bigint[];
+export declare function reverseFunction({ n, P, a, b }: {
+    n: bigint;
+    P?: bigint;
+    a?: bigint;
+    b?: bigint;
+}): bigint[];
 /** Contains the results of computing a hailstone sequence. */
 export declare class HailstoneSequence {
     /** The set of values that comprise the hailstone sequence. */
@@ -168,7 +148,14 @@ export declare class HailstoneSequence {
  *     of iterations to reach a value less than the initial value).
  * @return (HailstoneSequence): A set of values that form the hailstone sequence.
  */
-export declare function hailstoneSequence({ n, P, a, b }: CollatzParameters, maxTotalStoppingTime: number, totalStoppingTime: boolean): HailstoneSequence;
+export declare function hailstoneSequence({ initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime }: {
+    initialValue: bigint;
+    P?: bigint;
+    a?: bigint;
+    b?: bigint;
+    maxTotalStoppingTime?: number;
+    totalStoppingTime?: boolean;
+}): HailstoneSequence;
 declare const _default: {
     collatzFunction: typeof collatzFunction;
     reverseFunction: typeof reverseFunction;

@@ -98,11 +98,11 @@ function assertSaneParameterisation(P, a, b) {
 exports.assertSaneParameterisation = assertSaneParameterisation;
 /**
  * Parameterised Collatz Function
- * @param AnyNameHere - various options
- * @param AnyNameHere.n - The value on which to perform the Collatz-esque function
- * @param AnyNameHere.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param AnyNameHere.a - Factor by which to multiply n. Default is 3.
- * @param AnyNameHere.b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs - Allows non-default (P,a,b)
+ * @param parameterisedInputs.n - The value on which to perform the Collatz-esque function
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
@@ -114,10 +114,11 @@ function collatzFunction({ n, P = 2n, a = 3n, b = 1n }) {
 exports.collatzFunction = collatzFunction;
 /**
  * Parameterised Collatz Inverse Function
- * @param n - The value on which to perform the reverse Collatz function
- * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param a - Factor by which to multiply n. Default is 3.
- * @param b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs - Allows non-default (P,a,b)
+ * @param parameterisedInputs.n - The value on which to perform the reverse Collatz function
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque reverse function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
@@ -252,11 +253,11 @@ exports.HailstoneSequence = HailstoneSequence;
  *     of iterations to reach a value less than the initial value).
  * @return (HailstoneSequence): A set of values that form the hailstone sequence.
  */
-function hailstoneSequence({ n, P = 2n, a = 3n, b = 1n }, maxTotalStoppingTime, totalStoppingTime) {
+function hailstoneSequence({ initialValue, P = 2n, a = 3n, b = 1n, maxTotalStoppingTime = 1000, totalStoppingTime = true }) {
     // Call out the function before any magic returns to trap bad values.
-    const throwaway = collatzFunction({ n: n, P: P, a: a, b: b });
+    const throwaway = collatzFunction({ n: initialValue, P: P, a: a, b: b });
     // Return the hailstone sequence.
-    return new HailstoneSequence(n, P, a, b, maxTotalStoppingTime, totalStoppingTime);
+    return new HailstoneSequence(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime);
 }
 exports.hailstoneSequence = hailstoneSequence;
 exports.default = {
