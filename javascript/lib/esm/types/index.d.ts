@@ -126,6 +126,9 @@ export declare class HailstoneSequence {
      * @param totalStoppingTime - Whether or not to execute until the "total" stopping time
      *    (number of iterations to obtain 1) rather than the regular stopping time (number
      *    of iterations to reach a value less than the initial value).
+     * @returns the hailstone sequence computed for the parameters provided.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
      */
     constructor(initialValue: bigint, P: bigint, a: bigint, b: bigint, maxTotalStoppingTime: number, totalStoppingTime: boolean);
 }
@@ -138,15 +141,18 @@ export declare class HailstoneSequence {
  * capability to determine that it has encountered a cycle, the cycle from "1"
  * wont be attempted or reported as part of a cycle, regardless of default or
  * custom parameterisation, as "1" is considered a "total stop".
- * @param initialValue - The value to begin the hailstone sequence from.
- * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
- * @param a - Factor by which to multiply n.
- * @param b - Value to add to the scaled value of n.
- * @param maxTotalStoppingTime - Maximum amount of times to iterate the function, if 1 is not reached.
- * @param totalStoppingTime - Whether or not to execute until the "total" stopping time
+ * @param parameterisedInputs - Allows non-default (P,a,b); and other options.
+ * @param parameterisedInputs.initialValue - The value to begin the hailstone sequence from.
+ * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
+ * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
+ * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
+ * @param parameterisedInputs.maxTotalStoppingTime - Maximum amount of times to iterate the function, if 1 is not reached.
+ * @param parameterisedInputs.totalStoppingTime - Whether or not to execute until the "total" stopping time
  *     (number of iterations to obtain 1) rather than the regular stopping time (number
  *     of iterations to reach a value less than the initial value).
- * @return (HailstoneSequence): A set of values that form the hailstone sequence.
+ * @return A HailstoneSequence, a set of values that form the hailstone sequence.
+ * @throws FailedSaneParameterCheck
+ * Thrown if either P or a are 0.
  */
 export declare function hailstoneSequence({ initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime }: {
     initialValue: bigint;
