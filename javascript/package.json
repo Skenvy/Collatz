@@ -48,14 +48,15 @@
   },
   "scripts": {
     "clean": "rm -rf ./lib",
-    "test": "mocha",
+    "test": "nyc mocha",
     "lint": "eslint src --ext .ts",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
     "build:cjs": "tsc -p ./tsconfig.cjs.json",
-    "docs": "npm run docs:clean && npm run docs:tsdoc",
+    "docs": "npm run docs:clean && npm run docs:tsdoc && npm run docs:coverage",
     "docs:clean": "rm -rf ./docs",
     "docs:tsdoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.cjs.json",
+    "docs:coverage": "mkdir -p docs/coverage && nyc --reporter=html --report-dir=./docs/coverage mocha --preserve-comments --produce-source-map",
     "docs:server": "http-server",
     "prepack": "npm run build"
   },
@@ -75,6 +76,7 @@
     "eslint-plugin-tsdoc": "^0.2.17",
     "http-server": "^14.1.1",
     "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
     "ts-node": "^10.9.1",
     "typedoc": "^0.24.1",
     "typescript": "^5.0.4"

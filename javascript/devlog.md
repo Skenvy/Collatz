@@ -214,3 +214,6 @@ It turns out though, that doing this leads to two issues. Although the docs appe
 > tsdoc-param-tag-with-invalid-name: The @param block should be followed by a valid parameter name: The identifier cannot non-word characters
 
 So it looks like, the trade off of not having a nice TypeDoc site is a better in-editor experience, and the "TSDoc" way of doing it.
+
+## Coverage
+One thing I haven't added yet is code coverage to report on how tested the code is. It'd be nice to have. Jest has coverage itself, but we're already set up with mocha and I have no idea if they are interoperable at all. Googling "mocha coverage" lands us on [this SO](https://stackoverflow.com/questions/16633246/code-coverage-with-mocha), which recommends [instanbul](https://istanbul.js.org/), but via [`npm install --save-dev nyc`](https://github.com/istanbuljs/nyc).
