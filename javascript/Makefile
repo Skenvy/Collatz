@@ -41,6 +41,7 @@ docs:
 	npm run docs
 
 # http://127.0.0.1:8080/docs/tsdoc
+# http://127.0.0.1:8080/docs/coverage
 docs_server: docs
 	npm run docs:server
 
