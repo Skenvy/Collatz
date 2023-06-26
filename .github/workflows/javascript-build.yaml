@@ -170,9 +170,11 @@ jobs:
         export SHORTSHA=$(git rev-parse --short HEAD)
         git fetch origin gh-pages-javascript:gh-pages-javascript
         git symbolic-ref HEAD refs/heads/gh-pages-javascript
-        cd .. && mv javascript/docs/tsdoc ../MERGE_TARGET
+        cd .. && mv javascript/docs ../MERGE_TARGET
         git rm -rf . && git clean -fxd && git reset
-        shopt -s dotglob && mkdir javascript && mv ../MERGE_TARGET/* javascript/
+        shopt -s dotglob && mkdir -p javascript/coverage
+        mv ../MERGE_TARGET/tsdoc/* javascript/
+        mv ../MERGE_TARGET/coverage/* javascript/coverage
         git add .
         git commit -m "Build based on $SHORTSHA" --allow-empty
         git push --set-upstream origin gh-pages-javascript
