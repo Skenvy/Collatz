@@ -1,17 +1,40 @@
-import {assertSaneParameterisation} from './FailedSaneParameterCheck';
+import { assertSaneParameterisation } from './FailedSaneParameterCheck';
+
+/**
+ * Parameterised inputs
+ * @remarks
+ * Allow (P,a,b) to be optional, keyword inputs.
+ */
+export interface CollatzFunctionParameters {
+  /**
+   * The value on which to perform the Collatz-esque function
+   */
+  n: bigint,
+  /**
+   * Modulus used to devide n, iff n is equivalent to (0 mod P).
+   * @defaultValue 2n
+   */
+  P?: bigint,
+  /**
+   * Factor by which to multiply n.
+   * @defaultValue 3n
+   */
+  a?: bigint,
+  /**
+   * Value to add to the scaled value of n.
+   * @defaultValue 1n
+   */
+  b?: bigint
+}
 
 /**
  * Parameterised Collatz Function
  * @param parameterisedInputs - Allows non-default (P,a,b)
- * @param parameterisedInputs.n - The value on which to perform the Collatz-esque function
- * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
- * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export function collatzFunction({ n, P = 2n, a = 3n, b = 1n }: {n:bigint, P?:bigint, a?:bigint, b?:bigint}): bigint {
+export function collatzFunction({ n, P = 2n, a = 3n, b = 1n }: CollatzFunctionParameters): bigint {
   assertSaneParameterisation(P, a, b);
   return n % P === 0n ? n / P : (a * n + b);
 }
@@ -19,15 +42,11 @@ export function collatzFunction({ n, P = 2n, a = 3n, b = 1n }: {n:bigint, P?:big
 /**
  * Parameterised Collatz Inverse Function
  * @param parameterisedInputs - Allows non-default (P,a,b)
- * @param parameterisedInputs.n - The value on which to perform the reverse Collatz function
- * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
- * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
  * @returns the output of a single application of a Collatz-esque reverse function.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export function reverseFunction({ n, P = 2n, a = 3n, b = 1n }: {n:bigint, P?:bigint, a?:bigint, b?:bigint}): bigint[] {
+export function reverseFunction({ n, P = 2n, a = 3n, b = 1n }: CollatzFunctionParameters): bigint[] {
   assertSaneParameterisation(P, a, b);
   // Every input can be reversed as the result of "n/P" division, which yields
   // "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the

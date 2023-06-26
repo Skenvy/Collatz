@@ -1,5 +1,45 @@
-import {SequenceState} from './utilities';
-import {hailstoneSequence} from './HailstoneSequence';
+import { SequenceState } from './utilities';
+import { hailstoneSequence } from './HailstoneSequence';
+
+/**
+ * Parameterised inputs
+ * @remarks
+ * Allows non-default (P,a,b); and other options.
+ */
+export interface CollatzStoppingTimeParameters {
+  /**
+   * The value on which to perform the Collatz-esque function
+   */
+  initialValue: bigint,
+  /**
+   * Modulus used to devide n, iff n is equivalent to (0 mod P).
+   * @defaultValue 2n
+   */
+  P?: bigint,
+  /**
+   * Factor by which to multiply n.
+   * @defaultValue 3n
+   */
+  a?: bigint,
+  /**
+   * Value to add to the scaled value of n.
+   * @defaultValue 1n
+   */
+  b?: bigint
+  /**
+   * Maximum amount of times to iterate the function, if the stopping time is not
+   * reached. IF the maxStoppingTime is reached, the function will return null.
+   * @defaultValue 1000
+   */
+  maxStoppingTime?: number,
+  /**
+   * Whether or not to execute until the "total" stopping time (number of
+   * iterations to obtain 1) rather than the regular stopping time (number
+   * of iterations to reach a value less than the initial value).
+   * @defaultValue true
+   */
+  totalStoppingTime?: boolean
+}
 
 /**
  * Returns the stopping time, the amount of iterations required to reach a
@@ -12,20 +52,10 @@ import {hailstoneSequence} from './HailstoneSequence';
  * to reach 1, where 0 is considered a "total stop" that should not occur as
  * it does form a cycle of length 1.
  * @param parameterisedInputs - Allows non-default (P,a,b); and other options.
- * @param parameterisedInputs.initialValue - The value for which to find the stopping time.
- * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
- * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
- * @param parameterisedInputs.maxStoppingTime - Maximum amount of times to iterate the function, if
- *     the stopping time is not reached. IF the maxStoppingTime is reached,
- *     the function will return null.
- * @param parameterisedInputs.totalStoppingTime - Whether or not to execute until the "total" stopping
- *     time (number of iterations to obtain 1) rather than the regular stopping
- *     time (number of iterations to reach a value less than the initial value).
  * @returns the stopping time, or, in a special case, infinity, null or a negative.
  */
 export function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStoppingTime = 1000, totalStoppingTime = false }:
-  {initialValue: bigint, P?: bigint, a?: bigint, b?: bigint, maxStoppingTime?: number, totalStoppingTime?: boolean}): number | null {
+  CollatzStoppingTimeParameters): number | null {
   /* The information is contained in the hailstone sequence. Although the "max~time"
    * for hailstones is named for "total stopping" time and the "max~time" for this
    * "stopping time" function is _not_ "total", they are handled the same way, as
@@ -50,3 +80,7 @@ export function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStopping
       return null;
   }
 }
+
+export default {
+  stoppingTime,
+};

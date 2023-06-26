@@ -90,14 +90,6 @@ exports.HailstoneSequence = HailstoneSequence;
  * wont be attempted or reported as part of a cycle, regardless of default or
  * custom parameterisation, as "1" is considered a "total stop".
  * @param parameterisedInputs - Allows non-default (P,a,b); and other options.
- * @param parameterisedInputs.initialValue - The value to begin the hailstone sequence from.
- * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
- * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
- * @param parameterisedInputs.maxTotalStoppingTime - Maximum amount of times to iterate the function, if 1 is not reached.
- * @param parameterisedInputs.totalStoppingTime - Whether or not to execute until the "total" stopping time
- *     (number of iterations to obtain 1) rather than the regular stopping time (number
- *     of iterations to reach a value less than the initial value).
  * @returns A HailstoneSequence, a set of values that form the hailstone sequence.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.

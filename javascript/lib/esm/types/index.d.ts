@@ -1,12 +1,12 @@
 import { KNOWN_CYCLES, VERIFIED_MAXIMUM, VERIFIED_MINIMUM, SequenceState } from './utilities';
-export { KNOWN_CYCLES, VERIFIED_MAXIMUM, VERIFIED_MINIMUM, SequenceState };
 import { SaneParameterErrMsg, FailedSaneParameterCheck, assertSaneParameterisation } from './FailedSaneParameterCheck';
-export { SaneParameterErrMsg, FailedSaneParameterCheck, assertSaneParameterisation };
 import { collatzFunction, reverseFunction } from './function';
-export { collatzFunction, reverseFunction };
 import { HailstoneSequence, hailstoneSequence } from './HailstoneSequence';
-export { HailstoneSequence, hailstoneSequence };
 import { stoppingTime } from './stoppingTime';
+export { KNOWN_CYCLES, VERIFIED_MAXIMUM, VERIFIED_MINIMUM, SequenceState };
+export { SaneParameterErrMsg, FailedSaneParameterCheck, assertSaneParameterisation };
+export { collatzFunction, reverseFunction };
+export { HailstoneSequence, hailstoneSequence };
 export { stoppingTime };
 declare const _default: {
     collatzFunction: typeof collatzFunction;

@@ -9,7 +9,7 @@ export enum SaneParameterErrMsg {
   /** Message to print in the FailedSaneParameterCheck if a, the multiplicand, is zero. */
   SANE_PARAMS_A = "'a' should not be 0 ~ violates the reversability."
 }
-  
+
 /**
  * FailedSaneParameterCheck
  * @remarks

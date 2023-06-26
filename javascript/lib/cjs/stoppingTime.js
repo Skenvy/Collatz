@@ -14,16 +14,6 @@ const HailstoneSequence_1 = require("./HailstoneSequence");
  * to reach 1, where 0 is considered a "total stop" that should not occur as
  * it does form a cycle of length 1.
  * @param parameterisedInputs - Allows non-default (P,a,b); and other options.
- * @param parameterisedInputs.initialValue - The value for which to find the stopping time.
- * @param parameterisedInputs.P - Modulus used to devide n, iff n is equivalent to (0 mod P). Default is 2.
- * @param parameterisedInputs.a - Factor by which to multiply n. Default is 3.
- * @param parameterisedInputs.b - Value to add to the scaled value of n. Default is 1.
- * @param parameterisedInputs.maxStoppingTime - Maximum amount of times to iterate the function, if
- *     the stopping time is not reached. IF the maxStoppingTime is reached,
- *     the function will return null.
- * @param parameterisedInputs.totalStoppingTime - Whether or not to execute until the "total" stopping
- *     time (number of iterations to obtain 1) rather than the regular stopping
- *     time (number of iterations to reach a value less than the initial value).
  * @returns the stopping time, or, in a special case, infinity, null or a negative.
  */
 function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStoppingTime = 1000, totalStoppingTime = false }) {
@@ -52,3 +42,6 @@ function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStoppingTime = 
     }
 }
 exports.stoppingTime = stoppingTime;
+exports.default = {
+    stoppingTime,
+};
