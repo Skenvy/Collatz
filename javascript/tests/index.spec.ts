@@ -25,4 +25,8 @@ describe('NPM Package', () => {
   it('should have a stoppingTime property', () => {
     assert.property(defaultExport, 'stoppingTime');
   });
+
+  it('should have a treeGraph property', () => {
+    assert.property(defaultExport, 'treeGraph');
+  });
 });
