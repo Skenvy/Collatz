@@ -128,24 +128,24 @@ export class TreeGraphNode {
    * @returns true, if the entire sub-trees are equal.
    */
   subTreeEquals(tgn: TreeGraphNode | null): boolean {
-      if (tgn === null) {
+    if (tgn === null) {
+      return false;
+    }
+    if(this.nodeValue !== tgn.nodeValue || this.terminalSequenceState !== tgn.terminalSequenceState){
         return false;
-      }
-      if(this.nodeValue !== tgn.nodeValue || this.terminalSequenceState !== tgn.terminalSequenceState){
-          return false;
-      }
-      if(this.preNDivPNode === null && tgn.preNDivPNode !== null){
-          return false;
-      }
-      if(this.preNDivPNode !== null && !this.preNDivPNode.subTreeEquals(tgn.preNDivPNode)){
-          return false;
-      }
-      if(this.preANplusBNode == null && tgn.preANplusBNode != null){
-          return false;
-      }
-      if(this.preANplusBNode != null && !this.preANplusBNode.subTreeEquals(tgn.preANplusBNode)){
-          return false;
-      }
-      return true;
+    }
+    if(this.preNDivPNode === null && tgn.preNDivPNode !== null){
+        return false;
+    }
+    if(this.preNDivPNode !== null && !this.preNDivPNode.subTreeEquals(tgn.preNDivPNode)){
+        return false;
+    }
+    if(this.preANplusBNode == null && tgn.preANplusBNode != null){
+        return false;
+    }
+    if(this.preANplusBNode != null && !this.preANplusBNode.subTreeEquals(tgn.preANplusBNode)){
+        return false;
+    }
+    return true;
   }
 }
