@@ -40,11 +40,11 @@ class TreeGraphNode {
         // The only variable of TreeGraphNode to not be "final" as it must be possible to update retroactively.
         this.terminalSequenceState = null;
         this.nodeValue = nodeValue;
+        this.cycleCheck = cycleCheck;
         if (createManually) {
             this.terminalSequenceState = terminalSequenceState;
             this.preNDivPNode = preNDivPNode;
             this.preANplusBNode = preANplusBNode;
-            this.cycleCheck = null;
         }
         else {
             this.cycleCheck = cycleCheck;

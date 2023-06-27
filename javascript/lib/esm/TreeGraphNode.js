@@ -49,11 +49,11 @@ export class TreeGraphNode {
      */
     constructor(nodeValue, maxOrbitDistance, P, a, b, cycleCheck, createManually, terminalSequenceState, preNDivPNode, preANplusBNode) {
         this.nodeValue = nodeValue;
+        this.cycleCheck = cycleCheck;
         if (createManually) {
             this.terminalSequenceState = terminalSequenceState;
             this.preNDivPNode = preNDivPNode;
             this.preANplusBNode = preANplusBNode;
-            this.cycleCheck = null;
         }
         else {
             this.cycleCheck = cycleCheck;

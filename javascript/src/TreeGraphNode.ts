@@ -29,7 +29,7 @@ export class TreeGraphNode {
 
   /** A map of previous graph nodes which maps instances of
    *  TreeGraphNode to themselves, to enable cycle detection. */
-  private readonly cycleCheck: Map<bigint, TreeGraphNode> | null;
+  private readonly cycleCheck: Map<bigint, TreeGraphNode>;
 
   static readonly emptyMap = new Map<bigint, TreeGraphNode>();
 
@@ -57,11 +57,11 @@ export class TreeGraphNode {
   private constructor(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint, cycleCheck: Map<bigint, TreeGraphNode>,
     createManually: boolean, terminalSequenceState: SequenceState | null, preNDivPNode: TreeGraphNode | null, preANplusBNode: TreeGraphNode | null) {
     this.nodeValue = nodeValue;
+    this.cycleCheck = cycleCheck;
     if (createManually) {
       this.terminalSequenceState = terminalSequenceState;
       this.preNDivPNode = preNDivPNode;
       this.preANplusBNode = preANplusBNode;
-      this.cycleCheck = null;
     }
     else {
       this.cycleCheck = cycleCheck;

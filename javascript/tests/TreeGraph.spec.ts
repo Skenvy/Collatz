@@ -32,7 +32,7 @@ function assertExpectedTree(actualParams: Collatz.CollatzTreeGraphParameters, ex
   assert.deepEqual(Collatz.treeGraph(actualParams), Collatz.TreeGraph.newTest(expectedRoot));
 }
 
-describe('hailstoneSequence', () => {
+describe('treeGraph', () => {
   it('should be a function', () => {
     assert.isFunction(Collatz.hailstoneSequence);
   });
