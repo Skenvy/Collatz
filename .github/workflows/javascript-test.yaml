@@ -102,7 +102,7 @@ jobs:
         retention-days: 1
   usage-demonstration:
     name: JavaScript 🟨🟦🟩🟥 Usage Demonstration 🦏
-    needs: [build]
+    needs: [built-example]
     if: >-
       ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
