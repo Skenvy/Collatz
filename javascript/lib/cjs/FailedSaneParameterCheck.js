@@ -37,11 +37,10 @@ exports.FailedSaneParameterCheck = FailedSaneParameterCheck;
  * the function and reverse function.
  * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
  * @param a - Factor by which to multiply n.
- * @param b - Value to add to the scaled value of n.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-function assertSaneParameterisation(P, a, b) {
+function assertSaneParameterisation(P, a, _b) {
     // Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
     // theoretically, although would violate the reversability (if ~a is 0 then a
     // value of "b" as the input to the reverse function would have a pre-emptive

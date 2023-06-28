@@ -54,23 +54,35 @@ export class TreeGraphNode {
    * @throws FailedSaneParameterCheck
    * Thrown if either P or a are 0.
    */
-  private constructor(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint, cycleCheck: Map<bigint, TreeGraphNode>,
-    createManually: boolean, terminalSequenceState: SequenceState | null, preNDivPNode: TreeGraphNode | null, preANplusBNode: TreeGraphNode | null) {
+  private constructor(
+    nodeValue: bigint,
+    maxOrbitDistance: number,
+    P: bigint,
+    a: bigint,
+    b: bigint,
+    cycleCheck: Map<bigint, TreeGraphNode>,
+    createManually: boolean,
+    terminalSequenceState: SequenceState | null,
+    preNDivPNode: TreeGraphNode | null,
+    preANplusBNode: TreeGraphNode | null,
+  ) {
     this.nodeValue = nodeValue;
     this.cycleCheck = cycleCheck;
     if (createManually) {
       this.terminalSequenceState = terminalSequenceState;
       this.preNDivPNode = preNDivPNode;
       this.preANplusBNode = preANplusBNode;
-    }
-    else {
+    } else {
       this.cycleCheck = cycleCheck;
-      if (this.cycleCheck.has(this.nodeValue)){
-        this.cycleCheck.get(this.nodeValue)!.terminalSequenceState = SequenceState.CYCLE_INIT;
+      if (this.cycleCheck.has(this.nodeValue)) {
+        const cycleInitNode = this.cycleCheck.get(this.nodeValue);
+        if (cycleInitNode != null) {
+          cycleInitNode.terminalSequenceState = SequenceState.CYCLE_INIT;
+        }
         this.terminalSequenceState = SequenceState.CYCLE_LENGTH;
         this.preNDivPNode = null;
         this.preANplusBNode = null;
-      } else if (Math.max(0, maxOrbitDistance) === 0){
+      } else if (Math.max(0, maxOrbitDistance) === 0) {
         this.terminalSequenceState = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
         this.preNDivPNode = null;
         this.preANplusBNode = null;
@@ -78,9 +90,9 @@ export class TreeGraphNode {
         this.cycleCheck.set(this.nodeValue, this);
         this.terminalSequenceState = null;
         const reverses = reverseFunction({ n: nodeValue, P: P, a: a, b: b });
-        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck, false, null, null, null);
-        if(reverses.length == 2){
-          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck, false, null, null, null);
+        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);
+        if (reverses.length === 2) {
+          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);
         } else {
           this.preANplusBNode = null;
         }
@@ -131,19 +143,19 @@ export class TreeGraphNode {
       return false;
     }
     if (this.nodeValue !== tgn.nodeValue || this.terminalSequenceState !== tgn.terminalSequenceState) {
-        return false;
+      return false;
     }
     if (this.preNDivPNode === null && tgn.preNDivPNode !== null) {
-        return false;
+      return false;
     }
     if (this.preNDivPNode !== null && !this.preNDivPNode.subTreeEquals(tgn.preNDivPNode)) {
-        return false;
+      return false;
     }
     if (this.preANplusBNode == null && tgn.preANplusBNode != null) {
-        return false;
+      return false;
     }
     if (this.preANplusBNode != null && !this.preANplusBNode.subTreeEquals(tgn.preANplusBNode)) {
-        return false;
+      return false;
     }
     return true;
   }
@@ -162,3 +174,7 @@ export class TreeGraphNode {
     }
   }
 }
+
+export default {
+  TreeGraphNode,
+};

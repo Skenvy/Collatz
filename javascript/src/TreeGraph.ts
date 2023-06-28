@@ -43,7 +43,7 @@ export interface CollatzTreeGraphParameters {
 export class TreeGraph {
   /** The root node of the tree of TreeGraphNode's. */
   readonly root: TreeGraphNode;
-        
+
   /**
    * Create a new TreeGraph with the root node defined by the inputs.
    * @param nodeValue - The value for which to find the tree graph node reversal.
@@ -55,7 +55,7 @@ export class TreeGraph {
    * @throws FailedSaneParameterCheck
    * Thrown if either P or a are 0.
    */
-  constructor(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint){
+  constructor(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint) {
     this.root = TreeGraphNode.new(nodeValue, maxOrbitDistance, P, a, b);
   }
 }
@@ -68,6 +68,6 @@ export class TreeGraph {
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export function treeGraph({ initialValue, maxOrbitDistance, P = 2n, a = 3n, b = 1n}: CollatzTreeGraphParameters): TreeGraph {
+export function treeGraph({ initialValue, maxOrbitDistance, P = 2n, a = 3n, b = 1n }: CollatzTreeGraphParameters): TreeGraph {
   return new TreeGraph(initialValue, maxOrbitDistance, P, a, b);
 }

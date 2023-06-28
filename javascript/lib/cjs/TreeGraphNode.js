@@ -49,7 +49,10 @@ class TreeGraphNode {
         else {
             this.cycleCheck = cycleCheck;
             if (this.cycleCheck.has(this.nodeValue)) {
-                this.cycleCheck.get(this.nodeValue).terminalSequenceState = utilities_1.SequenceState.CYCLE_INIT;
+                const cycleInitNode = this.cycleCheck.get(this.nodeValue);
+                if (cycleInitNode != null) {
+                    cycleInitNode.terminalSequenceState = utilities_1.SequenceState.CYCLE_INIT;
+                }
                 this.terminalSequenceState = utilities_1.SequenceState.CYCLE_LENGTH;
                 this.preNDivPNode = null;
                 this.preANplusBNode = null;
@@ -64,7 +67,7 @@ class TreeGraphNode {
                 this.terminalSequenceState = null;
                 const reverses = (0, function_1.reverseFunction)({ n: nodeValue, P: P, a: a, b: b });
                 this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);
-                if (reverses.length == 2) {
+                if (reverses.length === 2) {
                     this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);
                 }
                 else {
@@ -146,3 +149,6 @@ class TreeGraphNode {
 }
 exports.TreeGraphNode = TreeGraphNode;
 TreeGraphNode.emptyMap = new Map();
+exports.default = {
+    TreeGraphNode,
+};

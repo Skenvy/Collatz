@@ -2,6 +2,9 @@
   "env": {"node": true},
   "root": true,
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.base.json"
+  },
   "plugins": [
     "@typescript-eslint/eslint-plugin",
     "eslint-plugin-tsdoc"
@@ -10,17 +13,17 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb"
+    "airbnb",
+    "airbnb-typescript"
   ],
   "rules": {
     "tsdoc/syntax": 1,
     "max-len": ["error", { "code": 200 }],
     "@typescript-eslint/no-inferrable-types": 0,
     "no-unused-vars": 0,
-    "@typescript-eslint/no-unused-vars": 1,
+    "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^throwaway", "argsIgnorePattern": "^_" }],
     "no-shadow": 0,
     "@typescript-eslint/no-shadow": 2,
-    "import/extensions": 1,
     "no-else-return": 0,
     "object-curly-newline": ["error", {
       "ObjectExpression": { "consistent": true },
@@ -28,7 +31,9 @@
     }],
     "arrow-body-style": ["error", "always"],
     "object-shorthand": ["error", "consistent"],
-    "max-classes-per-file": ["error", 10]
+    "max-classes-per-file": ["error", 1],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "error"
   },
   "settings": {
     "import/resolver": {

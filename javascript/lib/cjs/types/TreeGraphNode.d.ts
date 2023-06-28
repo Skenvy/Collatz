@@ -85,4 +85,8 @@ export declare class TreeGraphNode {
      */
     copyActualTreesCycleMapIntoTestTree(actualTree: TreeGraphNode): void;
 }
+declare const _default: {
+    TreeGraphNode: typeof TreeGraphNode;
+};
+export default _default;
 //# sourceMappingURL=TreeGraphNode.d.ts.map

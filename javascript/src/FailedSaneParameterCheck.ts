@@ -7,7 +7,7 @@ export enum SaneParameterErrMsg {
   /** Message to print in the FailedSaneParameterCheck if P, the modulus, is zero. */
   SANE_PARAMS_P = "'P' should not be 0 ~ violates modulo being non-zero.",
   /** Message to print in the FailedSaneParameterCheck if a, the multiplicand, is zero. */
-  SANE_PARAMS_A = "'a' should not be 0 ~ violates the reversability."
+  SANE_PARAMS_A = "'a' should not be 0 ~ violates the reversability.",
 }
 
 /**
@@ -34,11 +34,10 @@ export class FailedSaneParameterCheck extends Error {
  * the function and reverse function.
  * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
  * @param a - Factor by which to multiply n.
- * @param b - Value to add to the scaled value of n.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export function assertSaneParameterisation(P:bigint, a:bigint, b:bigint): void {
+export function assertSaneParameterisation(P:bigint, a:bigint, _b:bigint): void {
   // Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
   // theoretically, although would violate the reversability (if ~a is 0 then a
   // value of "b" as the input to the reverse function would have a pre-emptive

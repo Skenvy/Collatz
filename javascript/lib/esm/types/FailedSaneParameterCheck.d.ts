@@ -29,9 +29,8 @@ export declare class FailedSaneParameterCheck extends Error {
  * the function and reverse function.
  * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
  * @param a - Factor by which to multiply n.
- * @param b - Value to add to the scaled value of n.
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export declare function assertSaneParameterisation(P: bigint, a: bigint, b: bigint): void;
+export declare function assertSaneParameterisation(P: bigint, a: bigint, _b: bigint): void;
 //# sourceMappingURL=FailedSaneParameterCheck.d.ts.map
