@@ -36,10 +36,12 @@ export interface CollatzTreeGraphParameters {
   maxOrbitDistance: number
 }
 
-/** Contains the results of computing the Tree Graph via {@code Collatz.treeGraph(~)}.
- *  Contains the root node of a tree of {@code TreeGraphNode}'s.*/
+/**
+ * Contains the results of computing the Tree Graph via Collatz.treeGraph(~).
+ * Contains the root node of a tree of TreeGraphNode's.
+ */
 export class TreeGraph {
-  /** The root node of the tree of {@code TreeGraphNode}'s. */
+  /** The root node of the tree of TreeGraphNode's. */
   readonly root: TreeGraphNode;
         
   /**
@@ -49,46 +51,13 @@ export class TreeGraph {
    * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
    * @param a - Factor by which to multiply n.
    * @param b - Value to add to the scaled value of n.
-   * @param createManually - Create a new TreeGraph by directly passing it the
-   *     root node. Intended to be used in testing by manually creating trees.
-   * @param root - The root node of the tree.
+   * @returns A TreeGraph, a tree with branches traversing the inverse function.
+   * @throws FailedSaneParameterCheck
+   * Thrown if either P or a are 0.
    */
-  private constructor(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint, createManually: boolean, root: TreeGraphNode | null){
-    if (createManually && root !== null) {
-      this.root = root
-    } else {
-      this.root = TreeGraphNode.new(nodeValue, maxOrbitDistance, P, a, b);
-    }
+  constructor(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint){
+    this.root = TreeGraphNode.new(nodeValue, maxOrbitDistance, P, a, b);
   }
-
-  static new(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint){
-    return new TreeGraph(nodeValue, maxOrbitDistance, P, a, b, false, null);
-  }
-
-  static newTest(root: TreeGraphNode){
-    return new TreeGraph(0n, 0, 0n, 0n, 0n, true, root);
-  }
-
-  // /** The hashCode of a TreeGraph is determined
-  //  *  by the hash of the root node. */
-  // public int hashCode() {
-  //   return 29 * this.root.hashCode();
-  // }
-
-  // /** The equality between {@code TreeGraph}'s is determined by the equality check on subtrees. 
-  //  *  A subtree check will be done on both {@code TreeGraph}'s root nodes. */
-  // equals(obj: Object): boolean{
-  //   // Generic checks
-  //   if (obj == null) {
-  //     return false;
-  //   }
-  //   if (obj.getClass() != this.getClass()) {
-  //     return false;
-  //   }
-  //   // Check immediate fields
-  //   final TreeGraph tg = (TreeGraph) obj;
-  //   return this.root.subTreeEquals(tg.root);
-  // }
 }
 
 /**
@@ -100,5 +69,5 @@ export class TreeGraph {
  * Thrown if either P or a are 0.
  */
 export function treeGraph({ initialValue, maxOrbitDistance, P = 2n, a = 3n, b = 1n}: CollatzTreeGraphParameters): TreeGraph {
-  return TreeGraph.new(initialValue, maxOrbitDistance, P, a, b);
+  return new TreeGraph(initialValue, maxOrbitDistance, P, a, b);
 }

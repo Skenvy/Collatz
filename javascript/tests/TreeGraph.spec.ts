@@ -29,12 +29,12 @@ function wrapGeneric(n: bigint, preNDivPNode: Collatz.TreeGraphNode, preANplusBN
 }
 
 function assertExpectedTree(actualParams: Collatz.CollatzTreeGraphParameters, expectedRoot: Collatz.TreeGraphNode): void {
-  // We need to expect on the custom sub tree equality check, because the cycle checking map will be different.
-  assert.equal(Collatz.treeGraph(actualParams).root.subTreeEquals(expectedRoot), true);
-  // let actual = Collatz.treeGraph(actualParams)
-  // let expect = Collatz.TreeGraph.newTest(expectedRoot)
-  // eexpect.absorbTheCycleMapFromActual???
-  // assert.deepEqual(actual, expect);
+  // Because the cycle checking map will be different, we could use the custom sub tree equality check.
+  // assert.equal(Collatz.treeGraph(actualParams).root.subTreeEquals(expectedRoot), true);
+  // But it's nicer if we can do it with a deep equals.
+  let actual = Collatz.treeGraph(actualParams);
+  expectedRoot.copyActualTreesCycleMapIntoTestTree(actual.root);
+  assert.deepEqual(actual.root, expectedRoot);
 }
 
 describe('treeGraph', () => {

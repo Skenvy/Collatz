@@ -73,38 +73,39 @@ class TreeGraphNode {
             }
         }
     }
+    /**
+     * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
+     * @param nodeValue - The value for which to find the tree graph node reversal.
+     * @param maxOrbitDistance - The maximum distance/orbit/branch length to travel.
+     * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a - Factor by which to multiply n.
+     * @param b - Value to add to the scaled value of n.
+     * @returns the tree graph node and its subtree, computed for the parameters provided.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
+     */
     static new(nodeValue, maxOrbitDistance, P, a, b) {
         return new TreeGraphNode(nodeValue, maxOrbitDistance, P, a, b, new Map(), false, null, null, null);
     }
+    /**
+     * This is used internally by itself and the public constructor to pass the cycle checking map,
+     * recursively determining subsequent child nodes.
+     * @param nodeValue - The value for which to find the tree graph node reversal.
+     * @param terminalSequenceState - The expected sequence state;
+     *     null, MAX_STOP_OUT_OF_BOUNDS, CYCLE_INIT or CYCLE_LENGTH.
+     * @param preNDivPNode - The expected "Pre N/P" child node.
+     * @param preANplusBNode - The expected "Pre aN+b" child node.
+     * @returns the tree graph node and its subtree, where the subtrees are passed in.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
+     */
     static newTest(nodeValue, terminalSequenceState, preNDivPNode, preANplusBNode) {
         return new TreeGraphNode(nodeValue, 0, 0n, 0n, 0n, TreeGraphNode.emptyMap, true, terminalSequenceState, preNDivPNode, preANplusBNode);
     }
-    // /** The equality between TreeGraphNodes is determined exclusively by the
-    //  *  node's value, independent of the child nodes or sequence states that
-    //  *  would be relevant to the node's status relative to the tree. */
-    // equals(obj: Object): boolean{
-    //   if (obj === null) {
-    //     return false;
-    //   }
-    //   if (obj.constructor() !== this.constructor()) {
-    //     return false;
-    //   }
-    //   tgn = Object.assign({}, obj);
-    //   return this.nodeValue === tgn.nodeValue;
-    // }
-    // /** The hashCode of a TreeGraphNode is determined by the
-    //  *  node's value, the child nodes and sequence state. */
-    // hashCode(): number {
-    //     int hash = this.nodeValue.hashCode();
-    //     hash = 17 * hash + (this.terminalSequenceState != null ? this.terminalSequenceState.hashCode() : 0);
-    //     hash = 17 * hash + (this.preNDivPNode != null ? this.preNDivPNode.hashCode() : 0);
-    //     hash = 17 * hash + (this.preANplusBNode != null ? this.preANplusBNode.hashCode() : 0);
-    //     return hash;
-    // }
     /**
-     * A much stricter equality check than the {@code equals(Object obj)} override.
      * This will only confirm an equality if the whole subtree of both nodes, including
      * node values, sequence states, and child nodes, checked recursively, are equal.
+     * It ignores the cycle checking map, which is purely a utility variable.
      * @param tgn - The TreeGraphNode with which to compare equality.
      * @returns true, if the entire sub-trees are equal.
      */
@@ -128,6 +129,19 @@ class TreeGraphNode {
             return false;
         }
         return true;
+    }
+    /**
+     * Traverse a tree and assign the cycle map manually on all nodes.
+     * @param cycleCheck - The map to retroactively assign to all nodes in a test tree.
+     */
+    copyActualTreesCycleMapIntoTestTree(actualTree) {
+        this.cycleCheck = actualTree.cycleCheck;
+        if (this.preNDivPNode !== null) {
+            this.preNDivPNode.copyActualTreesCycleMapIntoTestTree(actualTree);
+        }
+        if (this.preANplusBNode != null) {
+            this.preANplusBNode.copyActualTreesCycleMapIntoTestTree(actualTree);
+        }
     }
 }
 exports.TreeGraphNode = TreeGraphNode;

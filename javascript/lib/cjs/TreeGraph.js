@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.treeGraph = exports.TreeGraph = void 0;
 const TreeGraphNode_1 = require("./TreeGraphNode");
-/** Contains the results of computing the Tree Graph via {@code Collatz.treeGraph(~)}.
- *  Contains the root node of a tree of {@code TreeGraphNode}'s.*/
+/**
+ * Contains the results of computing the Tree Graph via Collatz.treeGraph(~).
+ * Contains the root node of a tree of TreeGraphNode's.
+ */
 class TreeGraph {
     /**
      * Create a new TreeGraph with the root node defined by the inputs.
@@ -12,23 +14,12 @@ class TreeGraph {
      * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
      * @param a - Factor by which to multiply n.
      * @param b - Value to add to the scaled value of n.
-     * @param createManually - Create a new TreeGraph by directly passing it the
-     *     root node. Intended to be used in testing by manually creating trees.
-     * @param root - The root node of the tree.
+     * @returns A TreeGraph, a tree with branches traversing the inverse function.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
      */
-    constructor(nodeValue, maxOrbitDistance, P, a, b, createManually, root) {
-        if (createManually && root !== null) {
-            this.root = root;
-        }
-        else {
-            this.root = TreeGraphNode_1.TreeGraphNode.new(nodeValue, maxOrbitDistance, P, a, b);
-        }
-    }
-    static new(nodeValue, maxOrbitDistance, P, a, b) {
-        return new TreeGraph(nodeValue, maxOrbitDistance, P, a, b, false, null);
-    }
-    static newTest(root) {
-        return new TreeGraph(0n, 0, 0n, 0n, 0n, true, root);
+    constructor(nodeValue, maxOrbitDistance, P, a, b) {
+        this.root = TreeGraphNode_1.TreeGraphNode.new(nodeValue, maxOrbitDistance, P, a, b);
     }
 }
 exports.TreeGraph = TreeGraph;
@@ -41,6 +32,6 @@ exports.TreeGraph = TreeGraph;
  * Thrown if either P or a are 0.
  */
 function treeGraph({ initialValue, maxOrbitDistance, P = 2n, a = 3n, b = 1n }) {
-    return TreeGraph.new(initialValue, maxOrbitDistance, P, a, b);
+    return new TreeGraph(initialValue, maxOrbitDistance, P, a, b);
 }
 exports.treeGraph = treeGraph;

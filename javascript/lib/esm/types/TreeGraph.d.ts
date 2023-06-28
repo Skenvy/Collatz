@@ -34,10 +34,12 @@ export interface CollatzTreeGraphParameters {
      */
     maxOrbitDistance: number;
 }
-/** Contains the results of computing the Tree Graph via {@code Collatz.treeGraph(~)}.
- *  Contains the root node of a tree of {@code TreeGraphNode}'s.*/
+/**
+ * Contains the results of computing the Tree Graph via Collatz.treeGraph(~).
+ * Contains the root node of a tree of TreeGraphNode's.
+ */
 export declare class TreeGraph {
-    /** The root node of the tree of {@code TreeGraphNode}'s. */
+    /** The root node of the tree of TreeGraphNode's. */
     readonly root: TreeGraphNode;
     /**
      * Create a new TreeGraph with the root node defined by the inputs.
@@ -46,13 +48,11 @@ export declare class TreeGraph {
      * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
      * @param a - Factor by which to multiply n.
      * @param b - Value to add to the scaled value of n.
-     * @param createManually - Create a new TreeGraph by directly passing it the
-     *     root node. Intended to be used in testing by manually creating trees.
-     * @param root - The root node of the tree.
+     * @returns A TreeGraph, a tree with branches traversing the inverse function.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
      */
-    private constructor();
-    static new(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint): TreeGraph;
-    static newTest(root: TreeGraphNode): TreeGraph;
+    constructor(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint);
 }
 /**
  * Returns a directed tree graph of the reverse function values up to a maximum

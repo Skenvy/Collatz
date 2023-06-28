@@ -22,7 +22,7 @@ export declare class TreeGraphNode {
     readonly preANplusBNode: TreeGraphNode | null;
     /** A map of previous graph nodes which maps instances of
      *  TreeGraphNode to themselves, to enable cycle detection. */
-    private readonly cycleCheck;
+    private cycleCheck;
     static readonly emptyMap: Map<bigint, TreeGraphNode>;
     /**
      * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
@@ -46,15 +46,43 @@ export declare class TreeGraphNode {
      * Thrown if either P or a are 0.
      */
     private constructor();
+    /**
+     * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
+     * @param nodeValue - The value for which to find the tree graph node reversal.
+     * @param maxOrbitDistance - The maximum distance/orbit/branch length to travel.
+     * @param P - Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a - Factor by which to multiply n.
+     * @param b - Value to add to the scaled value of n.
+     * @returns the tree graph node and its subtree, computed for the parameters provided.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
+     */
     static new(nodeValue: bigint, maxOrbitDistance: number, P: bigint, a: bigint, b: bigint): TreeGraphNode;
+    /**
+     * This is used internally by itself and the public constructor to pass the cycle checking map,
+     * recursively determining subsequent child nodes.
+     * @param nodeValue - The value for which to find the tree graph node reversal.
+     * @param terminalSequenceState - The expected sequence state;
+     *     null, MAX_STOP_OUT_OF_BOUNDS, CYCLE_INIT or CYCLE_LENGTH.
+     * @param preNDivPNode - The expected "Pre N/P" child node.
+     * @param preANplusBNode - The expected "Pre aN+b" child node.
+     * @returns the tree graph node and its subtree, where the subtrees are passed in.
+     * @throws FailedSaneParameterCheck
+     * Thrown if either P or a are 0.
+     */
     static newTest(nodeValue: bigint, terminalSequenceState: SequenceState | null, preNDivPNode: TreeGraphNode | null, preANplusBNode: TreeGraphNode | null): TreeGraphNode;
     /**
-     * A much stricter equality check than the {@code equals(Object obj)} override.
      * This will only confirm an equality if the whole subtree of both nodes, including
      * node values, sequence states, and child nodes, checked recursively, are equal.
+     * It ignores the cycle checking map, which is purely a utility variable.
      * @param tgn - The TreeGraphNode with which to compare equality.
      * @returns true, if the entire sub-trees are equal.
      */
     subTreeEquals(tgn: TreeGraphNode | null): boolean;
+    /**
+     * Traverse a tree and assign the cycle map manually on all nodes.
+     * @param cycleCheck - The map to retroactively assign to all nodes in a test tree.
+     */
+    copyActualTreesCycleMapIntoTestTree(actualTree: TreeGraphNode): void;
 }
 //# sourceMappingURL=TreeGraphNode.d.ts.map
