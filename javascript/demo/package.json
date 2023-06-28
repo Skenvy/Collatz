@@ -1,0 +1,19 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "Demonstration",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "dependencies": {
+    "@skenvy/collatz": "file:./skenvy-collatz.tgz"
+  },
+  "scripts": {
+    "strip-version": "[ -f skenvy-collatz.tgz ] || mv skenvy-collatz-*.tgz skenvy-collatz.tgz",
+    "preinstall": "npm run strip-version",
+    "build": "tsc main.ts",
+    "demo": "node main.js"
+  },
+  "devDependencies": {
+    "typescript": "5.1.5"
+  }
+}

@@ -34,6 +34,8 @@ jobs:
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: ${{ env.development_node_version }}
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
@@ -44,7 +46,7 @@ jobs:
       run: make verify_transpiled_checkin
   full-test:
     name: JavaScript 🟨🟦🟩🟥 Full Test 🦂
-    if: >- 
+    if: >-
       ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
     runs-on: '${{ matrix.os }}'
@@ -60,6 +62,8 @@ jobs:
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: '${{ matrix.version }}'
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
@@ -70,6 +74,54 @@ jobs:
     # but it'd be interesting if it shook something loose I didn't expect!
     - name: ⚖ Does the checked in JS match the transpiled TS? 
       run: make verify_transpiled_checkin
+  built-example:
+    name: JavaScript 🟨🟦🟩🟥 Build Example 🦛
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🟨🟦🟩🟥 Set up Node
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      with:
+        node-version: ${{ env.development_node_version }}
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🧱 Build
+      run: make build
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+      with:
+        name: Package
+        path: javascript/skenvy-collatz-*.tgz
+        if-no-files-found: error
+        retention-days: 1
+  usage-demonstration:
+    name: JavaScript 🟨🟦🟩🟥 Usage Demonstration 🦏
+    needs: [build]
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    working-directory: javascript/demo
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      with:
+        name: Package
+        path: javascript/demo
+    - name: 🦛 Install this package
+      run: npm i
+    - name: 🦏 Transpile demo
+      run: npm run build
+    - name: 🦏 Run usage demonstration
+      run: npm run demo
   codeql:
     name: JavaScript 🟨🟦🟩🟥 CodeQL 🛡👨‍💻🛡
     if: >- 
@@ -92,6 +144,8 @@ jobs:
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: ${{ env.development_node_version }}
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 📄 Docs
