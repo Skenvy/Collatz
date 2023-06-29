@@ -9,7 +9,7 @@
   },
   "scripts": {
     "strip-version": "[ -f skenvy-collatz.tgz ] || mv skenvy-collatz-*.tgz skenvy-collatz.tgz",
-    "prepare": "npm run strip-version",
+    "preinstall": "npm run strip-version",
     "build": "tsc main.ts",
     "demo": "node main.js",
     "everything": "npm i && npm run build && npm run demo"
