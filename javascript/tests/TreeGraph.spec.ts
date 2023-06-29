@@ -42,10 +42,10 @@ describe('treeGraph', () => {
     assert.isFunction(Collatz.hailstoneSequence);
   });
 
-  it('should ZeroTrap', () => {
+  it('should immediately cycle trap the tree starting from 0', () => {
+    // ":D" for terminal, "C:" for cyclic end
     let expectedRoot: Collatz.TreeGraphNode;
     let actualParams: Collatz.CollatzTreeGraphParameters;
-    // ":D" for terminal, "C:" for cyclic end
     // The default zero trap
     // {0:D}
     expectedRoot = wrapTerminalNode(0n);
@@ -59,10 +59,10 @@ describe('treeGraph', () => {
     assertExpectedTree(actualParams, expectedRoot);
   });
 
-  it('should RootOfOneYieldsTheOneCycle', () => {
+  it('should yield and terminate the 1 cycle starting from 1', () => {
+    // ":D" for terminal, "C:" for cyclic end
     let expectedRoot: Collatz.TreeGraphNode;
     let actualParams: Collatz.CollatzTreeGraphParameters;
-    // ":D" for terminal, "C:" for cyclic end
     // The roundings of the 1 cycle.
     // {1:D}
     expectedRoot = wrapTerminalNode(1n);
@@ -82,10 +82,10 @@ describe('treeGraph', () => {
     assertExpectedTree(actualParams, expectedRoot);
   });
 
-  it('should RootOfTwoAndFourYieldTheOneCycle', () => {
+  it('should yield and terminate the 1 cycle starting from 2 and 4', () => {
+    // ":D" for terminal, "C:" for cyclic end
     let expectedRoot: Collatz.TreeGraphNode;
     let actualParams: Collatz.CollatzTreeGraphParameters;
-    // ":D" for terminal, "C:" for cyclic end
     // {2:{4:{1:{C:2},8:{16:D}}}}
     expectedRoot = wrapCyclicStart(2n, wrapGeneric(4n, wrapGeneric(8n, wrapTerminalNode(16n), null), wrapGeneric(1n, wrapCyclicTerminal(2n), null)), null);
     actualParams = { initialValue: 2n, maxOrbitDistance: 3 };
@@ -96,10 +96,10 @@ describe('treeGraph', () => {
     assertExpectedTree(actualParams, expectedRoot);
   });
 
-  it('should RootOfMinusOneYieldsTheMinusOneCycle', () => {
+  it('should yield and terminate the -1 cycle starting from -1', () => {
+    // ":D" for terminal, "C:" for cyclic end
     let expectedRoot: Collatz.TreeGraphNode;
     let actualParams: Collatz.CollatzTreeGraphParameters;
-    // ":D" for terminal, "C:" for cyclic end
     // The roundings of the -1 cycle
     // {-1:{-2:D}}
     expectedRoot = wrapGeneric(-1n, wrapTerminalNode(-2n), null);
@@ -111,10 +111,10 @@ describe('treeGraph', () => {
     assertExpectedTree(actualParams, expectedRoot);
   });
 
-  it('should WiderModuloSweep', () => {
+  it('should yield the expected tree for some non default parameters', () => {
+    // ":D" for terminal, "C:" for cyclic end
     let expectedRoot: Collatz.TreeGraphNode;
     let actualParams: Collatz.CollatzTreeGraphParameters;
-    // ":D" for terminal, "C:" for cyclic end
     // Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
     // Orbit distance of 1 ~= {1:{-1:D,5:D}}
     expectedRoot = wrapGeneric(1n, wrapTerminalNode(5n), wrapTerminalNode(-1n));
@@ -130,10 +130,10 @@ describe('treeGraph', () => {
     assertExpectedTree(actualParams, expectedRoot);
   });
 
-  it('should NegativeParamterisation', () => {
+  it('should yield the expected tree for some non default, negative, parameters', () => {
+    // ":D" for terminal, "C:" for cyclic end
     let expectedRoot: Collatz.TreeGraphNode;
     let actualParams: Collatz.CollatzTreeGraphParameters;
-    // ":D" for terminal, "C:" for cyclic end
     // Test negative P, a and b ~ P=-3, a=-2, b=-5
     // Orbit distance of 1 ~= {1:{-3:D}}
     expectedRoot = wrapGeneric(1n, wrapTerminalNode(-3n), null);
@@ -149,10 +149,10 @@ describe('treeGraph', () => {
     assertExpectedTree(actualParams, expectedRoot);
   });
 
-  it('should ZeroReversesOnB', () => {
+  it('should be able to grow a tree from 0 given b is a multiple of a, but not of Pa', () => {
+    // ":D" for terminal, "C:" for cyclic end
     let expectedRoot: Collatz.TreeGraphNode;
     let actualParams: Collatz.CollatzTreeGraphParameters;
-    // ":D" for terminal, "C:" for cyclic end
     // If b is a multiple of a, but not of Pa, then 0 can have a reverse.
     // {0:{C:0,3:D}}
     expectedRoot = wrapCyclicStart(0n, wrapCyclicTerminal(0n), wrapTerminalNode(3n));

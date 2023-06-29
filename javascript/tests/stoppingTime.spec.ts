@@ -58,7 +58,7 @@ describe('stoppingTime', () => {
     assert.equal(Collatz.stoppingTime({ initialValue: 5n, maxStoppingTime: -100 }), null);
   });
 
-  it('should ZeroStopMidHail', () => {
+  it('should yield a negative stopping time if it landed on zero', () => {
     // Test the zero stop mid hailing. This wont happen with default params tho.
     assert.equal(Collatz.stoppingTime({ initialValue: 3n, P: 2n, a: 3n, b: -9n }), -1);
   });
