@@ -217,3 +217,22 @@ So it looks like, the trade off of not having a nice TypeDoc site is a better in
 
 ## Coverage
 One thing I haven't added yet is code coverage to report on how tested the code is. It'd be nice to have. Jest has coverage itself, but we're already set up with mocha and I have no idea if they are interoperable at all. Googling "mocha coverage" lands us on [this SO](https://stackoverflow.com/questions/16633246/code-coverage-with-mocha), which recommends [instanbul](https://istanbul.js.org/), but via [`npm install --save-dev nyc`](https://github.com/istanbuljs/nyc).
+
+## Deno deployments
+To deploy to deno, we can look at ["adding a module"](https://deno.com/add_module). It looks like the `collatz` name is still available, so I'll need to add the webhook
+> https://api.deno.land/webhook/gh/collatz?subdir=javascript
+
+to [this repo's webhooks](https://github.com/Skenvy/Collatz/settings/hooks). It doesn't mention it on the adding a module page or in the docs, but googling around [a few Q&A sites](https://dev.to/craigmorten/how-to-publish-deno-modules-2cg6) mention that the payload type needs to be `application/json`, then to pick to select from individual events, and only select the "branch or tag creation" event. After adding the webhook, you can open it and see recent deliveries, i.e. payloads sent to the webhook and replies. It seems creating the webhook sent a "ping", which resulted in an `http400`. Clicking the chevron expands the request that was sent and also shows a tab to see the response payload. For instance, I got back the response
+> {"success":false,"error":"provided sub directory is not valid as it does not end with a /"}
+
+which sounds easy to remedy, but is something I imagine it would have been able to resolve on its own. I guess we'll go back to the adding a module page, and add in the trailing slash it claims to expect, and get the new webhook to send to;
+> https://api.deno.land/webhook/gh/collatz?subdir=javascript%2F
+
+Well, that seems to have resolved it; I clicked to redeliver the ping, and got back success;
+> {"success":true,"data":{"module":"collatz","repository":"Skenvy/Collatz"}}
+
+The deno [add_module](https://deno.com/add_module) page stayed in a state where after typing in the module name "collatz" and the subdirectory "javascript/", the "Add the webhook" section rendered the payload url and displayed a rotating circle that said it was "waiting", for quite a while. After giving up waiting for it to do whatever it was doing, I navigated away to find those Q&A answers to what the remaining steps to set it up were. I intermittently checked back on the deno page, for example to change the subdirectoy, all the while it was still "waiting".
+
+Only on the successful ping did the page stop "waiting" -- there was a nice confetti exploding on the screen effect, but that then gave way to the steps that I had to go looking for elsewhere to finally appear on that page.. after I'd already done them..? So, you need to use a valid webhook in the correct way, for the page to dynamically rerender to show the steps you need to know to set up the webhook?
+
+Well, at least the webhook worked, and it should deploy to deno on the next tag. But there weren't any options to configure what tags would trigger the webhook, so deno deployments will have the opposite problem to go deployments. Go wouldn't accept any tag that didn't exactly match its semver regex, but deno will deploy on every tag, most of which wont be relevant to it?

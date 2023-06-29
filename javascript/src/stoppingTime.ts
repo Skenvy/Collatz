@@ -54,8 +54,7 @@ export interface CollatzStoppingTimeParameters {
  * @param parameterisedInputs - Allows non-default (P,a,b); and other options.
  * @returns the stopping time, or, in a special case, infinity, null or a negative.
  */
-export function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStoppingTime = 1000, totalStoppingTime = false }:
-  CollatzStoppingTimeParameters): number | null {
+export function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStoppingTime = 1000, totalStoppingTime = false }: CollatzStoppingTimeParameters): number | null {
   /* The information is contained in the hailstone sequence. Although the "max~time"
    * for hailstones is named for "total stopping" time and the "max~time" for this
    * "stopping time" function is _not_ "total", they are handled the same way, as

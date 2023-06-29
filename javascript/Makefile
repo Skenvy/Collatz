@@ -35,6 +35,7 @@ update:
 clean:
 	rm -f skenvy-collatz-*.tgz
 	rm -rf docs
+	rm -rf .nyc_output
 	npm run clean
 
 docs:
