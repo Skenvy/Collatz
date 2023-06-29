@@ -1,5 +1,5 @@
-# [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟩🟥
-Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [JavaScript](https://tc39.es/ecma262/).
+# [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟦🟩🟥
+Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [JavaScript](https://tc39.es/ecma262/) (transpiled from [TypeScript](https://www.typescriptlang.org/)).
 ## Getting Started
 [To install the latest from npm](https://www.npmjs.com/package/@skenvy/collatz);
 ```sh
@@ -10,12 +10,18 @@ Provides the basic functionality to interact with the Collatz conjecture.
 The parameterisation uses the same `(P,a,b)` notation as Conway's generalisations.
 Besides the function and reverse function, there is also functionality to retrieve the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph. 
 The only restriction placed on parameters is that both `P` and `a` can't be `0`.
-## [<lang-docs-name> generated docs](https://skenvy.github.io/Collatz/javascript)
+## [TSDoc+TypeDoc generated docs](https://skenvy.github.io/Collatz/javascript)
+## [Istanbul.js/nyc generated coverage](https://skenvy.github.io/Collatz/javascript/coverage)
 ## Developing
 ### The first time setup
 ```sh
 git clone https://github.com/Skenvy/Collatz.git && cd Collatz/javascript && make setup
 ```
 ### Iterative development
-*<list-worthwhile-recipes>
+The majority of `make` recipes for this are just wrapping an invocation of `npm run ...` on one of the `package.json`'s `"scripts"`.
+* `make docs` will recreate the [TypeDoc](https://typedoc.org/) docs, based on [TSDoc](https://tsdoc.org/) comments.
+* `make test` will run the [mocha](https://mochajs.org/) tests and attempt a dry run of the publishing.
+* `make lint` will run [eslint](https://eslint.org/).
+* `make verify_transpiled_checkin` will confirm you haven't forgotten to check in changes to the transpiled output.
+* `make build` will run `npm pack` after linting, testing, and verifying check-in.
 ## [Open Source Insights](https://deps.dev/npm/%40skenvy%2Fcollatz)

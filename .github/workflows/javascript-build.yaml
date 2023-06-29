@@ -1,4 +1,4 @@
-name: JavaScript 🟨🟩🟥 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
+name: JavaScript 🟨🟦🟩🟥 Test 🦂 Build 🧱 Release 🚰 and Publish 📦
 on:
   push:
     branches:
@@ -13,12 +13,14 @@ defaults:
   run:
     shell: bash
     working-directory: javascript
+env:
+  development_node_version: 16.20.0
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
     uses: ./.github/workflows/github-context.yaml
   test:
-    name: JavaScript 🟨🟩🟥 Test 🦂
+    name: JavaScript 🟨🟦🟩🟥 Test 🦂
     permissions:
       actions: read
       contents: read
@@ -32,7 +34,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -55,7 +57,7 @@ jobs:
   # We want to "release" automatically if "version-file-changed" is true on push
   # Or manually if workflow_dispatch. BOTH need "version-tag-exists" is false.
   build:
-    name: JavaScript 🟨🟩🟥 Build 🧱
+    name: JavaScript 🟨🟦🟩🟥 Build 🧱
     needs: [test, workflow-conditions]
     if: >-
       ${{ ((fromJSON(needs.workflow-conditions.outputs.version-file-changed) == true && github.event_name == 'push') ||
@@ -63,30 +65,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-    - name: 🟨🟩🟥 Set up Node
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: 12
+        node-version: ${{ env.development_node_version }}
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🧱 Build
       run: make build
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
       with:
         name: Package
         path: javascript/skenvy-collatz-*.tgz
         if-no-files-found: error
   release:
-    name: JavaScript 🟨🟩🟥 Release 🚰
+    name: JavaScript 🟨🟦🟩🟥 Release 🚰
     needs: [build]
     permissions:
       contents: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
@@ -99,74 +103,96 @@ jobs:
         export VER=$(grep package.json -e "\"version\":" | cut -d \" -f 4)
         gh release create javascript-v$VER "$(find . | grep -e skenvy-collatz-*\.tgz)#Package" --generate-notes -t "JavaScript: Version $VER"
   publish-github:
-    name: JavaScript 🟨🟩🟥 Publish 📦 GitHub 🐱‍👤
+    name: JavaScript 🟨🟦🟩🟥 Publish 📦 GitHub 🐱‍👤
     needs: [release]
     permissions:
       packages: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: Package
         path: javascript/
-    - name: 🟨🟩🟥 Set up Node
+    - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: 12
+        node-version: ${{ env.development_node_version }}
         registry-url: 'https://npm.pkg.github.com'
         scope: '@skenvy'
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 📦 Publish
       run: make publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-npm:
-    name: JavaScript 🟨🟩🟥 Publish 📦 NPM 🟥
+    name: JavaScript 🟨🟦🟩🟥 Publish 📦 NPM 🟥
     needs: [release]
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: Package
         path: javascript/
-    - name: 🟨🟩🟥 Set up Node
+    - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: 12
+        node-version: ${{ env.development_node_version }}
         registry-url: 'https://registry.npmjs.org'
         scope: '@skenvy'
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
     - name: 📦 Publish
       run: make publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  # docs:
-  #   name: JavaScript 🟨🟩🟥 Docs 📄
-  #   needs: [release, publish-github, publish-npm]
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: 🟨🟩🟥 Set up Node
-  #     uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
-  #     with:
-  #       node-version: 12
-  #   - name: 📄 Docs
-  #     run: |
-  #       # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-javascript'
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  # docs-merge:
-  #   name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
-  #   needs: [docs]
-  #   permissions:
-  #     contents: write
-  #   uses: ./.github/workflows/github-pages.yaml
-  #   with:
-  #     merge_from: 'gh-pages-javascript'
+  docs:
+    name: JavaScript 🟨🟦🟩🟥 Docs 📄
+    needs: [release, publish-github, publish-npm]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🟨🟦🟩🟥 Set up Node
+      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      with:
+        node-version: ${{ env.development_node_version }}
+        cache: 'npm'
+        cache-dependency-path: javascript/package-lock.json
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 📄 Docs Publishing
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-javascript:gh-pages-javascript
+        git symbolic-ref HEAD refs/heads/gh-pages-javascript
+        cd .. && mv javascript/docs ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir -p javascript/coverage
+        mv ../MERGE_TARGET/tsdoc/* javascript/
+        mv ../MERGE_TARGET/coverage/* javascript/coverage
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-javascript
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-javascript'
