@@ -9,10 +9,9 @@
   },
   "scripts": {
     "strip-version": "[ -f skenvy-collatz.tgz ] || mv skenvy-collatz-*.tgz skenvy-collatz.tgz",
-    "preinstall": "npm run strip-version",
     "build": "tsc main.ts",
     "demo": "node main.js",
-    "everything": "npm i && npm run build && npm run demo"
+    "everything": "npm run strip-version && npm i && npm run build && npm run demo"
   },
   "devDependencies": {
     "@types/node": "^20.3.2",

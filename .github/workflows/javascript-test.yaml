@@ -123,7 +123,7 @@ jobs:
         name: Package
         path: javascript/.demo
     - name: 🦛 Install this package
-      run: npm install
+      run: npm run strip-version && npm install
     - name: 🦏 Transpile demo
       run: npm run build
     - name: 🦏 Run usage demonstration
