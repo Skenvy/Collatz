@@ -122,9 +122,8 @@ jobs:
       with:
         name: Package
         path: javascript/.demo
-    - run: ls -liath
     - name: 🦛 Install this package
-      run: npm run strip-version && npm i
+      run: npm i
     - name: 🦏 Transpile demo
       run: npm run build
     - name: 🦏 Run usage demonstration
