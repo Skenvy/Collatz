@@ -48,9 +48,9 @@ describe('stoppingTime', () => {
 
   // Default (P,a,b); stops at the "non-total" stopping time if total stopping time is false.
   it('should halt at the regular stopping time', () => {
-      // Test the regular stopping time check.
-      assert.equal(Collatz.stoppingTime({ initialValue: 4n }), 1);
-      assert.equal(Collatz.stoppingTime({ initialValue: 5n }), 3);
+    // Test the regular stopping time check.
+    assert.equal(Collatz.stoppingTime({ initialValue: 4n }), 1);
+    assert.equal(Collatz.stoppingTime({ initialValue: 5n }), 3);
   });
 
   it('should yield a maximum stopping time "out of bounds" result for a negative stopping time', () => {
