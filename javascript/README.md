@@ -5,11 +5,13 @@ Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.or
 ```sh
 npm i @skenvy/collatz
 ```
+[Also available on deno](https://deno.land/x/collatz). See the [typescript import](https://deno.land/x/collatz/src/index.ts), the [CommonJS import](https://deno.land/x/collatz/lib/cjs/index.js), or the [ECMAScript import](https://deno.land/x/collatz/lib/esm/index.mjs).
 ## Usage
 Provides the basic functionality to interact with the Collatz conjecture.
 The parameterisation uses the same `(P,a,b)` notation as Conway's generalisations.
 Besides the function and reverse function, there is also functionality to retrieve the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph. 
 The only restriction placed on parameters is that both `P` and `a` can't be `0`.
+## [Usage Examples]()
 ## [TSDoc+TypeDoc generated docs](https://skenvy.github.io/Collatz/javascript)
 ## [Istanbul.js/nyc generated coverage](https://skenvy.github.io/Collatz/javascript/coverage)
 ## Developing
