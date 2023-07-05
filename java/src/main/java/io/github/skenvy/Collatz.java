@@ -36,14 +36,14 @@ public final class Collatz {
 
   /** The current value up to which the standard parameterisation has been verified. */
   public static final BigInteger VERIFIED_MAXIMUM = new BigInteger("295147905179352825856");
-    
+
   /** The current value down to which the standard parameterisation has been verified. */
   // TODO: Check the actual lowest bound.
   public static final BigInteger VERIFIED_MINIMUM = BigInteger.valueOf(-272);
 
   /** Error message constants, to be used as input to the FailedSaneParameterCheck */
   protected enum SaneParameterErrMsg {
-        
+
     /** Message to print in the FailedSaneParameterCheck if {@code P}, the modulus, is zero. */
     SANE_PARAMS_P("'P' should not be 0 ~ violates modulo being non-zero."),
 
@@ -52,7 +52,7 @@ public final class Collatz {
 
     /** The internal string contents; the error message. */
     private final String errorMessage;
-    
+
     /**
      * Create a new instance with an error message.
      * @param errorMessage (String): The message to pass to the thrown error.
@@ -149,9 +149,9 @@ public final class Collatz {
      * either a 1 or 2 length cycle, it's not strictly an illegal operation.
      * "b" being zero would cause behaviour not consistant with the collatz
      * function, but would not violate the reversability, so no check either. */
-    if(P == BigInteger.ZERO) {
+    if (P == BigInteger.ZERO) {
       throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_P);
-    } else if(a == BigInteger.ZERO) {
+    } else if (a == BigInteger.ZERO) {
       throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_A);
     }
   }
@@ -166,7 +166,7 @@ public final class Collatz {
    */
   public static BigInteger function(BigInteger n, BigInteger P, BigInteger a, BigInteger b) {
     assertSaneParameterisation(P,a,b);
-    if(n.remainder(P) == BigInteger.ZERO) {
+    if (n.remainder(P) == BigInteger.ZERO) {
       return n.divide(P);
     } else {
       return n.multiply(a).add(b);
@@ -196,7 +196,7 @@ public final class Collatz {
   public static BigInteger[] reverseFunction(BigInteger n, BigInteger P, BigInteger a, BigInteger b) {
     assertSaneParameterisation(P,a,b);
     /*(n-b)%a == 0 && (n-b)%(P*a) != 0*/
-    if(n.subtract(b).remainder(a) == BigInteger.ZERO && n.subtract(b).remainder(P.multiply(a)) != BigInteger.ZERO) {
+    if (n.subtract(b).remainder(a) == BigInteger.ZERO && n.subtract(b).remainder(P.multiply(a)) != BigInteger.ZERO) {
       // [P*n] + [(n-b)//a]
       BigInteger[] preVals = new BigInteger[]{P.multiply(n), n.subtract(b).divide(a)};
       return preVals;
@@ -227,7 +227,7 @@ public final class Collatz {
    * @return (Function<BigInteger, Boolean>): The lambda to check for the stopping time.
    */
   private static Function<BigInteger, Boolean> stoppingTimeTerminus(BigInteger n, boolean total_stop) {
-    if(total_stop) {
+    if (total_stop) {
       return (x) -> {return x.equals(BigInteger.ONE);};
     } else if (n.compareTo(BigInteger.ZERO) >= 0) {
       return (x) -> {return ((x.compareTo(n) == -1) && (x.compareTo(BigInteger.ZERO) == 1));};
@@ -269,12 +269,12 @@ public final class Collatz {
      */
     public HailstoneSequence(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
       terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
-      if(initialValue.equals(BigInteger.ZERO)) {
+      if (initialValue.equals(BigInteger.ZERO)) {
         // 0 is always an immediate stop.
         values = new BigInteger[]{BigInteger.ZERO};
         terminalCondition = SequenceState.ZERO_STOP;
         terminalStatus = 0;
-      } else if(initialValue.equals(BigInteger.ONE)) {
+      } else if (initialValue.equals(BigInteger.ONE)) {
         // 1 is always an immediate stop, with 0 stopping time.
         values = new BigInteger[]{BigInteger.ONE};
         terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
@@ -286,12 +286,12 @@ public final class Collatz {
         preValues.add(initialValue);
         BigInteger next;
         for (int k = 1; k <= minMaxTotalStoppingTime; k++) {
-          next = function(preValues.get(k-1), P, a, b);
+          next = function(preValues.get(k - 1), P, a, b);
           // Check if the next hailstone is either the stopping time, total
           // stopping time, the same as the initial value, or stuck at zero.
-          if(terminate.apply(next)) {
+          if (terminate.apply(next)) {
             preValues.add(next);
-            if(next.equals(BigInteger.ONE)) {
+            if (next.equals(BigInteger.ONE)) {
               terminalCondition = SequenceState.TOTAL_STOPPING_TIME;
             } else {
               terminalCondition = SequenceState.STOPPING_TIME;
@@ -301,11 +301,11 @@ public final class Collatz {
             preValues.toArray(values);
             return;
           }
-          if(preValues.contains(next)) {
+          if (preValues.contains(next)) {
             preValues.add(next);
             int cycle_init = 1;
             for (int j = 1; j <= k; j++) {
-              if(preValues.get(k-j).equals(next)) {
+              if (preValues.get(k - j).equals(next)) {
                 cycle_init = j;
                 break;
               }
@@ -316,7 +316,7 @@ public final class Collatz {
             preValues.toArray(values);
             return;
           }
-          if(next.equals(BigInteger.ZERO)) {
+          if (next.equals(BigInteger.ZERO)) {
             preValues.add(BigInteger.ZERO);
             terminalCondition = SequenceState.ZERO_STOP;
             terminalStatus = -k;
@@ -483,14 +483,14 @@ public final class Collatz {
         BigInteger[] reverses = reverseFunction(nodeValue, P, a, b);
         cycleCheck = new HashMap<BigInteger,TreeGraphNode>();
         this.cycleCheck.put(this.nodeValue, this);
-        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck);
-        if(reverses.length == 2) {
-          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck);
+        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
+        if (reverses.length == 2) {
+          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
         } else {
           this.preANplusBNode = null;
         }
       }
-            
+
     }
 
     /**
@@ -520,9 +520,9 @@ public final class Collatz {
         this.cycleCheck.put(this.nodeValue, this);
         this.terminalSequenceState = null;
         BigInteger[] reverses = reverseFunction(nodeValue, P, a, b);
-        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance-1, P, a, b, this.cycleCheck);
-        if(reverses.length == 2) {
-          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance-1, P, a, b, this.cycleCheck);
+        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
+        if (reverses.length == 2) {
+          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
         } else {
           this.preANplusBNode = null;
         }
@@ -581,19 +581,19 @@ public final class Collatz {
      * @return {@code true}, if the entire sub-trees are equal.
      */
     public boolean subTreeEquals(TreeGraphNode tgn) {
-      if(!this.nodeValue.equals(tgn.nodeValue) || this.terminalSequenceState != tgn.terminalSequenceState) {
+      if (!this.nodeValue.equals(tgn.nodeValue) || this.terminalSequenceState != tgn.terminalSequenceState) {
         return false;
       }
-      if(this.preNDivPNode == null && tgn.preNDivPNode != null) {
+      if (this.preNDivPNode == null && tgn.preNDivPNode != null) {
         return false;
       }
-      if(this.preNDivPNode != null && !this.preNDivPNode.subTreeEquals(tgn.preNDivPNode)) {
+      if (this.preNDivPNode != null && !this.preNDivPNode.subTreeEquals(tgn.preNDivPNode)) {
         return false;
       }
-      if(this.preANplusBNode == null && tgn.preANplusBNode != null) {
+      if (this.preANplusBNode == null && tgn.preANplusBNode != null) {
         return false;
       }
-      if(this.preANplusBNode != null && !this.preANplusBNode.subTreeEquals(tgn.preANplusBNode)) {
+      if (this.preANplusBNode != null && !this.preANplusBNode.subTreeEquals(tgn.preANplusBNode)) {
         return false;
       }
       return true;
@@ -606,7 +606,7 @@ public final class Collatz {
 
     /** The root node of the tree of {@code TreeGraphNode}'s. */
     final TreeGraphNode root;
-        
+
     /**
      * Create a new TreeGraph with the root node defined by the inputs.
      * @param nodeValue (BigInteger): The value for which to find the tree graph node reversal.

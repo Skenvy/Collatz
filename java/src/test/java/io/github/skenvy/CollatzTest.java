@@ -149,7 +149,7 @@ public class CollatzTest
     assertArrayEquals(new long[]{0, 3}, wrapReverseFunction(0, 17, 2, -6));
     assertArrayEquals(new long[]{0}, wrapReverseFunction(0, 17, 2, 102));
   }
-    
+
     @Test
   public void testReverseFunction_AssertSaneParameterisation() {
     // Set P and a to 0 to assert on __assert_sane_parameterisation
@@ -207,7 +207,7 @@ public class CollatzTest
     HailstoneSequence hail;
     // Test the 3 known default parameter's cycles (ignoring [1,4,2])
     for (BigInteger[] kc : Collatz.KNOWN_CYCLES) {
-      if(!Arrays.asList(kc).contains(BigInteger.ONE)) {
+      if (!Arrays.asList(kc).contains(BigInteger.ONE)) {
         hail = Collatz.hailstoneSequence(kc[0], 1000);
         BigInteger[] expected = new BigInteger[kc.length+1];
         for (int k = 0; k < kc.length; k++) {
@@ -332,7 +332,7 @@ public class CollatzTest
   public void testStoppingTime_KnownCyclesYieldInfinity() {
     // Test the 3 known default parameter's cycles (ignoring [1,4,2])
     for (BigInteger[] kc : Collatz.KNOWN_CYCLES) {
-      if(!Arrays.asList(kc).contains(BigInteger.ONE)) {
+      if (!Arrays.asList(kc).contains(BigInteger.ONE)) {
         for (BigInteger c : kc) {
           assertEquals(Double.valueOf(Double.POSITIVE_INFINITY), wrapStoppingTime(c.longValue(), 100, true));
         }
@@ -447,7 +447,7 @@ public class CollatzTest
   private static TreeGraphNode wrapTGN_Generic(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
     return new TreeGraphNode(BigInteger.valueOf(n), null, preNDivPNode, preANplusBNode);
   }
-    
+
     @Test
   public void testTreeGraph_ZeroTrap() {
     // ":D" for terminal, "C:" for cyclic end
@@ -461,7 +461,7 @@ public class CollatzTest
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 1));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 2));
   }
-    
+
     @Test
   public void testTreeGraph_RootOfOneYieldsTheOneCycle() {
     // ":D" for terminal, "C:" for cyclic end
@@ -480,7 +480,7 @@ public class CollatzTest
     expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(2, wrapTGN_Generic(4, wrapTGN_TerminalNode(8), wrapTGN_CyclicTerminal(1)), null), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3));
   }
-    
+
     @Test
   public void testTreeGraph_RootOfTwoAndFourYieldTheOneCycle() {
     // ":D" for terminal, "C:" for cyclic end
@@ -494,7 +494,7 @@ public class CollatzTest
                                               wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_CyclicTerminal(4), null), null));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(4, 3));
   }
-    
+
     @Test
   public void testTreeGraph_RootOfMinusOneYieldsTheMinusOneCycle() {
     // ":D" for terminal, "C:" for cyclic end
@@ -507,7 +507,7 @@ public class CollatzTest
     expectedRoot = wrapTGN_CyclicStart(-1, wrapTGN_Generic(-2, wrapTGN_TerminalNode(-4), wrapTGN_CyclicTerminal(-1)), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(-1, 2));
   }
-    
+
     @Test
   public void testTreeGraph_WiderModuloSweep() {
     // ":D" for terminal, "C:" for cyclic end
@@ -525,7 +525,7 @@ public class CollatzTest
                                               wrapTGN_Generic(-1, wrapTGN_Generic(-5, wrapTGN_TerminalNode(-25), wrapTGN_TerminalNode(-4)), wrapTGN_Generic(-2, wrapTGN_TerminalNode(-10), null)));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3, 5, 2, 3));
   }
-    
+
     @Test
   public void testTreeGraph_NegativeParamterisation() {
     // ":D" for terminal, "C:" for cyclic end
