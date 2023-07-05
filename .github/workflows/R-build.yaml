@@ -35,7 +35,7 @@ jobs:
       id: version-file-check
       run: |
         export VERSION_FILE="R/DESCRIPTION"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "version-file-changed=${{toJSON(true)}}" >> $GITHUB_OUTPUT || echo "version-file-changed=${{toJSON(false)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
     - name: Check if version specified in version file has not released.
@@ -43,7 +43,7 @@ jobs:
       run: |
         git fetch --tags
         export VER=$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2)
-        [ -z "$(git tag -l "R-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+        [ -z "$(git tag -l "R-v$VER")" ] && echo "version-tag-exists=${{toJSON(false)}}" >> $GITHUB_OUTPUT || echo "version-tag-exists=${{toJSON(true)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
   # Now any step that should only run on the version change can use
@@ -69,7 +69,7 @@ jobs:
     - name: 🧱 Build and Check
       run: make check
     - name: 🆙 Upload tarball
-      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
       with:
         name: Tarball
         path: R/collatz_*.tar.gz
@@ -84,7 +84,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: Tarball
         path: R
@@ -114,7 +114,7 @@ jobs:
     - name: 📄 Docs Generation
       run: make docs
     - name: 🆙 Upload docs
-      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
       with:
         name: Docs
         path: R/docs/
@@ -129,7 +129,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: Docs
         path: R/docs

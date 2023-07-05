@@ -1,0 +1,22 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "Demonstration",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "dependencies": {
+    "@skenvy/collatz": "file:./skenvy-collatz.tgz"
+  },
+  "scripts": {
+    "clean": "rm **/*.js",
+    "strip-version": "[ -f skenvy-collatz.tgz ] || mv skenvy-collatz-*.tgz skenvy-collatz.tgz",
+    "build": "tsc --module CommonJS --target ES2020 --lib ES2020 --types node ./_/*.ts",
+    "demo": "find ./_/*.js -maxdepth 1 -type f | xargs -L1 node",
+    "everything": "npm run clean && npm run strip-version && npm i && npm run build && npm run demo"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.2",
+    "async": "^3.2.4",
+    "typescript": "^5.1.5"
+  }
+}
