@@ -87,4 +87,4 @@ The code is pretty gross at the moment, so we'll need to add a linter. [VS Code'
   </checkstyleRules>
 </configuration>
 ```
-Although Google's style appears more readily meaningful, the `sun_checks.xml` option yields around 3300-ish errors, as opposed to `google_checks.xml` which only yields around 6700-ish _warnings_, but no errors. If we want to actually override the settings provided, we'll need to copy one of the existing rule sets and edit it and check it in.
+The two default `<configLocation/>`'s available are `sun_checks.xml`, which yields mostly errors, or `google_checks.xml` which yields mostly  _warnings_, but no errors. If we want to actually override the settings provided, we'll need to copy one of the existing rule sets and edit it and check it in.
