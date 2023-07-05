@@ -55,6 +55,7 @@ public final class Collatz {
 
     /**
      * Create a new instance with an error message.
+     *
      * @param errorMessage (String): The message to pass to the thrown error.
      */
     private SaneParameterErrMsg(String errorMessage) {
@@ -74,6 +75,7 @@ public final class Collatz {
   static protected class FailedSaneParameterCheck extends ArithmeticException { 
     /**
      * Construct a FailedSaneParameterCheck with a message associated with the provided enum.
+     *
      * @param errorEnum (SaneParameterErrMsg): The enum from which to extract the message.
      */
     public FailedSaneParameterCheck(SaneParameterErrMsg errorEnum) {
@@ -114,6 +116,7 @@ public final class Collatz {
 
     /**
      * Create a new instance with a sequence state.
+     *
      * @param label (String): The stringy form of the enum.
      */
     private SequenceState(String label) {
@@ -122,6 +125,7 @@ public final class Collatz {
 
     /**
      * Retrieve the sequence state string associated with the enum.
+     *
      * @return (String): The stringy form of the enum.
      */
     protected String getLabel() {
@@ -132,6 +136,7 @@ public final class Collatz {
   /**
    * Handles the sanity check for the parameterisation (P,a,b) required by both
    * the function and reverse function.
+   *
    * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P)
    * @param a (BigInteger): Factor by which to multiply n.
    * @param b (BigInteger): Value to add to the scaled value of n.
@@ -158,6 +163,7 @@ public final class Collatz {
 
   /**
    * Returns the output of a single application of a Collatz-esque function.
+   *
    * @param n (BigInteger): The value on which to perform the Collatz-esque function.
    * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
    * @param a (BigInteger): Factor by which to multiply n.
@@ -175,6 +181,7 @@ public final class Collatz {
 
   /**
    * Returns the output of a single application of the Collatz function.
+   *
    * @param n (BigInteger): The value on which to perform the Collatz function.
    * @return (BigInteger): The result of the function
    */
@@ -187,6 +194,7 @@ public final class Collatz {
    * only one value is returned, it is the value that would be divided by P. If two values
    * are returned, the first is the value that would be divided by P, and the second value
    * is that which would undergo the multiply and add step, regardless of which is larger.
+   *
    * @param n (BigInteger): The value on which to perform the reverse Collatz function.
    * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
    * @param a (BigInteger): Factor by which to multiply n.
@@ -210,6 +218,7 @@ public final class Collatz {
    * only one value is returned, it is the value that would be divided by 2. If two values
    * are returned, the first is the value that would be divided by 2, and the second value
    * is that which would undergo the 3N+1 step, regardless of which is larger.
+   *
    * @param n (BigInteger): The value on which to perform the reverse Collatz function.
    * @return (BigInteger): The result of the function
    */
@@ -220,10 +229,11 @@ public final class Collatz {
   /**
    * Provides the appropriate lambda to use to check if iterations on an initial
    * value have reached either the stopping time, or total stopping time.
+   *
    * @param n (BigInteger): The initial value to confirm against a stopping time check.
    * @param total_stop (boolean): If false, the lambda will confirm that iterations of n
-   *          have reached the oriented stopping time to reach a value closer to 0.
-   *          If true, the lambda will simply check equality to 1.
+   *     have reached the oriented stopping time to reach a value closer to 0.
+   *     If true, the lambda will simply check equality to 1.
    * @return (Function<BigInteger, Boolean>): The lambda to check for the stopping time.
    */
   private static Function<BigInteger, Boolean> stoppingTimeTerminus(BigInteger n, boolean total_stop) {
@@ -258,14 +268,15 @@ public final class Collatz {
 
     /**
      * Initialise and compute a new Hailstone Sequence.
+   *
      * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
      * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
      * @param a (BigInteger): Factor by which to multiply n.
      * @param b (BigInteger): Value to add to the scaled value of n.
      * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
      * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
-     *          (number of iterations to obtain 1) rather than the regular stopping time (number
-     *          of iterations to reach a value less than the initial value).
+     *     (number of iterations to obtain 1) rather than the regular stopping time (number
+     *     of iterations to reach a value less than the initial value).
      */
     public HailstoneSequence(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
       terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
@@ -343,14 +354,15 @@ public final class Collatz {
    * capability to determine that it has encountered a cycle, the cycle from "1"
    * wont be attempted or reported as part of a cycle, regardless of default or
    * custom parameterisation, as "1" is considered a "total stop".
+   *
    * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
    * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
    * @param a (BigInteger): Factor by which to multiply n.
    * @param b (BigInteger): Value to add to the scaled value of n.
    * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
    * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
-   *          (number of iterations to obtain 1) rather than the regular stopping time (number
-   *          of iterations to reach a value less than the initial value).
+   *     (number of iterations to obtain 1) rather than the regular stopping time (number
+   *     of iterations to reach a value less than the initial value).
    * @return (HailstoneSequence): A set of values that form the hailstone sequence.
    */
   public static HailstoneSequence hailstoneSequence(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
@@ -364,6 +376,7 @@ public final class Collatz {
   /**
    * Returns a list of successive values obtained by iterating the Collatz function,
    * until either 1 is reached, or the total amount of iterations exceeds maxTotalStoppingTime.
+   *
    * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
    * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
    * @return (HailstoneSequence): A set of values that form the hailstone sequence.
@@ -382,16 +395,17 @@ public final class Collatz {
    * will be the negative of what would otherwise be the "total stopping time"
    * to reach 1, where 0 is considered a "total stop" that should not occur as
    * it does form a cycle of length 1.
+   *
    * @param initialValue (BigInteger): The value for which to find the stopping time.
    * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
    * @param a (BigInteger): Factor by which to multiply n.
    * @param b (BigInteger): Value to add to the scaled value of n.
    * @param maxStoppingTime (int): Maximum amount of times to iterate the function, if
-   *          the stopping time is not reached. IF the maxStoppingTime is reached,
-   *          the function will return null.
+   *     the stopping time is not reached. IF the maxStoppingTime is reached,
+   *     the function will return null.
    * @param totalStoppingTime (bool): Whether or not to execute until the "total" stopping
-   *          time (number of iterations to obtain 1) rather than the regular stopping
-   *          time (number of iterations to reach a value less than the initial value).
+   *     time (number of iterations to obtain 1) rather than the regular stopping
+   *     time (number of iterations to reach a value less than the initial value).
    * @return (Double): The stopping time, or, in a special case, infinity, null or a negative.
    */
   public static Double stoppingTime(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxStoppingTime, boolean totalStoppingTime) {
@@ -426,6 +440,7 @@ public final class Collatz {
    * Alternatively, if totalStoppingTime is True, then it will instead count
    * the amount of iterations to reach 1. If the sequence does not stop, but
    * instead ends in a cycle, the result will be (Double.POSITIVE_INFINITY).
+   *
    * @param initialValue (BigInteger): The value for which to find the stopping time.
    * @return (Double): The stopping time, or, in a cycle case, infinity.
    */
@@ -466,6 +481,7 @@ public final class Collatz {
 
     /**
      * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
+     *
      * @param nodeValue (BigInteger): The value for which to find the tree graph node reversal.
      * @param maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
      * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
@@ -497,6 +513,7 @@ public final class Collatz {
      * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
      * This is used internally by itself and the public constructor to pass the cycle checking map,
      * recursively determining subsequent child nodes.
+     *
      * @param nodeValue (BigInteger): The value for which to find the tree graph node reversal.
      * @param maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
      * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
@@ -533,9 +550,10 @@ public final class Collatz {
      * Create an instance of TreeGraphNode by directly passing it the values required to instantiate,
      * intended to be used in testing by manually creating trees in reverse, by passing expected child
      * nodes to their parents until the entire expected tree is created.
+     *
      * @param nodeValue (BigInteger): The value expected of this node.
      * @param terminalSequenceState (SequenceState): The expected sequence state;
-     *          null, MAX_STOP_OUT_OF_BOUNDS, CYCLE_INIT or CYCLE_LENGTH.
+     *     null, MAX_STOP_OUT_OF_BOUNDS, CYCLE_INIT or CYCLE_LENGTH.
      * @param preNDivPNode (TreeGraphNode): The expected "Pre N/P" child node.
      * @param preANplusBNode (TreeGraphNode): The expected "Pre aN+b" child node.
      */
@@ -577,6 +595,7 @@ public final class Collatz {
      * A much stricter equality check than the {@code equals(Object obj)} override.
      * This will only confirm an equality if the whole subtree of both nodes, including
      * node values, sequence states, and child nodes, checked recursively, are equal.
+     *
      * @param tgn (TreeGraphNode): The TreeGraphNode with which to compare equality.
      * @return {@code true}, if the entire sub-trees are equal.
      */
@@ -609,6 +628,7 @@ public final class Collatz {
 
     /**
      * Create a new TreeGraph with the root node defined by the inputs.
+     *
      * @param nodeValue (BigInteger): The value for which to find the tree graph node reversal.
      * @param maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
      * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
@@ -622,6 +642,7 @@ public final class Collatz {
     /**
      * Create a new TreeGraph by directly passing it the root node.
      * Intended to be used in testing by manually creating trees.
+     *
      * @param root (TreeGraphNode): The root node of the tree.
      */
     public TreeGraph(TreeGraphNode root) {
@@ -655,13 +676,14 @@ public final class Collatz {
   /**
    * Returns a directed tree graph of the reverse function values up to a maximum
    * nesting of maxOrbitDistance, with the initialValue as the root.
+   *
    * @param initialValue (BigInteger): The root value of the directed tree graph.
    * @param maxOrbitDistance (int): Maximum amount of times to iterate the reverse
-   *          function. There is no natural termination to populating the tree
-   *          graph, equivalent to the termination of hailstone sequences or
-   *          stopping time attempts, so this is not an optional argument like
-   *          maxStoppingTime / maxTotalStoppingTime, as it is the intended target
-   *          of orbits to obtain, rather than a limit to avoid uncapped computation.
+   *     function. There is no natural termination to populating the tree
+   *     graph, equivalent to the termination of hailstone sequences or
+   *     stopping time attempts, so this is not an optional argument like
+   *     maxStoppingTime / maxTotalStoppingTime, as it is the intended target
+   *     of orbits to obtain, rather than a limit to avoid uncapped computation.
    * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
    * @param a (BigInteger): Factor by which to multiply n.
    * @param b (BigInteger): Value to add to the scaled value of n.
@@ -673,13 +695,14 @@ public final class Collatz {
   /**
    * Returns a directed tree graph of the reverse function values up to a maximum
    * nesting of maxOrbitDistance, with the initialValue as the root.
+   *
    * @param initialValue (BigInteger): The root value of the directed tree graph.
    * @param maxOrbitDistance (int): Maximum amount of times to iterate the reverse
-   *          function. There is no natural termination to populating the tree
-   *          graph, equivalent to the termination of hailstone sequences or
-   *          stopping time attempts, so this is not an optional argument like
-   *          maxStoppingTime / maxTotalStoppingTime, as it is the intended target
-   *          of orbits to obtain, rather than a limit to avoid uncapped computation.
+   *     function. There is no natural termination to populating the tree
+   *     graph, equivalent to the termination of hailstone sequences or
+   *     stopping time attempts, so this is not an optional argument like
+   *     maxStoppingTime / maxTotalStoppingTime, as it is the intended target
+   *     of orbits to obtain, rather than a limit to avoid uncapped computation.
    */
   public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance) {
     return treeGraph(initialValue, maxOrbitDistance, DEFAULT_P, DEFAULT_A, DEFAULT_B);
