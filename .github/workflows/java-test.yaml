@@ -21,6 +21,22 @@ defaults:
     shell: bash
     working-directory: java
 jobs:
+  lint:
+    name: 🧹 Lint
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: ☕🦆🌞 Set up Java
+      uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc # v3.6.0
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        architecture: x64
+        cache: maven
+    - name: 🧹 Lint
+      run: make lint_noninteractive
   quick-test:
     name: Java ☕🦆🌞 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
