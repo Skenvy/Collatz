@@ -30,8 +30,7 @@ public final class Collatz {
     Arrays.stream(new long[]{1, 4, 2}).mapToObj(x -> BigInteger.valueOf(x)).toArray(BigInteger[]::new),
     Arrays.stream(new long[]{-1, -2}).mapToObj(x -> BigInteger.valueOf(x)).toArray(BigInteger[]::new),
     Arrays.stream(new long[]{-5, -14, -7, -20, -10}).mapToObj(x -> BigInteger.valueOf(x)).toArray(BigInteger[]::new),
-    Arrays.stream(new long[] { -17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272,
-                    -136, -68, -34 }).mapToObj(x -> BigInteger.valueOf(x)).toArray(BigInteger[]::new)
+    Arrays.stream(new long[] { -17, -50, -25, -74, -37, -110, -55, -164, -82, -41, -122, -61, -182, -91, -272, -136, -68, -34 }).mapToObj(x -> BigInteger.valueOf(x)).toArray(BigInteger[]::new)
   };
 
   /** The current value up to which the standard parameterisation has been verified. */
@@ -72,7 +71,7 @@ public final class Collatz {
   }
 
   /** Thrown when either {@code P}, the modulus, or {@code a}, the multiplicand, are zero. */
-  static protected class FailedSaneParameterCheck extends ArithmeticException { 
+  protected static class FailedSaneParameterCheck extends ArithmeticException { 
     /**
      * Construct a FailedSaneParameterCheck with a message associated with the provided enum.
      *
@@ -171,7 +170,7 @@ public final class Collatz {
    * @return (BigInteger): The result of the function
    */
   public static BigInteger function(BigInteger n, BigInteger P, BigInteger a, BigInteger b) {
-    assertSaneParameterisation(P,a,b);
+    assertSaneParameterisation(P, a, b);
     if (n.remainder(P) == BigInteger.ZERO) {
       return n.divide(P);
     } else {
@@ -202,7 +201,7 @@ public final class Collatz {
    * @return (BigInteger): The result of the function
    */
   public static BigInteger[] reverseFunction(BigInteger n, BigInteger P, BigInteger a, BigInteger b) {
-    assertSaneParameterisation(P,a,b);
+    assertSaneParameterisation(P, a, b);
     /*(n-b)%a == 0 && (n-b)%(P*a) != 0*/
     if (n.subtract(b).remainder(a) == BigInteger.ZERO && n.subtract(b).remainder(P.multiply(a)) != BigInteger.ZERO) {
       // [P*n] + [(n-b)//a]
@@ -238,11 +237,17 @@ public final class Collatz {
    */
   private static Function<BigInteger, Boolean> stoppingTimeTerminus(BigInteger n, boolean total_stop) {
     if (total_stop) {
-      return (x) -> {return x.equals(BigInteger.ONE);};
+      return (x) -> {
+        return x.equals(BigInteger.ONE);
+      };
     } else if (n.compareTo(BigInteger.ZERO) >= 0) {
-      return (x) -> {return ((x.compareTo(n) == -1) && (x.compareTo(BigInteger.ZERO) == 1));};
+      return (x) -> {
+        return ((x.compareTo(n) == -1) && (x.compareTo(BigInteger.ZERO) == 1));
+      };
     } else {
-      return (x) -> {return ((x.compareTo(n) == 1) && (x.compareTo(BigInteger.ZERO) == -1));};
+      return (x) -> {
+        return ((x.compareTo(n) == 1) && (x.compareTo(BigInteger.ZERO) == -1));
+      };
     }
   }
 
@@ -252,7 +257,7 @@ public final class Collatz {
     /** The set of values that comprise the hailstone sequence. */
     final BigInteger[] values;
 
-    final private Function<BigInteger, Boolean> terminate;
+    private final Function<BigInteger, Boolean> terminate;
 
     /** A terminal condition that reflects the final state of the hailstone sequencing,
      *  whether than be that it succeeded at determining the stopping time, the total
@@ -367,7 +372,7 @@ public final class Collatz {
    */
   public static HailstoneSequence hailstoneSequence(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
     // Call out the function before any magic returns to trap bad values.
-        @SuppressWarnings("unused")
+    @SuppressWarnings("unused")
     final BigInteger _throwaway = function(initialValue, P, a, b);
     // Return the hailstone sequence.
     return new HailstoneSequence(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime);
@@ -418,7 +423,7 @@ public final class Collatz {
     // For total/regular/zero stopping time, the value is already the same as
     // that present, for cycles we report infinity instead of the cycle length,
     // and for max stop out of bounds, we report null instead of the max stop cap
-    switch(hail.terminalCondition) {
+    switch (hail.terminalCondition) {
       case TOTAL_STOPPING_TIME:
         return (double) hail.terminalStatus;
       case STOPPING_TIME:
@@ -477,7 +482,7 @@ public final class Collatz {
 
     /** A map of previous graph nodes which maps instances of
      *  TreeGraphNode to themselves, to enable cycle detection. */
-    private final Map<BigInteger,TreeGraphNode> cycleCheck;
+    private final Map<BigInteger, TreeGraphNode> cycleCheck;
 
     /**
      * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
@@ -497,7 +502,7 @@ public final class Collatz {
         this.cycleCheck = null;
       } else {
         BigInteger[] reverses = reverseFunction(nodeValue, P, a, b);
-        cycleCheck = new HashMap<BigInteger,TreeGraphNode>();
+        cycleCheck = new HashMap<BigInteger, TreeGraphNode>();
         this.cycleCheck.put(this.nodeValue, this);
         this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
         if (reverses.length == 2) {
@@ -521,7 +526,7 @@ public final class Collatz {
      * @param b (BigInteger): Value to add to the scaled value of n.
      * @param cycleCheck (Map<TreeGraphNode,TreeGraphNode>): Checks if this node's value already occurred.
      */
-    private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b, Map<BigInteger,TreeGraphNode> cycleCheck) {
+    private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b, Map<BigInteger, TreeGraphNode> cycleCheck) {
       this.nodeValue = nodeValue;
       this.cycleCheck = cycleCheck;
       if (this.cycleCheck.keySet().contains(this.nodeValue)) {
@@ -568,7 +573,7 @@ public final class Collatz {
     /** The equality between TreeGraphNodes is determined exclusively by the
      *  node's value, independent of the child nodes or sequence states that
      *  would be relevant to the node's status relative to the tree. */
-        @Override
+    @Override
     public boolean equals(Object obj) {
       if (obj == null) {
         return false;
@@ -582,7 +587,7 @@ public final class Collatz {
 
     /** The hashCode of a TreeGraphNode is determined by the
      *  node's value, the child nodes and sequence state. */
-        @Override
+    @Override
     public int hashCode() {
       int hash = this.nodeValue.hashCode();
       hash = 17 * hash + (this.terminalSequenceState != null ? this.terminalSequenceState.hashCode() : 0);
@@ -651,14 +656,14 @@ public final class Collatz {
 
     /** The hashCode of a TreeGraph is determined
      *  by the hash of the root node. */
-        @Override
+    @Override
     public int hashCode() {
       return 29 * this.root.hashCode();
     }
 
     /** The equality between {@code TreeGraph}'s is determined by the equality check on subtrees. 
      *  A subtree check will be done on both {@code TreeGraph}'s root nodes. */
-        @Override
+    @Override
     public boolean equals(Object obj) {
       // Generic checks
       if (obj == null) {

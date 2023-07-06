@@ -9,7 +9,7 @@
     Multiple licenses present in the repository root that apply to this file; LGPL-2.1, and Apache-2.0.
     https://github.com/checkstyle/checkstyle/blob/1de91bc2e79d13860f841e8cddd85fdc54d4c1a4/LICENSE
     https://github.com/checkstyle/checkstyle/blob/1de91bc2e79d13860f841e8cddd85fdc54d4c1a4/LICENSE.apache20
-    Modifications made to; LineLength.max, CustomImportOrder.customImportOrderRules,
+    Modifications made to; LineLength.max, CustomImportOrder,
 ###############################################################################################  -->
 
 <!--
@@ -283,7 +283,10 @@
     <module name="CustomImportOrder">
       <property name="sortImportsInGroupAlphabetically" value="true"/>
       <property name="separateLineBetweenGroups" value="true"/>
-      <property name="customImportOrderRules" value="STANDARD_JAVA_PACKAGE###STATIC###THIRD_PARTY_PACKAGE"/>
+      <property name="customImportOrderRules" value="STANDARD_JAVA_PACKAGE###STATIC###THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS"/>
+      <property name="standardPackageRegExp" value="^(java|javax)\."/> <!-- STANDARD_JAVA_PACKAGE -->
+      <property name="thirdPartyPackageRegExp" value=".*"/> <!-- THIRD_PARTY_PACKAGE -->
+      <property name="specialImportsRegExp" value="^io\.github\.skenvy\."/> <!-- SPECIAL_IMPORTS -->
       <property name="tokens" value="IMPORT, STATIC_IMPORT, PACKAGE_DEF"/>
     </module>
     <module name="MethodParamPad">

@@ -1,20 +1,20 @@
 package io.github.skenvy;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
-import io.github.skenvy.Collatz.SequenceState;
 import io.github.skenvy.Collatz.HailstoneSequence;
+import io.github.skenvy.Collatz.SequenceState;
 import io.github.skenvy.Collatz.TreeGraph;
 import io.github.skenvy.Collatz.TreeGraphNode;
 
@@ -220,7 +220,7 @@ public class CollatzTest {
     for (BigInteger[] kc : Collatz.KNOWN_CYCLES) {
       if (!Arrays.asList(kc).contains(BigInteger.ONE)) {
         hail = Collatz.hailstoneSequence(kc[0], 1000);
-        BigInteger[] expected = new BigInteger[kc.length+1];
+        BigInteger[] expected = new BigInteger[kc.length + 1];
         for (int k = 0; k < kc.length; k++) {
           expected[k] = kc[k];
         }
