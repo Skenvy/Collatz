@@ -37,6 +37,8 @@ build:
 # would be usable if it could discover the jar by name. Instead use
 # https://www.mojohaus.org/exec-maven-plugin/java-mojo.html
 # But this will only be relevant when the main class has main(String[] args)
+# If this is ever relevant, add back the jar main class path and exec plugin. See;
+# https://github.com/Skenvy/Collatz/commit/82ddc95508911f5e278b090be9bfde1200748ba9
 __run:
 	$(MVN) compile exec:java -Dexec.mainClass="io.github.skenvy.Collatz"
 
