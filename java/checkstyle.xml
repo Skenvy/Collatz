@@ -9,7 +9,7 @@
     Multiple licenses present in the repository root that apply to this file; LGPL-2.1, and Apache-2.0.
     https://github.com/checkstyle/checkstyle/blob/1de91bc2e79d13860f841e8cddd85fdc54d4c1a4/LICENSE
     https://github.com/checkstyle/checkstyle/blob/1de91bc2e79d13860f841e8cddd85fdc54d4c1a4/LICENSE.apache20
-    Modifications made to; LineLength.max, CustomImportOrder,
+    Modifications made to; LineLength.max, CustomImportOrder, AbbreviationAsWordInName
 ###############################################################################################  -->
 
 <!--
@@ -269,7 +269,7 @@
     </module>
     <module name="AbbreviationAsWordInName">
       <property name="ignoreFinal" value="false"/>
-      <property name="allowedAbbreviationLength" value="0"/>
+      <property name="allowedAbbreviationLength" value="1"/>
       <property name="tokens"
                value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,
                     PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,

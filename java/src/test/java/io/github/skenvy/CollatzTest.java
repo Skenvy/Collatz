@@ -24,8 +24,8 @@ public class CollatzTest {
     return Collatz.function(BigInteger.valueOf(n)).longValue();
   }
 
-  private static long wrapFunction(long n, long P, long a, long b) {
-    return Collatz.function(BigInteger.valueOf(n), BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b)).longValue();
+  private static long wrapFunction(long n, long p, long a, long b) {
+    return Collatz.function(BigInteger.valueOf(n), BigInteger.valueOf(p), BigInteger.valueOf(a), BigInteger.valueOf(b)).longValue();
   }
 
   @Test
@@ -101,8 +101,8 @@ public class CollatzTest {
     return wrapBigIntArr(revs);
   }
 
-  private static long[] wrapReverseFunction(long n, long P, long a, long b) {
-    BigInteger[] revs = Collatz.reverseFunction(BigInteger.valueOf(n), BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b));
+  private static long[] wrapReverseFunction(long n, long p, long a, long b) {
+    BigInteger[] revs = Collatz.reverseFunction(BigInteger.valueOf(n), BigInteger.valueOf(p), BigInteger.valueOf(a), BigInteger.valueOf(b));
     return wrapBigIntArr(revs);
   }
 
@@ -181,8 +181,8 @@ public class CollatzTest {
     return wrapHailstoneSequence(n, Collatz.DEFAULT_P.longValue(), Collatz.DEFAULT_A.longValue(), Collatz.DEFAULT_B.longValue(), maxTotalStoppingTime, totalStoppingTime);
   }
 
-  private static HailstoneSequence wrapHailstoneSequence(long n, long P, long a, long b, int maxTotalStoppingTime, boolean totalStoppingTime) {
-    return Collatz.hailstoneSequence(BigInteger.valueOf(n), BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b), maxTotalStoppingTime, totalStoppingTime);
+  private static HailstoneSequence wrapHailstoneSequence(long n, long p, long a, long b, int maxTotalStoppingTime, boolean totalStoppingTime) {
+    return Collatz.hailstoneSequence(BigInteger.valueOf(n), BigInteger.valueOf(p), BigInteger.valueOf(a), BigInteger.valueOf(b), maxTotalStoppingTime, totalStoppingTime);
   }
 
   private static void assertHailstoneSequence(HailstoneSequence hail, long[] expectedSequence, Collatz.SequenceState terminalCondition, long terminalStatus) {
@@ -233,33 +233,33 @@ public class CollatzTest {
   @Test
   public void testHailstoneSequence_Minus56() {
     // Test the lead into a cycle by entering two of the cycles; -5
-    BigInteger[] seq = Collatz.KNOWN_CYCLES[2].clone();
-    ArrayList<BigInteger> _seq = new ArrayList<BigInteger>();
-    _seq.add(seq[1].multiply(BigInteger.valueOf(4)));
-    _seq.add(seq[1].multiply(BigInteger.valueOf(2)));
-    List<BigInteger> _rotInnerSeq = Arrays.asList(seq);
-    Collections.rotate(_rotInnerSeq, -1);
-    _seq.addAll(_rotInnerSeq);
-    _seq.add(seq[0]); // The rotate also acts on seq, so we add [0] instead of [1]
-    long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new));
+    BigInteger[] sequence = Collatz.KNOWN_CYCLES[2].clone();
+    ArrayList<BigInteger> mutatedSequence = new ArrayList<BigInteger>();
+    mutatedSequence.add(sequence[1].multiply(BigInteger.valueOf(4)));
+    mutatedSequence.add(sequence[1].multiply(BigInteger.valueOf(2)));
+    List<BigInteger> rotatedSequence = Arrays.asList(sequence);
+    Collections.rotate(rotatedSequence, -1);
+    mutatedSequence.addAll(rotatedSequence);
+    mutatedSequence.add(sequence[0]); // The rotate also acts on seq, so we add [0] instead of [1]
+    long[] expected = wrapBigIntArr(mutatedSequence.toArray(BigInteger[]::new));
     HailstoneSequence hail = wrapHailstoneSequence(-56);
-    assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, seq.length);
+    assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, sequence.length);
   }
 
   @Test
   public void testHailstoneSequence_Minus200() {
     // Test the lead into a cycle by entering two of the cycles; -17
-    BigInteger[] seq = Collatz.KNOWN_CYCLES[3].clone();
-    ArrayList<BigInteger> _seq = new ArrayList<BigInteger>();
-    _seq.add(seq[1].multiply(BigInteger.valueOf(4)));
-    _seq.add(seq[1].multiply(BigInteger.valueOf(2)));
-    List<BigInteger> _rotInnerSeq = Arrays.asList(seq);
-    Collections.rotate(_rotInnerSeq, -1);
-    _seq.addAll(_rotInnerSeq);
-    _seq.add(seq[0]); // The rotate also acts on seq, so we add [0] instead of [1]
-    long[] expected = wrapBigIntArr(_seq.toArray(BigInteger[]::new));
+    BigInteger[] sequence = Collatz.KNOWN_CYCLES[3].clone();
+    ArrayList<BigInteger> mutatedSequence = new ArrayList<BigInteger>();
+    mutatedSequence.add(sequence[1].multiply(BigInteger.valueOf(4)));
+    mutatedSequence.add(sequence[1].multiply(BigInteger.valueOf(2)));
+    List<BigInteger> rotatedSequence = Arrays.asList(sequence);
+    Collections.rotate(rotatedSequence, -1);
+    mutatedSequence.addAll(rotatedSequence);
+    mutatedSequence.add(sequence[0]); // The rotate also acts on seq, so we add [0] instead of [1]
+    long[] expected = wrapBigIntArr(mutatedSequence.toArray(BigInteger[]::new));
     HailstoneSequence hail = wrapHailstoneSequence(-200);
-    assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, seq.length);
+    assertHailstoneSequence(hail, expected, Collatz.SequenceState.CYCLE_LENGTH, sequence.length);
   }
 
   @Test
@@ -324,8 +324,8 @@ public class CollatzTest {
     return wrapStoppingTime(n, Collatz.DEFAULT_P.longValue(), Collatz.DEFAULT_A.longValue(), Collatz.DEFAULT_B.longValue(), maxStoppingTime, totalStoppingTime);
   }
 
-  private static Double wrapStoppingTime(long n, long P, long a, long b, int maxStoppingTime, boolean totalStoppingTime) {
-    return Collatz.stoppingTime(BigInteger.valueOf(n), BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b), maxStoppingTime, totalStoppingTime);
+  private static Double wrapStoppingTime(long n, long p, long a, long b, int maxStoppingTime, boolean totalStoppingTime) {
+    return Collatz.stoppingTime(BigInteger.valueOf(n), BigInteger.valueOf(p), BigInteger.valueOf(a), BigInteger.valueOf(b), maxStoppingTime, totalStoppingTime);
   }
 
   @Test
@@ -422,8 +422,8 @@ public class CollatzTest {
     assertTrue(exception.getMessage().contains(Collatz.SaneParameterErrMsg.SANE_PARAMS_A.getErrorMessage()));
   }
 
-  private static TreeGraph wrapTreeGraph(long nodeValue, int maxOrbitDistance, long P, long a, long b) {
-    return Collatz.treeGraph(BigInteger.valueOf(nodeValue), maxOrbitDistance, BigInteger.valueOf(P), BigInteger.valueOf(a), BigInteger.valueOf(b));
+  private static TreeGraph wrapTreeGraph(long nodeValue, int maxOrbitDistance, long p, long a, long b) {
+    return Collatz.treeGraph(BigInteger.valueOf(nodeValue), maxOrbitDistance, BigInteger.valueOf(p), BigInteger.valueOf(a), BigInteger.valueOf(b));
   }
 
   private static TreeGraph wrapTreeGraph(long nodeValue, int maxOrbitDistance) {
@@ -436,7 +436,7 @@ public class CollatzTest {
    * @param n
    * @return
    */
-  private static TreeGraphNode wrapTGN_TerminalNode(long n) {
+  private static TreeGraphNode wrapTreeGraphNode_TerminalNode(long n) {
     return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.MAX_STOP_OUT_OF_BOUNDS, null, null);
   }
 
@@ -445,7 +445,7 @@ public class CollatzTest {
    * @param n
    * @return
    */
-  private static TreeGraphNode wrapTGN_CyclicTerminal(long n) {
+  private static TreeGraphNode wrapTreeGraphNode_CyclicTerminal(long n) {
     return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.CYCLE_LENGTH, null, null);
   }
 
@@ -456,7 +456,7 @@ public class CollatzTest {
    * @param preANplusBNode
    * @return
    */
-  private static TreeGraphNode wrapTGN_CyclicStart(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
+  private static TreeGraphNode wrapTreeGraphNode_CyclicStart(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
     return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.CYCLE_INIT, preNDivPNode, preANplusBNode);
   }
 
@@ -467,7 +467,7 @@ public class CollatzTest {
    * @param preANplusBNode
    * @return
    */
-  private static TreeGraphNode wrapTGN_Generic(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
+  private static TreeGraphNode wrapTreeGraphNode_Generic(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
     return new TreeGraphNode(BigInteger.valueOf(n), null, preNDivPNode, preANplusBNode);
   }
 
@@ -477,10 +477,10 @@ public class CollatzTest {
     TreeGraphNode expectedRoot;
     // The default zero trap
     // {0:D}
-    expectedRoot = wrapTGN_TerminalNode(0);
+    expectedRoot = wrapTreeGraphNode_TerminalNode(0);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 0));
     // {0:{C:0}}
-    expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), null);
+    expectedRoot = wrapTreeGraphNode_CyclicStart(0, wrapTreeGraphNode_CyclicTerminal(0), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 1));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 2));
   }
@@ -491,16 +491,16 @@ public class CollatzTest {
     TreeGraphNode expectedRoot;
     // The roundings of the 1 cycle.
     // {1:D}
-    expectedRoot = wrapTGN_TerminalNode(1);
+    expectedRoot = wrapTreeGraphNode_TerminalNode(1);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 0));
     // {1:{2:D}}
-    expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(2), null);
+    expectedRoot = wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_TerminalNode(2), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 1));
     // {1:{2:{4:D}}}
-    expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_TerminalNode(4), null), null);
+    expectedRoot = wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_Generic(2, wrapTreeGraphNode_TerminalNode(4), null), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 2));
     // {1:{2:{4:{C:1,8:D}}}}
-    expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(2, wrapTGN_Generic(4, wrapTGN_TerminalNode(8), wrapTGN_CyclicTerminal(1)), null), null);
+    expectedRoot = wrapTreeGraphNode_CyclicStart(1, wrapTreeGraphNode_Generic(2, wrapTreeGraphNode_Generic(4, wrapTreeGraphNode_TerminalNode(8), wrapTreeGraphNode_CyclicTerminal(1)), null), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3));
   }
 
@@ -509,12 +509,12 @@ public class CollatzTest {
     // ":D" for terminal, "C:" for cyclic end
     TreeGraphNode expectedRoot;
     // {2:{4:{1:{C:2},8:{16:D}}}}
-    expectedRoot = wrapTGN_CyclicStart(2, wrapTGN_Generic(4, wrapTGN_Generic(8, wrapTGN_TerminalNode(16), null),
-                   wrapTGN_Generic(1, wrapTGN_CyclicTerminal(2), null)), null);
+    expectedRoot = wrapTreeGraphNode_CyclicStart(2, wrapTreeGraphNode_Generic(4, wrapTreeGraphNode_Generic(8, wrapTreeGraphNode_TerminalNode(16), null),
+                   wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_CyclicTerminal(2), null)), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(2, 3));
     // {4:{1:{2:{C:4}},8:{16:{5:D,32:D}}}}
-    expectedRoot = wrapTGN_CyclicStart(4, wrapTGN_Generic(8, wrapTGN_Generic(16, wrapTGN_TerminalNode(32), wrapTGN_TerminalNode(5)), null),
-                   wrapTGN_Generic(1, wrapTGN_Generic(2, wrapTGN_CyclicTerminal(4), null), null));
+    expectedRoot = wrapTreeGraphNode_CyclicStart(4, wrapTreeGraphNode_Generic(8, wrapTreeGraphNode_Generic(16, wrapTreeGraphNode_TerminalNode(32), wrapTreeGraphNode_TerminalNode(5)), null),
+                   wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_Generic(2, wrapTreeGraphNode_CyclicTerminal(4), null), null));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(4, 3));
   }
 
@@ -524,10 +524,10 @@ public class CollatzTest {
     TreeGraphNode expectedRoot;
     // The roundings of the -1 cycle
     // {-1:{-2:D}}
-    expectedRoot = wrapTGN_Generic(-1, wrapTGN_TerminalNode(-2), null);
+    expectedRoot = wrapTreeGraphNode_Generic(-1, wrapTreeGraphNode_TerminalNode(-2), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(-1, 1));
     // {-1:{-2:{-4:D,C:-1}}}
-    expectedRoot = wrapTGN_CyclicStart(-1, wrapTGN_Generic(-2, wrapTGN_TerminalNode(-4), wrapTGN_CyclicTerminal(-1)), null);
+    expectedRoot = wrapTreeGraphNode_CyclicStart(-1, wrapTreeGraphNode_Generic(-2, wrapTreeGraphNode_TerminalNode(-4), wrapTreeGraphNode_CyclicTerminal(-1)), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(-1, 2));
   }
 
@@ -537,15 +537,15 @@ public class CollatzTest {
     TreeGraphNode expectedRoot;
     // Test a wider modulo sweep by upping P to 5, a to 2, and b to 3.
     // Orbit distance of 1 ~= {1:{-1:D,5:D}}
-    expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(5), wrapTGN_TerminalNode(-1));
+    expectedRoot = wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_TerminalNode(5), wrapTreeGraphNode_TerminalNode(-1));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 1, 5, 2, 3));
     // Orbit distance of 2 ~= {1:{-1:{-5:D,-2:D},5:{C:1,25:D}}}
-    expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_TerminalNode(25), wrapTGN_CyclicTerminal(1)),
-                   wrapTGN_Generic(-1, wrapTGN_TerminalNode(-5), wrapTGN_TerminalNode(-2)));
+    expectedRoot = wrapTreeGraphNode_CyclicStart(1, wrapTreeGraphNode_Generic(5, wrapTreeGraphNode_TerminalNode(25), wrapTreeGraphNode_CyclicTerminal(1)),
+                   wrapTreeGraphNode_Generic(-1, wrapTreeGraphNode_TerminalNode(-5), wrapTreeGraphNode_TerminalNode(-2)));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 2, 5, 2, 3));
     // Orbit distance of 3 ~=  {1:{-1:{-5:{-25:D,-4:D},-2:{-10:D}},5:{C:1,25:{11:D,125:D}}}}
-    expectedRoot = wrapTGN_CyclicStart(1, wrapTGN_Generic(5, wrapTGN_Generic(25, wrapTGN_TerminalNode(125), wrapTGN_TerminalNode(11)), wrapTGN_CyclicTerminal(1)),
-                   wrapTGN_Generic(-1, wrapTGN_Generic(-5, wrapTGN_TerminalNode(-25), wrapTGN_TerminalNode(-4)), wrapTGN_Generic(-2, wrapTGN_TerminalNode(-10), null)));
+    expectedRoot = wrapTreeGraphNode_CyclicStart(1, wrapTreeGraphNode_Generic(5, wrapTreeGraphNode_Generic(25, wrapTreeGraphNode_TerminalNode(125), wrapTreeGraphNode_TerminalNode(11)), wrapTreeGraphNode_CyclicTerminal(1)),
+                   wrapTreeGraphNode_Generic(-1, wrapTreeGraphNode_Generic(-5, wrapTreeGraphNode_TerminalNode(-25), wrapTreeGraphNode_TerminalNode(-4)), wrapTreeGraphNode_Generic(-2, wrapTreeGraphNode_TerminalNode(-10), null)));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3, 5, 2, 3));
   }
 
@@ -555,14 +555,14 @@ public class CollatzTest {
     TreeGraphNode expectedRoot;
     // Test negative P, a and b ~ P=-3, a=-2, b=-5
     // Orbit distance of 1 ~= {1:{-3:D}}
-    expectedRoot = wrapTGN_Generic(1, wrapTGN_TerminalNode(-3), null);
+    expectedRoot = wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_TerminalNode(-3), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 1, -3, -2, -5));
     // Orbit distance of 2 ~= {1:{-3:{-1:D,9:D}}}
-    expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_TerminalNode(9), wrapTGN_TerminalNode(-1)), null);
+    expectedRoot = wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_Generic(-3, wrapTreeGraphNode_TerminalNode(9), wrapTreeGraphNode_TerminalNode(-1)), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 2, -3, -2, -5));
     // Orbit distance of 3 ~= {1:{-3:{-1:{-2:D,3:D},9:{-27:D,-7:D}}}}
-    expectedRoot = wrapTGN_Generic(1, wrapTGN_Generic(-3, wrapTGN_Generic(9, wrapTGN_TerminalNode(-27), wrapTGN_TerminalNode(-7)),
-                   wrapTGN_Generic(-1, wrapTGN_TerminalNode(3), wrapTGN_TerminalNode(-2))), null);
+    expectedRoot = wrapTreeGraphNode_Generic(1, wrapTreeGraphNode_Generic(-3, wrapTreeGraphNode_Generic(9, wrapTreeGraphNode_TerminalNode(-27), wrapTreeGraphNode_TerminalNode(-7)),
+                   wrapTreeGraphNode_Generic(-1, wrapTreeGraphNode_TerminalNode(3), wrapTreeGraphNode_TerminalNode(-2))), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(1, 3, -3, -2, -5));
   }
 
@@ -572,10 +572,10 @@ public class CollatzTest {
     TreeGraphNode expectedRoot;
     // If b is a multiple of a, but not of Pa, then 0 can have a reverse.
     // {0:{C:0,3:D}}
-    expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), wrapTGN_TerminalNode(3));
+    expectedRoot = wrapTreeGraphNode_CyclicStart(0, wrapTreeGraphNode_CyclicTerminal(0), wrapTreeGraphNode_TerminalNode(3));
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 1, 17, 2, -6));
     // {0:{C:0}}
-    expectedRoot = wrapTGN_CyclicStart(0, wrapTGN_CyclicTerminal(0), null);
+    expectedRoot = wrapTreeGraphNode_CyclicStart(0, wrapTreeGraphNode_CyclicTerminal(0), null);
     assertEquals(new TreeGraph(expectedRoot), wrapTreeGraph(0, 1, 17, 2, 102));
   }
 

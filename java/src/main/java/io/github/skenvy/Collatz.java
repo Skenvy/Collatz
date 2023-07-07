@@ -136,11 +136,11 @@ public final class Collatz {
    * Handles the sanity check for the parameterisation (P,a,b) required by both
    * the function and reverse function.
    *
-   * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P)
+   * @param p (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P)
    * @param a (BigInteger): Factor by which to multiply n.
    * @param b (BigInteger): Value to add to the scaled value of n.
    */
-  private static void assertSaneParameterisation(BigInteger P, BigInteger a, BigInteger b) {
+  private static void assertSaneParameterisation(BigInteger p, BigInteger a, BigInteger b) {
     /* Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
      * theoretically, although would violate the reversability (if ~a is 0 then a
      * value of "b" as the input to the reverse function would have a pre-emptive
@@ -153,7 +153,7 @@ public final class Collatz {
      * either a 1 or 2 length cycle, it's not strictly an illegal operation.
      * "b" being zero would cause behaviour not consistant with the collatz
      * function, but would not violate the reversability, so no check either. */
-    if (P == BigInteger.ZERO) {
+    if (p == BigInteger.ZERO) {
       throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_P);
     } else if (a == BigInteger.ZERO) {
       throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_A);
@@ -169,10 +169,10 @@ public final class Collatz {
    * @param b (BigInteger): Value to add to the scaled value of n.
    * @return (BigInteger): The result of the function
    */
-  public static BigInteger function(BigInteger n, BigInteger P, BigInteger a, BigInteger b) {
-    assertSaneParameterisation(P, a, b);
-    if (n.remainder(P) == BigInteger.ZERO) {
-      return n.divide(P);
+  public static BigInteger function(BigInteger n, BigInteger p, BigInteger a, BigInteger b) {
+    assertSaneParameterisation(p, a, b);
+    if (n.remainder(p) == BigInteger.ZERO) {
+      return n.divide(p);
     } else {
       return n.multiply(a).add(b);
     }
@@ -200,15 +200,15 @@ public final class Collatz {
    * @param b (BigInteger): Value to add to the scaled value of n.
    * @return (BigInteger): The result of the function
    */
-  public static BigInteger[] reverseFunction(BigInteger n, BigInteger P, BigInteger a, BigInteger b) {
-    assertSaneParameterisation(P, a, b);
+  public static BigInteger[] reverseFunction(BigInteger n, BigInteger p, BigInteger a, BigInteger b) {
+    assertSaneParameterisation(p, a, b);
     /*(n-b)%a == 0 && (n-b)%(P*a) != 0*/
-    if (n.subtract(b).remainder(a) == BigInteger.ZERO && n.subtract(b).remainder(P.multiply(a)) != BigInteger.ZERO) {
+    if (n.subtract(b).remainder(a) == BigInteger.ZERO && n.subtract(b).remainder(p.multiply(a)) != BigInteger.ZERO) {
       // [P*n] + [(n-b)//a]
-      BigInteger[] preVals = new BigInteger[]{P.multiply(n), n.subtract(b).divide(a)};
+      BigInteger[] preVals = new BigInteger[]{p.multiply(n), n.subtract(b).divide(a)};
       return preVals;
     } else { // [P*n]
-      return new BigInteger[]{P.multiply(n)};
+      return new BigInteger[]{p.multiply(n)};
     }
   }
 
@@ -230,13 +230,13 @@ public final class Collatz {
    * value have reached either the stopping time, or total stopping time.
    *
    * @param n (BigInteger): The initial value to confirm against a stopping time check.
-   * @param total_stop (boolean): If false, the lambda will confirm that iterations of n
+   * @param totalStop (boolean): If false, the lambda will confirm that iterations of n
    *     have reached the oriented stopping time to reach a value closer to 0.
    *     If true, the lambda will simply check equality to 1.
    * @return (Function<BigInteger, Boolean>): The lambda to check for the stopping time.
    */
-  private static Function<BigInteger, Boolean> stoppingTimeTerminus(BigInteger n, boolean total_stop) {
-    if (total_stop) {
+  private static Function<BigInteger, Boolean> stoppingTimeTerminus(BigInteger n, boolean totalStop) {
+    if (totalStop) {
       return (x) -> {
         return x.equals(BigInteger.ONE);
       };
@@ -283,7 +283,7 @@ public final class Collatz {
      *     (number of iterations to obtain 1) rather than the regular stopping time (number
      *     of iterations to reach a value less than the initial value).
      */
-    public HailstoneSequence(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
+    public HailstoneSequence(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
       terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
       if (initialValue.equals(BigInteger.ZERO)) {
         // 0 is always an immediate stop.
@@ -302,7 +302,7 @@ public final class Collatz {
         preValues.add(initialValue);
         BigInteger next;
         for (int k = 1; k <= minMaxTotalStoppingTime; k++) {
-          next = function(preValues.get(k - 1), P, a, b);
+          next = function(preValues.get(k - 1), p, a, b);
           // Check if the next hailstone is either the stopping time, total
           // stopping time, the same as the initial value, or stuck at zero.
           if (terminate.apply(next)) {
@@ -319,15 +319,15 @@ public final class Collatz {
           }
           if (preValues.contains(next)) {
             preValues.add(next);
-            int cycle_init = 1;
+            int cycleInit = 1;
             for (int j = 1; j <= k; j++) {
               if (preValues.get(k - j).equals(next)) {
-                cycle_init = j;
+                cycleInit = j;
                 break;
               }
             }
             terminalCondition = SequenceState.CYCLE_LENGTH;
-            terminalStatus = cycle_init;
+            terminalStatus = cycleInit;
             values = new BigInteger[preValues.size()];
             preValues.toArray(values);
             return;
@@ -370,12 +370,12 @@ public final class Collatz {
    *     of iterations to reach a value less than the initial value).
    * @return (HailstoneSequence): A set of values that form the hailstone sequence.
    */
-  public static HailstoneSequence hailstoneSequence(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
+  public static HailstoneSequence hailstoneSequence(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
     // Call out the function before any magic returns to trap bad values.
     @SuppressWarnings("unused")
-    final BigInteger _throwaway = function(initialValue, P, a, b);
+    final BigInteger _throwaway = function(initialValue, p, a, b);
     // Return the hailstone sequence.
-    return new HailstoneSequence(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime);
+    return new HailstoneSequence(initialValue, p, a, b, maxTotalStoppingTime, totalStoppingTime);
   }
 
   /**
@@ -413,13 +413,13 @@ public final class Collatz {
    *     time (number of iterations to reach a value less than the initial value).
    * @return (Double): The stopping time, or, in a special case, infinity, null or a negative.
    */
-  public static Double stoppingTime(BigInteger initialValue, BigInteger P, BigInteger a, BigInteger b, int maxStoppingTime, boolean totalStoppingTime) {
+  public static Double stoppingTime(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxStoppingTime, boolean totalStoppingTime) {
     /* The information is contained in the hailstone sequence. Although the "max~time"
      * for hailstones is named for "total stopping" time and the "max~time" for this
      * "stopping time" function is _not_ "total", they are handled the same way, as
      * the default for "totalStoppingTime" for hailstones is true, but for this, is
      * false. Thus the naming difference. */
-    HailstoneSequence hail = hailstoneSequence(initialValue, P, a, b, maxStoppingTime, totalStoppingTime);
+    HailstoneSequence hail = hailstoneSequence(initialValue, p, a, b, maxStoppingTime, totalStoppingTime);
     // For total/regular/zero stopping time, the value is already the same as
     // that present, for cycles we report infinity instead of the cycle length,
     // and for max stop out of bounds, we report null instead of the max stop cap
@@ -493,7 +493,7 @@ public final class Collatz {
      * @param a (BigInteger): Factor by which to multiply n.
      * @param b (BigInteger): Value to add to the scaled value of n.
      */
-    public TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b) {
+    public TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) {
       this.nodeValue = nodeValue;
       if (Math.max(0, maxOrbitDistance) == 0) {
         this.terminalSequenceState = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
@@ -501,12 +501,12 @@ public final class Collatz {
         this.preANplusBNode = null;
         this.cycleCheck = null;
       } else {
-        BigInteger[] reverses = reverseFunction(nodeValue, P, a, b);
+        BigInteger[] reverses = reverseFunction(nodeValue, p, a, b);
         cycleCheck = new HashMap<BigInteger, TreeGraphNode>();
         this.cycleCheck.put(this.nodeValue, this);
-        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
+        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, p, a, b, this.cycleCheck);
         if (reverses.length == 2) {
-          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
+          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, p, a, b, this.cycleCheck);
         } else {
           this.preANplusBNode = null;
         }
@@ -526,7 +526,7 @@ public final class Collatz {
      * @param b (BigInteger): Value to add to the scaled value of n.
      * @param cycleCheck (Map<TreeGraphNode,TreeGraphNode>): Checks if this node's value already occurred.
      */
-    private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b, Map<BigInteger, TreeGraphNode> cycleCheck) {
+    private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b, Map<BigInteger, TreeGraphNode> cycleCheck) {
       this.nodeValue = nodeValue;
       this.cycleCheck = cycleCheck;
       if (this.cycleCheck.keySet().contains(this.nodeValue)) {
@@ -541,10 +541,10 @@ public final class Collatz {
       } else {
         this.cycleCheck.put(this.nodeValue, this);
         this.terminalSequenceState = null;
-        BigInteger[] reverses = reverseFunction(nodeValue, P, a, b);
-        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
+        BigInteger[] reverses = reverseFunction(nodeValue, p, a, b);
+        this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, p, a, b, this.cycleCheck);
         if (reverses.length == 2) {
-          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck);
+          this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, p, a, b, this.cycleCheck);
         } else {
           this.preANplusBNode = null;
         }
@@ -640,8 +640,8 @@ public final class Collatz {
      * @param a (BigInteger): Factor by which to multiply n.
      * @param b (BigInteger): Value to add to the scaled value of n.
      */
-    public TreeGraph(BigInteger nodeValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b) {
-      this.root = new TreeGraphNode(nodeValue, maxOrbitDistance, P, a, b);
+    public TreeGraph(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) {
+      this.root = new TreeGraphNode(nodeValue, maxOrbitDistance, p, a, b);
     }
 
     /**
@@ -693,8 +693,8 @@ public final class Collatz {
    * @param a (BigInteger): Factor by which to multiply n.
    * @param b (BigInteger): Value to add to the scaled value of n.
    */
-  public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance, BigInteger P, BigInteger a, BigInteger b) {
-    return new TreeGraph(initialValue, maxOrbitDistance, P, a, b);
+  public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) {
+    return new TreeGraph(initialValue, maxOrbitDistance, p, a, b);
   }
 
   /**
