@@ -18,6 +18,10 @@ import io.github.skenvy.Collatz.SequenceState;
 import io.github.skenvy.Collatz.TreeGraph;
 import io.github.skenvy.Collatz.TreeGraphNode;
 
+/**
+ * Test all the functions of the Collatz file,
+ * which includes multiple inner classes.
+ */
 public class CollatzTest {
 
   private static long wrapFunction(long n) {

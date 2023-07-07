@@ -40,7 +40,7 @@ public final class Collatz {
   // TODO: Check the actual lowest bound.
   public static final BigInteger VERIFIED_MINIMUM = BigInteger.valueOf(-272);
 
-  /** Error message constants, to be used as input to the FailedSaneParameterCheck */
+  /** Error message constants, to be used as input to the FailedSaneParameterCheck. */
   protected enum SaneParameterErrMsg {
 
     /** Message to print in the FailedSaneParameterCheck if {@code P}, the modulus, is zero. */
@@ -55,7 +55,7 @@ public final class Collatz {
     /**
      * Create a new instance with an error message.
      *
-     * @param errorMessage (String): The message to pass to the thrown error.
+     * @param errorMessage The message to pass to the thrown error.
      */
     private SaneParameterErrMsg(String errorMessage) {
       this.errorMessage = errorMessage;
@@ -63,7 +63,8 @@ public final class Collatz {
 
     /**
      * Retrieve the error message associated with the enum.
-     * @return (String): The message to pass to the thrown error.
+     *
+     * @return The message to pass to the thrown error.
      */
     protected String getErrorMessage() {
       return this.errorMessage;
@@ -75,7 +76,7 @@ public final class Collatz {
     /**
      * Construct a FailedSaneParameterCheck with a message associated with the provided enum.
      *
-     * @param errorEnum (SaneParameterErrMsg): The enum from which to extract the message.
+     * @param errorEnum The enum from which to extract the message.
      */
     public FailedSaneParameterCheck(SaneParameterErrMsg errorEnum) {
       super(errorEnum.getErrorMessage());
@@ -116,7 +117,7 @@ public final class Collatz {
     /**
      * Create a new instance with a sequence state.
      *
-     * @param label (String): The stringy form of the enum.
+     * @param label The stringy form of the enum.
      */
     private SequenceState(String label) {
       this.label = label;
@@ -125,7 +126,7 @@ public final class Collatz {
     /**
      * Retrieve the sequence state string associated with the enum.
      *
-     * @return (String): The stringy form of the enum.
+     * @return The stringy form of the enum.
      */
     protected String getLabel() {
       return this.label;
@@ -136,11 +137,12 @@ public final class Collatz {
    * Handles the sanity check for the parameterisation (P,a,b) required by both
    * the function and reverse function.
    *
-   * @param p (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P)
-   * @param a (BigInteger): Factor by which to multiply n.
-   * @param b (BigInteger): Value to add to the scaled value of n.
+   * @param p Modulus used to devide n, iff n is equivalent to (0 mod P)
+   * @param a Factor by which to multiply n.
+   * @param b Value to add to the scaled value of n.
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  private static void assertSaneParameterisation(BigInteger p, BigInteger a, BigInteger b) {
+  private static void assertSaneParameterisation(BigInteger p, BigInteger a, BigInteger b) throws FailedSaneParameterCheck {
     /* Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
      * theoretically, although would violate the reversability (if ~a is 0 then a
      * value of "b" as the input to the reverse function would have a pre-emptive
@@ -163,13 +165,14 @@ public final class Collatz {
   /**
    * Returns the output of a single application of a Collatz-esque function.
    *
-   * @param n (BigInteger): The value on which to perform the Collatz-esque function.
-   * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-   * @param a (BigInteger): Factor by which to multiply n.
-   * @param b (BigInteger): Value to add to the scaled value of n.
-   * @return (BigInteger): The result of the function
+   * @param n The value on which to perform the Collatz-esque function.
+   * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+   * @param a Factor by which to multiply n.
+   * @param b Value to add to the scaled value of n.
+   * @return The result of the function
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static BigInteger function(BigInteger n, BigInteger p, BigInteger a, BigInteger b) {
+  public static BigInteger function(BigInteger n, BigInteger p, BigInteger a, BigInteger b) throws FailedSaneParameterCheck {
     assertSaneParameterisation(p, a, b);
     if (n.remainder(p) == BigInteger.ZERO) {
       return n.divide(p);
@@ -181,10 +184,11 @@ public final class Collatz {
   /**
    * Returns the output of a single application of the Collatz function.
    *
-   * @param n (BigInteger): The value on which to perform the Collatz function.
-   * @return (BigInteger): The result of the function
+   * @param n The value on which to perform the Collatz function.
+   * @return The result of the function
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static BigInteger function(BigInteger n) {
+  public static BigInteger function(BigInteger n) throws FailedSaneParameterCheck {
     return function(n, DEFAULT_P, DEFAULT_A, DEFAULT_B);
   }
 
@@ -194,13 +198,14 @@ public final class Collatz {
    * are returned, the first is the value that would be divided by P, and the second value
    * is that which would undergo the multiply and add step, regardless of which is larger.
    *
-   * @param n (BigInteger): The value on which to perform the reverse Collatz function.
-   * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-   * @param a (BigInteger): Factor by which to multiply n.
-   * @param b (BigInteger): Value to add to the scaled value of n.
-   * @return (BigInteger): The result of the function
+   * @param n The value on which to perform the reverse Collatz function.
+   * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+   * @param a Factor by which to multiply n.
+   * @param b Value to add to the scaled value of n.
+   * @return The result of the function's reverse
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static BigInteger[] reverseFunction(BigInteger n, BigInteger p, BigInteger a, BigInteger b) {
+  public static BigInteger[] reverseFunction(BigInteger n, BigInteger p, BigInteger a, BigInteger b) throws FailedSaneParameterCheck {
     assertSaneParameterisation(p, a, b);
     /*(n-b)%a == 0 && (n-b)%(P*a) != 0*/
     if (n.subtract(b).remainder(a) == BigInteger.ZERO && n.subtract(b).remainder(p.multiply(a)) != BigInteger.ZERO) {
@@ -218,10 +223,11 @@ public final class Collatz {
    * are returned, the first is the value that would be divided by 2, and the second value
    * is that which would undergo the 3N+1 step, regardless of which is larger.
    *
-   * @param n (BigInteger): The value on which to perform the reverse Collatz function.
-   * @return (BigInteger): The result of the function
+   * @param n The value on which to perform the reverse Collatz function.
+   * @return The result of the function's reverse
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static BigInteger[] reverseFunction(BigInteger n) {
+  public static BigInteger[] reverseFunction(BigInteger n) throws FailedSaneParameterCheck {
     return reverseFunction(n, DEFAULT_P, DEFAULT_A, DEFAULT_B);
   }
 
@@ -229,11 +235,11 @@ public final class Collatz {
    * Provides the appropriate lambda to use to check if iterations on an initial
    * value have reached either the stopping time, or total stopping time.
    *
-   * @param n (BigInteger): The initial value to confirm against a stopping time check.
-   * @param totalStop (boolean): If false, the lambda will confirm that iterations of n
+   * @param n The initial value to confirm against a stopping time check.
+   * @param totalStop If false, the lambda will confirm that iterations of n
    *     have reached the oriented stopping time to reach a value closer to 0.
    *     If true, the lambda will simply check equality to 1.
-   * @return (Function<BigInteger, Boolean>): The lambda to check for the stopping time.
+   * @return The lambda to check for the stopping time.
    */
   private static Function<BigInteger, Boolean> stoppingTimeTerminus(BigInteger n, boolean totalStop) {
     if (totalStop) {
@@ -274,16 +280,17 @@ public final class Collatz {
     /**
      * Initialise and compute a new Hailstone Sequence.
    *
-     * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
-     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-     * @param a (BigInteger): Factor by which to multiply n.
-     * @param b (BigInteger): Value to add to the scaled value of n.
-     * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
-     * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+     * @param initialValue The value to begin the hailstone sequence from.
+     * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a Factor by which to multiply n.
+     * @param b Value to add to the scaled value of n.
+     * @param maxTotalStoppingTime Maximum amount of times to iterate the function, if 1 is not reached.
+     * @param totalStoppingTime Whether or not to execute until the "total" stopping time
      *     (number of iterations to obtain 1) rather than the regular stopping time (number
      *     of iterations to reach a value less than the initial value).
+     * @throws FailedSaneParameterCheck if P or a are 0.
      */
-    public HailstoneSequence(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
+    public HailstoneSequence(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) throws FailedSaneParameterCheck {
       terminate = stoppingTimeTerminus(initialValue, totalStoppingTime);
       if (initialValue.equals(BigInteger.ZERO)) {
         // 0 is always an immediate stop.
@@ -360,17 +367,18 @@ public final class Collatz {
    * wont be attempted or reported as part of a cycle, regardless of default or
    * custom parameterisation, as "1" is considered a "total stop".
    *
-   * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
-   * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-   * @param a (BigInteger): Factor by which to multiply n.
-   * @param b (BigInteger): Value to add to the scaled value of n.
-   * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
-   * @param totalStoppingTime (boolean): Whether or not to execute until the "total" stopping time
+   * @param initialValue The value to begin the hailstone sequence from.
+   * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+   * @param a Factor by which to multiply n.
+   * @param b Value to add to the scaled value of n.
+   * @param maxTotalStoppingTime Maximum amount of times to iterate the function, if 1 is not reached.
+   * @param totalStoppingTime Whether or not to execute until the "total" stopping time
    *     (number of iterations to obtain 1) rather than the regular stopping time (number
    *     of iterations to reach a value less than the initial value).
-   * @return (HailstoneSequence): A set of values that form the hailstone sequence.
+   * @return A set of values that form the hailstone sequence.
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static HailstoneSequence hailstoneSequence(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) {
+  public static HailstoneSequence hailstoneSequence(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxTotalStoppingTime, boolean totalStoppingTime) throws FailedSaneParameterCheck {
     // Call out the function before any magic returns to trap bad values.
     @SuppressWarnings("unused")
     final BigInteger _throwaway = function(initialValue, p, a, b);
@@ -382,11 +390,12 @@ public final class Collatz {
    * Returns a list of successive values obtained by iterating the Collatz function,
    * until either 1 is reached, or the total amount of iterations exceeds maxTotalStoppingTime.
    *
-   * @param initialValue (BigInteger): The value to begin the hailstone sequence from.
-   * @param maxTotalStoppingTime (int): Maximum amount of times to iterate the function, if 1 is not reached.
-   * @return (HailstoneSequence): A set of values that form the hailstone sequence.
+   * @param initialValue The value to begin the hailstone sequence from.
+   * @param maxTotalStoppingTime Maximum amount of times to iterate the function, if 1 is not reached.
+   * @return A set of values that form the hailstone sequence.
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static HailstoneSequence hailstoneSequence(BigInteger initialValue, int maxTotalStoppingTime) {
+  public static HailstoneSequence hailstoneSequence(BigInteger initialValue, int maxTotalStoppingTime) throws FailedSaneParameterCheck {
     return hailstoneSequence(initialValue, DEFAULT_P, DEFAULT_A, DEFAULT_B, maxTotalStoppingTime, true);
   }
 
@@ -401,19 +410,20 @@ public final class Collatz {
    * to reach 1, where 0 is considered a "total stop" that should not occur as
    * it does form a cycle of length 1.
    *
-   * @param initialValue (BigInteger): The value for which to find the stopping time.
-   * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-   * @param a (BigInteger): Factor by which to multiply n.
-   * @param b (BigInteger): Value to add to the scaled value of n.
-   * @param maxStoppingTime (int): Maximum amount of times to iterate the function, if
+   * @param initialValue The value for which to find the stopping time.
+   * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+   * @param a Factor by which to multiply n.
+   * @param b Value to add to the scaled value of n.
+   * @param maxStoppingTime Maximum amount of times to iterate the function, if
    *     the stopping time is not reached. IF the maxStoppingTime is reached,
    *     the function will return null.
    * @param totalStoppingTime (bool): Whether or not to execute until the "total" stopping
    *     time (number of iterations to obtain 1) rather than the regular stopping
    *     time (number of iterations to reach a value less than the initial value).
-   * @return (Double): The stopping time, or, in a special case, infinity, null or a negative.
+   * @return The stopping time, or, in a special case, infinity, null or a negative.
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static Double stoppingTime(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxStoppingTime, boolean totalStoppingTime) {
+  public static Double stoppingTime(BigInteger initialValue, BigInteger p, BigInteger a, BigInteger b, int maxStoppingTime, boolean totalStoppingTime) throws FailedSaneParameterCheck {
     /* The information is contained in the hailstone sequence. Although the "max~time"
      * for hailstones is named for "total stopping" time and the "max~time" for this
      * "stopping time" function is _not_ "total", they are handled the same way, as
@@ -446,10 +456,11 @@ public final class Collatz {
    * the amount of iterations to reach 1. If the sequence does not stop, but
    * instead ends in a cycle, the result will be (Double.POSITIVE_INFINITY).
    *
-   * @param initialValue (BigInteger): The value for which to find the stopping time.
-   * @return (Double): The stopping time, or, in a cycle case, infinity.
+   * @param initialValue The value for which to find the stopping time.
+   * @return The stopping time, or, in a cycle case, infinity.
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static Double stoppingTime(BigInteger initialValue) {
+  public static Double stoppingTime(BigInteger initialValue) throws FailedSaneParameterCheck {
     return stoppingTime(initialValue, DEFAULT_P, DEFAULT_A, DEFAULT_B, 1000, false);
   }
 
@@ -487,13 +498,14 @@ public final class Collatz {
     /**
      * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
      *
-     * @param nodeValue (BigInteger): The value for which to find the tree graph node reversal.
-     * @param maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
-     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-     * @param a (BigInteger): Factor by which to multiply n.
-     * @param b (BigInteger): Value to add to the scaled value of n.
+     * @param nodeValue The value for which to find the tree graph node reversal.
+     * @param maxOrbitDistance The maximum distance/orbit/branch length to travel.
+     * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a Factor by which to multiply n.
+     * @param b Value to add to the scaled value of n.
+     * @throws FailedSaneParameterCheck if P or a are 0.
      */
-    public TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) {
+    public TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) throws FailedSaneParameterCheck {
       this.nodeValue = nodeValue;
       if (Math.max(0, maxOrbitDistance) == 0) {
         this.terminalSequenceState = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
@@ -519,14 +531,16 @@ public final class Collatz {
      * This is used internally by itself and the public constructor to pass the cycle checking map,
      * recursively determining subsequent child nodes.
      *
-     * @param nodeValue (BigInteger): The value for which to find the tree graph node reversal.
-     * @param maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
-     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-     * @param a (BigInteger): Factor by which to multiply n.
-     * @param b (BigInteger): Value to add to the scaled value of n.
-     * @param cycleCheck (Map<TreeGraphNode,TreeGraphNode>): Checks if this node's value already occurred.
+     * @param nodeValue The value for which to find the tree graph node reversal.
+     * @param maxOrbitDistance The maximum distance/orbit/branch length to travel.
+     * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a Factor by which to multiply n.
+     * @param b Value to add to the scaled value of n.
+     * @param cycleCheck Checks if this node's value already occurred.
+     * @return the tree graph node and its subsequent tree, for the given parameters.
+     * @throws FailedSaneParameterCheck if P or a are 0.
      */
-    private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b, Map<BigInteger, TreeGraphNode> cycleCheck) {
+    private TreeGraphNode(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b, Map<BigInteger, TreeGraphNode> cycleCheck) throws FailedSaneParameterCheck {
       this.nodeValue = nodeValue;
       this.cycleCheck = cycleCheck;
       if (this.cycleCheck.keySet().contains(this.nodeValue)) {
@@ -556,11 +570,11 @@ public final class Collatz {
      * intended to be used in testing by manually creating trees in reverse, by passing expected child
      * nodes to their parents until the entire expected tree is created.
      *
-     * @param nodeValue (BigInteger): The value expected of this node.
-     * @param terminalSequenceState (SequenceState): The expected sequence state;
+     * @param nodeValue The value expected of this node.
+     * @param terminalSequenceState The expected sequence state;
      *     null, MAX_STOP_OUT_OF_BOUNDS, CYCLE_INIT or CYCLE_LENGTH.
-     * @param preNDivPNode (TreeGraphNode): The expected "Pre N/P" child node.
-     * @param preANplusBNode (TreeGraphNode): The expected "Pre aN+b" child node.
+     * @param preNDivPNode The expected "Pre N/P" child node.
+     * @param preANplusBNode The expected "Pre aN+b" child node.
      */
     public TreeGraphNode(BigInteger nodeValue, SequenceState terminalSequenceState, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
       this.nodeValue = nodeValue;
@@ -601,7 +615,7 @@ public final class Collatz {
      * This will only confirm an equality if the whole subtree of both nodes, including
      * node values, sequence states, and child nodes, checked recursively, are equal.
      *
-     * @param tgn (TreeGraphNode): The TreeGraphNode with which to compare equality.
+     * @param tgn The TreeGraphNode with which to compare equality.
      * @return {@code true}, if the entire sub-trees are equal.
      */
     public boolean subTreeEquals(TreeGraphNode tgn) {
@@ -634,13 +648,14 @@ public final class Collatz {
     /**
      * Create a new TreeGraph with the root node defined by the inputs.
      *
-     * @param nodeValue (BigInteger): The value for which to find the tree graph node reversal.
-     * @param maxOrbitDistance (int): The maximum distance/orbit/branch length to travel.
-     * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-     * @param a (BigInteger): Factor by which to multiply n.
-     * @param b (BigInteger): Value to add to the scaled value of n.
+     * @param nodeValue The value for which to find the tree graph node reversal.
+     * @param maxOrbitDistance The maximum distance/orbit/branch length to travel.
+     * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+     * @param a Factor by which to multiply n.
+     * @param b Value to add to the scaled value of n.
+     * @throws FailedSaneParameterCheck if P or a are 0.
      */
-    public TreeGraph(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) {
+    public TreeGraph(BigInteger nodeValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) throws FailedSaneParameterCheck {
       this.root = new TreeGraphNode(nodeValue, maxOrbitDistance, p, a, b);
     }
 
@@ -648,7 +663,7 @@ public final class Collatz {
      * Create a new TreeGraph by directly passing it the root node.
      * Intended to be used in testing by manually creating trees.
      *
-     * @param root (TreeGraphNode): The root node of the tree.
+     * @param root The root node of the tree.
      */
     public TreeGraph(TreeGraphNode root) {
       this.root = root;
@@ -682,18 +697,20 @@ public final class Collatz {
    * Returns a directed tree graph of the reverse function values up to a maximum
    * nesting of maxOrbitDistance, with the initialValue as the root.
    *
-   * @param initialValue (BigInteger): The root value of the directed tree graph.
-   * @param maxOrbitDistance (int): Maximum amount of times to iterate the reverse
+   * @param initialValue The root value of the directed tree graph.
+   * @param maxOrbitDistance Maximum amount of times to iterate the reverse
    *     function. There is no natural termination to populating the tree
    *     graph, equivalent to the termination of hailstone sequences or
    *     stopping time attempts, so this is not an optional argument like
    *     maxStoppingTime / maxTotalStoppingTime, as it is the intended target
    *     of orbits to obtain, rather than a limit to avoid uncapped computation.
-   * @param P (BigInteger): Modulus used to devide n, iff n is equivalent to (0 mod P).
-   * @param a (BigInteger): Factor by which to multiply n.
-   * @param b (BigInteger): Value to add to the scaled value of n.
+   * @param p Modulus used to devide n, iff n is equivalent to (0 mod P).
+   * @param a Factor by which to multiply n.
+   * @param b Value to add to the scaled value of n.
+   * @return the entire tree graph up to some orbit distance, for the given parameters.
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) {
+  public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance, BigInteger p, BigInteger a, BigInteger b) throws FailedSaneParameterCheck {
     return new TreeGraph(initialValue, maxOrbitDistance, p, a, b);
   }
 
@@ -701,15 +718,17 @@ public final class Collatz {
    * Returns a directed tree graph of the reverse function values up to a maximum
    * nesting of maxOrbitDistance, with the initialValue as the root.
    *
-   * @param initialValue (BigInteger): The root value of the directed tree graph.
-   * @param maxOrbitDistance (int): Maximum amount of times to iterate the reverse
+   * @param initialValue The root value of the directed tree graph.
+   * @param maxOrbitDistance Maximum amount of times to iterate the reverse
    *     function. There is no natural termination to populating the tree
    *     graph, equivalent to the termination of hailstone sequences or
    *     stopping time attempts, so this is not an optional argument like
    *     maxStoppingTime / maxTotalStoppingTime, as it is the intended target
    *     of orbits to obtain, rather than a limit to avoid uncapped computation.
+   * @return the entire tree graph up to some orbit distance, for the given parameters.
+   * @throws FailedSaneParameterCheck if P or a are 0.
    */
-  public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance) {
+  public static TreeGraph treeGraph(BigInteger initialValue, int maxOrbitDistance) throws FailedSaneParameterCheck {
     return treeGraph(initialValue, maxOrbitDistance, DEFAULT_P, DEFAULT_A, DEFAULT_B);
   }
 }
