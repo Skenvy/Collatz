@@ -437,8 +437,9 @@ public class CollatzTest {
   /**
    * Create a "terminal" graph node with null children and the terminal
    * condition that indicates it has reached the maximum orbit of the tree.
-   * @param n
-   * @return
+   *
+   * @param n The value to ascribe to this node.
+   * @return a terminal node, stopping "out of bounds"
    */
   private static TreeGraphNode wrapTreeGraphNode_TerminalNode(long n) {
     return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.MAX_STOP_OUT_OF_BOUNDS, null, null);
@@ -446,8 +447,9 @@ public class CollatzTest {
 
   /**
    * Create a "cyclic terminal" graph node with null children and the "cycle termination" condition.
-   * @param n
-   * @return
+   *
+   * @param n The value to ascribe to this node.
+   * @return a cycle termination node
    */
   private static TreeGraphNode wrapTreeGraphNode_CyclicTerminal(long n) {
     return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.CYCLE_LENGTH, null, null);
@@ -455,10 +457,11 @@ public class CollatzTest {
 
   /**
    * Create a "cyclic start" graph node with given children and the "cycle start" condition.
-   * @param n
-   * @param preNDivPNode
-   * @param preANplusBNode
-   * @return
+   *
+   * @param n The value to ascribe to this node.
+   * @param preNDivPNode the precomputed trunk node.
+   * @param preANplusBNode the precomputed branching node.
+   * @return a cycle initialisation node
    */
   private static TreeGraphNode wrapTreeGraphNode_CyclicStart(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
     return new TreeGraphNode(BigInteger.valueOf(n), SequenceState.CYCLE_INIT, preNDivPNode, preANplusBNode);
@@ -466,10 +469,11 @@ public class CollatzTest {
 
   /**
    * Create a graph node with no terminal state, with given children.
-   * @param n
-   * @param preNDivPNode
-   * @param preANplusBNode
-   * @return
+   *
+   * @param n The value to ascribe to this node.
+   * @param preNDivPNode the precomputed trunk node.
+   * @param preANplusBNode the precomputed branching node.
+   * @return a generic node that has no sequence state.
    */
   private static TreeGraphNode wrapTreeGraphNode_Generic(long n, TreeGraphNode preNDivPNode, TreeGraphNode preANplusBNode) {
     return new TreeGraphNode(BigInteger.valueOf(n), null, preNDivPNode, preANplusBNode);
