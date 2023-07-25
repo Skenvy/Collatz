@@ -1,6 +1,6 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
-.PHONY: venv clean clean_again test build upload_test upload
+.PHONY: venv clean clean_again test lint build upload_test upload
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -22,9 +22,13 @@ clean clean_again:
 	rm -rf */__pycache__/
 	rm -rf */*/__pycache__/
 	rm -rf .pytest_cache/
+	# rm  -f pylama.log
 
 test: clean
 	$(VE) pytest
+
+lint: clean
+	$(VE) pylama -s E,W,D -o ./pylama.ini # -v --report pylama.log
 
 # build will automatically include an adjacent "LICENSE*" ~ but if it's
 # referenced as ../LICENSE in either manifest or [metadate]license_files then

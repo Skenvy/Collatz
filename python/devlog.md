@@ -21,3 +21,5 @@ index-servers =
   username = __token__
   password = <test-pypi-token>
 ```
+## Linting
+We can lint with pylama, which wraps multiple other linters. Re can generate pylint rc file with `pylint --generate-rcfile > .pylintrc`. For more details on configuring pylint see [this SO answer](https://stackoverflow.com/a/70110825/9960809).
