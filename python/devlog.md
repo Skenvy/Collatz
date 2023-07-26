@@ -21,6 +21,8 @@ index-servers =
   username = __token__
   password = <test-pypi-token>
 ```
+## "Local" version vs primary version used on GH runner.
+My `python --version` is `3.8.10` locally, and picking a version you know you're using as the one to run things in in the pipelines can be helpful in minimising the potential for unforeseeable issues, but [this](https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json) is a list of python versions the installer action can accept. `3.8.10` doesn't have an ubuntu `22.04` release. The closest version available to the runner is `3.8.12`.
 ## Linting
 We can lint with [pylama](https://github.com/klen/pylama), which wraps multiple other linters. Re can generate pylint rc file with `pylint --generate-rcfile > .pylintrc`. For more details on configuring pylint see [this SO answer](https://stackoverflow.com/a/70110825/9960809) ([pylint docs](https://docs.pylint.org/), [codes](https://docs.pylint.org/features.html) and [pylintrc](https://github.com/pylint-dev/pylint/blob/main/pylintrc)). Configuring pyflakes is annoying. It reports;
 ```
@@ -45,3 +47,5 @@ per-file-ignores =
 ```
 is dismissing these errors, and any googling for how to ignore specific erros in pyflakes suggest to either swap to flake8, a tool not listed on pylama's supported wraps, or to implement your own patch to ignore. We could "`  # NOWQA`" all the offending lines on the file but the `src/collatz/__init__.py: W0611` is the only complain the pyflakes is having, so we may as well just not run pyflakes, even thought pyflakes seemed to be the only linter to complain about unused imports, it seems a shame to have to get rid of it.
 We also seem to not be able to configure pycodestyle to ignore an error code. It seems like only pylint is getting configuration passed to it from pylama. Maybe it would be easiest sto swap to us pylint and flake8 together rather than pylama.
+## [Documentation](https://wiki.python.org/moin/DocumentationTools)
+Two tools for python documentation can be [pydoc](https://docs.python.org/3/library/pydoc.html) ([wiki](https://en.wikipedia.org/wiki/Pydoc)), included as part of python's core lib, and [sphinx](https://www.sphinx-doc.org/en/master/) ([readthedocs](https://docs.readthedocs.io/en/stable/intro/getting-started-with-sphinx.html), [wiki](https://en.wikipedia.org/wiki/Sphinx_(documentation_generator))).

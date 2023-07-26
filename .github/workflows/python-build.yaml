@@ -14,7 +14,7 @@ defaults:
     shell: bash
     working-directory: python
 env:
-  development_python_version: 3.8.10
+  development_python_version: 3.8.12
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
