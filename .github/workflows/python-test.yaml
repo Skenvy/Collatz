@@ -15,17 +15,13 @@ on:
     - '!python/**.md'
     - '.github/workflows/python-*'
   workflow_call:
-    inputs:
-      development_python_version:
-        description: 'The version of python used in development'
-        default: '3.8.10'
-        required: false
-        type: string
 permissions: {}
 defaults:
   run:
     shell: bash
     working-directory: python
+env:
+  development_python_version: 3.8.10
 jobs:
   quick-test:
     name: Python 🐍🐍🐍 Quick Test 🦂
@@ -37,7 +33,7 @@ jobs:
     - name: 🐍🐍🐍 Set up Python
       uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
       with:
-        python-version: ${{ inputs.development_python_version }}
+        python-version: ${{ env.development_python_version }}
     - name: 🧱 Install build dependencies
       run: make venv
     - name: 🦂 Test with pytest

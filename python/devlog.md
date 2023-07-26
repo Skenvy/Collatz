@@ -22,7 +22,7 @@ index-servers =
   password = <test-pypi-token>
 ```
 ## Linting
-We can lint with [pylama](https://github.com/klen/pylama), which wraps multiple other linters. Re can generate pylint rc file with `pylint --generate-rcfile > .pylintrc`. For more details on configuring pylint see [this SO answer](https://stackoverflow.com/a/70110825/9960809). Configuring pyflakes is annoying. It reports;
+We can lint with [pylama](https://github.com/klen/pylama), which wraps multiple other linters. Re can generate pylint rc file with `pylint --generate-rcfile > .pylintrc`. For more details on configuring pylint see [this SO answer](https://stackoverflow.com/a/70110825/9960809) ([pylint docs](https://docs.pylint.org/), [codes](https://docs.pylint.org/features.html) and [pylintrc](https://github.com/pylint-dev/pylint/blob/main/pylintrc)). Configuring pyflakes is annoying. It reports;
 ```
 src/collatz/__init__.py:2:1 W0611 '.parameterised._KNOWN_CYCLES' imported but unused [pyflakes]
 src/collatz/__init__.py:3:1 W0611 '.parameterised.__VERIFIED_MAXIMUM' imported but unused [pyflakes]

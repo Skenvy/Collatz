@@ -1,8 +1,3 @@
-from enum import Enum
-from typing import Optional, Set
-from math import inf as infinity
-
-
 """
 Provides the basic functionality to interact with the Collatz conjecture.
 The parameterisation uses the same (P,a,b) notation as Conway's generalisations.
@@ -11,19 +6,18 @@ retrieve the hailstone sequence, the "stopping time"/"total stopping time", or
 tree-graph.
 """
 
-"""
-The four known cycles for the standard parameterisation.
-"""
+from enum import Enum
+from typing import Optional, Set
+from math import inf as infinity
+
+
+# The four known cycles for the standard parameterisation.
 _KNOWN_CYCLES = [ [1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10],
 [-17, -50, -25, -74, -37, -110, -55, -164, -82,
  -41, -122, -61, -182, -91, -272, -136, -68, -34]]
-"""
-The current value up to which the standard parameterisation has been verified.
-"""
+# The current value up to which the standard parameterisation has been verified.
 __VERIFIED_MAXIMUM = 295147905179352825856
-"""
-The current value down to which the standard parameterisation has been verified.
-"""
+# The current value down to which the standard parameterisation has been verified.
 __VERIFIED_MINIMUM = -272  # TODO: Check the actual lowest bound.
 
 
@@ -50,7 +44,7 @@ class _CC(Enum):
     ZERO_STOP = 'ZERO_STOP'
 
 
-def __assert_sane_parameterisation(P:int, a:int, b:int):
+def __assert_sane_parameterisation(P:int, a:int, _:int):
     """
     Handles the sanity check for the parameterisation (P,a,b) required by both
     the function and reverse function.
@@ -194,7 +188,7 @@ def hailstone_sequence(initial_value:int, P:int=2, a:int=3,
     _max_total_stopping_time = max(max_total_stopping_time, 1)
     hailstone = [initial_value]
     cyclic = (lambda x: x in hailstone)
-    for k in range(_max_total_stopping_time):
+    for _ in range(_max_total_stopping_time):
         _next = function(hailstone[-1],P=P,a=a,b=b)
         # Check if the next hailstone is either the stopping time, total
         # stopping time, the same as the initial value, or stuck at zero.

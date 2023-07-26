@@ -13,6 +13,8 @@ defaults:
   run:
     shell: bash
     working-directory: python
+env:
+  development_python_version: 3.8.10
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -67,7 +69,7 @@ jobs:
     - name: 🐍🐍🐍 Set up Python
       uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
       with:
-        python-version: '3.10'
+        python-version: ${{ env.development_python_version }}
     - name: 🧱 Install build dependencies
       run: make venv
     - name: 🎡 Build wheel and source

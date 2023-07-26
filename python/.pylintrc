@@ -447,9 +447,11 @@ timeout-methods=requests.api.delete,requests.api.get,requests.api.head,requests.
 [MISCELLANEOUS]
 
 # List of note tags to take in consideration, separated by a comma.
-notes=FIXME,
-      XXX,
-      TODO
+# W0511 / fixme warning.
+# notes=FIXME,
+#       XXX,
+#       TODO
+notes=
 
 # Regular expression of note tags to take in consideration.
 notes-rgx=
