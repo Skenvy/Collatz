@@ -8,8 +8,9 @@ build>=0.7.0,<1
 twine>=1.11.0
 # pytest breaks heavily between minor versions, so only allow patch drift.
 pytest>=7.1.0,<7.2
-# Lint with pylama
-pylama[pylint]>=8.4.1
+# Lint
+pylint>=2.17.4
+flake8>=6.0.0
 # Allow patch drift for tox as well.
 tox>=3.24.5,<4.7
 # Other version mins specd by the PyPi friendly README doc.

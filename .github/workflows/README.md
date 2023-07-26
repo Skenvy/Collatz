@@ -148,6 +148,8 @@ jobs:
       run: make <make-environment-dependencies>
     - name: 🦂 Test
       run: make test
+    - name: 🧹 Lint
+      run: make lint
   full-test:
     name: <Language> <language-emojis> Full Test 🦂
     if: >- 
@@ -171,6 +173,8 @@ jobs:
     # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
     # TODO: run: or uses: something depending on the languges
+    - name: 🧹 Lint
+      run: make lint
   # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
   # codeql:
   #   name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡

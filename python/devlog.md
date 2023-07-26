@@ -22,4 +22,26 @@ index-servers =
   password = <test-pypi-token>
 ```
 ## Linting
-We can lint with pylama, which wraps multiple other linters. Re can generate pylint rc file with `pylint --generate-rcfile > .pylintrc`. For more details on configuring pylint see [this SO answer](https://stackoverflow.com/a/70110825/9960809).
+We can lint with [pylama](https://github.com/klen/pylama), which wraps multiple other linters. Re can generate pylint rc file with `pylint --generate-rcfile > .pylintrc`. For more details on configuring pylint see [this SO answer](https://stackoverflow.com/a/70110825/9960809). Configuring pyflakes is annoying. It reports;
+```
+src/collatz/__init__.py:2:1 W0611 '.parameterised._KNOWN_CYCLES' imported but unused [pyflakes]
+src/collatz/__init__.py:3:1 W0611 '.parameterised.__VERIFIED_MAXIMUM' imported but unused [pyflakes]
+src/collatz/__init__.py:4:1 W0611 '.parameterised.__VERIFIED_MINIMUM' imported but unused [pyflakes]
+src/collatz/__init__.py:5:1 W0611 '.parameterised._ErrMsg' imported but unused [pyflakes]
+src/collatz/__init__.py:6:1 W0611 '.parameterised._CC' imported but unused [pyflakes]
+```
+but neither configuring it in `pylama.ini` with;
+```ini
+[pylama:src/collatz/__init__.py]
+ignore = W0401,W0611
+```
+Or in a `pyflakes.ini` with;
+```ini
+[pyflakes]
+per-file-ignores =
+    # imported but unused
+    src/collatz/__init__.py: W0611
+
+```
+is dismissing these errors, and any googling for how to ignore specific erros in pyflakes suggest to either swap to flake8, a tool not listed on pylama's supported wraps, or to implement your own patch to ignore. We could "`  # NOWQA`" all the offending lines on the file but the `src/collatz/__init__.py: W0611` is the only complain the pyflakes is having, so we may as well just not run pyflakes, even thought pyflakes seemed to be the only linter to complain about unused imports, it seems a shame to have to get rid of it.
+We also seem to not be able to configure pycodestyle to ignore an error code. It seems like only pylint is getting configuration passed to it from pylama. Maybe it would be easiest sto swap to us pylint and flake8 together rather than pylama.

@@ -22,13 +22,20 @@ clean clean_again:
 	rm -rf */__pycache__/
 	rm -rf */*/__pycache__/
 	rm -rf .pytest_cache/
-	# rm  -f pylama.log
+	rm  -f pylint.log
+	rm  -f flake8.log
 
 test: clean
 	$(VE) pytest
 
+# https://pylint.readthedocs.io/en/latest/user_guide/configuration/all-options.html
+# https://pylint.readthedocs.io/en/latest/user_guide/messages/index.html
+# https://flake8.pycqa.org/en/latest/user/configuration.html
+# https://flake8.pycqa.org/en/latest/user/options.html#options-list
 lint: clean
-	$(VE) pylama -s E,W,D -o ./pylama.ini # -v --report pylama.log
+	$(VE) pylint --recursive=y --disable=C,R,I --enable=F,E,W --output-format=colorized,text:pylint.log \
+	--msg-template='{C} {path}:{line}:{column}: {msg_id}: {msg} ({symbol})' src tests
+	$(VE) flake8 --color=always -vv --output-file=flake8.log src tests
 
 # build will automatically include an adjacent "LICENSE*" ~ but if it's
 # referenced as ../LICENSE in either manifest or [metadate]license_files then

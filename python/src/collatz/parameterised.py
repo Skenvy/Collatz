@@ -11,26 +11,37 @@ retrieve the hailstone sequence, the "stopping time"/"total stopping time", or
 tree-graph.
 """
 
-
-_KNOWN_CYCLES = [[1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10], 
-[-17,-50,-25,-74,-37,-110,-55,-164,-82,-41,-122,-61,-182,-91,-272,-136,-68,-34]]
+"""
+The four known cycles for the standard parameterisation.
+"""
+_KNOWN_CYCLES = [ [1, 4, 2], [-1, -2], [-5, -14, -7, -20, -10],
+[-17, -50, -25, -74, -37, -110, -55, -164, -82,
+ -41, -122, -61, -182, -91, -272, -136, -68, -34]]
+"""
+The current value up to which the standard parameterisation has been verified.
+"""
 __VERIFIED_MAXIMUM = 295147905179352825856
-__VERIFIED_MINIMUM = -272  #TODO: Check the actual lowest bound.
+"""
+The current value down to which the standard parameterisation has been verified.
+"""
+__VERIFIED_MINIMUM = -272  # TODO: Check the actual lowest bound.
 
 
-"""
-Error message constant.
-"""
+
 class _ErrMsg(Enum):
+    """
+    Error message constant.
+    """
     SANE_PARAMS_P = "'P' should not be 0 ~ violates modulo being non-zero."
     SANE_PARAMS_A = "'a' should not be 0 ~ violates the reversability."
 
 
-"""
-Cycle Control: Descriptive flags to indicate when some event occurs in the
-hailstone sequences, when set to verbose, or stopping time check.
-"""
+
 class _CC(Enum):
+    """
+    Cycle Control: Descriptive flags to indicate when some event occurs in the
+    hailstone sequences, when set to verbose, or stopping time check.
+    """
     STOPPING_TIME = 'STOPPING_TIME'
     TOTAL_STOPPING_TIME = 'TOTAL_STOPPING_TIME'
     CYCLE_INIT = 'CYCLE_INIT'
