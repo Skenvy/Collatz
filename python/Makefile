@@ -1,6 +1,6 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
-.PHONY: venv clean clean_again test lint build upload_test upload
+.PHONY: venv clean clean_again pydoc_server test lint build upload_test upload
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -24,6 +24,11 @@ clean clean_again:
 	rm -rf .pytest_cache/
 	rm  -f pylint.log
 	rm  -f flake8.log
+
+# http://localhost:44449/
+# http://localhost:44449/src.collatz.html
+pydoc_server:
+	$(VE) python -m pydoc -b
 
 test: clean
 	$(VE) pytest

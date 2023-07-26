@@ -16,3 +16,5 @@ tox>=3.24.5,<4.7
 # Other version mins specd by the PyPi friendly README doc.
 setuptools>=38.6.0
 wheel>=0.31.0
+# Documentation with pydoc and;
+sphinx>=7.1.0,<8
