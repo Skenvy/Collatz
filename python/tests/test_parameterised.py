@@ -76,7 +76,8 @@ def test_reverse_function():
     assert collatz.reverse_function(0, P=17, a=2, b=-6) == [0, 3]
     assert collatz.reverse_function(0, P=17, a=2, b=102) == [0]
 
-# Test def hailstone_sequence(initial_value:int, P:int=2, 
+
+# Test def hailstone_sequence(initial_value:int, P:int=2,
 # a:int=3, b:int=1, max_total_stopping_time:int=1000,
 # total_stopping_time:bool=True, verbose:bool=True)
 def test_hailstone_sequence():
@@ -93,38 +94,38 @@ def test_hailstone_sequence():
     # values not in the cycle, a CC flag, then the cycle and another CC flag.
     for kc in [kc for kc in _KNOWN_CYCLES if 1 not in kc]:
         assert collatz.hailstone_sequence(kc[0], verbose=False) == kc + [kc[0]]
-        assert collatz.hailstone_sequence(kc[0]) == [_CC.CYCLE_INIT.value, kc,
-                                            [_CC.CYCLE_LENGTH.value, len(kc)]]
+        assert collatz.hailstone_sequence(kc[0]) == [
+            _CC.CYCLE_INIT.value, kc, [_CC.CYCLE_LENGTH.value, len(kc)]]
     # Test the lead into a cycle by entering two of the cycles.
     seq = [kc for kc in _KNOWN_CYCLES if -5 in kc][0]
     seq = [seq[1]*4, seq[1]*2] + seq[1:] + [seq[0]]
     assert collatz.hailstone_sequence(-56, verbose=False) == seq + [seq[2]]
-    assert collatz.hailstone_sequence(-56) == seq[:2] + [_CC.CYCLE_INIT.value,
-                            seq[2:], [_CC.CYCLE_LENGTH.value, len(seq[2:])]]
+    assert collatz.hailstone_sequence(-56) == seq[:2] + [
+        _CC.CYCLE_INIT.value, seq[2:], [_CC.CYCLE_LENGTH.value, len(seq[2:])]]
     seq = [kc for kc in _KNOWN_CYCLES if -17 in kc][0]
     seq = [seq[1]*4, seq[1]*2] + seq[1:] + [seq[0]]
     assert collatz.hailstone_sequence(-200, verbose=False) == seq + [seq[2]]
-    assert collatz.hailstone_sequence(-200) == seq[:2] + [_CC.CYCLE_INIT.value,
-                            seq[2:], [_CC.CYCLE_LENGTH.value, len(seq[2:])]]
+    assert collatz.hailstone_sequence(-200) == seq[:2] + [
+        _CC.CYCLE_INIT.value, seq[2:], [_CC.CYCLE_LENGTH.value, len(seq[2:])]]
     # 1's cycle wont yield a description of it being a "cycle" as far as the
     # hailstones are concerned, which is to be expected, so..
     assert collatz.hailstone_sequence(4, verbose=False) == [4, 2, 1]
-    assert collatz.hailstone_sequence(4) == [4, 2, 1,
-                            [_CC.TOTAL_STOPPING_TIME.value, 2]]
+    assert collatz.hailstone_sequence(4) == [
+        4, 2, 1, [_CC.TOTAL_STOPPING_TIME.value, 2]]
     assert collatz.hailstone_sequence(16, verbose=False) == [16, 8, 4, 2, 1]
-    assert collatz.hailstone_sequence(16) == [16, 8, 4, 2, 1,
-                            [_CC.TOTAL_STOPPING_TIME.value, 4]]
+    assert collatz.hailstone_sequence(16) == [
+        16, 8, 4, 2, 1, [_CC.TOTAL_STOPPING_TIME.value, 4]]
     # Test the regular stopping time check.
-    assert collatz.hailstone_sequence(4, total_stopping_time=False) == [4, 2,
-                            [_CC.STOPPING_TIME.value, 1]]
-    assert collatz.hailstone_sequence(5, total_stopping_time=False) == [5, 16,
-                            8, 4, [_CC.STOPPING_TIME.value, 3]]
+    assert collatz.hailstone_sequence(4, total_stopping_time=False) == [
+        4, 2, [_CC.STOPPING_TIME.value, 1]]
+    assert collatz.hailstone_sequence(5, total_stopping_time=False) == [
+        5, 16, 8, 4, [_CC.STOPPING_TIME.value, 3]]
     # Test small max_total_stopping_time: (minimum internal value is one)
-    assert collatz.hailstone_sequence(4, max_total_stopping_time=-100) == [4, 2,
-                            [_CC.MAX_STOP_OOB.value, 1]]
+    assert collatz.hailstone_sequence(4, max_total_stopping_time=-100) == [
+        4, 2, [_CC.MAX_STOP_OOB.value, 1]]
     # Test the zero stop mid hailing. This wont happen with default params tho.
-    assert collatz.hailstone_sequence(3, P=2, a=3, b=-9) == [3, 0,
-                            [_CC.ZERO_STOP.value, -1]]
+    assert collatz.hailstone_sequence(3, P=2, a=3, b=-9) == [
+        3, 0, [_CC.ZERO_STOP.value, -1]]
     # Lastly, while the function wont let you use a P value of 0, 1 and -1 are
     # still allowed, although they will generate immediate 1 or 2 length cycles
     # respectively, so confirm the behaviour of each of these hailstones.
@@ -164,7 +165,7 @@ def test_stopping_time():
     assert collatz.stopping_time(4) == 1
     assert collatz.stopping_time(5) == 3
     # Test small max_total_stopping_time: (minimum internal value is one)
-    assert collatz.stopping_time(5, max_stopping_time=-100) == None
+    assert collatz.stopping_time(5, max_stopping_time=-100) is None
     # Test the zero stop mid hailing. This wont happen with default params tho.
     assert collatz.stopping_time(3, P=2, a=3, b=-9) == -1
     # Lastly, while the function wont let you use a P value of 0, 1 and -1 are

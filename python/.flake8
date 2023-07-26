@@ -14,11 +14,13 @@ exclude =
     # This contains our built documentation
     build,
     # This contains builds of flake8 that we don't want to check
-    dist
+    dist,
     # The local development venv.
-    .ve
+    .ve,
     # The setup script does not need to be linted
     setup.py
 per-file-ignores =
     # imported but unused
-    src/collatz/__init__.py: F401
+    src/collatz/__init__.py: F401,
+    # do not assign a lambda expression, use a def
+    tests/test_parameterised.py: E731
