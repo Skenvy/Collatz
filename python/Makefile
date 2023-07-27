@@ -38,9 +38,11 @@ verify_built_checkin: clean
 	echo "Exit if a change to the built Sphinx rst's is not committed"
 	git add docs && git diff --exit-code --cached --stat -- docs/
 
+# https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html
+# https://www.sphinx-doc.org/en/master/man/sphinx-build.html
 docs: clean
 	$(VE) $(SPHINX_BUILD_SOURCE)
-	$(VE) sphinx-build docs/source docs/build -b html
+	$(VE) sphinx-build -a -b dirhtml -W --keep-going -n docs/source docs/build
 
 test: clean
 	$(VE) pytest
