@@ -1,6 +1,8 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
-.PHONY: venv clean clean_again pydoc_server test lint build upload_test upload
+SPHINX_BUILD_SOURCE=sphinx-apidoc -o docs/source src/
+TWINE=twine upload --config-file ./.pypirc --repository
+.PHONY: venv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -24,11 +26,21 @@ clean clean_again:
 	rm -rf .pytest_cache/
 	rm  -f pylint.log
 	rm  -f flake8.log
+	rm -rf docs/build/
 
 # http://localhost:44449/
 # http://localhost:44449/src.collatz.html
 pydoc_server:
 	$(VE) python -m pydoc -b
+
+verify_built_checkin: clean
+	$(VE) $(SPHINX_BUILD_SOURCE)
+	echo "Exit if a change to the built Sphinx rst's is not committed"
+	git add docs && git diff --exit-code --cached --stat -- docs/
+
+docs: clean
+	$(SPHINX_BUILD_SOURCE)
+	sphinx-build docs/source docs/build
 
 test: clean
 	$(VE) pytest
@@ -42,13 +54,13 @@ lint: clean
 	--msg-template='{C} {path}:{line}:{column}: {msg_id}: {msg} ({symbol})' src tests
 	$(VE) flake8 --color=always -vv --output-file=flake8.log src tests
 
-build: test clean_again
+build: test lint verify_built_checkin clean_again
 	$(VE) python -m build
 	$(VE) pip install --force-reinstall dist/*-none-any.whl
 
 # https://twine.readthedocs.io/en/stable/#twine-upload
 upload_test: build
-	$(VE) twine upload --config-file ./.pypirc --repository testpypi dist/*
+	$(VE) $(TWINE) testpypi dist/*
 
 upload: upload_test
-	$(VE) twine upload --config-file ./.pypirc --repository pypi dist/*
+	$(VE) $(TWINE) pypi dist/*

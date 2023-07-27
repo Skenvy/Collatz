@@ -40,6 +40,8 @@ jobs:
       run: make test
     - name: 🧹 Lint
       run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
   full-test:
     name: Python 🐍🐍🐍 Full Test 🦂
     if: >- 
@@ -59,13 +61,15 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: 🍑 Install dependencies
-      run: |
+      run: |-
         python -m pip install --upgrade pip
         python -m pip install tox tox-gh-actions
     - name: 🦂 Test with tox
       run: tox
     - name: 🧹 Lint
       run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
   codeql:
     name: Python 🐍🐍🐍 CodeQL 🛡👨‍💻🛡
     if: >- 
@@ -78,3 +82,17 @@ jobs:
     uses: ./.github/workflows/github-codeql.yaml
     with:
       language: 'python'
+  docs:
+    name: Python 🐍🐍🐍 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🐍🐍🐍 Set up Python
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+      with:
+        python-version: ${{ env.development_python_version }}
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs
+      run: make docs
