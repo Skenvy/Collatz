@@ -39,8 +39,8 @@ verify_built_checkin: clean
 	git add docs && git diff --exit-code --cached --stat -- docs/
 
 docs: clean
-	$(SPHINX_BUILD_SOURCE)
-	sphinx-build docs/source docs/build -b html
+	$(VE) $(SPHINX_BUILD_SOURCE)
+	$(VE) sphinx-build docs/source docs/build -b html
 
 test: clean
 	$(VE) pytest
