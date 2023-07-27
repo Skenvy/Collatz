@@ -116,14 +116,10 @@ jobs:
       with:
         name: Package
         path: python/.demo
-    ################################################
     - name: 🦛 Install this package
-      run: npm run strip-version && npm install
-    - name: 🦏 Transpile demo
-      run: npm run build
+      run: make install
     - name: 🦏 Run usage demonstration
-      run: npm run demo
-    ################################################
+      run: make demo
   codeql:
     name: Python 🐍🐍🐍 CodeQL 🛡👨‍💻🛡
     if: >- 
