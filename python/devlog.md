@@ -6,6 +6,17 @@ This is the [Python](https://www.python.org/) implementation. Python ([CPython s
 * [set up testing with pytest](https://docs.pytest.org/en/7.1.x/getting-started.html#get-started)
 * [the recommended github actions](https://packaging.python.org/en/latest/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/) | [pypa on github](https://github.com/pypa) | [`pypa/gh-action-pypi-publish` action](https://github.com/pypa/gh-action-pypi-publish)
 * [the actual recommendation on aligning the readme with pypi's expectations for it](https://packaging.python.org/en/latest/guides/making-a-pypi-friendly-readme/)
+
+Our [packaging process](https://packaging.python.org/en/latest/tutorials/packaging-projects/) here is to use [build](https://packaging.python.org/en/latest/key_projects/#build) ([PEP 517](https://peps.python.org/pep-0517/)) to wrap [setuptools](https://packaging.python.org/en/latest/key_projects/#easy-install), to create the [wheel](https://packaging.python.org/en/latest/key_projects/#wheel) that can be published with [twine](https://packaging.python.org/en/latest/key_projects/#twine). There are a number of different ways to get to the same end result of a python package that can be uploaded to pypi, and ours is;
+1. `python -m build`
+1. [Build](https://pypa-build.readthedocs.io/en/latest/) uses `./.pyproject.toml`
+1. `./.pyproject.toml`'s `[build-system]` specifies a `build-backend`
+1. Ours is `build-backend = "setuptools.build_meta"` (see [setuptools' build_meta](https://setuptools.pypa.io/en/latest/build_meta.html))
+1. [Setuptools](https://setuptools.pypa.io/en/latest/), using [`./.pyproject.toml`](https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html), runs a [./setup.py](https://setuptools.pypa.io/en/latest/userguide/quickstart.html) if present, which also uses [`./setup.cfg`](https://setuptools.pypa.io/en/latest/userguide/declarative_config.html)
+    1. Although `./setup.py` is now recommended against, in favour of just `./setup.cfg`, it's the easiest dynamic entry, i.e. to use a `__version__.py` file to specify the version. (Although it looks like something similar can be done in `./setup.cfg` with something like `version = attr: my_package.VERSION`)
+1. This creates the source distribution and [wheel](https://wheel.readthedocs.io/en/latest/) ([PEP 427](https://peps.python.org/pep-0427/)).
+1. We then can use [twine](https://twine.readthedocs.io/en/latest/) to publish the source.
+    1. We _actually_ use a GitHub action to upload the build from a workflow; [pypa/gh-action-pypi-publish](https://github.com/pypa/gh-action-pypi-publish). Twine recipes that do the same thing are in the `./Makefile`, but this is a [`pypa`](https://github.com/pypa) maintained action to make it easier, rather than proctoring the existence of the necessary `./.pypirc` file on the runner.
 ## `./.pypirc` example
 ```
 [distutils]

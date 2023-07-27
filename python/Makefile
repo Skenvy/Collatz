@@ -42,12 +42,8 @@ lint: clean
 	--msg-template='{C} {path}:{line}:{column}: {msg_id}: {msg} ({symbol})' src tests
 	$(VE) flake8 --color=always -vv --output-file=flake8.log src tests
 
-# build will automatically include an adjacent "LICENSE*" ~ but if it's
-# referenced as ../LICENSE in either manifest or [metadate]license_files then
-# it will result in being added outside the built wheel. This used to copy the
-# LICENSE as `cp ../LICENSE LICENSE` -- build -- `rm LICENSE`.
 build: test clean_again
-	$(VE) python3 -m build
+	$(VE) python -m build
 	$(VE) pip install --force-reinstall dist/*-none-any.whl
 
 # https://twine.readthedocs.io/en/stable/#twine-upload
