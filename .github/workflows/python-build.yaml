@@ -155,7 +155,7 @@ jobs:
         export SHORTSHA=$(git rev-parse --short HEAD)
         git fetch origin gh-pages-python:gh-pages-python
         git symbolic-ref HEAD refs/heads/gh-pages-python
-        cd .. && mv python/doc/build ../MERGE_TARGET
+        cd .. && mv python/docs/build ../MERGE_TARGET
         git rm -rf . && git clean -fxd && git reset
         shopt -s dotglob && mkdir python && mv ../MERGE_TARGET/* python/
         git add .

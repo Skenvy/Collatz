@@ -150,6 +150,8 @@ jobs:
       run: make test
     - name: 🧹 Lint
       run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
   full-test:
     name: <Language> <language-emojis> Full Test 🦂
     if: >- 
@@ -175,32 +177,36 @@ jobs:
     # TODO: run: or uses: something depending on the languges
     - name: 🧹 Lint
       run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
   # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
-  # codeql:
-  #   name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
-  #   if: >- 
-  #     ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-  #     (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
-  #   uses: ./.github/workflows/github-codeql.yaml
-  #   with:
-  #     language: '<Language>'
-  # # Docs step is optional depending on language
-  # docs:
-  #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-  #   - name: <language-emojis> Set up <Language>
-  #     uses: <gh-action-setup-language@semver>
-  #     with:
-  #       version: <language-version>
-  #   - name: 📄 Docs
-  #     run: make docs
+  codeql:
+    name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/github-codeql.yaml
+    with:
+      language: '<Language>'
+  # Docs step is optional depending on language
+  docs:
+    name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: <language-version>
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs
+      run: make docs
 ```
 ## `<language>-build.yaml`
 ```yaml
@@ -333,9 +339,26 @@ jobs:
       uses: <gh-action-setup-language@semver>
       with:
         version: <language-version>
+    # Run the following first to create the empty orphan
+    # git checkout --orphan gh-pages-<language>
+    # rm .git/index ; git clean -fdx
+    # git commit -m "Initial empty orphan" --allow-empty
+    # git push --set-upstream origin gh-pages-<language>
     - name: 📄 Docs
-      run: |
-        # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-<language>'
+      run: |-
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-<language>:gh-pages-<language>
+        git symbolic-ref HEAD refs/heads/gh-pages-<language>
+        # What gets copied and where might vary but generally;
+        cd .. && mv <language>/<built-docs-path> ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir <language> && mv ../MERGE_TARGET/* <language>/
+        # Then back to normal;
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-<language>
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   docs-merge:
