@@ -21,6 +21,7 @@ author = 'Nathan Levett'
 # https://www.sphinx-doc.org/en/master/usage/extensions/index.html
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
 ]
 
 templates_path = ['_templates']

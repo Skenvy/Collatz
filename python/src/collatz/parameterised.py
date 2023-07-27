@@ -76,7 +76,7 @@ def function(n: int, P: int = 2, a: int = 3, b: int = 1):
     Args:
         n (int): The value on which to perform the Collatz-esque function
 
-    Kwargs:
+    Keyword Args:
         P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).
             Default is 2.
         a (int): Factor by which to multiply n. Default is 3.
@@ -94,8 +94,8 @@ def reverse_function(n: int, P: int = 2, a: int = 3, b: int = 1):
     Args:
         n (int): The value on which to perform the reverse Collatz function
 
-    Kwargs:
-        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
+    Keyword Args:
+        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).
             Default is 2.
         a (int): Factor by which to multiply n. Default is 3.
         b (int): Value to add to the scaled value of n. Default is 1.
@@ -157,7 +157,7 @@ def hailstone_sequence(initial_value: int, P: int = 2, a: int = 3,
     Args:
         initial_value (int): The value to begin the hailstone sequence from.
 
-    Kwargs:
+    Keyword Args:
         P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
             Default is 2.
         a (int): Factor by which to multiply n. Default is 3.
@@ -240,7 +240,7 @@ def stopping_time(initial_value: int, P: int = 2, a: int = 3,
     Args:
         initial_value (int): The value for which to find the stopping time.
 
-    Kwargs:
+    Keyword Args:
         P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
             Default is 2.
         a (int): Factor by which to multiply n. Default is 3.
@@ -289,13 +289,13 @@ def tree_graph(initial_value: int, max_orbit_distance: int, P: int = 2, a: int =
             target of orbits to obtain, rather than a limit to avoid uncapped
             computation.
 
-    Kwargs:
+    Keyword Args:
         P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)
             Default is 2.
         a (int): Factor by which to multiply n. Default is 3.
         b (int): Value to add to the scaled value of n. Default is 1.
 
-    Internal Kwargs:
+    Internal Keyword Args:
         __cycle_prevention (set[int]): Used to prevent cycles from precipitating
             by keeping track of all values added across previous nest depths.
     """
