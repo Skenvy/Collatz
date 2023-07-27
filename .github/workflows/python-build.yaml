@@ -131,3 +131,43 @@ jobs:
       with:
         packages_dir: python/dist
         password: ${{ secrets.PYPI_API_TOKEN }}
+  docs:
+    name: Python 🐍🐍🐍 Docs 📄
+    needs: [release, publish]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🐍🐍🐍 Set up Python
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+      with:
+        python-version: ${{ env.development_python_version }}
+    - name: 🧱 Install build dependencies
+      run: make venv
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 📄 Docs Publishing
+      run: |-
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-python:gh-pages-python
+        git symbolic-ref HEAD refs/heads/gh-pages-python
+        cd .. && mv python/doc/build ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir python && mv ../MERGE_TARGET/* python/
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-python
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-python'
