@@ -93,6 +93,6 @@ jobs:
       with:
         python-version: ${{ env.development_python_version }}
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make venv
     - name: 📄 Docs
       run: make docs

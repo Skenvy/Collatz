@@ -1,6 +1,6 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
-SPHINX_BUILD_SOURCE=sphinx-apidoc -o docs/source src/
+SPHINX_BUILD_SOURCE=sphinx-apidoc -f -o docs/source src/
 TWINE=twine upload --config-file ./.pypirc --repository
 .PHONY: venv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload
 SHELL:=/bin/bash
@@ -40,7 +40,7 @@ verify_built_checkin: clean
 
 docs: clean
 	$(SPHINX_BUILD_SOURCE)
-	sphinx-build docs/source docs/build
+	sphinx-build docs/source docs/build -b html
 
 test: clean
 	$(VE) pytest
