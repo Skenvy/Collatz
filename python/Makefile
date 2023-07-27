@@ -1,6 +1,7 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
-SPHINX_BUILD_SOURCE=sphinx-apidoc -f -o docs/source src/
+PACKAGE_VERSION=$$(cut -d \" -f 2 src/collatz/__version__.py)
+SPHINX_BUILD_SOURCE=sphinx-apidoc -Me -V $(PACKAGE_VERSION) -R $(PACKAGE_VERSION) -f -o docs/source src/
 TWINE=twine upload --config-file ./.pypirc --repository
 .PHONY: venv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload
 SHELL:=/bin/bash
