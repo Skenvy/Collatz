@@ -18,3 +18,4 @@ setuptools>=38.6.0
 wheel>=0.31.0
 # Documentation with pydoc and;
 sphinx>=7.1.0,<8
+furo>=2023.7.26
