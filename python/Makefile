@@ -3,7 +3,7 @@ VE=source .ve/bin/activate &&
 PACKAGE_VERSION=$$(cut -d \" -f 2 src/collatz/__version__.py)
 SPHINX_BUILD_SOURCE=sphinx-apidoc -Me -V $(PACKAGE_VERSION) -R $(PACKAGE_VERSION) -f -o docs/source src/
 TWINE=twine upload --config-file ./.pypirc --repository
-.PHONY: venv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload
+.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -17,7 +17,13 @@ SHELL:=/bin/bash
 venv:
 	python3 -m venv .ve
 	$(VE) pip install --upgrade pip
+	$(VE) pip install --upgrade -r requirements-venv-frozen.txt
+
+revenv:
+	python3 -m venv .ve
+	$(VE) pip install --upgrade pip
 	$(VE) pip install --upgrade -r requirements-venv.txt
+	$(VE) pip freeze > requirements-venv-frozen.txt
 
 clean clean_again:
 	rm -rf src/*.egg-info/

@@ -10,9 +10,9 @@ Welcome to Collatz's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   _readme
-
    modules
+   README.md
+
 
 Indices and tables
 ==================
