@@ -131,6 +131,8 @@ defaults:
   run:
     shell: bash
     working-directory: <language>
+env:
+  development_<language>_version: <language-version>
 jobs:
   quick-test:
     name: <Language> <language-emojis> Quick Test 🦂
@@ -142,7 +144,7 @@ jobs:
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
         arch: 'x64'
     - name: 🧱 Install build dependencies
       run: make <make-environment-dependencies>
@@ -179,6 +181,58 @@ jobs:
       run: make lint
     - name: ⚖ Does the checked source match the built result? 
       run: make verify_built_checkin
+  built-example:
+    name: <Language> <language-emojis> Build Example 🦛
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+        arch: 'x64'
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🧱 Build
+      run: make build
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+      with:
+        name: Package
+        path: <language>/some-artefacts/path-to-one-file.pkg
+        if-no-files-found: error
+        retention-days: 1
+  usage-demonstration:
+    name: <Language> <language-emojis> Usage Demonstration 🦏
+    needs: [built-example]
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: <language>/.demo
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+        arch: 'x64'
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      with:
+        name: Package
+        path: <language>/.demo
+    - name: 🦛 Install this package
+      run: make install
+    - name: 🦏 Run usage demonstration
+      run: make demo
   # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
   codeql:
     name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
@@ -202,7 +256,7 @@ jobs:
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 📄 Docs
@@ -225,6 +279,8 @@ defaults:
   run:
     shell: bash
     working-directory: <language>
+env:
+  development_<language>_version: <language-version>
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -280,7 +336,7 @@ jobs:
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
     - name: 🧱 Install build dependencies
       run: make <make-environment-dependencies>
     # Some step that uses `make build`
@@ -338,7 +394,7 @@ jobs:
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
     # Run the following first to create the empty orphan
     # git checkout --orphan gh-pages-<language>
     # rm .git/index ; git clean -fdx
