@@ -37,7 +37,6 @@ mdurl==0.1.2
 more-itertools==10.0.0
 myst-parser==2.0.0
 packaging==23.1
-pkg_resources==0.0.0
 pkginfo==1.9.6
 platformdirs==3.9.1
 pluggy==1.2.0

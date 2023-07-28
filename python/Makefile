@@ -20,10 +20,13 @@ venv:
 	$(VE) pip install --upgrade -r requirements-venv-frozen.txt
 
 revenv:
+	rm -rf .ve
 	python3 -m venv .ve
 	$(VE) pip install --upgrade pip
 	$(VE) pip install --upgrade -r requirements-venv.txt
 	$(VE) pip freeze > requirements-venv-frozen.txt
+	sed -i '/^pkg_resources/d' requirements-venv-frozen.txt
+	sed -i '/^pkg-resources/d' requirements-venv-frozen.txt
 
 clean clean_again:
 	rm -rf src/*.egg-info/
