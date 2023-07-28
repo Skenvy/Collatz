@@ -43,6 +43,7 @@ verify_built_checkin: clean
 # https://www.sphinx-doc.org/en/master/man/sphinx-build.html
 docs: clean
 	$(VE) $(SPHINX_BUILD_SOURCE)
+	# $(VE) myst-docutils-demo README.md 
 	$(VE) sphinx-build -a -b dirhtml -W --keep-going -n docs/source docs/build
 
 test: clean
