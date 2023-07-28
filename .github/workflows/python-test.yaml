@@ -60,12 +60,16 @@ jobs:
       uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
       with:
         python-version: ${{ matrix.python-version }}
-    - name: 🍑 Install dependencies
+    # Tox is running pytest with the global installs
+    - name: 🍑 Install dependencies (tox global)
       run: |-
         python -m pip install --upgrade pip
         python -m pip install tox tox-gh-actions
     - name: 🦂 Test with tox
       run: tox
+    - name: 🧱 Install build dependencies (venv)
+      run: make venv
+    # Lint and verify are using "our" venv, not tox's
     - name: 🧹 Lint
       run: make lint
     - name: ⚖ Does the checked source match the built result? 
