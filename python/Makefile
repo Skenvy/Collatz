@@ -54,8 +54,8 @@ test: clean
 # https://flake8.pycqa.org/en/latest/user/options.html#options-list
 lint: clean
 	$(VE) pylint --recursive=y --disable=C,R,I --enable=F,E,W --output-format=colorized,text:pylint.log \
-	--msg-template='{C} {path}:{line}:{column}: {msg_id}: {msg} ({symbol})' src tests
-	$(VE) flake8 --color=always -vv --output-file=flake8.log src tests
+	--msg-template='{C} {path}:{line}:{column}: {msg_id}: {msg} ({symbol})' src tests .demo/_
+	$(VE) flake8 --color=always -vv --output-file=flake8.log src tests .demo/_
 
 build: test lint verify_built_checkin clean_again
 	$(VE) python -m build

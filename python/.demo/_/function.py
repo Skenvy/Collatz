@@ -1,5 +1,5 @@
 import collatz
-from collatz import _CC, _ErrMsg, _KNOWN_CYCLES
+from collatz import _ErrMsg
 
 
 _REGEX_ERR_P_IS_ZERO = f"^{_ErrMsg.SANE_PARAMS_P.value}$"

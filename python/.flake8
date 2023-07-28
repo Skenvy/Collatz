@@ -24,3 +24,4 @@ per-file-ignores =
     src/collatz/__init__.py: F401,
     # do not assign a lambda expression, use a def
     tests/test_parameterised.py: E731
+    .demo/_/tree_graph.py: E731
