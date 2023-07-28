@@ -6,8 +6,7 @@
 # -- Path setup --------------------------------------------------------------
 
 import os, sys
-sys.path.insert(0, os.path.abspath('../../src'))
-sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(0, os.path.abspath('../../src/'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
@@ -24,10 +23,10 @@ extensions = [
     "sphinx.ext.autodoc",  # Include documentation from docstrings
     "sphinx.ext.napoleon",  # Support for NumPy and Google style docstrings
     # "sphinx.ext.autosectionlabel",  # Allow reference sections using its title
-    # "sphinx.ext.autosummary",  # Generate autodoc summaries
+    "sphinx.ext.autosummary",  # Generate autodoc summaries
     # "sphinx.ext.coverage",  # Collect doc coverage stats
     # "sphinx.ext.doctest",  # Test snippets in the documentation
-    # "sphinx.ext.duration",  # Measure durations of Sphinx processing
+    "sphinx.ext.duration",  # Measure durations of Sphinx processing
     # "sphinx.ext.extlinks",  # Markup to shorten external links
     "sphinx.ext.githubpages",  # Publish HTML docs in GitHub Pages
     # "sphinx.ext.graphviz",  # Add Graphviz graphs
@@ -36,7 +35,7 @@ extensions = [
     # "sphinx.ext.inheritance_diagram",  # Include inheritance diagrams
     # "sphinx.ext.intersphinx",  # Link to other projects’ documentation
     # "sphinx.ext.linkcode",  # Add external links to source code Math support for HTML outputs in Sphinx
-    # "sphinx.ext.todo",  # Support for todo items
+    "sphinx.ext.todo",  # Support for todo items
     "sphinx.ext.viewcode",  # Add links to highlighted source code
     # Non sphinx included extenstions;
     "myst_parser",  # https://myst-parser.readthedocs.io/en/latest/intro.html
