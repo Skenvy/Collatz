@@ -15,7 +15,7 @@ SPHINX_BUILD_SOURCE=sphinx-apidoc -Me -V $(PACKAGE_VERSION) -R $(PACKAGE_VERSION
 VERIFY_BUILT_MSG=echo "Exit if a change to the built Sphinx rst's is not committed"
 VERIFY_BUILT_ERR=git add docs && git diff --exit-code --cached --stat -- docs/
 TWINE=twine upload --config-file ./.pypirc --repository
-.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload venv_windows
+.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test tox lint build upload_test upload venv_windows verify_built_checkin_windows test_windows tox_windows lint_windows```````
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -72,7 +72,7 @@ test: clean
 
 # Pytest with tox
 tox: clean
-	$(VE) $(tox)
+	$(VE) $(TOX)
 
 # https://pylint.readthedocs.io/en/latest/user_guide/configuration/all-options.html
 # https://pylint.readthedocs.io/en/latest/user_guide/messages/index.html
@@ -109,7 +109,7 @@ test_windows: clean
 
 # Pytest with tox
 tox_windows: clean
-	$(VEW) $(tox)
+	$(VEW) $(TOX)
 
 lint_windows: clean
 	$(VEW) $(PYLINT)
