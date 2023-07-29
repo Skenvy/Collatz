@@ -14,7 +14,7 @@ For a v1.0.0 release, handling arbitrary integers is a nice to have, but not req
 | [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) | [npm](https://www.npmjs.com/package/@skenvy/collatz) | [TSDoc+TypeDoc](https://skenvy.github.io/Collatz/javascript) | [npm-gh](https://github.com/Skenvy/Collatz/pkgs/npm/collatz) |
 | [Julia](https://github.com/Skenvy/Collatz/tree/main/julia) | [juliahub](https://juliahub.com/ui/Packages/Collatz/UmeZE) | [Documenter](https://skenvy.github.io/Collatz/julia/) | _N/A_ |
 | [LaTeX](https://github.com/Skenvy/Collatz/tree/main/LaTeX) | _N/A_ | **#TODO** | _N/A_ |
-| [Python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | **#TODO** | _N/A_ |
+| [Python](https://github.com/Skenvy/Collatz/tree/main/python) | [pypi](https://pypi.org/project/collatz/) | [Sphinx+MyST](https://skenvy.github.io/Collatz/python/) | _N/A_ |
 | [R](https://github.com/Skenvy/Collatz/tree/main/R) | [CRAN](https://cran.r-project.org/package=collatz) | [roxy+pkgd](https://skenvy.github.io/Collatz/R/)+[covr](https://skenvy.github.io/Collatz/R/covr/Collatz-report.html)+[PDF](https://skenvy.github.io/Collatz/R/pdf/) | _N/A_ |
 | [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) | [RubyGems](https://rubygems.org/gems/collatz) | [RDoc](https://skenvy.github.io/Collatz/ruby/) | [gems-gh](https://github.com/Skenvy/Collatz/packages/1636643) |
 | [Rust](https://github.com/Skenvy/Collatz/tree/main/rust) | **#TODO** | **#TODO** | _N/A_ |

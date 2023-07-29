@@ -3,9 +3,11 @@
 ---
 From the repository base (change `<language>`);
 ```bash
-mkdir <language>
+mkdir -p <language>/.demo/_
 touch <language>/.gitignore
 touch <language>/Makefile
+touch <language>/.demo/.gitignore
+touch <language>/.demo/Makefile
 cp LICENSE <language>/LICENSE
 echo "# Devlog" > <language>/devlog.md
 touch <language>/README.md
