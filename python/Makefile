@@ -1,6 +1,15 @@
 # Virtual Environment
+ifeq ($(OS),Windows_NT)
+VENV=python -m venv .ve
+VE=.\.ve\Scripts\activate -and 
+RM=Remove-Item -Force
+RR=Remove-Item -Force -Recurse
+else
+VENV=python3 -m venv .ve
 VE=source .ve/bin/activate && 
-VEW=.\.ve\Scripts\activate && 
+RM=rm -f
+RR=rm -rf
+endif
 PIP_PIP=pip install --upgrade pip
 PIP_REQ=pip install --upgrade -r
 VENV_REQS=requirements-venv.txt
@@ -16,7 +25,12 @@ VERIFY_BUILT_MSG=echo "Exit if a change to the built Sphinx rst's is not committ
 VERIFY_BUILT_ERR=git add docs && git diff --exit-code --cached --stat -- docs/
 TWINE=twine upload --config-file ./.pypirc --repository
 .PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test tox lint build upload_test upload
+ifeq ($(OS),Windows_NT)
+SHELL:=powershell.exe
+.SHELLFLAGS:=-NoProfile -Command
+else
 SHELL:=/bin/bash
+endif
 
 # https://code.visualstudio.com/docs/python/environments
 # https://docs.python.org/3/library/venv.html < for pwsh execution policy.
@@ -27,13 +41,13 @@ SHELL:=/bin/bash
 # place to the .ve in ~/python/ as the venv is mutually exclusive between them.
 # Despite being in a venv pip install --upgrade pip still needs admin on windows
 venv:
-	python3 -m venv .ve
+	$(VENV)
 	$(VE) $(PIP_PIP)
 	$(VE) $(PIP_REQ) $(FROZEN_VENV_REQS)
 
 revenv:
-	rm -rf .ve
-	python3 -m venv .ve
+	$(RR) .ve
+	$(VENV)
 	$(VE) $(PIP_PIP)
 	$(VE) $(PIP_REQ) $(VENV_REQS)
 	$(VE) pip freeze > $(FROZEN_VENV_REQS)
@@ -41,14 +55,14 @@ revenv:
 	sed -i '/^pkg-resources/d' $(FROZEN_VENV_REQS)
 
 clean clean_again:
-	rm -rf src/*.egg-info/
-	rm -rf dist/
-	rm -rf */__pycache__/
-	rm -rf */*/__pycache__/
-	rm -rf .pytest_cache/
-	rm  -f pylint.log
-	rm  -f flake8.log
-	rm -rf docs/build/
+	$(RR) src/*.egg-info/
+	$(RR) dist/
+	$(RR) */__pycache__/
+	$(RR) */*/__pycache__/
+	$(RR) .pytest_cache/
+	$(RM) pylint.log
+	$(RM) flake8.log
+	$(RR) docs/build/
 
 # http://localhost:44449/
 # http://localhost:44449/src.collatz.html
@@ -64,10 +78,9 @@ verify_built_checkin: clean
 # https://www.sphinx-doc.org/en/master/man/sphinx-build.html
 docs: clean
 	$(VE) $(SPHINX_BUILD_SOURCE)
-	# $(VE) myst-docutils-demo README.md 
 	$(VE) sphinx-build -a -b dirhtml -W --keep-going -n docs/source docs/build
 
-test: clean
+test:
 	$(VE) $(TEST)
 
 # Pytest with tox
@@ -92,36 +105,3 @@ upload_test: build
 
 upload: upload_test
 	$(VE) $(TWINE) pypi dist/*
-
-################################################################################
-# Windows versions of recipes
-.PHONY: venv_windows
-venv_windows: SHELL:=
-venv_windows:
-	python -m venv .ve
-	$(VEW) $(PIP_PIP)
-	$(VEW) $(PIP_REQ) $(FROZEN_VENV_REQS)
-
-.PHONY: verify_built_checkin_windows
-verify_built_checkin_windows: SHELL:=
-verify_built_checkin_windows: clean
-	$(VEW) $(SPHINX_BUILD_SOURCE)
-	$(VERIFY_BUILT_MSG)
-	$(VERIFY_BUILT_ERR)
-
-.PHONY: test_windows
-test_windows: SHELL:=
-test_windows: clean
-	$(VEW) $(TEST)
-
-
-.PHONY: tox_windows
-tox_windows: SHELL:=
-tox_windows: clean
-	$(VEW) $(TOX)
-
-.PHONY: lint_windows
-lint_windows: SHELL:=
-lint_windows: clean
-	$(VEW) $(PYLINT)
-	$(VEW) $(FLAKE8)

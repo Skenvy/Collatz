@@ -23,6 +23,24 @@ defaults:
 env:
   development_python_version: 3.8.12
 jobs:
+  quick-venv:
+    name: Python 🐍🐍🐍 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🐍🐍🐍 Set up Python
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+      with:
+        python-version: 3.6
+    - name: 🧱 Install build dependencies
+      run: make revenv
+    - name: 🆙 Upload venv
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+      with:
+        name: reqs
+        path: python/requirements-venv-frozen.txt
+        if-no-files-found: error
   quick-test:
     name: Python 🐍🐍🐍 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
