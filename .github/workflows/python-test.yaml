@@ -76,23 +76,8 @@ jobs:
         python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
         os: [ubuntu-20.04, macOS-latest, windows-latest]
         include:
-          - os: ubuntu-20.04
-            venv: venv
-            test: tox
-            lint: lint
-            verify: verify_built_checkin
-            shell: bash
-          - os: macOS-latest
-            venv: venv
-            test: tox
-            lint: lint
-            verify: verify_built_checkin
-            shell: bash
+          - shell: bash
           - os: windows-latest
-            venv: venv_windows
-            test: tox_windows
-            lint: lint_windows
-            verify: verify_built_checkin_windows
             shell: pwsh
     steps:
     - name: 🏁 Checkout
@@ -102,13 +87,13 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: 🧱 Install build dependencies
-      run: make ${{ matrix.venv }}
+      run: make venv
     - name: 🦂 Test with pytest
-      run: make ${{ matrix.test }}
+      run: make tox
     - name: 🧹 Lint
-      run: make ${{ matrix.lint }}
+      run: make lint
     - name: ⚖ Does the checked source match the built result? 
-      run: make ${{ matrix.verify }}
+      run: make verify_built_checkin
   built-example:
     name: Python 🐍🐍🐍 Build Example 🦛
     if: >-
