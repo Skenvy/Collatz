@@ -45,7 +45,7 @@ SPHINX_BUILD_SOURCE=sphinx-apidoc -Me -V $(PACKAGE_VERSION) -R $(PACKAGE_VERSION
 VERIFY_BUILT_MSG=echo "Exit if a change to the built Sphinx rst's is not committed"
 VERIFY_BUILT_ERR=git add docs && git diff --exit-code --cached --stat -- docs/
 TWINE=twine upload --config-file ./.pypirc --repository
-.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test tox lint build upload_test upload
+.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs server test tox lint build upload_test upload
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -95,6 +95,11 @@ verify_built_checkin: clean
 docs: clean
 	$(VE) $(SPHINX_BUILD_SOURCE)
 	$(VE) sphinx-build -a -b dirhtml -W --keep-going -n docs/source docs/build
+
+# http://localhost:8000/docs/build/
+# http://localhost:8000/docs/build/collatz/
+server:
+	python3 -m http.server 8000
 
 test:
 	$(VE) $(TEST)
