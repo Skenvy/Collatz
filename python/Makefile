@@ -1,7 +1,32 @@
-# Virtual Environment
+# Virtual Environment -- the source activate for linux environments is supported
+# but we must include qualifier to make everything "global" on windows, as the
+# best way of making the github windows runner happy, which does not like really
+# any method of using a venv.
+#
+# Trying to use """VE=.\.ve\Scripts\activate && """ results in;
+# /usr/bin/sh: line 1: ..veScriptsactivate: command not found
+#
+# Trying to ifeq windows the shell option and force use powershell;
+# ifeq ($(OS),Windows_NT)
+# SHELL:=pwsh
+# .SHELLFLAGS:=-NoProfile -Command
+# else
+# SHELL:=/bin/bash
+# endif
+# While also using pwsh for the windows runner;
+#       matrix:
+#         include:
+#           - shell: bash
+#           - os: windows-latest
+#             shell: pwsh
+# Resulted in """/usr/bin/bash: -N: invalid option""" during venv itself.
+#
+# So set VE and VENV to nothing when on windows.
 ifeq ($(OS),Windows_NT)
-VENV=python -m venv .ve
-VE=.\.ve\Scripts\activate && 
+# VENV=python -m venv .ve
+# VE=.\.ve\Scripts\activate && 
+VENV=
+VE=
 else
 VENV=python3 -m venv .ve
 VE=source .ve/bin/activate && 
