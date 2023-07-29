@@ -45,18 +45,45 @@ plugins:
 # their entries' file path in the `include:` list.
 #
 exclude:
-  - .sass-cache/
-  - .jekyll-cache/
-  - gemfiles/
-  - Gemfile
-  - Gemfile.lock
-  - node_modules/
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
+- .sass-cache/
+- .jekyll-cache/
+- gemfiles/
+- Gemfile
+- Gemfile.lock
+- node_modules/
+- vendor/bundle/
+- vendor/cache/
+- vendor/gems/
+- vendor/ruby/
 
 include:
-  - python/_modules/
-  - python/_sources/
-  - python/_static/
+- python/_modules/collatz
+- python/_modules/collatz/parameterised
+- python/_modules/collatz/parameterised/index.html
+- python/_modules/index.html
+- python/_sources/collatz.parameterised.rst.txt
+- python/_sources/collatz.rst.txt
+- python/_sources/index.rst.txt
+- python/_sources/modules.rst.txt
+- python/_static/basic.css
+- python/_static/debug.css
+- python/_static/doctools.js
+- python/_static/documentation_options.js
+- python/_static/file.png
+- python/_static/language_data.js
+- python/_static/minus.png
+- python/_static/plus.png
+- python/_static/pygments.css
+- python/_static/scripts
+- python/_static/scripts/furo-extensions.js
+- python/_static/scripts/furo.js
+- python/_static/scripts/furo.js.LICENSE.txt
+- python/_static/scripts/furo.js.map
+- python/_static/searchtools.js
+- python/_static/skeleton.css
+- python/_static/sphinx_highlight.js
+- python/_static/styles
+- python/_static/styles/furo-extensions.css
+- python/_static/styles/furo-extensions.css.map
+- python/_static/styles/furo.css
+- python/_static/styles/furo.css.map
