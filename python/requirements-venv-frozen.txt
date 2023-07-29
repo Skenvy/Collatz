@@ -1,6 +1,6 @@
 alabaster==0.7.13
 astroid==2.11.7
-attrs==23.1.0
+attrs==22.2.0
 Babel==2.12.1
 beautifulsoup4==4.12.2
 bleach==6.0.0
@@ -55,7 +55,7 @@ readme-renderer==40.0
 requests==2.31.0
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
-rich==13.4.2
+rich==13.5.0
 SecretStorage==3.3.3
 six==1.16.0
 snowballstemmer==2.2.0
