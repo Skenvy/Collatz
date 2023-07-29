@@ -26,7 +26,7 @@ VERIFY_BUILT_ERR=git add docs && git diff --exit-code --cached --stat -- docs/
 TWINE=twine upload --config-file ./.pypirc --repository
 .PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test tox lint build upload_test upload
 ifeq ($(OS),Windows_NT)
-SHELL:=powershell.exe
+SHELL:=pwsh
 .SHELLFLAGS:=-NoProfile -Command
 else
 SHELL:=/bin/bash
