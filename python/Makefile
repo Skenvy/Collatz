@@ -15,7 +15,7 @@ SPHINX_BUILD_SOURCE=sphinx-apidoc -Me -V $(PACKAGE_VERSION) -R $(PACKAGE_VERSION
 VERIFY_BUILT_MSG=echo "Exit if a change to the built Sphinx rst's is not committed"
 VERIFY_BUILT_ERR=git add docs && git diff --exit-code --cached --stat -- docs/
 TWINE=twine upload --config-file ./.pypirc --repository
-.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test tox lint build upload_test upload venv_windows verify_built_checkin_windows test_windows tox_windows lint_windows```````
+.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test tox lint build upload_test upload
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -93,24 +93,35 @@ upload_test: build
 upload: upload_test
 	$(VE) $(TWINE) pypi dist/*
 
+################################################################################
 # Windows versions of recipes
+.PHONY: venv_windows
+venv_windows: SHELL:=
 venv_windows:
 	python -m venv .ve
 	$(VEW) $(PIP_PIP)
 	$(VEW) $(PIP_REQ) $(FROZEN_VENV_REQS)
 
+.PHONY: verify_built_checkin_windows
+verify_built_checkin_windows: SHELL:=
 verify_built_checkin_windows: clean
 	$(VEW) $(SPHINX_BUILD_SOURCE)
 	$(VERIFY_BUILT_MSG)
 	$(VERIFY_BUILT_ERR)
 
+.PHONY: test_windows
+test_windows: SHELL:=
 test_windows: clean
 	$(VEW) $(TEST)
 
-# Pytest with tox
+
+.PHONY: tox_windows
+tox_windows: SHELL:=
 tox_windows: clean
 	$(VEW) $(TOX)
 
+.PHONY: lint_windows
+lint_windows: SHELL:=
 lint_windows: clean
 	$(VEW) $(PYLINT)
 	$(VEW) $(FLAKE8)
