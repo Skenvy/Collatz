@@ -51,6 +51,7 @@ jobs:
     defaults:
       run:
         shell: ${{ matrix.shell }}
+        working-directory: python
     strategy:
       fail-fast: false
       matrix:
