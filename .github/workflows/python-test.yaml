@@ -53,6 +53,22 @@ jobs:
       matrix:
         python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
         os: [ubuntu-20.04, macOS-latest, windows-latest]
+        include:
+          - os: ubuntu-20.04
+            venv: venv
+            test: tox
+            lint: lint
+            verify: verify_built_checkin
+          - os: macOS-latest
+            venv: venv
+            test: tox
+            lint: lint
+            verify: verify_built_checkin
+          - os: windows-latest
+            venv: venv_windows
+            test: tox_windows
+            lint: lint_windows
+            verify: verify_built_checkin_windows
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
@@ -60,20 +76,14 @@ jobs:
       uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
       with:
         python-version: ${{ matrix.python-version }}
-    # Tox is running pytest with the global installs
-    - name: 🍑 Install dependencies (tox global)
-      run: |-
-        python -m pip install --upgrade pip
-        python -m pip install tox tox-gh-actions
-    - name: 🦂 Test with tox
-      run: tox
-    - name: 🧱 Install build dependencies (venv)
-      run: make venv
-    # Lint and verify are using "our" venv, not tox's
+    - name: 🧱 Install build dependencies
+      run: make ${{ matrix.venv }}
+    - name: 🦂 Test with pytest
+      run: make ${{ matrix.test }}
     - name: 🧹 Lint
-      run: make lint
+      run: make ${{ matrix.lint }}
     - name: ⚖ Does the checked source match the built result? 
-      run: make verify_built_checkin
+      run: make ${{ matrix.verify }}
   built-example:
     name: Python 🐍🐍🐍 Build Example 🦛
     if: >-

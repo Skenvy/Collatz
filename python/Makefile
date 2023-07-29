@@ -1,9 +1,21 @@
 # Virtual Environment
 VE=source .ve/bin/activate && 
+VEW=.\.ve\Scripts\activate && 
+PIP_PIP=pip install --upgrade pip
+PIP_REQ=pip install --upgrade -r
+VENV_REQS=requirements-venv.txt
+FROZEN_VENV_REQS=requirements-venv-frozen.txt
+TEST=pytest
+TOX=tox
+LINT_FOLDERS=src tests .demo/_
+PYLINT=pylint --recursive=y --disable=C,R,I --enable=F,E,W --output-format=colorized,text:pylint.log --msg-template='{C} {path}:{line}:{column}: {msg_id}: {msg} ({symbol})' $(LINT_FOLDERS)
+FLAKE8=flake8 --color=always -vv --output-file=flake8.log $(LINT_FOLDERS)
 PACKAGE_VERSION=$$(cut -d \" -f 2 src/collatz/__version__.py)
 SPHINX_BUILD_SOURCE=sphinx-apidoc -Me -V $(PACKAGE_VERSION) -R $(PACKAGE_VERSION) -f -o docs/source src/
+VERIFY_BUILT_MSG=echo "Exit if a change to the built Sphinx rst's is not committed"
+VERIFY_BUILT_ERR=git add docs && git diff --exit-code --cached --stat -- docs/
 TWINE=twine upload --config-file ./.pypirc --repository
-.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload
+.PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test lint build upload_test upload venv_windows
 SHELL:=/bin/bash
 
 # https://code.visualstudio.com/docs/python/environments
@@ -16,17 +28,17 @@ SHELL:=/bin/bash
 # Despite being in a venv pip install --upgrade pip still needs admin on windows
 venv:
 	python3 -m venv .ve
-	$(VE) pip install --upgrade pip
-	$(VE) pip install --upgrade -r requirements-venv-frozen.txt
+	$(VE) $(PIP_PIP)
+	$(VE) $(PIP_REQ) $(FROZEN_VENV_REQS)
 
 revenv:
 	rm -rf .ve
 	python3 -m venv .ve
-	$(VE) pip install --upgrade pip
-	$(VE) pip install --upgrade -r requirements-venv.txt
-	$(VE) pip freeze > requirements-venv-frozen.txt
-	sed -i '/^pkg_resources/d' requirements-venv-frozen.txt
-	sed -i '/^pkg-resources/d' requirements-venv-frozen.txt
+	$(VE) $(PIP_PIP)
+	$(VE) $(PIP_REQ) $(VENV_REQS)
+	$(VE) pip freeze > $(FROZEN_VENV_REQS)
+	sed -i '/^pkg_resources/d' $(FROZEN_VENV_REQS)
+	sed -i '/^pkg-resources/d' $(FROZEN_VENV_REQS)
 
 clean clean_again:
 	rm -rf src/*.egg-info/
@@ -45,8 +57,8 @@ pydoc_server:
 
 verify_built_checkin: clean
 	$(VE) $(SPHINX_BUILD_SOURCE)
-	echo "Exit if a change to the built Sphinx rst's is not committed"
-	git add docs && git diff --exit-code --cached --stat -- docs/
+	$(VERIFY_BUILT_MSG)
+	$(VERIFY_BUILT_ERR)
 
 # https://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html
 # https://www.sphinx-doc.org/en/master/man/sphinx-build.html
@@ -56,16 +68,19 @@ docs: clean
 	$(VE) sphinx-build -a -b dirhtml -W --keep-going -n docs/source docs/build
 
 test: clean
-	$(VE) pytest
+	$(VE) $(TEST)
+
+# Pytest with tox
+tox: clean
+	$(VE) $(tox)
 
 # https://pylint.readthedocs.io/en/latest/user_guide/configuration/all-options.html
 # https://pylint.readthedocs.io/en/latest/user_guide/messages/index.html
 # https://flake8.pycqa.org/en/latest/user/configuration.html
 # https://flake8.pycqa.org/en/latest/user/options.html#options-list
 lint: clean
-	$(VE) pylint --recursive=y --disable=C,R,I --enable=F,E,W --output-format=colorized,text:pylint.log \
-	--msg-template='{C} {path}:{line}:{column}: {msg_id}: {msg} ({symbol})' src tests .demo/_
-	$(VE) flake8 --color=always -vv --output-file=flake8.log src tests .demo/_
+	$(VE) $(PYLINT)
+	$(VE) $(FLAKE8)
 
 build: test lint verify_built_checkin clean_again
 	$(VE) python -m build
@@ -77,3 +92,25 @@ upload_test: build
 
 upload: upload_test
 	$(VE) $(TWINE) pypi dist/*
+
+# Windows versions of recipes
+venv_windows:
+	python -m venv .ve
+	$(VEW) $(PIP_PIP)
+	$(VEW) $(PIP_REQ) $(FROZEN_VENV_REQS)
+
+verify_built_checkin_windows: clean
+	$(VEW) $(SPHINX_BUILD_SOURCE)
+	$(VERIFY_BUILT_MSG)
+	$(VERIFY_BUILT_ERR)
+
+test_windows: clean
+	$(VEW) $(TEST)
+
+# Pytest with tox
+tox_windows: clean
+	$(VEW) $(tox)
+
+lint_windows: clean
+	$(VEW) $(PYLINT)
+	$(VEW) $(FLAKE8)
