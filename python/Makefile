@@ -1,7 +1,7 @@
 # Virtual Environment
 ifeq ($(OS),Windows_NT)
 VENV=python -m venv .ve
-VE=.\.ve\Scripts\activate -and 
+VE=.\.ve\Scripts\activate && 
 RM=Remove-Item -Force
 RR=Remove-Item -Force -Recurse
 else
