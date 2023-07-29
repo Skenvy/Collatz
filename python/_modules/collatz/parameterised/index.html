@@ -1,0 +1,555 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex/" /><link rel="search" title="Search" href="../../../search/" />
+
+    <!-- Generated with Sphinx 7.1.1 and Furo 2023.07.26 -->
+        <title>collatz.parameterised - Collatz documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=362ab14a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../"><div class="brand">Collatz  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../">
+  
+  
+  <span class="sidebar-brand-text">Collatz  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../modules/">src</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of src</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../collatz/">collatz package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of collatz package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../collatz.parameterised/">collatz.parameterised module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <h1>Source code for collatz.parameterised</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Provides the basic functionality to interact with the Collatz conjecture.</span>
+<span class="sd">The parameterisation uses the same (P,a,b) notation as Conway&#39;s generalisations.</span>
+<span class="sd">Besides the function and reverse function, there is also functionality to</span>
+<span class="sd">retrieve the hailstone sequence, the &quot;stopping time&quot;/&quot;total stopping time&quot;, or</span>
+<span class="sd">tree-graph.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">inf</span> <span class="k">as</span> <span class="n">infinity</span>
+
+
+<span class="c1"># The four known cycles for the standard parameterisation.</span>
+<span class="n">_KNOWN_CYCLES</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">14</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">,</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">],</span>
+                 <span class="p">[</span><span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">25</span><span class="p">,</span> <span class="o">-</span><span class="mi">74</span><span class="p">,</span> <span class="o">-</span><span class="mi">37</span><span class="p">,</span> <span class="o">-</span><span class="mi">110</span><span class="p">,</span> <span class="o">-</span><span class="mi">55</span><span class="p">,</span> <span class="o">-</span><span class="mi">164</span><span class="p">,</span> <span class="o">-</span><span class="mi">82</span><span class="p">,</span>
+                  <span class="o">-</span><span class="mi">41</span><span class="p">,</span> <span class="o">-</span><span class="mi">122</span><span class="p">,</span> <span class="o">-</span><span class="mi">61</span><span class="p">,</span> <span class="o">-</span><span class="mi">182</span><span class="p">,</span> <span class="o">-</span><span class="mi">91</span><span class="p">,</span> <span class="o">-</span><span class="mi">272</span><span class="p">,</span> <span class="o">-</span><span class="mi">136</span><span class="p">,</span> <span class="o">-</span><span class="mi">68</span><span class="p">,</span> <span class="o">-</span><span class="mi">34</span><span class="p">]]</span>
+<span class="c1"># The current value up to which the standard parameterisation has been verified.</span>
+<span class="n">__VERIFIED_MAXIMUM</span> <span class="o">=</span> <span class="mi">295147905179352825856</span>
+<span class="c1"># The current value down to which the standard parameterisation has been verified.</span>
+<span class="n">__VERIFIED_MINIMUM</span> <span class="o">=</span> <span class="o">-</span><span class="mi">272</span>  <span class="c1"># TODO: Check the actual lowest bound.</span>
+
+
+<span class="k">class</span> <span class="nc">_ErrMsg</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error message constant.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SANE_PARAMS_P</span> <span class="o">=</span> <span class="s2">&quot;&#39;P&#39; should not be 0 ~ violates modulo being non-zero.&quot;</span>
+    <span class="n">SANE_PARAMS_A</span> <span class="o">=</span> <span class="s2">&quot;&#39;a&#39; should not be 0 ~ violates the reversability.&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">_CC</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cycle Control: Descriptive flags to indicate when some event occurs in the</span>
+<span class="sd">    hailstone sequences, when set to verbose, or stopping time check.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">STOPPING_TIME</span> <span class="o">=</span> <span class="s1">&#39;STOPPING_TIME&#39;</span>
+    <span class="n">TOTAL_STOPPING_TIME</span> <span class="o">=</span> <span class="s1">&#39;TOTAL_STOPPING_TIME&#39;</span>
+    <span class="n">CYCLE_INIT</span> <span class="o">=</span> <span class="s1">&#39;CYCLE_INIT&#39;</span>
+    <span class="n">CYCLE_LENGTH</span> <span class="o">=</span> <span class="s1">&#39;CYCLE_LENGTH&#39;</span>
+    <span class="n">MAX_STOP_OOB</span> <span class="o">=</span> <span class="s1">&#39;MAX_STOP_OOB&#39;</span>  <span class="c1"># ~ &quot;out of bounds&quot;</span>
+    <span class="n">ZERO_STOP</span> <span class="o">=</span> <span class="s1">&#39;ZERO_STOP&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">__assert_sane_parameterisation</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handles the sanity check for the parameterisation (P,a,b) required by both</span>
+<span class="sd">    the function and reverse function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).</span>
+<span class="sd">        a (int): Factor by which to multiply n.</span>
+<span class="sd">        b (int): Value to add to the scaled value of n.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Sanity check (P,a,b) ~ P absolutely can&#39;t be 0. a &quot;could&quot; be zero</span>
+    <span class="c1"># theoretically, although would violate the reversability (if ~a is 0 then a</span>
+    <span class="c1"># value of &quot;b&quot; as the input to the reverse function would have a pre-emptive</span>
+    <span class="c1"># value of every number not divisible by P). The function doesn&#39;t _have_ to</span>
+    <span class="c1"># be reversable, but we are only interested in dealing with the class of</span>
+    <span class="c1"># functions that exhibit behaviour consistant with the collatz function. If</span>
+    <span class="c1"># _every_ input not divisable by P went straight to &quot;b&quot;, it would simply</span>
+    <span class="c1"># cause a cycle consisting of &quot;b&quot; and every b/P^z that is an integer. While</span>
+    <span class="c1"># P in [-1, 1] could also be a reasonable check, as it makes every value</span>
+    <span class="c1"># either a 1 or 2 length cycle, it&#39;s not strictly an illegal operation.</span>
+    <span class="c1"># &quot;b&quot; being zero would cause behaviour not consistant with the collatz</span>
+    <span class="c1"># function, but would not violate the reversability, so no check either.</span>
+    <span class="c1"># &quot; != 0&quot; is redundant for python assertions.</span>
+    <span class="k">assert</span> <span class="n">P</span><span class="p">,</span> <span class="n">_ErrMsg</span><span class="o">.</span><span class="n">SANE_PARAMS_P</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">assert</span> <span class="n">a</span><span class="p">,</span> <span class="n">_ErrMsg</span><span class="o">.</span><span class="n">SANE_PARAMS_A</span><span class="o">.</span><span class="n">value</span>
+
+
+<div class="viewcode-block" id="function"><a class="viewcode-back" href="../../../collatz.parameterised/#collatz.function">[docs]</a><span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">P</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the output of a single application of a Collatz-esque function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n (int): The value on which to perform the Collatz-esque function</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).</span>
+<span class="sd">            Default is 2.</span>
+<span class="sd">        a (int): Factor by which to multiply n. Default is 3.</span>
+<span class="sd">        b (int): Value to add to the scaled value of n. Default is 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__assert_sane_parameterisation</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">n</span><span class="o">//</span><span class="n">P</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">P</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="n">b</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reverse_function"><a class="viewcode-back" href="../../../collatz.parameterised/#collatz.reverse_function">[docs]</a><span class="k">def</span> <span class="nf">reverse_function</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">P</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the output of a single application of a Collatz-esque reverse</span>
+<span class="sd">    function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n (int): The value on which to perform the reverse Collatz function</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P).</span>
+<span class="sd">            Default is 2.</span>
+<span class="sd">        a (int): Factor by which to multiply n. Default is 3.</span>
+<span class="sd">        b (int): Value to add to the scaled value of n. Default is 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__assert_sane_parameterisation</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="c1"># Every input can be reversed as the result of &quot;n/P&quot; division, which yields</span>
+    <span class="c1"># &quot;Pn&quot;... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the</span>
+    <span class="c1"># muliplication step was taken instead of the division by the modulus, then</span>
+    <span class="c1"># (f(n) - b)/a) must be an integer that is not in (0 mod P). Because we&#39;re</span>
+    <span class="c1"># not placing restrictions on the parameters yet, although there is a better</span>
+    <span class="c1"># way of shortcutting this for the default variables, we need to always</span>
+    <span class="c1"># attempt (f(n) - b)/a)</span>
+    <span class="n">pre_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">P</span><span class="o">*</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">b</span><span class="p">)</span> <span class="o">%</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">b</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">P</span><span class="o">*</span><span class="n">a</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">pre_values</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">n</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">//</span><span class="n">a</span><span class="p">]</span>
+        <span class="n">pre_values</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">pre_values</span></div>
+
+
+<span class="k">def</span> <span class="nf">__initial_value_outside_verified_range</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the initial value is greater than __VERIFIED_MAXIMUM or less than</span>
+<span class="sd">    __VERIFIED_MINIMUM. Only intended for the default parameterisation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (int): The initial value to check if it is within range or not.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">__VERIFIED_MAXIMUM</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">__VERIFIED_MINIMUM</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">__stopping_time_terminus</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total_stop</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides the appropriate lambda to use to check if iterations on an initial</span>
+<span class="sd">    value have reached either the stopping time, or total stopping time.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        n (int): The initial value to confirm against a stopping time check.</span>
+<span class="sd">        total_stop (bool): If false, the lambda will confirm that iterations</span>
+<span class="sd">            of n have reached the oriented stopping time to reach a value closer</span>
+<span class="sd">            to 0. If true, the lambda will simply check equality to 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">total_stop</span> <span class="k">else</span> <span class="p">(</span>
+        <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="hailstone_sequence"><a class="viewcode-back" href="../../../collatz.parameterised/#collatz.hailstone_sequence">[docs]</a><span class="k">def</span> <span class="nf">hailstone_sequence</span><span class="p">(</span><span class="n">initial_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">P</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+                       <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_total_stopping_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+                       <span class="n">total_stopping_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a list of successive values obtained by iterating a Collatz-esque</span>
+<span class="sd">    function, until either 1 is reached, or the total amount of iterations</span>
+<span class="sd">    exceeds max_total_stopping_time, unless total_stopping_time is False,</span>
+<span class="sd">    which will terminate the hailstone at the &quot;stopping time&quot; value, i.e. the</span>
+<span class="sd">    first value less than the initial value. While the sequence has the</span>
+<span class="sd">    capability to determine that it has encountered a cycle, the cycle from &quot;1&quot;</span>
+<span class="sd">    wont be attempted or reported as part of a cycle, regardless of default or</span>
+<span class="sd">    custom parameterisation, as &quot;1&quot; is considered a &quot;total stop&quot;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_value (int): The value to begin the hailstone sequence from.</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)</span>
+<span class="sd">            Default is 2.</span>
+<span class="sd">        a (int): Factor by which to multiply n. Default is 3.</span>
+<span class="sd">        b (int): Value to add to the scaled value of n. Default is 1.</span>
+<span class="sd">        max_total_stopping_time (int): Maximum amount of times to iterate the</span>
+<span class="sd">            function, if 1 is not reached. Default is 1000.</span>
+<span class="sd">        total_stopping_time (bool): Whether or not to execute until the &quot;total&quot;</span>
+<span class="sd">            stopping time (number of iterations to obtain 1) rather than the</span>
+<span class="sd">            regular stopping time (number of iterations to reach a value less</span>
+<span class="sd">            than the initial value). Default is True.</span>
+<span class="sd">        verbose (bool): If set to verbose, the hailstone sequence will include</span>
+<span class="sd">            control string sequences to provide information about how the</span>
+<span class="sd">            sequence terminated, whether by reaching a stopping time or entering</span>
+<span class="sd">            a cycle. Default is True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Call out the function before any magic returns to trap bad values.</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+    <span class="c1"># 0 is always an immediate stop.</span>
+    <span class="k">if</span> <span class="n">initial_value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">_CC</span><span class="o">.</span><span class="n">ZERO_STOP</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># 1 is always an immediate stop, with 0 stopping time.</span>
+    <span class="k">if</span> <span class="n">initial_value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">_CC</span><span class="o">.</span><span class="n">TOTAL_STOPPING_TIME</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="k">if</span> <span class="n">verbose</span> <span class="k">else</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">terminate</span> <span class="o">=</span> <span class="n">__stopping_time_terminus</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">total_stopping_time</span><span class="p">)</span>
+    <span class="c1"># Start the hailstone sequence.</span>
+    <span class="n">_max_total_stopping_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_total_stopping_time</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">hailstone</span> <span class="o">=</span> <span class="p">[</span><span class="n">initial_value</span><span class="p">]</span>
+    <span class="n">cyclic</span> <span class="o">=</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">hailstone</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_max_total_stopping_time</span><span class="p">):</span>
+        <span class="n">_next</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">hailstone</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">P</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+        <span class="c1"># Check if the next hailstone is either the stopping time, total</span>
+        <span class="c1"># stopping time, the same as the initial value, or stuck at zero.</span>
+        <span class="k">if</span> <span class="n">terminate</span><span class="p">(</span><span class="n">_next</span><span class="p">):</span>
+            <span class="n">hailstone</span> <span class="o">+=</span> <span class="p">[</span><span class="n">_next</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">_CC</span><span class="o">.</span><span class="n">TOTAL_STOPPING_TIME</span> <span class="k">if</span> <span class="n">_next</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">_CC</span><span class="o">.</span><span class="n">STOPPING_TIME</span>
+                <span class="n">hailstone</span> <span class="o">+=</span> <span class="p">[[</span><span class="n">m</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hailstone</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">cyclic</span><span class="p">(</span><span class="n">_next</span><span class="p">):</span>
+            <span class="n">cycle_init</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">hailstone</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">hailstone</span><span class="p">[</span><span class="o">-</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">_next</span><span class="p">:</span>
+                    <span class="n">cycle_init</span> <span class="o">=</span> <span class="n">j</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">hailstone</span> <span class="o">=</span> <span class="n">hailstone</span><span class="p">[:</span><span class="o">-</span><span class="n">cycle_init</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+                    <span class="n">_CC</span><span class="o">.</span><span class="n">CYCLE_INIT</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                    <span class="n">hailstone</span><span class="p">[</span><span class="o">-</span><span class="n">cycle_init</span><span class="p">:],</span>
+                    <span class="p">[</span><span class="n">_CC</span><span class="o">.</span><span class="n">CYCLE_LENGTH</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">cycle_init</span><span class="p">]</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">hailstone</span> <span class="o">+=</span> <span class="p">[</span><span class="n">_next</span><span class="p">]</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">_next</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">hailstone</span> <span class="o">+=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">hailstone</span> <span class="o">+=</span> <span class="p">[[</span><span class="n">_CC</span><span class="o">.</span><span class="n">ZERO_STOP</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="o">-</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hailstone</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]]</span>
+            <span class="k">break</span>
+        <span class="n">hailstone</span> <span class="o">+=</span> <span class="p">[</span><span class="n">_next</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">hailstone</span> <span class="o">+=</span> <span class="p">[[</span><span class="n">_CC</span><span class="o">.</span><span class="n">MAX_STOP_OOB</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">_max_total_stopping_time</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">hailstone</span></div>
+
+
+<div class="viewcode-block" id="stopping_time"><a class="viewcode-back" href="../../../collatz.parameterised/#collatz.stopping_time">[docs]</a><span class="k">def</span> <span class="nf">stopping_time</span><span class="p">(</span><span class="n">initial_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">P</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+                  <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_stopping_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+                  <span class="n">total_stopping_time</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the stopping time, the amount of iterations required to reach a</span>
+<span class="sd">    value less than the initial value, or None if max_stopping_time is exceeded.</span>
+<span class="sd">    Alternatively, if total_stopping_time is True, then it will instead count</span>
+<span class="sd">    the amount of iterations to reach 1. If the sequence does not stop, but</span>
+<span class="sd">    instead ends in a cycle, the result will be (math.inf). If (P,a,b) are such</span>
+<span class="sd">    that it is possible to get stuck on zero, the result will be the negative of</span>
+<span class="sd">    what would otherwise be the &quot;total stopping time&quot; to reach 1, where 0 is</span>
+<span class="sd">    considered a &quot;total stop&quot; that should not occur as it does form a cycle of</span>
+<span class="sd">    length 1.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_value (int): The value for which to find the stopping time.</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)</span>
+<span class="sd">            Default is 2.</span>
+<span class="sd">        a (int): Factor by which to multiply n. Default is 3.</span>
+<span class="sd">        b (int): Value to add to the scaled value of n. Default is 1.</span>
+<span class="sd">        max_stopping_time (int): Maximum amount of times to iterate the</span>
+<span class="sd">            function, if the stopping time is not reached. IF the</span>
+<span class="sd">            max_stopping_time is reached, the function will return None.</span>
+<span class="sd">            Default is 1000.</span>
+<span class="sd">        total_stopping_time (bool): Whether or not to execute until the &quot;total&quot;</span>
+<span class="sd">            stopping time (number of iterations to obtain 1) rather than the</span>
+<span class="sd">            regular stopping time (number of iterations to reach a value less</span>
+<span class="sd">            than the initial value). Default is False.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># The information is contained in the verbose form of a hailstone sequence.</span>
+    <span class="c1"># Although the &quot;max_~_time&quot; for hailstones is name for &quot;total stopping&quot; time</span>
+    <span class="c1"># and the &quot;max_~_time&quot; for this &quot;stopping time&quot; function is _not_ &quot;total&quot;,</span>
+    <span class="c1"># they are handled the same way, as the default for &quot;total_stopping_time&quot;</span>
+    <span class="c1"># for hailstones is true, but for this, is false. Thus the naming difference</span>
+    <span class="n">end_msg</span> <span class="o">=</span> <span class="n">hailstone_sequence</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                 <span class="n">max_total_stopping_time</span><span class="o">=</span><span class="n">max_stopping_time</span><span class="p">,</span>
+                                 <span class="n">total_stopping_time</span><span class="o">=</span><span class="n">total_stopping_time</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># For total/regular/zero stopping time, the value is already the same as</span>
+    <span class="c1"># that present, for cycles we report infinity instead of the cycle length,</span>
+    <span class="c1"># and for max stop out of bounds, we report None instead of the max stop cap</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">_CC</span><span class="o">.</span><span class="n">TOTAL_STOPPING_TIME</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">end_msg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">_CC</span><span class="o">.</span><span class="n">STOPPING_TIME</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">end_msg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">_CC</span><span class="o">.</span><span class="n">CYCLE_LENGTH</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">infinity</span><span class="p">,</span>
+            <span class="n">_CC</span><span class="o">.</span><span class="n">ZERO_STOP</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">end_msg</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">_CC</span><span class="o">.</span><span class="n">MAX_STOP_OOB</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">end_msg</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="tree_graph"><a class="viewcode-back" href="../../../collatz.parameterised/#collatz.tree_graph">[docs]</a><span class="k">def</span> <span class="nf">tree_graph</span><span class="p">(</span><span class="n">initial_value</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">max_orbit_distance</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">P</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+               <span class="n">b</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">__cycle_prevention</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns nested dictionaries that model the directed tree graph up to a</span>
+<span class="sd">    maximum nesting of max_orbit_distance, with the initial_value as the root.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        initial_value (int): The root value of the directed tree graph.</span>
+<span class="sd">        max_orbit_distance (int): Maximum amount of times to iterate the reverse</span>
+<span class="sd">            function. There is no natural termination to populating the tree</span>
+<span class="sd">            graph, equivalent to the termination of hailstone sequences or</span>
+<span class="sd">            stopping time attempts, so this is not an optional argument like</span>
+<span class="sd">            max_stopping_time / max_total_stopping_time, as it is the intended</span>
+<span class="sd">            target of orbits to obtain, rather than a limit to avoid uncapped</span>
+<span class="sd">            computation.</span>
+
+<span class="sd">    Keyword Args:</span>
+<span class="sd">        P (int): Modulus used to devide n, iff n is equivalent to (0 mod P)</span>
+<span class="sd">            Default is 2.</span>
+<span class="sd">        a (int): Factor by which to multiply n. Default is 3.</span>
+<span class="sd">        b (int): Value to add to the scaled value of n. Default is 1.</span>
+
+<span class="sd">    Internal Keyword Args:</span>
+<span class="sd">        __cycle_prevention (set[int]): Used to prevent cycles from precipitating</span>
+<span class="sd">            by keeping track of all values added across previous nest depths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Call out the reverse_function before any magic returns to trap bad values.</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">reverse_function</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">tgraph</span> <span class="o">=</span> <span class="p">{</span><span class="n">initial_value</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_orbit_distance</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">tgraph</span>
+    <span class="c1"># Handle cycle prevention for recursive calls ~</span>
+    <span class="c1"># Shouldn&#39;t use a mutable object initialiser for a default.</span>
+    <span class="k">if</span> <span class="n">__cycle_prevention</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">__cycle_prevention</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">__cycle_prevention</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">initial_value</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">branch_value</span> <span class="ow">in</span> <span class="n">reverse_function</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">branch_value</span> <span class="ow">in</span> <span class="n">__cycle_prevention</span><span class="p">:</span>
+            <span class="n">tgraph</span><span class="p">[</span><span class="n">initial_value</span><span class="p">][</span><span class="n">_CC</span><span class="o">.</span><span class="n">CYCLE_INIT</span><span class="o">.</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">branch_value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tgraph</span><span class="p">[</span><span class="n">initial_value</span><span class="p">][</span><span class="n">branch_value</span><span class="p">]</span> <span class="o">=</span> <span class="n">tree_graph</span><span class="p">(</span>
+                <span class="n">branch_value</span><span class="p">,</span> <span class="n">max_orbit_distance</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="n">P</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
+                <span class="n">__cycle_prevention</span><span class="o">=</span><span class="n">__cycle_prevention</span><span class="p">)[</span><span class="n">branch_value</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">tgraph</span></div>
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, Nathan Levett
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=df4b10f6"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    </body>
+</html>
