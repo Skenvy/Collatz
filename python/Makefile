@@ -2,13 +2,9 @@
 ifeq ($(OS),Windows_NT)
 VENV=python -m venv .ve
 VE=.\.ve\Scripts\activate && 
-RM=Remove-Item -Force
-RR=Remove-Item -Force -Recurse
 else
 VENV=python3 -m venv .ve
 VE=source .ve/bin/activate && 
-RM=rm -f
-RR=rm -rf
 endif
 PIP_PIP=pip install --upgrade pip
 PIP_REQ=pip install --upgrade -r
@@ -25,12 +21,7 @@ VERIFY_BUILT_MSG=echo "Exit if a change to the built Sphinx rst's is not committ
 VERIFY_BUILT_ERR=git add docs && git diff --exit-code --cached --stat -- docs/
 TWINE=twine upload --config-file ./.pypirc --repository
 .PHONY: venv revenv clean clean_again pydoc_server verify_built_checkin docs test tox lint build upload_test upload
-ifeq ($(OS),Windows_NT)
-SHELL:=pwsh
-.SHELLFLAGS:=-NoProfile -Command
-else
 SHELL:=/bin/bash
-endif
 
 # https://code.visualstudio.com/docs/python/environments
 # https://docs.python.org/3/library/venv.html < for pwsh execution policy.
@@ -46,7 +37,7 @@ venv:
 	$(VE) $(PIP_REQ) $(FROZEN_VENV_REQS)
 
 revenv:
-	$(RR) .ve
+	rm -rf .ve
 	$(VENV)
 	$(VE) $(PIP_PIP)
 	$(VE) $(PIP_REQ) $(VENV_REQS)
@@ -55,14 +46,14 @@ revenv:
 	sed -i '/^pkg-resources/d' $(FROZEN_VENV_REQS)
 
 clean clean_again:
-	$(RR) src/*.egg-info/
-	$(RR) dist/
-	$(RR) */__pycache__/
-	$(RR) */*/__pycache__/
-	$(RR) .pytest_cache/
-	$(RM) pylint.log
-	$(RM) flake8.log
-	$(RR) docs/build/
+	rm -rf src/*.egg-info/
+	rm -rf dist/
+	rm -rf */__pycache__/
+	rm -rf */*/__pycache__/
+	rm -rf .pytest_cache/
+	rm  -f pylint.log
+	rm  -f flake8.log
+	rm -rf docs/build/
 
 # http://localhost:44449/
 # http://localhost:44449/src.collatz.html
