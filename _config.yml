@@ -55,6 +55,7 @@ exclude:
 - vendor/cache/
 - vendor/gems/
 - vendor/ruby/
+- README.md
 
 include:
 - python/_modules/collatz
@@ -87,3 +88,8 @@ include:
 - python/_static/styles/furo-extensions.css.map
 - python/_static/styles/furo.css
 - python/_static/styles/furo.css.map
+- python/.doctrees/collatz.doctree
+- python/.doctrees/collatz.parameterised.doctree
+- python/.doctrees/environment.pickle
+- python/.doctrees/index.doctree
+- python/.doctrees/modules.doctree
