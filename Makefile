@@ -17,7 +17,7 @@ test:
 
 nojekyll:
 	find $$(find . -name '\.nojekyll' -exec dirname "{}" \;) -type f -exec \
-	yq eval '.include += ["{}"]' -i ./_config.yml \;
+	yq eval '.include += ["{}"]' -I2 -P -i ./_config.yml \;
 
 build:
 	$(jekyll) build --config ./_config.yml --future --trace
