@@ -19,6 +19,10 @@ jobs:
     uses: ./.github/workflows/github-context.yaml
   test:
     name: Go 🔷🐀🔷 Test 🦂
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     uses: ./.github/workflows/go-test.yaml
   workflow-conditions:
     name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
@@ -28,14 +32,14 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
       with:
         fetch-depth: 2
     - name: Check if version files changed
       id: version-file-check
       run: |
         export VERSION_FILE="go/go.ver"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "version-file-changed=${{toJSON(true)}}" >> $GITHUB_OUTPUT || echo "version-file-changed=${{toJSON(false)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
     - name: Check if version specified in version file has not released.
@@ -43,7 +47,7 @@ jobs:
       run: |
         git fetch --tags
         export VER=$(cat go.ver)
-        [ -z "$(git tag -l "go-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+        [ -z "$(git tag -l "go-v$VER")" ] && echo "version-tag-exists=${{toJSON(false)}}" >> $GITHUB_OUTPUT || echo "version-tag-exists=${{toJSON(true)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
   # Now any step that should only run on the version change can use
@@ -59,16 +63,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@84cbf8094393cdc5fe1fe1671ff2647332956b1a # v3.2.1
+      uses: actions/setup-go@c4a742cab115ed795e34d4513e2cf7d472deb55f # v3.3.1
       with:
         go-version: '1.18'
     - name: 🧱 Install build dependencies
       run: make build
     # Some step that uses `make build`
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
       with:
         name: Collatz
         path: go/collatz/collatz
@@ -81,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🚰 Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 📦 Publish
       run: make publish
   docs:
@@ -105,9 +109,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@84cbf8094393cdc5fe1fe1671ff2647332956b1a # v3.2.1
+      uses: actions/setup-go@c4a742cab115ed795e34d4513e2cf7d472deb55f # v3.3.1
       with:
         go-version: '1.13'
     - name: 📄 Docs
@@ -132,6 +136,8 @@ jobs:
     needs: [docs]
     permissions:
       contents: write
+      pages: write
+      id-token: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-go'

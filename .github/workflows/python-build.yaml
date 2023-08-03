@@ -13,12 +13,18 @@ defaults:
   run:
     shell: bash
     working-directory: python
+env:
+  development_python_version: 3.8.12
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
     uses: ./.github/workflows/github-context.yaml
   test:
     name: Python 🐍🐍🐍 Test 🦂
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     uses: ./.github/workflows/python-test.yaml
   workflow-conditions:
     name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
@@ -28,14 +34,14 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
       with:
         fetch-depth: 2
     - name: Check if version files changed
       id: version-file-check
       run: |
         export VERSION_FILE="python/src/collatz/__version__.py"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "version-file-changed=${{toJSON(true)}}" >> $GITHUB_OUTPUT || echo "version-file-changed=${{toJSON(false)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
     - name: Check if version specified in version file has not released.
@@ -43,7 +49,7 @@ jobs:
       run: |
         git fetch --tags
         export VER=$(cut -d \" -f 2 src/collatz/__version__.py)
-        [ -z "$(git tag -l "python-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+        [ -z "$(git tag -l "python-v$VER")" ] && echo "version-tag-exists=${{toJSON(false)}}" >> $GITHUB_OUTPUT || echo "version-tag-exists=${{toJSON(true)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
   # Now any step that should only run on the version change can use
@@ -59,17 +65,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🐍🐍🐍 Set up Python
-      uses: actions/setup-python@c4e89fac7e8767b327bbad6cb4d859eda999cf08 # v4.1.0
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
       with:
-        python-version: '3.10'
+        python-version: ${{ env.development_python_version }}
     - name: 🧱 Install build dependencies
       run: make venv
     - name: 🎡 Build wheel and source
       run: make build
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
       with:
         name: built-dists
         path: python/dist/
@@ -82,9 +88,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: built-dists
         path: python/dist
@@ -107,9 +113,9 @@ jobs:
     # Although the dists are built uses checkout to satisfy refs/tags existence
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🆒 Download dists
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
         name: built-dists
         path: python/dist
@@ -125,3 +131,45 @@ jobs:
       with:
         packages_dir: python/dist
         password: ${{ secrets.PYPI_API_TOKEN }}
+  docs:
+    name: Python 🐍🐍🐍 Docs 📄
+    needs: [release, publish]
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🐍🐍🐍 Set up Python
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+      with:
+        python-version: ${{ env.development_python_version }}
+    - name: 🧱 Install build dependencies
+      run: make venv
+    - name: 📄 Docs Generation
+      run: make docs
+    - name: 📄 Docs Publishing
+      run: |-
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-python:gh-pages-python
+        git symbolic-ref HEAD refs/heads/gh-pages-python
+        cd .. && mv python/docs/build ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir python && mv ../MERGE_TARGET/* python/
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-python
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-merge:
+    name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    needs: [docs]
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/github-pages.yaml
+    with:
+      merge_from: 'gh-pages-python'

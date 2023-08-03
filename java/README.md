@@ -20,10 +20,12 @@ Besides the function and reverse function, there is also functionality to retrie
 The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ## [Maven-Site generated docs](https://skenvy.github.io/Collatz/java)
 ## [JavaDoc generated docs](https://skenvy.github.io/Collatz/java/apidocs/io/github/skenvy/package-summary.html)
+## [Checkstyle generated docs](https://skenvy.github.io/Collatz/java/checkstyle.html)
 ## Developing
 ### The first time setup
 _There is no one time setup required as each maven command will dynamically fetch its dependencies._
 ### Iterative development
 * `make test` will do nothing magical, but is helpful
-* `make docs` will create the site and then run it on [localhost](http://localhost:8080) with [javadoc here](http://localhost:8080/apidocs/io/github/skenvy/package-summary.html).
+* `make lint` will evaluate the [Checkstyle rules](https://github.com/Skenvy/Collatz/blob/main/java/checkstyle.xml).
+* `make docs` will create the site and then run it on [localhost](http://localhost:8080) with [javadoc here](http://localhost:8080/apidocs/io/github/skenvy/package-summary.html), and the [Checkstyle report here](http://localhost:8080/checkstyle.html).
 ## [Open Source Insights](https://deps.dev/maven/io.github.skenvy%3Acollatz)
