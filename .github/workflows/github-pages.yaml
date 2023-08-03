@@ -54,8 +54,6 @@ jobs:
     needs: merge
     permissions:
       contents: read
-      pages: write
-      id-token: write
     if: ${{ always() && (needs.merge.result == 'success' || needs.merge.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
