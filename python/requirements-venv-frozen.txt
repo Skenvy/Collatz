@@ -43,7 +43,7 @@ pluggy==1.2.0
 py==1.11.0
 pycodestyle==2.11.0
 pycparser==2.21
-pyflakes==3.0.1
+pyflakes==3.1.0
 Pygments==2.15.1
 pylint==2.17.5
 pyproject-api==1.5.3
