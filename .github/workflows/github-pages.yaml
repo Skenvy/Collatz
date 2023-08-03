@@ -33,7 +33,7 @@ jobs:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     permissions:
       contents: write
-    if: ${{ github.event_name != 'workflow_call' }}
+    if: ${{ github.event_name == 'workflow_call' }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -66,7 +66,7 @@ jobs:
     # https://github.com/actions/configure-pages
     - name: 📄 Setup Pages
       uses: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382 # v3.0.6
-    # # https://github.com/actions/jekyll-build-pages
+    # # https://github.com/actions/jekyll-build-pages -- default config would be ~
     # - name: 🛠️ Build 🐕 Jekyll
     #   uses: actions/jekyll-build-pages@058068233b22675635bdf8dfa178d6ae77f12694 # v1.0.8
     #   with:
@@ -79,6 +79,8 @@ jobs:
         bundler-cache: true
     - name: 🧱 Install build dependencies
       run: make setup
+    - name: 🙊 Monkey-patch config 🚫🐕 Honour `./**/.nojekyll`'s
+      run: make nojekyll
     - name: 🛠️ Build 🐕 Jekyll
       run: make build
     # https://github.com/actions/upload-pages-artifact
