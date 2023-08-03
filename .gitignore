@@ -1,7 +1,19 @@
 ################################################################################
-
+# Top level ignores are not language specific, just anti-inter-branch-clobbering
 ################################################################################
 
 .ve
 .vscode
 .idea
+
+################################################################################
+# https://github.com/Skenvy/Collatz/blob/gh-pages/.gitignore
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+
+################################################################################
+# https://github.com/Skenvy/Collatz/blob/main/java/.gitignore
+java/target/
