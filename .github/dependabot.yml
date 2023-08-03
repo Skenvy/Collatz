@@ -23,12 +23,51 @@ updates:
   directory: "/javascript"
   schedule:
     interval: weekly
+  groups:
+    eslint:
+      patterns:
+      - "eslint"
+      - "eslint-config-airbnb"
+      - "eslint-config-airbnb-typescript"
+      - "eslint-plugin-import"
+      - "eslint-plugin-jsx-a11y"
+      - "eslint-plugin-react"
+      - "eslint-plugin-react-hooks"
+      - "eslint-plugin-tsdoc"
+      - "@typescript-eslint/parser"
+    mocha-chai:
+      patterns:
+      - "mocha"
+      - "chai"
+      - "@types/mocha"
+      - "@types/chai"
 # Julia has no supported ecosystem
 # https://github.com/dependabot/dependabot-core/issues/2105
 - package-ecosystem: pip
   directory: "/python"
   schedule:
     interval: weekly
+  groups:
+    flake8:
+      patterns:
+      - "flake8"
+      - "pyflakes"
+      - "pycodestyle"
+    sphinx:
+      patterns:
+      - "sphinx"
+      - "furo"
+      - "myst-parser"
+    everything-else:
+      patterns:
+      - "*"
+      exclude-patterns:
+      - "flake8"
+      - "pyflakes"
+      - "pycodestyle"
+      - "sphinx"
+      - "furo"
+      - "myst-parser"
 # R has no supported ecosystem
 # https://github.com/dependabot/dependabot-core/issues/2042
 - package-ecosystem: bundler
