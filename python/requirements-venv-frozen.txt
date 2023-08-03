@@ -8,10 +8,10 @@ build==0.10.0
 cachetools==5.3.1
 certifi==2023.7.22
 cffi==1.15.1
-chardet==5.1.0
+chardet==5.2.0
 charset-normalizer==3.2.0
 colorama==0.4.6
-cryptography==41.0.2
+cryptography==41.0.3
 dill==0.3.7
 distlib==0.3.7
 docutils==0.20.1
@@ -55,12 +55,12 @@ readme-renderer==40.0
 requests==2.31.0
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
-rich==13.5.0
+rich==13.5.2
 SecretStorage==3.3.3
 six==1.16.0
 snowballstemmer==2.2.0
 soupsieve==2.4.1
-Sphinx==7.1.1
+Sphinx==7.1.2
 sphinx-basic-ng==1.0.0b2
 sphinxcontrib-applehelp==1.0.4
 sphinxcontrib-devhelp==1.0.2
