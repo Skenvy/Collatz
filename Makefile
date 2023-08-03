@@ -15,6 +15,10 @@ clean:
 test:
 	$(jekyll) doctor
 
+nojekyll:
+	find $$(find . -name '\.nojekyll' -exec dirname "{}" \;) -type f -exec \
+	yq eval '.include += ["{}"]' -i ./_config.yml \;
+
 build:
 	$(jekyll) build --config ./_config.yml --future --trace
 
