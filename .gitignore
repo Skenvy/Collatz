@@ -7,7 +7,7 @@
 .idea
 
 ################################################################################
-# https://github.com/Skenvy/Collatz/blob/gh-pages/.gitignore
+# Jekyll's generated ignore list
 _site
 .sass-cache
 .jekyll-cache
