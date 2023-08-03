@@ -1,5 +1,5 @@
 jekyll=bundle exec jekyll
-.PHONY: setup clean test build serve
+.PHONY: setup update clean test nojekyll build serve
 SHELL:=/bin/bash
 
 # Assumes `gem install bundler`
