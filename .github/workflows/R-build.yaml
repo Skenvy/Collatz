@@ -153,6 +153,8 @@ jobs:
     needs: [docs-publish]
     permissions:
       contents: write
+      pages: write
+      id-token: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-R'
