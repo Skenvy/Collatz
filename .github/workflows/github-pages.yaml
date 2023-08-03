@@ -28,6 +28,9 @@ concurrency:
 defaults:
   run:
     shell: bash
+env:
+  development_ruby_version: 3.1.0
+  development_rubygems_version: 3.4.14
 jobs:
   merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
@@ -73,7 +76,8 @@ jobs:
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@8ddb7b3348b3951590db24c346e94ebafdabc926 # v1.121.0
       with:
-        ruby-version: '3.1'
+        ruby-version: ${{ env.development_ruby_version }}
+        rubygems: ${{ env.development_rubygems_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
       run: make setup
@@ -93,6 +97,7 @@ jobs:
     permissions:
       pages: write
       id-token: write
+    if: ${{ always() && needs.build.result == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
