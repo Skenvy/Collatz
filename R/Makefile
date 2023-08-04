@@ -1,8 +1,11 @@
+ifeq ($(OS),Windows_NT)
+BIN_PATH=PATH=$$PATH:$$(Rscript -e 'tinytex::tinytex_root()' | cut -d \  -f2 | sed 's|"||g' | sed 's|\\\\|/|g' | sed 's|C:|/c|g')/bin/win32 && echo $$PATH && 
+else
+BIN_PATH=PATH=$$PATH:~/.local/bin:~/bin && 
+endif
+NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 .PHONY: setup_debian setup_debian_gmp setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check wincheck quick_check install run
 SHELL:=/bin/bash
-LOCALBIN=PATH=$$PATH:~/.local/bin:~/bin && 
-WINBIN=PATH=$$PATH:$$(Rscript -e 'tinytex::tinytex_root()' | cut -d \  -f2 | sed 's|"||g' | sed 's|\\\\|/|g' | sed 's|C:|/c|g')/bin/win32 && echo $$PATH && 
-NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubunut. Also possibly
@@ -72,6 +75,7 @@ clean:
 manRd: clean
 	Rscript -e 'devtools::document()'
 	echo "Exit if a change to the documentation is not committed"
+	git diff | cat
 	git diff --exit-code --stat -- DESCRIPTION
 	git diff --exit-code --stat -- NAMESPACE
 	git add man && git diff --exit-code --cached --stat -- man/
@@ -79,9 +83,9 @@ manRd: clean
 docs: manRd
 	Rscript -e 'pkgdown::build_site()'
 	mkdir docs/pdf -p
-	$(LOCALBIN) Rscript -e 'Sys.which("makeindex")'
-	$(LOCALBIN) Rscript -e 'devtools::build_manual(path="./docs/pdf")'
-	$(LOCALBIN) Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
+	$(BIN_PATH) Rscript -e 'Sys.which("makeindex")'
+	$(BIN_PATH) Rscript -e 'devtools::build_manual(path="./docs/pdf")'
+	$(BIN_PATH) Rscript -e 'covr::report(file = file.path("./docs/covr", "Collatz-report.html"))'
 
 # http://127.0.0.1:4321/
 # http://127.0.0.1:4321/pdf/ -- collatz_$VER.pdf
@@ -104,10 +108,7 @@ build: clean
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
 check: full_test manRd build
-	$(LOCALBIN) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
-
-wincheck: full_test manRd build
-	$(WINBIN) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
+	$(BIN_PATH) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
 quick_check: cmd_check build
 	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
