@@ -316,3 +316,81 @@ The version of R recorded in the lockfile will be updated:
 
 - Lockfile written to '/mnt/c/Workspaces/GitHub_Skenvy/Collatz/R/abc/renv.lock'.
 ```
+Curiously though, if instead we run `Rscript -e 'renv::init()'` once on top of the project, and get the same error as above once again, but also, it generates the `./renv/settings.json`. Running it a second time once the settings already exist adds the `./renv/.gitignore`, `./renv/activate.R`, `./.Rprofile`, and edits the `./.Rbuildignore`. Running `init` any more times does nothing else, but running `Rscript -e 'renv::snapshot()'` adds the anticipated `./renv.lock` file, and yields output like;
+```
+The following package(s) will be updated in the lockfile:
+
+# CRAN -----------------------------------------------------------------------
+- askpass       [* -> 1.1]
+- base64enc     [* -> 0.1-3]
+- brio          [* -> 1.1.3]
+- bslib         [* -> 0.4.0]
+- cachem        [* -> 1.0.6]
+- callr         [* -> 3.7.1]
+- cli           [* -> 3.3.0]
+- cpp11         [* -> 0.4.2]
+- crayon        [* -> 1.5.1]
+- curl          [* -> 4.3.2]
+- desc          [* -> 1.4.1]
+- diffobj       [* -> 0.3.5]
+- digest        [* -> 0.6.29]
+- downlit       [* -> 0.4.2]
+- ellipsis      [* -> 0.3.2]
+- evaluate      [* -> 0.16]
+- fansi         [* -> 1.0.3]
+- fastmap       [* -> 1.1.0]
+- fs            [* -> 1.5.2]
+- glue          [* -> 1.6.2]
+- gmp           [* -> 0.6-6]
+- highr         [* -> 0.9]
+- htmltools     [* -> 0.5.3]
+- httr          [* -> 1.4.3]
+- jquerylib     [* -> 0.1.4]
+- jsonlite      [* -> 1.8.0]
+- knitr         [* -> 1.39]
+- lifecycle     [* -> 1.0.1]
+- magrittr      [* -> 2.0.3]
+- memoise       [* -> 2.0.1]
+- mime          [* -> 0.12]
+- openssl       [* -> 2.0.2]
+- pillar        [* -> 1.8.0]
+- pkgconfig     [* -> 2.0.3]
+- pkgdown       [* -> 2.0.6]
+- pkgload       [* -> 1.3.0]
+- praise        [* -> 1.0.0]
+- processx      [* -> 3.7.0]
+- ps            [* -> 1.7.1]
+- purrr         [* -> 0.3.4]
+- R6            [* -> 2.5.1]
+- ragg          [* -> 1.2.2]
+- rappdirs      [* -> 0.3.3]
+- rematch2      [* -> 2.1.2]
+- renv          [* -> 1.0.0]
+- rlang         [* -> 1.0.4]
+- rmarkdown     [* -> 2.15]
+- rprojroot     [* -> 2.0.3]
+- sass          [* -> 0.4.2]
+- stringi       [* -> 1.7.8]
+- stringr       [* -> 1.4.0]
+- sys           [* -> 3.4]
+- systemfonts   [* -> 1.0.4]
+- testthat      [* -> 3.1.4]
+- textshaping   [* -> 0.3.6]
+- tibble        [* -> 3.1.8]
+- tinytex       [* -> 0.41]
+- utf8          [* -> 1.2.2]
+- vctrs         [* -> 0.4.1]
+- waldo         [* -> 0.4.0]
+- whisker       [* -> 0.4]
+- withr         [* -> 2.5.0]
+- xfun          [* -> 0.32]
+- xml2          [* -> 1.3.3]
+- yaml          [* -> 2.3.5]
+
+The version of R recorded in the lockfile will be updated:
+- R             [* -> 4.2.1]
+
+- Lockfile written to '/mnt/c/Workspaces/GitHub_Skenvy/Collatz/R/renv.lock'.
+```
+
+There are other ways to finesse the R session, [some are listed here](https://support.posit.co/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf).
