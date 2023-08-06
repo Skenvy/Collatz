@@ -274,3 +274,45 @@ This is despite having both a link to the repo and the issues included in the de
 In the time since last working on this 9 months ago, some change has happened which has broken the workflow, despite it being very strongly versioned, i.e. sha-pinning the actions it used. We're using the [`r-lib/actions/setup-r`](https://github.com/r-lib/actions/tree/v2-branch/setup-r) action on github. Although I'm using [a slightly older version](https://github.com/r-lib/actions/blob/50d1eae9b8da0bb3f8582c59a5b82225fa2fe7f2/setup-r/lib/installer.js#L673), that and the same-ish line in [the current tip version](https://github.com/r-lib/actions/blob/756399d909bf9c180bbdafe8025f794f51f2da02/setup-r/lib/installer.js#L695) both point to using the https://api.r-hub.io/rversions/ service, and [the list for available windows installs](https://api.r-hub.io/rversions/available/win) includes a few that don't seem to be working any more. Parallel to that, there are changes to the `./DESCRIPTION` file occurring in the workflow that haven't been checked in. There appears to be a newer version of `roxygen2`, which is updating a field in the `./DESCRIPTION` to comment what version of `roxygen2` built the docs. This can be unsettling, as, although we like to bind typically to whatever CRAN has available, if a new version of a package gets released that just wants to update a comment, should that break the workflow?
 
 To version our packages we're using, rather than just always installing the latest, we can use a package version manager. R has two that appear to be common; [packrat](https://CRAN.R-project.org/package=packrat) and [renv](https://CRAN.R-project.org/package=renv). [Packrat](https://rstudio.github.io/packrat/) describes how it works [here] and [renv](https://rstudio.github.io/renv/) has additional details [here](https://rstudio.github.io/renv/articles/renv.html); renv even has a [packrat vs renv](https://cran.r-project.org/web/packages/renv/vignettes/packrat.html) page. Although packrat looks like it has wider adoption from existing for longer, renv comes with the guarantee that it'll be at least of `Hadley Wickham` quality, so we'll try out renv.
+### renv
+Firstly, we can run `Rscript -e 'install.packages("renv")'` which, without any other source yet or setup of the `./.Rprofile` it will add during initialisation, will be installed to the system libraries. At the moment, [renv on CRAN](https://CRAN.R-project.org/package=renv) is version `1.0.0`. Next, the home page of its docs suggest;
+> Use `renv::init()` to initialize renv in a new or existing project.
+
+we can try `Rscript -e 'renv::init()'` to initialise a new renv state, but it yields;
+```
+Not interactive. Will:
+Use only the DESCRIPTION file. (explicit mode)
+- Using '1' snapshot type. Please see `?renv::snapshot` for more details.
+
+Error: internal error: unhandled snapshot type '1' in renv_snapshot_dependencies_impl(project, type, dev)
+Traceback (most recent calls last):
+8: renv::init()
+7: renv_snapshot_dependencies(project, type = type, dev = TRUE)
+6: dynamic(list(project = project, type = type, dev = dev), renv_snapshot_dependencies_impl(project,
+       type, dev))
+5: the$dynamic_objects[[id]] %||% {
+       dlog("dynamic", "memoizing dynamic value for '%s'", id)
+       value
+   }
+4: renv_snapshot_dependencies_impl(project, type, dev)
+3: case(type %in% c("packrat", "implicit") ~ project, type %in%
+       "explicit" ~ file.path(project, "DESCRIPTION"), ~{
+       fmt <- "internal error: unhandled snapshot type '%s' in %s"
+       stopf(fmt, type, stringify(sys.call()))
+   })
+2: stopf(fmt, type, stringify(sys.call()))
+1: stop(sprintf(fmt, ...), call. = call.)
+Execution halted
+```
+Running it in a new, empty, directory yields success;
+```
+The following package(s) will be updated in the lockfile:
+
+# CRAN -----------------------------------------------------------------------
+- renv   [* -> 1.0.0]
+
+The version of R recorded in the lockfile will be updated:
+- R      [* -> 4.2.1]
+
+- Lockfile written to '/mnt/c/Workspaces/GitHub_Skenvy/Collatz/R/abc/renv.lock'.
+```
