@@ -1,4 +1,5 @@
-R_=Rscript -e '
+RENV_=RENV_CONFIG_SANDBOX_ENABLED = FALSE
+R_=$(RENV_) Rscript -e '
 _R='
 ifeq ($(OS),Windows_NT)
 BIN_PATH=PATH=$$PATH:$$($(R_)tinytex::tinytex_root()$(_R) | cut -d \  -f2 | sed 's|"||g' | sed 's|\\\\|/|g' | sed 's|C:|/c|g')/bin/win32 && echo $$PATH && 
