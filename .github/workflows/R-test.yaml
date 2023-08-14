@@ -66,8 +66,10 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🧱 Dependencies - GMP version
+      run: make setup_debian_gmp
     - name: 🦂 Test
-      run: make setup_libraries && make full_test
+      run: make setup_dependencies && make full_test
   full-test:
     name: R 🏴‍☠️🔵🦜 Full Test 🦂
     if: >- 
@@ -90,7 +92,7 @@ jobs:
       run: make setup_docs
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.0' }}
-      run: make setup_libraries && make quick_check
+      run: make setup_dependencies && make quick_check
     - name: Add the repo as a safe repo inside the job container
       run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 🦂 Test (cran, manual)

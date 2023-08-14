@@ -7,7 +7,6 @@ else
 BIN_PATH=PATH=$$PATH:~/.local/bin:~/bin && 
 endif
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
-.PHONY: setup_debian setup_debian_gmp setup_user_lib setup setup_libraries setup_mac_tests setup_win_tests setup_docs clean manRd docs docs_local test cmd_check full_test build check wincheck quick_check install run
 SHELL:=/bin/bash
 
 # A partially complete list of packages you might need to install to
@@ -15,11 +14,17 @@ SHELL:=/bin/bash
 # with a slow connection you might need to attempt installing stringi
 # seperately from the rest as it seems to often timeout. This isn't
 # exhaustive, so you might need to install other missing deps.
+.PHONY: setup_debian
 setup_debian:
 	apt update && apt -y install libcurl4-openssl-dev libssl-dev libxml2-dev \
 	libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev \
 	libpng-dev libtiff5-dev libjpeg-dev pandoc texinfo qpdf
 
+.PHONY: setup_debian_pdf
+setup_debian_pdf:
+	apt update && apt -y install pandoc texinfo qpdf
+
+.PHONY: setup_debian_gmp
 setup_debian_gmp:
 	apt update && apt install -y libgmp-dev
 
@@ -32,26 +37,38 @@ setup_debian_gmp:
 # be a subset of the `.libPaths()` list of library install locations. Running
 # `Rscript -e 'print(Sys.getenv("R_LIBS_USER"))'` will show the `R_LIBS_USER`.
 # Rscript -e 'print(.libPaths())'
+.PHONY: setup_user_lib
 setup_user_lib:
 	$(R_)dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)$(_R)
 	$(R_).libPaths(Sys.getenv("R_LIBS_USER"))$(_R)
 
+setup_renv:
+	$(R_)renv::restore()$(_R)
+
 # Devlopment packages.
-setup: setup_user_lib
+.PHONY: setup_development
+setup_development: setup_user_lib
 	$(R_)install.packages(c("roxygen2", "testthat"))$(_R)
 	$(R_)install.packages("devtools")$(_R)
 	$(R_)install.packages(c("covr", "DT"))$(_R)
 	$(R_)install.packages(c("pkgdown", "servr"))$(_R)
 	$(R_)install.packages(c("tinytex", "knitr", "rmarkdown"))$(_R)
+
+.PHONY: setup_tinytex
+setup_tinytex:
 	$(R_)tinytex::install_tinytex()$(_R)
 	$(R_)tinytex::tlmgr_install("makeindex")$(_R)
 
-# Create or use user / local install location
-# Included packages
-setup_libraries: setup_user_lib
-	$(R_)install.packages(c("gmp", "testthat"))$(_R)
+# Depended packages
+.PHONY: setup_dependencies
+setup_dependencies: setup_user_lib
+	$(R_)install.packages(c("gmp"))$(_R)
 
-setup_mac_tests: setup_libraries
+.PHONY: setup
+setup: setup_renv setup_tinytex
+
+.PHONY: setup_mac_tests
+setup_mac_tests: setup_dependencies
 	$(R_)install.packages(c("testthat", "roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "knitr", "rmarkdown"), type="binary")$(_R)
 
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
@@ -59,6 +76,7 @@ setup_mac_tests: setup_libraries
 # For installing locall we'd need to reference $(R_PATH)\bin\Rscript.exe -e "~"
 # But in GHA, the rtools bash let's us just 'Rscript -e "~"' <-- also
 # worth mentioning it does also require the outer quotes to be " not '
+.PHONY: setup_win_tests
 setup_win_tests:
 	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
 	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown', 'tinytex'), type='binary', repos='http://cran.us.r-project.org')"
@@ -66,11 +84,10 @@ setup_win_tests:
 	$(R_)tinytex::tinytex_root()$(_R)
 	Rscript -e "tinytex::tlmgr_install('makeindex')"
 
-setup_docs:
-	apt update && apt -y install pandoc texinfo qpdf
-	make setup
-	make setup_libraries
+.PHONY: setup_docs
+setup_docs: setup_debian_gmp setup_debian_pdf setup
 
+.PHONY: clean
 clean:
 	rm -rf $$(ls | grep collatz_*.tar.gz)
 	rm -rf ..Rcheck
@@ -81,7 +98,7 @@ clean:
 	rm -rf Meta
 
 # The following steps assume that the setup has been run already.
-
+.PHONY: manRd
 manRd: clean
 	$(R_)devtools::document()$(_R)
 	echo "Exit if a change to the documentation is not committed"
@@ -90,6 +107,7 @@ manRd: clean
 	git diff --exit-code --stat -- NAMESPACE
 	git add man && git diff --exit-code --cached --stat -- man/
 
+.PHONY: docs
 docs: manRd
 	$(R_)pkgdown::build_site()$(_R)
 	mkdir docs/pdf -p
@@ -100,31 +118,40 @@ docs: manRd
 # http://127.0.0.1:4321/
 # http://127.0.0.1:4321/pdf/ -- collatz_$VER.pdf
 # http://127.0.0.1:4321/covr/Collatz-report.html
+.PHONY: docs_local
 docs_local: docs
 	$(R_)servr::httd(dir="./docs")$(_R)
 
+.PHONY: test
 test: clean
 	$(NO_SUGGESTS) $(R_)devtools::test()$(_R)
 
+.PHONY: cmd_check
 cmd_check: clean
 	$(NO_SUGGESTS) R CMD check --no-manual .
 
+.PHONY: full_test
 full_test: test cmd_check
 
+.PHONY: build
 build: clean
 	R CMD build .
 
 # Using -- R CMD check collatz_$$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2).tar.gz
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
+.PHONY: check
 check: full_test manRd build
 	$(BIN_PATH) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
+.PHONY: quick_check
 quick_check: cmd_check build
 	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
 
+.PHONY: install
 install: build
 	R CMD INSTALL $$(ls | grep collatz_*.tar.gz)
 
+.PHONY: run
 run:
 	Rscript R/Collatz.R
