@@ -412,3 +412,50 @@ The FAQ advises against hand rolling the renv.lock file, although mentions it's 
 It took until [this SO question](https://stackoverflow.com/q/63946190/9960809) to find what I've been looking for, something like `renv::record(<package>@<version>)` i.e. something like `Rscript -e 'renv::record("servr")'` to update a [record](https://rstudio.github.io/renv/reference/record.html). There's still no "greater than this version", only "this specific version", but it's the best we've been able to find by now. Unfortunately it also doesn't add the hash information the same as was added by using the `_dependencies.R` file workaround.
 
 All in all, the end result might be that renv is possible to use for this, and is better than no versioning at all, but it's far from easy to set up and is not intuitive for a use case it turns out it doesn't even really want to be used for; versioning development environments, or allowing relative versioning instead of strict versioning.
+
+### `Depends` vs `Imports`
+In the `./DESCRIPTION`, the fields `Depends` and `Imports` are both used to list dependencies that are requirements. While trying to initially set up renv, several of its initial error messages led me on searches that took me past a bunch of places that bemoaned the use of `Depends`, and suggesting that `Imports` was the "proper" way of requiring another package. For example these two paragraphs on a `Hadley Wickham`'s online book [R Packages 2e](https://r-pkgs.org/); [Imports, Suggests, and friends](https://r-pkgs.org/description.html#sec-description-imports-suggests) and [Depends and LinkingTo](https://r-pkgs.org/description.html#depends-and-linkingto), as well as the culmination in [Whether to Import or Depend](https://r-pkgs.org/dependencies-mindset-background.html#sec-dependencies-imports-vs-depends), go over a discussion of the module loading effects of each, being of non-trivial difference.
+
+However different they may be, and how recommended one is over the other.. this package was accepted by the CRAN staff with `gmp` in the `Depends` field. Changing it to `Imports` at the _suggestion_ of some blogs / guides was ill-advised it turns out, as doing so seemingly broke some of the machinery that `R CMD check` uses when evaluating examples. In this specific instance, one of the exports of `gmp`, `as.big`, was being used in my examples, i.e. `as.bigz("99999999999999999999")`, and all I was getting out of the build was `* checking examples ... ERROR` leading to `could not find function "as.bigz"`, which if googled has a sizeable amount of questions on SO and other places, making it seem notorious at least.
+
+I tried several things suggested across those earlier questions, none of which worked and most of which I already had. In the end, it was the KISSiest of ways to find a problem that let me figure out what was wrong. That was, checking that the state of the main branch could still build, to know if the cause of the failure was possibly a change I had made, or a change in what was being deployed in CI that the changes hadn't impacted. Well, main built fine, so it must be down to one of the changes. But none of them really stood out, so diffing main to now, several files have lots of changes. It must be one of those changes. The `./DESCRIPTION` file has the fewest changes, so we'll check that first to see what's happened in there that we can revert. Lo and behold, the change in the `./DESCRIPTION` was a change to which field `gmp` was being required by. Moving it back from `Imports` to `Depends` fixed it.
+
+As the sites that discuss the difference between `Imports` and `Depends` point out, there is material difference between them, which begs the question of how you're supposed to use an imported module's function in your own example. Do I need to import gmp in all files that use it in an example, because the import in the utils file isn't carried downstream? I suppose we can try that out.
+
+The full complaint was suggesting that it couldn't access `as.bigz`;
+```
+* checking examples ... ERROR
+Running examples in ‘collatz-Ex.R’ failed
+The error most likely occurred in:
+
+> ### Name: collatz_function
+> ### Title: The Collatz function
+> ### Aliases: collatz_function
+> 
+> ### ** Examples
+> 
+> # Returns the output of a single application of a Collatz-esque function.
+> # Without `gmp` or parameterisation, we can try something simple like
+> collatz_function(5)
+[1] 16
+> collatz_function(16)
+[1] 8
+> # If we want change the default parameterisation we can;
+> collatz_function(4, 5, 2, 3)
+[1] 11
+> # Or if we only want to change one of them
+> collatz_function(3, a=-2)
+[1] -5
+> # All the above work fine, but the function doesn't offer protection against
+> # overflowing integers by default. To venture into the world of arbitrary
+> # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
+> collatz_function(99999999999999999999)
+Warning in collatz_function(1e+20) :
+  probable complete loss of accuracy in modulus
+[1] 5e+19
+> collatz_function(as.bigz("99999999999999999999"))
+Error in as.bigz("99999999999999999999") : 
+  could not find function "as.bigz"
+Calls: collatz_function
+Execution halted
+```

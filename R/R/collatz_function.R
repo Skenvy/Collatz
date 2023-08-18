@@ -1,4 +1,5 @@
 #' @include utils.R
+#' @import gmp
 NULL
 
 #' The Collatz function
