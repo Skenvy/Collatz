@@ -28,6 +28,15 @@ setup_debian_pdf:
 setup_debian_gmp:
 	apt update && apt install -y libgmp-dev
 
+# Take an implicit snapshot and readd the non-implicit requirements.
+# https://rstudio.github.io/renv/reference/record.html
+# .PHONY: lockfile
+# lockfile:
+# 	$(R_)renv::settings$$snapshot.type("implicit")$(_R)
+# 	$(R_)renv::snapshot()$(_R)
+# 	$(R_)renv::record("roxygen2@7.2.1")$(_R)
+# 	$(R_)renv::record(c("testthat", "devtools", "covr", "DT", "pkgdown", "servr", "tinytex", "knitr", "rmarkdown", "gmp"))$(_R)
+
 # Create or use user / local install location
 # See `Rscript -e 'help(Startup)'` for an outline of R session initialisation.
 # As far as this goes, you can `Rscript -e 'print(.libPaths())'` to see a list
