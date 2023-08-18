@@ -27,7 +27,6 @@ Collate:
     'stopping_time.R'
     'tree_graph.R'
 Suggests:
-    renv,
     roxygen2,
     testthat (>= 3.0.0),
     devtools,
@@ -39,5 +38,5 @@ Suggests:
     knitr,
     rmarkdown
 Config/testthat/edition: 3
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr

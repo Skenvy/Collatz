@@ -1,6 +1,3 @@
-^renv$
-^renv\.lock$
-^_dependencies.R$
 .gitignore
 ..Rcheck/
 ^LICENSE$
