@@ -9,6 +9,9 @@ endif
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 SHELL:=/bin/bash
 
+################################################################################
+# Setup debian dependencies
+
 # A partially complete list of packages you might need to install to
 # get the installation of devtools to work on ubuntu. Also possibly
 # with a slow connection you might need to attempt installing stringi
@@ -28,14 +31,8 @@ setup_debian_pdf:
 setup_debian_gmp:
 	apt update && apt install -y libgmp-dev
 
-# Take an implicit snapshot and readd the non-implicit requirements.
-# https://rstudio.github.io/renv/reference/record.html
-# .PHONY: lockfile
-# lockfile:
-# 	$(R_)renv::settings$$snapshot.type("implicit")$(_R)
-# 	$(R_)renv::snapshot()$(_R)
-# 	$(R_)renv::record("roxygen2@7.2.1")$(_R)
-# 	$(R_)renv::record(c("testthat", "devtools", "covr", "DT", "pkgdown", "servr", "tinytex", "knitr", "rmarkdown", "gmp"))$(_R)
+################################################################################
+# Setup R; install packages, and packages installers.
 
 # Create or use user / local install location
 # See `Rscript -e 'help(Startup)'` for an outline of R session initialisation.
@@ -50,9 +47,6 @@ setup_debian_gmp:
 setup_user_lib:
 	$(R_)dir.create(Sys.getenv("R_LIBS_USER"), recursive = TRUE)$(_R)
 	$(R_).libPaths(Sys.getenv("R_LIBS_USER"))$(_R)
-
-setup_renv:
-	$(R_)renv::restore()$(_R)
 
 # Devlopment packages.
 .PHONY: setup_development
@@ -73,8 +67,11 @@ setup_tinytex:
 setup_dependencies: setup_user_lib
 	$(R_)install.packages(c("gmp"))$(_R)
 
-.PHONY: setup
-setup: setup_renv setup_tinytex
+.PHONY: setup_docs
+setup_docs: setup_debian_gmp setup_debian_pdf setup_tinytex
+
+################################################################################
+# Alternate insall orders for mac and windows.
 
 .PHONY: setup_mac_tests
 setup_mac_tests: setup_dependencies
@@ -93,8 +90,8 @@ setup_win_tests:
 	$(R_)tinytex::tinytex_root()$(_R)
 	Rscript -e "tinytex::tlmgr_install('makeindex')"
 
-.PHONY: setup_docs
-setup_docs: setup_debian_gmp setup_debian_pdf setup
+################################################################################
+# Pre build actions and tests
 
 .PHONY: clean
 clean:
@@ -139,8 +136,8 @@ test: clean
 cmd_check: clean
 	$(NO_SUGGESTS) R CMD check --no-manual .
 
-.PHONY: full_test
-full_test: test cmd_check
+################################################################################
+# Build, post build, and tests
 
 .PHONY: build
 build: clean
@@ -149,12 +146,12 @@ build: clean
 # Using -- R CMD check collatz_$$(grep DESCRIPTION -e "^Version:" | cut -d \  -f2).tar.gz
 # At the moment yields a ".tar.gz’ is neither a file nor directory, skipping" error.
 # _R_CHECK_CRAN_INCOMING_=TRUE &| --as-cran
-.PHONY: check
-check: full_test manRd build
+.PHONY: cran_check
+cran_check: test cmd_check manRd build
 	$(BIN_PATH) R CMD check --as-cran $$(ls | grep collatz_*.tar.gz)
 
-.PHONY: quick_check
-quick_check: cmd_check build
+.PHONY: check_not_cran_no_pdf
+check_not_cran_no_pdf: test cmd_check build
 	$(NO_SUGGESTS) R CMD check --no-manual $$(ls | grep collatz_*.tar.gz)
 
 .PHONY: install
