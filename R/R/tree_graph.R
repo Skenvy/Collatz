@@ -35,7 +35,7 @@ NULL
 #' # If b is a multiple of a, but not of Pa, then 0 can have a reverse;
 #' tree_graph(0, 1, 17, 2, -6)
 #' # The tree graph can run on `bigz`;
-#' tree_graph((27+as.bigz("576460752303423488")), 3)
+#' tree_graph((27+gmp::as.bigz("576460752303423488")), 3)
 #' @export
 tree_graph <- function(initial_value, max_orbit_distance, P=2, a=3, b=1, cycle_prevention=list()){
     # Call out the reverse_function before any magic returns to trap bad values.
