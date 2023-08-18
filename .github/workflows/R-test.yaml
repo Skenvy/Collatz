@@ -68,12 +68,10 @@ jobs:
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🧱 Dependencies - GMP version
       run: make setup_debian_gmp
-    - name: 🪴 renv
-      uses: Skenvy/r-lib-actions/setup-renv@renv-subdir
-      with:
-        subdirectory: 'R'
     - name: 🦂 Test
-      run: make full_test
+      run: |-
+        make test
+        make cmd_check
   full-test:
     name: R 🏴‍☠️🔵🦜 Full Test 🦂
     if: >- 
@@ -91,21 +89,17 @@ jobs:
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🧱 Dependencies - GMP version
       run: make setup_debian_gmp
-    - name: 🪴 renv
-      uses: Skenvy/r-lib-actions/setup-renv@renv-subdir
-      with:
-        subdirectory: 'R'
     - name: 🧱 Dependencies for Full Test + Suggests
       if: ${{ matrix.version == '4.2.0' || matrix.version == 'devel' }}
       run: make setup_docs
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.0' }}
-      run: make setup_dependencies && make quick_check
+      run: make setup_dependencies && make check_not_cran_no_pdf
     - name: Add the repo as a safe repo inside the job container
       run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 🦂 Test (cran, manual)
       if: ${{ matrix.version == '4.2.0' }}
-      run: make check
+      run: make cran_check
   mac-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Mac)
     if: >- 
@@ -123,10 +117,6 @@ jobs:
       uses: r-lib/actions/setup-r@11a22a908006c25fe054c4ef0ac0436b1de3edbe # v2.6.4
       with:
         r-version: ${{ matrix.version }}
-    - name: 🪴 renv
-      uses: Skenvy/r-lib-actions/setup-renv@renv-subdir
-      with:
-        subdirectory: 'R'
     - name: 🐼 Pandoc
       uses: r-lib/actions/setup-pandoc@50d1eae9b8da0bb3f8582c59a5b82225fa2fe7f2 # v2.3.1
       with:
@@ -139,10 +129,10 @@ jobs:
       run: make setup_mac_tests
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.1' }}
-      run: make quick_check
+      run: make check_not_cran_no_pdf
     - name: 🦂 Test (cran, manual)
       if: ${{ matrix.version == '4.2.1' }}
-      run: make check
+      run: make cran_check
   windows-cmd-check:
     name: R 🏴‍☠️🔵🦜 CMD check (Win)
     if: >- 
@@ -161,10 +151,6 @@ jobs:
       with:
         r-version: ${{ matrix.version }}
         rtools-version: '40'
-    - name: 🪴 renv
-      uses: Skenvy/r-lib-actions/setup-renv@renv-subdir
-      with:
-        subdirectory: 'R'
     - name: 🐼 Pandoc
       uses: r-lib/actions/setup-pandoc@50d1eae9b8da0bb3f8582c59a5b82225fa2fe7f2 # v2.3.1
       with:
@@ -173,10 +159,10 @@ jobs:
       run: make setup_win_tests
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.1' }}
-      run: make quick_check
+      run: make check_not_cran_no_pdf
     - name: 🦂 Test (cran, manual)
       if: ${{ matrix.version == '4.2.1' }}
-      run: make check
+      run: make cran_check
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
@@ -185,10 +171,6 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-    - name: 🪴 renv
-      uses: Skenvy/r-lib-actions/setup-renv@renv-subdir
-      with:
-        subdirectory: 'R'
     - name: 🥔 Setup
       run: make setup_docs
     - name: Add the repo as a safe repo inside the job container
