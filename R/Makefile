@@ -68,7 +68,8 @@ setup_dependencies: setup_user_lib
 	$(R_)install.packages(c("gmp"))$(_R)
 
 # Roxygen and TestThat needed in CI
-setup_test_dependencies:
+.PHONY: setup_test_dependencies
+setup_test_dependencies: setup_user_lib
 	$(R_)install.packages(c("roxygen2", "testthat"))$(_R)
 
 .PHONY: setup_everything
