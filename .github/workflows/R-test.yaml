@@ -67,7 +67,10 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🧱 Dependencies - GMP version
-      run: make setup_debian_gmp
+      run: |-
+        make setup_debian_gmp
+        make setup_dependencies
+        make setup_test_dependencies
     - name: 🦂 Test
       run: |-
         make test
@@ -88,10 +91,13 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🧱 Dependencies - GMP version
-      run: make setup_debian_gmp
+      run: |-
+        make setup_debian_gmp
+        make setup_dependencies
+        make setup_test_dependencies
     - name: 🧱 Dependencies for Full Test + Suggests
       if: ${{ matrix.version == '4.2.0' || matrix.version == 'devel' }}
-      run: make setup_docs
+      run: make setup_everything
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.0' }}
       run: make setup_dependencies && make check_not_cran_no_pdf
@@ -172,7 +178,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: 🥔 Setup
-      run: make setup_docs
+      run: make setup_everything
     - name: Add the repo as a safe repo inside the job container
       run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 📄 Docs

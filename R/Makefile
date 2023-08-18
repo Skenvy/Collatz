@@ -67,8 +67,12 @@ setup_tinytex:
 setup_dependencies: setup_user_lib
 	$(R_)install.packages(c("gmp"))$(_R)
 
-.PHONY: setup_docs
-setup_docs: setup_debian_gmp setup_debian_pdf setup_tinytex
+# Roxygen and TestThat needed in CI
+setup_test_dependencies:
+	$(R_)install.packages(c("roxygen2", "testthat"))$(_R)
+
+.PHONY: setup_everything
+setup_everything: setup_debian_gmp setup_debian_pdf setup_development setup_tinytex setup_dependencies
 
 ################################################################################
 # Alternate insall orders for mac and windows.
