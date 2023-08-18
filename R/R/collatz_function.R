@@ -1,5 +1,4 @@
 #' @include utils.R
-#' @import gmp
 NULL
 
 #' The Collatz function
@@ -18,6 +17,7 @@ NULL
 #' @param b (numeric|bigz) Value to add
 #' to the scaled value of n. Default is 1.
 #' @returns a numeric, either in-built or a bigz from the gmp library.
+#' @import gmp
 #' @examples
 #' # Returns the output of a single application of a Collatz-esque function.
 #' # Without `gmp` or parameterisation, we can try something simple like
