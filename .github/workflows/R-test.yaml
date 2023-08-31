@@ -95,9 +95,9 @@ jobs:
     - name: Tidyverse:3.5 Image - Stretch Archive
       if: ${{ matrix.version == '3.5.0' }}
       run: |-
-        sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list
-        sed -i s|security.debian.org|archive.debian.org/|g /etc/apt/sources.list
-        sed -i /stretch-updates/d /etc/apt/sources.list
+        sed -i -e 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list
+        sed -i -e 's|security.debian.org|archive.debian.org/|g' /etc/apt/sources.list
+        sed -i -e '/stretch-updates/d' /etc/apt/sources.list
     - name: 🧱 Dependencies - GMP version
       run: |-
         make setup_debian_gmp
