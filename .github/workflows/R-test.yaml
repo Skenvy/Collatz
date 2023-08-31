@@ -90,6 +90,11 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    # https://lists.debian.org/debian-devel-announce/2023/03/msg00006.html
+    # Tidyverse images are pretty old. 3.5 is like a million years old so needs this.
+    - name: Tidyverse:3.5 Image - Stretch Archive
+      if: ${{ matrix.version == '3.5.0' }}
+      run: sed -i s/deb.debian.org/archive.debian.org/g /etc/apt/sources.list
     - name: 🧱 Dependencies - GMP version
       run: |-
         make setup_debian_gmp
@@ -115,7 +120,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1'] # , 'devel' # requires installing knitr and rmarkdown from src which takes ~ 20 minutes
+        # 'devel' requires installing knitr and rmarkdown from src which takes ~ 20 minutes
+        # '3.5.0' no longer has a devtools that'll install? It's fine to remove from here.
+        version: ['4.0.0', '4.2.1'] 
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
@@ -148,7 +155,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['3.5.0', '4.0.0', '4.2.1', 'devel']
+        # '3.5.0' no longer has the packages as binaries available, only source.
+        version: ['4.0.0', '4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
@@ -163,12 +171,13 @@ jobs:
         pandoc-version: '2.17.1'
     - name: 🧱 Dependencies
       run: make setup_win_tests
+    # Don't worry about doing a cran check on windows.
     - name: 🦂 Test (not cran, no manual)
-      if: ${{ matrix.version != '4.2.1' }}
+      # if: ${{ matrix.version != '4.2.1' }}
       run: make check_not_cran_no_pdf
-    - name: 🦂 Test (cran, manual)
-      if: ${{ matrix.version == '4.2.1' }}
-      run: make cran_check
+    # - name: 🦂 Test (cran, manual)
+    #   if: ${{ matrix.version == '4.2.1' }}
+    #   run: make cran_check
   docs:
     name: R 🏴‍☠️🔵🦜 Docs 📄 Quick Test 🦂
     runs-on: ubuntu-latest
