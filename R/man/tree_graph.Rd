@@ -56,5 +56,5 @@ tree_graph(1, 1, -3, -2, -5)
 # If b is a multiple of a, but not of Pa, then 0 can have a reverse;
 tree_graph(0, 1, 17, 2, -6)
 # The tree graph can run on `bigz`;
-tree_graph((27+as.bigz("576460752303423488")), 3)
+tree_graph((27+gmp::as.bigz("576460752303423488")), 3)
 }
