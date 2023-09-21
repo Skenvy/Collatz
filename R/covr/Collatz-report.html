@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8"/>
 <style>body{background-color:white;}</style>
-<script src="lib/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="lib/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="lib/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="lib/datatables-binding-0.24/datatables.js"></script>
+<script src="lib/datatables-binding-0.29/datatables.js"></script>
 <script src="lib/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<link href="lib/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="lib/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="lib/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="lib/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="lib/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="lib/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
 <link href="lib/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="lib/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <link href="lib/highlight.js-6.2/rstudio.css" rel="stylesheet" />
@@ -106,8 +106,8 @@ table.table-condensed {
       </ul>
       <div class="tab-content" data-tabsetid="covr">
         <div class="tab-pane active" title="Files" data-value="Files" id="tab-covr-1">
-          <div id="htmlwidget-86b9e6bfe588147e49c9" style="width:100%;height:500px;" class="datatables html-widget"></div>
-          <script type="application/json" data-for="htmlwidget-86b9e6bfe588147e49c9">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["<a href=\"#\">R/utils.R<\/a>","<a href=\"#\">R/hailstone_sequence.R<\/a>","<a href=\"#\">R/tree_graph.R<\/a>","<a href=\"#\">R/stopping_time.R<\/a>","<a href=\"#\">R/reverse_function.R<\/a>","<a href=\"#\">R/collatz_function.R<\/a>"],[97,142,73,80,56,41],[7,52,18,10,6,2],[6,46,18,10,6,2],[1,6,0,0,0,0],["168","785","48","44","113","782"],["85.71%","88.46%","100.00%","100.00%","100.00%","100.00%"]],"container":"<table class=\"row-border\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}"},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
+          <div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-05a1efda7f21358e96e9" style="width:100%;height:500px;"></div>
+          <script type="application/json" data-for="htmlwidget-05a1efda7f21358e96e9">{"x":{"filter":"none","vertical":false,"fillContainer":false,"data":[["<a href=\"#\">R/utils.R<\/a>","<a href=\"#\">R/hailstone_sequence.R<\/a>","<a href=\"#\">R/tree_graph.R<\/a>","<a href=\"#\">R/stopping_time.R<\/a>","<a href=\"#\">R/reverse_function.R<\/a>","<a href=\"#\">R/collatz_function.R<\/a>"],[97,142,73,80,56,41],[7,52,18,10,6,2],[6,46,18,10,6,2],[1,6,0,0,0,0],["168","785","48","44","113","782"],["85.71%","88.46%","100.00%","100.00%","100.00%","100.00%"]],"container":"<table class=\"row-border\">\n  <thead>\n    <tr>\n      <th>File<\/th>\n      <th>Lines<\/th>\n      <th>Relevant<\/th>\n      <th>Covered<\/th>\n      <th>Missed<\/th>\n      <th>Hits / Line<\/th>\n      <th>Coverage<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"searching":false,"dom":"t","paging":false,"columnDefs":[{"targets":6,"createdCell":"function(td, cellData, rowData, row, col) {\n  var percent = cellData.replace(\"%\", \"\");\n  if (percent > 90) {\n    var grad = \"linear-gradient(90deg, #edfde7 \" + cellData + \", white \" + cellData + \")\";\n  } else if (percent > 75) {\n    var grad = \"linear-gradient(90deg, #f9ffe5 \" + cellData + \", white \" + cellData + \")\";\n  } else {\n    var grad = \"linear-gradient(90deg, #fcece9 \" + cellData + \", white \" + cellData + \")\";\n  }\n  $(td).css(\"background\", grad);\n}\n"},{"className":"dt-right","targets":[1,2,3,4]}],"order":[],"autoWidth":false,"orderClasses":false},"callback":"function(table) {\ntable.on('click.dt', 'a', function() {\n  files = $('div#files div');\n  files.not('div.hidden').addClass('hidden');\n  id = $(this).text();\n  files.filter('div[id=\\'' + id + '\\']').removeClass('hidden');\n  $('ul.nav a[data-value=Source]').text(id).tab('show');\n});\n}"},"evals":["options.columnDefs.0.createdCell","callback"],"jsHooks":[]}</script>
         </div>
         <div class="tab-pane" title="Source" data-value="Source" id="tab-covr-2">
           <div id="files">
@@ -454,7 +454,7 @@ table.table-condensed {
                     <td class="num">49</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' hailstone_sequence(27+as.bigz("576460752303423488"))</pre>
+                      <pre class="language-r">#' hailstone_sequence(27+gmp::as.bigz("576460752303423488"))</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -1377,7 +1377,7 @@ table.table-condensed {
                     <td class="num">38</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' tree_graph((27+as.bigz("576460752303423488")), 3)</pre>
+                      <pre class="language-r">#' tree_graph((27+gmp::as.bigz("576460752303423488")), 3)</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -1880,7 +1880,7 @@ table.table-condensed {
                     <td class="num">36</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' reverse_function(as.bigz("99999999999999999999"))</pre>
+                      <pre class="language-r">#' reverse_function(gmp::as.bigz("99999999999999999999"))</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -2257,7 +2257,7 @@ table.table-condensed {
                     <td class="num">33</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' collatz_function(as.bigz("99999999999999999999"))</pre>
+                      <pre class="language-r">#' collatz_function(gmp::as.bigz("99999999999999999999"))</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -2417,7 +2417,7 @@ table.table-condensed {
                     <td class="num">14</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">NULL</pre>
+                      <pre class="language-r">"_PACKAGE"</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -3319,7 +3319,7 @@ table.table-condensed {
                     <td class="num">45</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' stopping_time(as.bigz("99999999999999999999"))</pre>
+                      <pre class="language-r">#' stopping_time(gmp::as.bigz("99999999999999999999"))</pre>
                     </td>
                   </tr>
                   <tr class="never">
@@ -3368,28 +3368,28 @@ table.table-condensed {
                     <td class="num">52</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' stopping_time(27+as.bigz("576460752303423488"))</pre>
+                      <pre class="language-r">#' stopping_time(27+gmp::as.bigz("576460752303423488"))</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">53</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' stopping_time(27+(2*as.bigz("576460752303423488")))</pre>
+                      <pre class="language-r">#' stopping_time(27+(2*gmp::as.bigz("576460752303423488")))</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">54</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' stopping_time(27+(3*as.bigz("576460752303423488")))</pre>
+                      <pre class="language-r">#' stopping_time(27+(3*gmp::as.bigz("576460752303423488")))</pre>
                     </td>
                   </tr>
                   <tr class="never">
                     <td class="num">55</td>
                     <td class="coverage"></td>
                     <td class="col-sm-12">
-                      <pre class="language-r">#' stopping_time(27+(4*as.bigz("576460752303423488")))</pre>
+                      <pre class="language-r">#' stopping_time(27+(4*gmp::as.bigz("576460752303423488")))</pre>
                     </td>
                   </tr>
                   <tr class="never">

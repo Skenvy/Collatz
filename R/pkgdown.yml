@@ -1,12 +1,12 @@
-pandoc: '2.18'
-pkgdown: 2.0.6
+pandoc: 2.17.1.1
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   collatz: collatz.html
   hailstones: hailstones.html
   hailstones_576460752303423488: hailstones_576460752303423488.html
   treegraphs: treegraphs.html
-last_built: 2022-09-03T15:44Z
+last_built: 2023-09-21T12:48Z
 urls:
   reference: https://skenvy.github.io/Collatz/R/reference
   article: https://skenvy.github.io/Collatz/R/articles
