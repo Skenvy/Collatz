@@ -459,3 +459,5 @@ Error in as.bigz("99999999999999999999") :
 Calls: collatz_function
 Execution halted
 ```
+### MRAN Closure
+Another unrelated issue that appears to have cropped up over time is that for some reason, the tidyverse image 3.5 that I'm using in my workflow is trying to install `gmp` from MRAN, or "Microsoft R Application Network retirement", which was shut down on 1st July 2023. See [this blog post](https://techcommunity.microsoft.com/t5/azure-sql-blog/microsoft-r-application-network-retirement/ba-p/3707161) for more details. For some reason the tidyverse 3.5 image running `Rscript -e 'install.packages(c("gmp"))'` attempts to access `'https://mran.microsoft.com/snapshot/2018-07-02/src/contrib/PACKAGES'`.

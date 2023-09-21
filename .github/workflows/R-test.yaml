@@ -108,7 +108,7 @@ jobs:
       run: make setup_everything
     - name: 🦂 Test (not cran, no manual)
       if: ${{ matrix.version != '4.2.0' }}
-      run: make setup_dependencies && make check_not_cran_no_pdf
+      run: make check_not_cran_no_pdf
     - name: Add the repo as a safe repo inside the job container
       run: git config --global --add safe.directory /__w/Collatz/Collatz
     - name: 🦂 Test (cran, manual)

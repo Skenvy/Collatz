@@ -6,6 +6,7 @@ BIN_PATH=PATH=$$PATH:$$($(R_)tinytex::tinytex_root()$(_R) | cut -d \  -f2 | sed 
 else
 BIN_PATH=PATH=$$PATH:~/.local/bin:~/bin && 
 endif
+CRAN_REPO=repos='http://cran.us.r-project.org'
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 SHELL:=/bin/bash
 
@@ -51,11 +52,11 @@ setup_user_lib:
 # Devlopment packages.
 .PHONY: setup_development
 setup_development: setup_user_lib
-	$(R_)install.packages(c("roxygen2", "testthat"))$(_R)
-	$(R_)install.packages("devtools")$(_R)
-	$(R_)install.packages(c("covr", "DT"))$(_R)
-	$(R_)install.packages(c("pkgdown", "servr"))$(_R)
-	$(R_)install.packages(c("tinytex", "knitr", "rmarkdown"))$(_R)
+	$(R_)install.packages(c("roxygen2", "testthat"), $(CRAN_REPO))$(_R)
+	$(R_)install.packages("devtools", $(CRAN_REPO))$(_R)
+	$(R_)install.packages(c("covr", "DT"), $(CRAN_REPO))$(_R)
+	$(R_)install.packages(c("pkgdown", "servr"), $(CRAN_REPO))$(_R)
+	$(R_)install.packages(c("tinytex", "knitr", "rmarkdown"), $(CRAN_REPO))$(_R)
 
 .PHONY: setup_tinytex
 setup_tinytex:
@@ -65,12 +66,12 @@ setup_tinytex:
 # Depended packages
 .PHONY: setup_dependencies
 setup_dependencies: setup_user_lib
-	$(R_)install.packages(c("gmp"))$(_R)
+	$(R_)install.packages(c("gmp"), $(CRAN_REPO))$(_R)
 
 # Roxygen and TestThat needed in CI
 .PHONY: setup_test_dependencies
 setup_test_dependencies: setup_user_lib
-	$(R_)install.packages(c("roxygen2", "testthat"))$(_R)
+	$(R_)install.packages(c("roxygen2", "testthat"), $(CRAN_REPO))$(_R)
 
 .PHONY: setup_everything
 setup_everything: setup_debian_gmp setup_debian_pdf setup_development setup_tinytex setup_dependencies
@@ -80,7 +81,7 @@ setup_everything: setup_debian_gmp setup_debian_pdf setup_development setup_tiny
 
 .PHONY: setup_mac_tests
 setup_mac_tests: setup_dependencies
-	$(R_)install.packages(c("testthat", "roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "knitr", "rmarkdown"), type="binary")$(_R)
+	$(R_)install.packages(c("testthat", "roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "knitr", "rmarkdown"), type="binary", $(CRAN_REPO))$(_R)
 
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
 # In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
@@ -89,8 +90,8 @@ setup_mac_tests: setup_dependencies
 # worth mentioning it does also require the outer quotes to be " not '
 .PHONY: setup_win_tests
 setup_win_tests:
-	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', repos='http://cran.us.r-project.org')"
-	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown', 'tinytex'), type='binary', repos='http://cran.us.r-project.org')"
+	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', $(CRAN_REPO))"
+	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown', 'tinytex'), type='binary', $(CRAN_REPO))"
 	$(R_)tinytex::install_tinytex()$(_R)
 	$(R_)tinytex::tinytex_root()$(_R)
 	Rscript -e "tinytex::tlmgr_install('makeindex')"
