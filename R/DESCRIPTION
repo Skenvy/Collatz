@@ -1,5 +1,5 @@
 Package: collatz
-Version: 1.0.0
+Version: 1.0.1
 License: Apache License (== 2.0)
 Authors@R: c(person("Nathan", "Levett", role = c("aut", "cre"), email = "nathan.a.z.levett@gmail.com"))
 Title: Functions Related to the Collatz/Syracuse/3n+1 Problem
@@ -37,5 +37,5 @@ Suggests:
     knitr,
     rmarkdown
 Config/testthat/edition: 3
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
