@@ -6,7 +6,7 @@ BIN_PATH=PATH=$$PATH:$$($(R_)tinytex::tinytex_root()$(_R) | cut -d \  -f2 | sed 
 else
 BIN_PATH=PATH=$$PATH:~/.local/bin:~/bin && 
 endif
-CRAN_REPO=repos='http://cran.us.r-project.org'
+CRAN_REPO=repos="http://cran.us.r-project.org"
 NO_SUGGESTS=_R_CHECK_FORCE_SUGGESTS_=false 
 SHELL:=/bin/bash
 
@@ -85,16 +85,15 @@ setup_mac_tests: setup_dependencies
 
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
 # In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
-# For installing locall we'd need to reference $(R_PATH)\bin\Rscript.exe -e "~"
-# But in GHA, the rtools bash let's us just 'Rscript -e "~"' <-- also
-# worth mentioning it does also require the outer quotes to be " not '
+# For installing locally we'd need to reference $(R_PATH)\bin\Rscript.exe -e "~"
+# But in GHA, the rtools bash let's us just 'Rscript -e "~"'
 .PHONY: setup_win_tests
 setup_win_tests:
-	Rscript -e "install.packages(c('gmp', 'testthat'), type='binary', $(CRAN_REPO))"
-	Rscript -e "install.packages(c('roxygen2', 'devtools', 'covr', 'DT', 'pkgdown', 'servr', 'knitr', 'rmarkdown', 'tinytex'), type='binary', $(CRAN_REPO))"
+	$(R_)install.packages(c("gmp", "testthat"), type="binary", $(CRAN_REPO))$(_R)
+	$(R_)install.packages(c("roxygen2", "devtools", "covr", "DT", "pkgdown", "servr", "knitr", "rmarkdown", "tinytex"), type="binary", $(CRAN_REPO))$(_R)
 	$(R_)tinytex::install_tinytex()$(_R)
 	$(R_)tinytex::tinytex_root()$(_R)
-	Rscript -e "tinytex::tlmgr_install('makeindex')"
+	$(R_)tinytex::tlmgr_install("makeindex")$(_R)
 
 ################################################################################
 # Pre build actions and tests
