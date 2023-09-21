@@ -159,7 +159,10 @@ jobs:
       fail-fast: false
       matrix:
         # '3.5.0' no longer has the packages as binaries available, only source.
-        version: ['4.0.0', '4.2.1', 'devel']
+        # '4.0.0' still functionally tested in the other jobs, but doesn't play
+        # well with the " vs ' quote usage that's used in ubuntu / mac. See the
+        # make setup_win_tests recipe for more information.
+        version: ['4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0

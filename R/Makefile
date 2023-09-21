@@ -86,7 +86,10 @@ setup_mac_tests: setup_dependencies
 # Locally something like 'C:\Program Files\R\R-4.2.1\bin\Rscript.exe'
 # In GHA, installed with /DIR=C:\R -- so 'C:\R\R-$VER\bin\Rscript.exe'
 # For installing locally we'd need to reference $(R_PATH)\bin\Rscript.exe -e "~"
-# But in GHA, the rtools bash let's us just 'Rscript -e "~"'
+# But in GHA, the rtools bash let's us just 'Rscript -e "~"' <-- also
+# worth mentioning it does also require the outer quotes to be " not '
+# ... or at least, for versions prior to some point it does. 4.0.0 needs the
+# outer quotes to be ", but 4.2 doesn't, so just stop testing 4.0 on windows.
 .PHONY: setup_win_tests
 setup_win_tests:
 	$(R_)install.packages(c("gmp", "testthat"), type="binary", $(CRAN_REPO))$(_R)
