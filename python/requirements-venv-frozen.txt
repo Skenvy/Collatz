@@ -38,7 +38,7 @@ more-itertools==10.1.0
 myst-parser==2.0.0
 packaging==23.1
 pkginfo==1.9.6
-platformdirs==3.10.0
+platformdirs==3.11.0
 pluggy==1.2.0
 py==1.11.0
 pycodestyle==2.11.0
