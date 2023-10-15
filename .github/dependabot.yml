@@ -48,6 +48,7 @@ updates:
   schedule:
     interval: weekly
   ignore:
+  # https://github.com/sphinx-doc/sphinx/pull/11511 -- until we drop py 3.8
   - dependency-name: "sphinx"
     versions: [">=7.2"]
   groups:
