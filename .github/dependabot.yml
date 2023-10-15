@@ -47,6 +47,9 @@ updates:
   directory: "/python"
   schedule:
     interval: weekly
+  ignore:
+  - dependency-name: "sphinx"
+    versions: [">=7.2"]
   groups:
     flake8:
       patterns:
@@ -55,7 +58,7 @@ updates:
       - "pycodestyle"
     sphinx:
       patterns:
-      - "sphinx"
+      - "sphinx*"
       - "furo"
       - "myst-parser"
     everything-else:
@@ -65,7 +68,7 @@ updates:
       - "flake8"
       - "pyflakes"
       - "pycodestyle"
-      - "sphinx"
+      - "sphinx*"
       - "furo"
       - "myst-parser"
 # R has no supported ecosystem
