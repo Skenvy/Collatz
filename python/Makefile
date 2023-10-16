@@ -22,16 +22,21 @@
 # Resulted in """/usr/bin/bash: -N: invalid option""" during venv itself.
 #
 # So set VE and VENV to nothing when on windows.
+#
+# We've also gotta set pip's self upgrade special for windows or it'll complain.
+# https://pip.pypa.io/en/stable/installation/
 ifeq ($(OS),Windows_NT)
 # VENV=python -m venv .ve
 # VE=.\.ve\Scripts\activate && 
 VENV=
 VE=
+PYM=py -m 
 else
 VENV=python3 -m venv .ve
 VE=source .ve/bin/activate && 
+PYM=
 endif
-PIP_PIP=pip install --upgrade pip
+PIP_PIP=$(PYM)pip install --upgrade pip
 PIP_REQ=pip install --upgrade -r
 VENV_REQS=requirements-venv.txt
 FROZEN_VENV_REQS=requirements-venv-frozen.txt
