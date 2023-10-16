@@ -27,14 +27,9 @@ updates:
     eslint:
       patterns:
       - "eslint"
-      - "eslint-config-airbnb"
-      - "eslint-config-airbnb-typescript"
-      - "eslint-plugin-import"
-      - "eslint-plugin-jsx-a11y"
-      - "eslint-plugin-react"
-      - "eslint-plugin-react-hooks"
-      - "eslint-plugin-tsdoc"
-      - "@typescript-eslint/parser"
+      - "eslint-config-*"
+      - "eslint-plugin-*"
+      - "@typescript-eslint/*"
     mocha-chai:
       patterns:
       - "mocha"
@@ -47,6 +42,10 @@ updates:
   directory: "/python"
   schedule:
     interval: weekly
+  ignore:
+  # https://github.com/sphinx-doc/sphinx/pull/11511 -- until we drop py 3.8
+  - dependency-name: "sphinx"
+    versions: [">=7.2"]
   groups:
     flake8:
       patterns:
@@ -55,7 +54,7 @@ updates:
       - "pycodestyle"
     sphinx:
       patterns:
-      - "sphinx"
+      - "sphinx*"
       - "furo"
       - "myst-parser"
     everything-else:
@@ -65,7 +64,7 @@ updates:
       - "flake8"
       - "pyflakes"
       - "pycodestyle"
-      - "sphinx"
+      - "sphinx*"
       - "furo"
       - "myst-parser"
 # R has no supported ecosystem

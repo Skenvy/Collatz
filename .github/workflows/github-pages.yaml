@@ -21,6 +21,12 @@ on:
         required: true
         type: string
   workflow_dispatch:
+    inputs:
+      merge_from:
+        description: 'The gh-pages-* branch to merge from into gh-pages.'
+        required: false
+        type: string
+        default: ''
 permissions: {}
 concurrency:
   group: "pages"
@@ -36,7 +42,11 @@ jobs:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
     permissions:
       contents: write
-    if: ${{ github.event_name == 'workflow_call' }}
+    # We can't rely on conditionalising from the workflow call event type.
+    # if: ${{ github.event_name == 'workflow_call' }} -- will never be true
+    # see https://github.com/github/docs/issues/16515 for more details.
+    # Instead, duplicate the input with a default empty string in dispatch.
+    if: ${{ inputs.merge_from != '' }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout

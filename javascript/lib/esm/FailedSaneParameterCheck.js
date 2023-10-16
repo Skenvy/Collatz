@@ -1,22 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.assertSaneParameterisation = exports.FailedSaneParameterCheck = exports.SaneParameterErrMsg = void 0;
 /**
  * Error message constants.
  * @remarks
  * To be used as input to the FailedSaneParameterCheck.
  */
-export var SaneParameterErrMsg;
+var SaneParameterErrMsg;
 (function (SaneParameterErrMsg) {
     /** Message to print in the FailedSaneParameterCheck if P, the modulus, is zero. */
     SaneParameterErrMsg["SANE_PARAMS_P"] = "'P' should not be 0 ~ violates modulo being non-zero.";
     /** Message to print in the FailedSaneParameterCheck if a, the multiplicand, is zero. */
     SaneParameterErrMsg["SANE_PARAMS_A"] = "'a' should not be 0 ~ violates the reversability.";
-})(SaneParameterErrMsg || (SaneParameterErrMsg = {}));
+})(SaneParameterErrMsg || (exports.SaneParameterErrMsg = SaneParameterErrMsg = {}));
 /**
  * FailedSaneParameterCheck
  * @remarks
  * An Error thrown when assertSaneParameterisation determines invalid parameterisation.
  * This is when either P, the modulus, or a, the multiplicand, are zero.
  */
-export class FailedSaneParameterCheck extends Error {
+class FailedSaneParameterCheck extends Error {
     /**
      * Construct a FailedSaneParameterCheck with a message associated with the provided enum.
      * @param message - The enum from which to extract the message.
@@ -26,6 +29,7 @@ export class FailedSaneParameterCheck extends Error {
         this.name = 'FailedSaneParameterCheck';
     }
 }
+exports.FailedSaneParameterCheck = FailedSaneParameterCheck;
 /**
  * Assert Sane Parameters
  * @remarks
@@ -36,7 +40,7 @@ export class FailedSaneParameterCheck extends Error {
  * @throws FailedSaneParameterCheck
  * Thrown if either P or a are 0.
  */
-export function assertSaneParameterisation(P, a, _b) {
+function assertSaneParameterisation(P, a, _b) {
     // Sanity check (P,a,b) ~ P absolutely can't be 0. a "could" be zero
     // theoretically, although would violate the reversability (if ~a is 0 then a
     // value of "b" as the input to the reverse function would have a pre-emptive
@@ -56,3 +60,4 @@ export function assertSaneParameterisation(P, a, _b) {
         throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_A);
     }
 }
+exports.assertSaneParameterisation = assertSaneParameterisation;
