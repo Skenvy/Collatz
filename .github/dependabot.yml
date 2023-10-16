@@ -27,14 +27,9 @@ updates:
     eslint:
       patterns:
       - "eslint"
-      - "eslint-config-airbnb"
-      - "eslint-config-airbnb-typescript"
-      - "eslint-plugin-import"
-      - "eslint-plugin-jsx-a11y"
-      - "eslint-plugin-react"
-      - "eslint-plugin-react-hooks"
-      - "eslint-plugin-tsdoc"
-      - "@typescript-eslint/parser"
+      - "eslint-config-*"
+      - "eslint-plugin-*"
+      - "@typescript-eslint/*"
     mocha-chai:
       patterns:
       - "mocha"
