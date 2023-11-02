@@ -1,6 +1,6 @@
 {
   "name": "@skenvy/collatz",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
   "keywords": [
     "Collatz",
@@ -83,6 +83,6 @@
     "typescript": "^5.0.4"
   },
   "engines": {
-    "node": "^14.17.0 || >=16.0.0"
+    "node": "^18.0.0 || >=20.0.0"
   }
 }

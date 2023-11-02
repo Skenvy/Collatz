@@ -236,3 +236,8 @@ The deno [add_module](https://deno.com/add_module) page stayed in a state where 
 Only on the successful ping did the page stop "waiting" -- there was a nice confetti exploding on the screen effect, but that then gave way to the steps that I had to go looking for elsewhere to finally appear on that page.. after I'd already done them..? So, you need to use a valid webhook in the correct way, for the page to dynamically rerender to show the steps you need to know to set up the webhook?
 
 Well, at least the webhook worked, and it should deploy to deno on the next tag. But there weren't any options to configure what tags would trigger the webhook, so deno deployments will have the opposite problem to go deployments. Go wouldn't accept any tag that didn't exactly match its semver regex, but deno will deploy on every tag, most of which wont be relevant to it?
+
+---
+# NVM
+[NVM](https://github.com/nvm-sh/nvm), "Node version manager", is an extremely useful tool for managing multiple versions of node installed at the same time.
+Coming back in here to say that, while updating the supported engines to remove 14 and 16 and add 20, that I'm surprised I hadn't mentioned nvm in here before.
