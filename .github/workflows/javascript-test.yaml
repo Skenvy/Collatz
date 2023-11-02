@@ -53,11 +53,6 @@ jobs:
       matrix:
         version: ['18', '20', '21'] # See package.json's "engines"
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        include:
-        - os: ubuntu-latest
-          version: 17
-        - os: ubuntu-latest
-          version: 19
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
@@ -67,6 +62,8 @@ jobs:
         node-version: '${{ matrix.version }}'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
+    - name: ✍️ Overwrite .nvmrc
+      run: node -v > ./.nvmrc && cat ./.nvmrc
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test

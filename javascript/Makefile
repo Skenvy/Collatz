@@ -30,7 +30,7 @@ install_npm: install_node
 # https://docs.npmjs.com/cli/v8/commands/npm-ci
 setup: install_npm
 	$(NPM) list -g --depth 0
-	$(NPM) ci -f
+	$(NPM) ci
 	$(NPM) list
 
 # https://docs.npmjs.com/cli/v8/commands/npm-outdated
