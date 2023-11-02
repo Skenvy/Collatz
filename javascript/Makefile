@@ -1,7 +1,17 @@
+ifeq ($(OS),Windows_NT)
+NVM=
+_=
+NPM=npm
+INSTALL_NODE=
+INSTALL_NPM=
+else
 NVM=source $$NVM_DIR/nvm.sh && nvm
 _=$(NVM) use &&
 NPM=$(_) npm
-.PHONY: bump_major bump_minor bump_patch setup update clean docs docs_server test lint verify_transpiled_checkin build publish
+INSTALL_NODE=$(NVM) install $$(cat ./.nvmrc)
+INSTALL_NPM=$(NPM) i -g npm@$$(cat ./.npm-version)
+endif
+.PHONY: bump_major bump_minor bump_patch install_node install_npm setup update clean docs docs_server test lint verify_transpiled_checkin build publish g
 SHELL:=/bin/bash
 
 # Versions can be manually changed where they appear in the package json and
@@ -22,10 +32,10 @@ bump_patch:
 	$(NPM) i --package-lock-only
 
 install_node:
-	$(NVM) install $$(cat ./.nvmrc)
+	$(INSTALL_NODE)
 
 install_npm: install_node
-	$(NPM) i -g npm@$$(cat ./.npm-version)
+	$(INSTALL_NPM)
 
 # https://docs.npmjs.com/cli/v8/commands/npm-ci
 setup: install_npm
