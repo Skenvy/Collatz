@@ -20,11 +20,17 @@ defaults:
   run:
     shell: bash
     working-directory: rust
+env:
+  CARGO_TERM_COLOR: always
 jobs:
   quick-test:
     name: Rust ❤️🦀❤️ Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
-      - name: 🏁 Checkout
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: Run tests
+      run: make test
+    - name: Run
+      run: make run
