@@ -122,6 +122,8 @@ jobs:
         scope: '@skenvy'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
+    - name: 🧱 Install nvm+npm
+      run: make install_npm
     - name: 📦 Publish
       run: make publish
       env:
@@ -146,6 +148,8 @@ jobs:
         scope: '@skenvy'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
+    - name: 🧱 Install nvm+npm
+      run: make install_npm
     - name: 📦 Publish
       run: make publish
       env:
