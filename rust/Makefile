@@ -4,7 +4,6 @@ SHELL:=/bin/bash
 # Makefile Examples Here:
 # https://github.com/redis-rs/redis-rs/blob/main/Makefile
 
-# https://github.com/rust-lang/rust-clippy
 # https://docs.rs/
 # https://doc.rust-lang.org/cargo/commands/index.html
 
@@ -12,6 +11,7 @@ setup:
 	rustup toolchain install nightly
 	rustup toolchain install stable
 	rustup component add rustfmt
+	rustup component add clippy
 
 clean:
 
@@ -19,10 +19,13 @@ docs:
 	cargo doc
 
 test:
-	cargo test --verbose
+	cargo test --verbos
 
+# https://doc.rust-lang.org/nightly/clippy/lint_configuration.html
+# https://rust-lang.github.io/rust-clippy/master/index.html#/
 lint:
-	cargo +stable fmt --verbose --check
+	cargo +stable fmt --verbose --all --check
+	cargo +stable clippy --all-targets --all-features
 
 build:
 	cargo build --verbose

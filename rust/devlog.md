@@ -22,11 +22,12 @@ If we start searching for information on rust, there's a few helpful starting po
 * [Rustacean](https://rustacean.net/) is also included as a footer to the quickstart, to explain Ferris the crab.
 
 That's it for as far as the getting started guide took us. There's many more links on the rust site such as;
+* [Toolchains](https://rust-lang.github.io/rustup/concepts/toolchains.html)
 * [Editions Guide](https://doc.rust-lang.org/stable/edition-guide/); with editions being important enough that it's one of the three properties generated in the default project by `cargo init`.
 * [Packaging and distributing a Rust tool](https://rust-cli.github.io/book/tutorial/packaging.html) which describes how to `cargo publish` effectively.
 
 As well as other loose resources such as;
-* The [rust-lang](https://github.com/rust-lang) repositories; [rust](https://github.com/rust-lang/rust), [cargo](https://github.com/rust-lang/cargo), [crates.io](https://github.com/rust-lang/crates.io), [libc](https://github.com/rust-lang/libc), [rustfmt](https://github.com/rust-lang/rustfmt)
+* The [rust-lang](https://github.com/rust-lang) repositories; [rust](https://github.com/rust-lang/rust), [cargo](https://github.com/rust-lang/cargo), [crates.io](https://github.com/rust-lang/crates.io), [libc](https://github.com/rust-lang/libc), [rustfmt](https://github.com/rust-lang/rustfmt), [clippy](https://github.com/rust-lang/rust-clippy)
 * [Wikipedia](https://en.wikipedia.org/wiki/Rust_(programming_language)) | The Rust [_discord_](https://discord.gg/rust-lang) | Reddit's [r/rust](https://www.reddit.com/r/rust/)
 * [KokaKiwi/rust-mk](https://github.com/KokaKiwi/rust-mk/blob/master/rust.mk), a thoroughly designed Makefile for rust projects.
 
@@ -53,3 +54,6 @@ It's not that easy of a tool to use OotB, though. With no `rustfmt.toml` configu
 Why on earth does `rustfmt +stable --print-config default rustfmt.toml` produce a configuration file that it will warn on many of the choices within, that it cannot utilise them being not the nightly build. It would also appear that `unstable_features` is an option within the generated config that must be changed to true to allow the "unstable" rules even if using the `+nightly` build. It would likely be a lot less unexpected if the default generated config happened to explain any of this in a comment, or split the entries in the config up between stable and unstable rather than having them all in one soup. It also appears there's no way then to say, error if an unstable rule is specified, such that it's limited to only running on versions where all specified formatting rules are stable and can't run on older versions where rules may not be stable.
 
 The best compromise right now appears to be to let `rustfmt +stable --print-config default rustfmt.toml` output what it wants and generally ignore all the `Warning: can't set X` warnings, while attempting to keep the version of rustfmt that's installed stable across the desire to test against a range of versions.
+
+### `clippy`
+[Clippy](https://github.com/rust-lang/rust-clippy) is a tool for linting rust source. It can be configured via a `clippy.toml` to include these [lint configuration options](https://doc.rust-lang.org/nightly/clippy/lint_configuration.html), which are also explained [here](https://rust-lang.github.io/rust-clippy/master/index.html#/).
