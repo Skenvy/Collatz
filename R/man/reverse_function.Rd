@@ -46,5 +46,5 @@ reverse_function(16, a=5)
 # overflowing integers by default. To venture into the world of arbitrary
 # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
 reverse_function(99999999999999999999)
-reverse_function(as.bigz("99999999999999999999"))
+reverse_function(gmp::as.bigz("99999999999999999999"))
 }

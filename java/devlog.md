@@ -69,3 +69,22 @@ Once again we create an empty orphan branch;
 1. `rm .git/index ; git clean -fdx`
 1. `git commit -m "Initial empty orphan" --allow-empty`
 1. `git push --set-upstream origin gh-pages-java`
+
+## Linting
+Retroactively adding a linter to the java setup after adding one to another project. Same comments copied here.
+
+The code is pretty gross at the moment, so we'll need to add a linter. [VS Code's page on linting java](https://code.visualstudio.com/docs/java/java-linting) suggets [Checkstyle](https://checkstyle.sourceforge.io/) ([source](https://github.com/checkstyle/checkstyle)) ([plugin](https://maven.apache.org/plugins/maven-checkstyle-plugin/index.html)). The [Sun Java Style](https://checkstyle.org/sun_style.html) is the default style rule set. The other already included rule set is the [Google Java Style](https://checkstyle.org/google_style.html). The rule set for Sun Style are apparently enforcing Oracle's [Code Conventions for the Java Programming Language](https://www.oracle.com/java/technologies/javase/codeconventions-contents.html) (from 20th April 1999???) and is using [this config](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/sun_checks.xml). The rule set for Google Style are enforcing a _much_ more recent set of rules, the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html), using [this config](https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml). There exists the option to [use inline configuration](https://maven.apache.org/plugins/maven-checkstyle-plugin/examples/inline-checker-config.html), but it replaces entirely, rather than overrides inplace, any other specified config. For instance, the following block will _only evaluate against the LineLength rule_.
+```xml
+<configuration>
+  <configLocation>sun_checks.xml</configLocation>
+  <checkstyleRules>
+    <module name="Checker">
+      <module name="LineLength">
+        <property name="max" value="240" />
+        <property name="fileExtensions" value="java"/>
+      </module>
+    </module>
+  </checkstyleRules>
+</configuration>
+```
+The two default `<configLocation/>`'s available are `sun_checks.xml`, which yields mostly errors, or `google_checks.xml` which yields mostly  _warnings_, but no errors. If we want to actually override the settings provided, we'll need to copy one of the existing rule sets and edit it and check it in.

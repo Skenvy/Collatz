@@ -46,7 +46,7 @@ NULL
 #' # And can be parameterised;
 #' hailstone_sequence(3, -1, 3, 1)
 #' # The hailstone sequence can run on `bigz`;
-#' hailstone_sequence(27+as.bigz("576460752303423488"))
+#' hailstone_sequence(27+gmp::as.bigz("576460752303423488"))
 #' @export
 hailstone_sequence <- function(initial_value, P=2, a=3, b=1,
     max_total_stopping_time=1000, total_stopping_time=TRUE, verbose=TRUE){

@@ -82,7 +82,7 @@ inf
 >>> collatz.tree_graph(1, 2, P=5, a=2, b=3)
 {1: {-1: {-5: {}, -2: {}}, 5: {'CYCLE_INIT': 1, 25: {}}}}
 ```
-## [Sphinx generated docs](#TODO)
+## [Sphinx+MyST generated docs](https://skenvy.github.io/Collatz/python/)
 ## Developing
 ### The first time setup
 ```

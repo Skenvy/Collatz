@@ -131,6 +131,8 @@ defaults:
   run:
     shell: bash
     working-directory: <language>
+env:
+  development_<language>_version: <language-version>
 jobs:
   quick-test:
     name: <Language> <language-emojis> Quick Test 🦂
@@ -138,16 +140,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
         arch: 'x64'
     - name: 🧱 Install build dependencies
       run: make <make-environment-dependencies>
     - name: 🦂 Test
       run: make test
+    - name: 🧹 Lint
+      run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
   full-test:
     name: <Language> <language-emojis> Full Test 🦂
     if: >- 
@@ -162,7 +168,7 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: <language-emojis> Set up <Language> ${{ matrix.version }}
       uses: <gh-action-setup-language@semver>
       with:
@@ -171,32 +177,90 @@ jobs:
     # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
     # TODO: run: or uses: something depending on the languges
+    - name: 🧹 Lint
+      run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
+  built-example:
+    name: <Language> <language-emojis> Build Example 🦛
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+        arch: 'x64'
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🧱 Build
+      run: make build
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+      with:
+        name: Package
+        path: <language>/some-artefacts/path-to-one-file.pkg
+        if-no-files-found: error
+        retention-days: 1
+  usage-demonstration:
+    name: <Language> <language-emojis> Usage Demonstration 🦏
+    needs: [built-example]
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: <language>/.demo
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+        arch: 'x64'
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      with:
+        name: Package
+        path: <language>/.demo
+    - name: 🦛 Install this package
+      run: make install
+    - name: 🦏 Run usage demonstration
+      run: make demo
   # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
-  # codeql:
-  #   name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
-  #   if: >- 
-  #     ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-  #     (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
-  #   uses: ./.github/workflows/github-codeql.yaml
-  #   with:
-  #     language: '<Language>'
-  # # Docs step is optional depending on language
-  # docs:
-  #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: <language-emojis> Set up <Language>
-  #     uses: <gh-action-setup-language@semver>
-  #     with:
-  #       version: <language-version>
-  #   - name: 📄 Docs
-  #     run: make docs
+  codeql:
+    name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/github-codeql.yaml
+    with:
+      language: '<Language>'
+  # Docs step is optional depending on language
+  docs:
+    name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs
+      run: make docs
 ```
 ## `<language>-build.yaml`
 ```yaml
@@ -215,6 +279,8 @@ defaults:
   run:
     shell: bash
     working-directory: <language>
+env:
+  development_<language>_version: <language-version>
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -235,7 +301,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -266,11 +332,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
     - name: 🧱 Install build dependencies
       run: make <make-environment-dependencies>
     # Some step that uses `make build`
@@ -288,7 +354,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     # - name: 🆒 Download dists
     #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
@@ -308,7 +374,7 @@ jobs:
     # Although the dists are built uses checkout to satisfy refs/tags existence
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     # - name: 🆒 Download dists
     #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
@@ -324,14 +390,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
+    # Run the following first to create the empty orphan
+    # git checkout --orphan gh-pages-<language>
+    # rm .git/index ; git clean -fdx
+    # git commit -m "Initial empty orphan" --allow-empty
+    # git push --set-upstream origin gh-pages-<language>
     - name: 📄 Docs
-      run: |
-        # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-<language>'
+      run: |-
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-<language>:gh-pages-<language>
+        git symbolic-ref HEAD refs/heads/gh-pages-<language>
+        # What gets copied and where might vary but generally;
+        cd .. && mv <language>/<built-docs-path> ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir <language> && mv ../MERGE_TARGET/* <language>/
+        # Then back to normal;
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-<language>
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   docs-merge:
@@ -339,6 +422,8 @@ jobs:
     needs: [docs]
     permissions:
       contents: write
+      pages: write
+      id-token: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-<language>'

@@ -20,6 +20,8 @@ defaults:
   run:
     shell: bash
     working-directory: python
+env:
+  development_python_version: 3.8.12
 jobs:
   quick-test:
     name: Python 🐍🐍🐍 Quick Test 🦂
@@ -28,14 +30,18 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
-    - name: 🐍🐍🐍 Set up Python 3.10
+    - name: 🐍🐍🐍 Set up Python
       uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
       with:
-        python-version: '3.10'
+        python-version: ${{ env.development_python_version }}
     - name: 🧱 Install build dependencies
       run: make venv
     - name: 🦂 Test with pytest
       run: make test
+    - name: 🧹 Lint
+      run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
   full-test:
     name: Python 🐍🐍🐍 Full Test 🦂
     if: >- 
@@ -45,8 +51,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
-        os: [ubuntu-20.04, macOS-latest, windows-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
@@ -54,12 +60,64 @@ jobs:
       uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
       with:
         python-version: ${{ matrix.python-version }}
-    - name: 🍑 Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install tox tox-gh-actions
-    - name: 🦂 Test with tox
-      run: tox
+    - name: 🧱 Install build dependencies
+      run: make venv
+    - name: 🦂 Test with pytest
+      run: make tox
+    - name: 🧹 Lint
+      run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
+  built-example:
+    name: Python 🐍🐍🐍 Build Example 🦛
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🐍🐍🐍 Set up Python
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+      with:
+        python-version: ${{ env.development_python_version }}
+    - name: 🧱 Install build dependencies
+      run: make venv
+    - name: 🧱 Build
+      run: make build
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+      with:
+        name: Package
+        path: python/dist/collatz-*-none-any.whl
+        if-no-files-found: error
+        retention-days: 1
+  usage-demonstration:
+    name: Python 🐍🐍🐍 Usage Demonstration 🦏
+    needs: [built-example]
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/.demo
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🐍🐍🐍 Set up Python
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+      with:
+        python-version: ${{ env.development_python_version }}
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      with:
+        name: Package
+        path: python/.demo
+    - name: 🦛 Install this package
+      run: make install
+    - name: 🦏 Run usage demonstration
+      run: make demo
   codeql:
     name: Python 🐍🐍🐍 CodeQL 🛡👨‍💻🛡
     if: >- 
@@ -72,3 +130,17 @@ jobs:
     uses: ./.github/workflows/github-codeql.yaml
     with:
       language: 'python'
+  docs:
+    name: Python 🐍🐍🐍 Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🐍🐍🐍 Set up Python
+      uses: actions/setup-python@13ae5bb136fac2878aff31522b9efb785519f984 # v4.3.0
+      with:
+        python-version: ${{ env.development_python_version }}
+    - name: 🧱 Install build dependencies
+      run: make venv
+    - name: 📄 Docs
+      run: make docs

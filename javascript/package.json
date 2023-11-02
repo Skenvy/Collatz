@@ -79,7 +79,7 @@
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.24.1",
+    "typedoc": "^0.25.1",
     "typescript": "^5.0.4"
   },
   "engines": {
