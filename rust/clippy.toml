@@ -1,0 +1,5 @@
+# Clippy is a linting tool that can be configured with a clippy.toml; At the
+# moment we don't have any particular configuration, so use these links to add
+# more when necessary. https://github.com/rust-lang/rust-clippy
+# https://doc.rust-lang.org/nightly/clippy/lint_configuration.html
+# https://rust-lang.github.io/rust-clippy/master/index.html#/

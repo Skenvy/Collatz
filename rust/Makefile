@@ -1,4 +1,4 @@
-.PHONY: setup clean docs test lint build publish run
+.PHONY: setup clean docs test fmt clippy lint build publish run
 SHELL:=/bin/bash
 
 # Makefile Examples Here:
@@ -19,13 +19,21 @@ docs:
 	cargo doc
 
 test:
-	cargo test --verbos
+	cargo test --verbose
 
 # https://doc.rust-lang.org/nightly/clippy/lint_configuration.html
 # https://rust-lang.github.io/rust-clippy/master/index.html#/
-lint:
+
+fmt:
 	cargo +stable fmt --verbose --all --check
-	cargo +stable clippy --all-targets --all-features
+
+clippy:
+	cargo +stable clippy --all-targets --all-features -- -D warnings
+
+clippy_fix:
+	cargo +stable clippy --all-targets --all-features --fix
+
+lint: fmt clippy
 
 build:
 	cargo build --verbose
