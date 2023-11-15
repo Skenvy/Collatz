@@ -1,4 +1,4 @@
-.PHONY: setup clean docs test fmt clippy lint build publish run
+.PHONY: setup clean docs test fmt clippy clippy_fix lint build publish run
 SHELL:=/bin/bash
 
 # Makefile Examples Here:
@@ -14,9 +14,10 @@ setup:
 	rustup component add clippy
 
 clean:
+	cargo clean
 
-docs:
-	cargo doc
+docs: clean
+	cargo doc --no-deps --document-private-items -v
 
 test:
 	cargo test --verbose

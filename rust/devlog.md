@@ -31,7 +31,7 @@ As well as other loose resources such as;
 * [Wikipedia](https://en.wikipedia.org/wiki/Rust_(programming_language)) | The Rust [_discord_](https://discord.gg/rust-lang) | Reddit's [r/rust](https://www.reddit.com/r/rust/)
 * [KokaKiwi/rust-mk](https://github.com/KokaKiwi/rust-mk/blob/master/rust.mk), a thoroughly designed Makefile for rust projects.
 
-As well as some examples plucked from trending rust repos;
+As well as some examples plucked from [trending rust repos](https://github.com/trending/rust?since=daily);
 * [uutils/coreutils](https://github.com/uutils/coreutils)
 * [bevyengine/bevy](https://github.com/bevyengine/bevy)
 * [lapce/lapce](https://github.com/lapce/lapce)
@@ -57,7 +57,10 @@ During the "`cargo new hello-rust`" quickstart, we see that running `cargo new a
 
 The quick start example continues to demo adding dependencies, using `cargo build` to install `Cargo.toml`'s `[dependencies]`. Interestingly `cargo init` doesn't create a `.gitignore`, and no where in the quick start does it link to or mention that [rust recommends not checking in](https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html) the `Cargo.lock` that `cargo build` produces.
 
+The `Cargo.toml` has [this manifest format](https://doc.rust-lang.org/cargo/reference/manifest.html).
+
 ## Tools
+Rust provides a number of development tools OotB. We'll go ahead and comment on them a bit here before starting any code+tests, but will likely be talked about more later when an inevitable problem arises.
 ### `rustfmt`
 [`rustfmt`](https://github.com/rust-lang/rustfmt) is a tool for formatting rust source. Essentially we can `cargo fmt` to auto format files, or check that no formating is required, with `--check`. We can use `rustfmt --print-config default rustfmt.toml` to generate a [configuration file](https://rust-lang.github.io/rustfmt/) that will be honoured by the tool, populated with what it considers [the default style](https://doc.rust-lang.org/nightly/style-guide/).
 
@@ -69,3 +72,14 @@ The best compromise right now appears to be to let `rustfmt +stable --print-conf
 
 ### `clippy`
 [Clippy](https://github.com/rust-lang/rust-clippy) is a tool for linting rust source. It can be configured via a `clippy.toml` to include these [lint configuration options](https://doc.rust-lang.org/nightly/clippy/lint_configuration.html), which are also explained [here](https://rust-lang.github.io/rust-clippy/master/index.html#/). It does not appear to have a way to easily output its default configuration to a file the same way `fmt` did. We'll suffice for now to add a file that contains the links to the options as a comment, and trust that the defaults are stable.
+
+### `rustdoc`
+[`librustdoc`](https://github.com/rust-lang/rust/tree/master/src/librustdoc), or simply [`rustdoc`](https://doc.rust-lang.org/rustdoc/what-is-rustdoc.html) (_also see the_ [_rustc developers guide on rustdoc_](https://rustc-dev-guide.rust-lang.org/rustdoc.html)), or even simply-er (in `cargo`-land), [`doc`](https://doc.rust-lang.org/cargo/commands/cargo-doc.html), is the rust provided tool for generating documentation from code comments. See this for ["how to write documentation"](https://doc.rust-lang.org/rust-by-example/meta/doc.html). Simply, though, comments beginning with `///` document the component below them, and comments starting with `//!` document the component they are inside. `//!` for this reason is often used to describe a crate by commenting the crate's root file, by existing in the top level context in that file.
+
+### `cargo test`
+Cargo comes with testing, via [`cargo test`](https://doc.rust-lang.org/cargo/commands/cargo-test.html). See the [rust book's chapter on tests](https://doc.rust-lang.org/book/ch11-00-testing.html), or more specifically ["how to write tests"](https://doc.rust-lang.org/book/ch11-01-writing-tests.html). Also see [the examples for how to write unit tests](https://doc.rust-lang.org/rust-by-example/testing/unit_testing.html) and [how to test a rust-written cli](https://rust-cli.github.io/book/tutorial/testing.html).
+
+## Begin developing
+A number of the things I've read through so far have primarily provided examples that use a `./src/main.rs`, but others have specifically mentioned that `./src/lib.rs` is the root file for a crate. Producing a crate is the end goal of this exercise, so it seems like a meaningful distinction that would be worthwhile understanding early. [This SO post](https://stackoverflow.com/questions/57756927/rust-modules-confusion-when-there-is-main-rs-and-lib-rs) asks simply this; and the top answer directs us to [the rust book's section on "package layout"](https://doc.rust-lang.org/cargo/guide/project-layout.html), although it's worth noting that I had spent a while googling around for a guide to rust package layouts prior to discovering this SO answer, and the rust book's entry had never appeared in the first page's results. The [package layout](https://doc.rust-lang.org/cargo/guide/project-layout.html) page makes a clear distinction that the `./src/lib.rs` file is the _default_ **library** file, and the `./src/main.rs` file is the _default_ **executable** file. A similar question was posed in [this reddit thread](https://www.reddit.com/r/rust/comments/lvtzri/confused_about_package_vs_crate_terminology/) which links to [this section of the rust book](https://doc.rust-lang.org/book/ch07-01-packages-and-crates.html), which is part of [this chapter](https://doc.rust-lang.org/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html) on packages and crates.
+
+The gist of both is that "package" is a pretty loose construct in rust, while a "crate" can mean either a "library crate" or a "binary crate", or both. A library crate's default entry is the `./src/lib.rs` and a binary crate's default entry is `./src/main.rs`. These can be customised according to the `[lib]` and `[[bin]]` fields in the `Cargo.toml` according to ["configuring a target"](https://doc.rust-lang.org/cargo/reference/cargo-targets.html#configuring-a-target).

@@ -1,8 +1,3 @@
-// // The sample created by a `cargo init`
-// fn main() {
-//     println!("Hello, world!");
-// }
-
 use ferris_says::say;
 use std::io::{stdout, BufWriter};
 
