@@ -97,4 +97,35 @@ impl Error for CustomError {};
 We'll get some good complaints from the rust analyser plugin that mirror the content that can be found on line, but it takes a while to track down where the source of this information can be found. The [std::error::Error](https://doc.rust-lang.org/std/error/trait.Error.html) trait mentions that;
 > Errors must describe themselves through the Display and Debug traits.
 
-Well, if we have a look at [std::fmt::Display](https://doc.rust-lang.org/std/fmt/trait.Display.html) and [std::fmt::Debug](https://doc.rust-lang.org/std/fmt/trait.Debug.html) we'll see some more information. Debug's page suggests the same in example blogs; to just use `#[derive(Debug)]`.
+Well, if we have a look at [std::fmt::Display](https://doc.rust-lang.org/std/fmt/trait.Display.html) and [std::fmt::Debug](https://doc.rust-lang.org/std/fmt/trait.Debug.html) we'll see some more information. Debug's page suggests the same in example blogs; to just use `#[derive(Debug)]`. A short while later and we end up with something like this [[a good example](https://stevedonovan.github.io/rust-gentle-intro/6-error-handling.html)];
+```rust
+// Create a custom error, FailedSaneParameterCheck, with a message.
+#[derive(Debug)]
+pub struct FailedSaneParameterCheck {message: String}
+impl Error for FailedSaneParameterCheck {}
+impl fmt::Display for FailedSaneParameterCheck {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.message)
+    }
+}
+
+// A function to determine if it should be thrown or not.
+fn assert_sane_parameterisation(p: i128, a: i128, _b: i128) -> Result<(),FailedSaneParameterCheck> {
+    if p == 0 {
+        return Err(FailedSaneParameterCheck{message: "'p' should not be 0 ~ violates modulo being non-zero.".to_string()});
+    }
+    if a == 0 {
+        return Err(FailedSaneParameterCheck{message: "'a' should not be 0 ~ violates the reversability.".to_string()});
+    }
+    Ok(())
+}
+
+// Using the asserting function to throw if necessary.
+pub fn function(n: i128, p: i128, a: i128, b: i128) -> Result<i128,FailedSaneParameterCheck> {
+    assert_sane_parameterisation(p, a, b)?;
+    if n % p == 0 { Ok(n/p) } else { Ok(a*n+b) }
+}
+```
+In which we can use `function` and get a result `val_of_func_on_vars` that can be formatted for printing `format!("{val_of_func_on_vars:?}")` and yield something like `Err(FailedSaneParameterCheck { message: "'p' should not be 0 ~ violates modulo being non-zero." })`.
+
+**However**, although we now know how to add and throw a custom error and the _Result_ type return, there is an important question raised and answered by the rust docs. Rust has a preference for `panic!` over using `Result` types. The "book" section [To `panic!` or Not to `panic!`](https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html), and the subsection [Encoding States and Behavior as Types](https://doc.rust-lang.org/book/ch17-03-oo-design-patterns.html#encoding-states-and-behavior-as-types) that covers **assertions** ([std::assert](https://doc.rust-lang.org/std/macro.assert.html)) offer a good reading on this. Yet it's still nuanced. So we'll say, we'll `panic!` in the parameterised but non-gmp module, but we'll use the custom error approach in the gmp based module.
