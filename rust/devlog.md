@@ -87,3 +87,14 @@ The gist of both is that "package" is a pretty loose construct in rust, while a 
 
 ### Testing the waters with the first function
 We'll eventually need to add a version of the functions that utilises a `gmp` wrapping package. From googling around, it seems that the [rug crate](https://crates.io/crates/rug) is the most recommended and most frequently kept up to date. Which also makes [the rug repo](https://gitlab.com/tspiteri/rug) a worthwhile read for what is a good idea to include in the package metadata. As a side note, it's interesting that this is the second time looking up a `gmp` wrapping package, and the most recommended happens to be hosted on gitlab; the other being the one we used in R, [_this_ gmp package](https://forgemia.inra.fr/sylvain.jasson/gmp). That aside, it'd be a good idea to get used to adding the function using [rust's types](https://doc.rust-lang.org/book/ch03-02-data-types.html) before adding arbitrary integers, although with one of those types being `i128`/`u128`, it's possible it's also valuable having a non arbitrary integer version too, considering the rationale for not bothering with multiple versions elsewhere has either been that they aren't particularly performant languages, or that their largest types are 64 bits, which is shorter than the 68 bit numbers up to which the Collatz conjecture has been manually verified, making any effort to optimise anything less than that meaningless.
+
+We can add a new custom error, following the [traits](https://doc.rust-lang.org/stable/book/ch10-02-traits.html) pattern, for [std::error::Error](https://doc.rust-lang.org/std/error/trait.Error.html). The [example](https://doc.rust-lang.org/rust-by-example/error/multiple_error_types/define_error_type.html) for custom errors isn't particularly clear. If we do something like
+```rust
+use std::error::Error;
+struct CustomError;
+impl Error for CustomError {};
+```
+We'll get some good complaints from the rust analyser plugin that mirror the content that can be found on line, but it takes a while to track down where the source of this information can be found. The [std::error::Error](https://doc.rust-lang.org/std/error/trait.Error.html) trait mentions that;
+> Errors must describe themselves through the Display and Debug traits.
+
+Well, if we have a look at [std::fmt::Display](https://doc.rust-lang.org/std/fmt/trait.Display.html) and [std::fmt::Debug](https://doc.rust-lang.org/std/fmt/trait.Debug.html) we'll see some more information. Debug's page suggests the same in example blogs; to just use `#[derive(Debug)]`.
