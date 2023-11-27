@@ -17,7 +17,7 @@ docutils==0.20.1
 filelock==3.13.1
 flake8==6.1.0
 furo==2023.9.10
-idna==3.4
+idna==3.6
 imagesize==1.4.1
 importlib-metadata==6.8.0
 importlib-resources==6.1.0
