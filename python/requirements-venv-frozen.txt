@@ -19,7 +19,7 @@ flake8==6.1.0
 furo==2023.9.10
 idna==3.6
 imagesize==1.4.1
-importlib-metadata==7.0.0
+importlib-metadata==7.0.1
 importlib-resources==6.1.1
 iniconfig==2.0.0
 isort==5.13.2
