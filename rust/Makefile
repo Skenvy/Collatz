@@ -1,3 +1,5 @@
+DEVELOPMENT_VERSION=1.73
+CARGO=cargo +$(DEVELOPMENT_VERSION)
 .PHONY: setup clean docs test fmt clippy clippy_fix lint build publish run
 SHELL:=/bin/bash
 
@@ -8,39 +10,40 @@ SHELL:=/bin/bash
 # https://doc.rust-lang.org/cargo/commands/index.html
 
 setup:
+	rustup toolchain install $(DEVELOPMENT_VERSION)
 	rustup toolchain install nightly
 	rustup toolchain install stable
 	rustup component add rustfmt
 	rustup component add clippy
 
 clean:
-	cargo clean
+	$(CARGO) clean
 
 docs: clean
-	cargo doc --no-deps --document-private-items -v
+	$(CARGO) doc --no-deps --document-private-items -v
 
 test:
-	cargo test --verbose
+	$(CARGO) test --verbose
 
 # https://doc.rust-lang.org/nightly/clippy/lint_configuration.html
 # https://rust-lang.github.io/rust-clippy/master/index.html#/
 
 fmt:
-	cargo +stable fmt --verbose --all --check
+	$(CARGO) fmt --verbose --all --check
 
 clippy:
-	cargo +stable clippy --all-targets --all-features -- -D warnings
+	$(CARGO) clippy --all-targets --all-features -- -D warnings
 
 clippy_fix:
-	cargo +stable clippy --all-targets --all-features --fix
+	$(CARGO) clippy --all-targets --all-features --fix
 
 lint: fmt clippy
 
 build:
-	cargo build --verbose
+	$(CARGO) build --verbose
 
 publish:
-	cargo publish
+	$(CARGO) publish
 
 run:
-	cargo run
+	$(CARGO) run

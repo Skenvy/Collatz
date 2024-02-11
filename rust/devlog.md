@@ -5,7 +5,7 @@ If we start searching for information on rust, there's a few helpful starting po
 * [Rust](https://www.rust-lang.org/)'s homepage, which suggests a getting started at the top. 
 * [Getting Started](https://www.rust-lang.org/learn/get-started), which suggests the [Rust Playground](https://play.rust-lang.org/).
   * The "Installing Rust" section appears to detect your OS and present relevant installation instructions accordingly.
-* [Rustup](https://rustup.rs/) ([docs](https://rust-lang.github.io/rustup/)) -- straight away rust gets points for recommending a version management tool as the primary point from which to install rust.
+* [Rustup](https://rustup.rs/) ([docs](https://rust-lang.github.io/rustup/index.html)) -- straight away rust gets points for recommending a version management tool as the primary point from which to install rust.
   * it even suggests the WSL installation on the same page, so there's no need to navigate to the [other methods](https://forge.rust-lang.org/infra/other-installation-methods.html)
 * [Install](https://www.rust-lang.org/tools/install), if we followed the getting started and installed rustup, will rehash and provide some additional context;
   * Updating rustup is entirely self contained with `rustup update`.
@@ -22,7 +22,7 @@ If we start searching for information on rust, there's a few helpful starting po
 * [Rustacean](https://rustacean.net/) is also included as a footer to the quickstart, to explain Ferris the crab.
 
 That's it for as far as the getting started guide took us. There's many more links on the rust site such as;
-* [Toolchains](https://rust-lang.github.io/rustup/concepts/toolchains.html)
+* [Toolchains](https://rust-lang.github.io/rustup/concepts/toolchains.html) + [Toolchain Overrrides](https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file)
 * [Editions Guide](https://doc.rust-lang.org/stable/edition-guide/); with editions being important enough that it's one of the three properties generated in the default project by `cargo init`.
 * [Packaging and distributing a Rust tool](https://rust-cli.github.io/book/tutorial/packaging.html) which describes how to `cargo publish` effectively.
 
@@ -51,6 +51,16 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 We can see that it will create a rustup home directory at `~/.rustup/` (or other `RUSTUP_HOME`), a cargo home directory at `~/.cargo/` (or other `CARGO_HOME`), it will add `cargo`, `rustc`, and `rustup`, to `$CARGO_HOME/bin`, and add this to the path. We do have to interactively agree to either the default or a custom installation. Simply picking the default and 30 seconds later we've got the `Rust is installed now. Great!` response.
 
 The same happens during the running of `rustup-init.exe` on windows.
+
+We can do a `rustup --version` to see something like;
+```
+rustup 1.26.0 (5af9b9484 2023-04-05)
+info: This is the version for the rustup toolchain manager, not the rustc compiler.
+info: The currently active `rustc` version is `rustc 1.76.0 (07dca489a 2024-02-04)`
+```
+We can use `rustup self update` to update `rustup` _itself_, or `rustup self uninstall` to remove it. `rustc` is the main meat of the install (along with `rust-std` and `cargo`, per the `minimal` [profile](https://rust-lang.github.io/rustup/concepts/profiles.html)). To check our version of "rust", we want to run a `rustc --version` and get something like ~ `rustc 1.73.0 (cc66ad468 2023-10-03)`.
+
+We'll end up covering more of the [rustup docs](https://rust-lang.github.io/rustup/index.html) later on, and might complain about some stuff that could've been avoided had we looked more into rustup at this stage of setting up the enviroment.
 
 ## `cargo init`
 During the "`cargo new hello-rust`" quickstart, we see that running `cargo new abc` will create an `./abc/Cargo.toml` and `./abc/src/main.rs`. If you want to create a new `Cargo.toml` and `src/main.rs` in the _current_ directory rather than in some `./hello-rust` directory from running `cargo new hello-rust`, it isn't mentioned on the page but guessing that `cargo new .` might be worth a shot yields the suggestion to `cargo init` to initialise the _current_ directory. Although in this case, `Cargo.toml` initiliases with the name of the directory we're in as the name of the package. I hope that's not going to be an actual restriction and is instead a "nice default."
@@ -129,3 +139,8 @@ pub fn function(n: i128, p: i128, a: i128, b: i128) -> Result<i128,FailedSanePar
 In which we can use `function` and get a result `val_of_func_on_vars` that can be formatted for printing `format!("{val_of_func_on_vars:?}")` and yield something like `Err(FailedSaneParameterCheck { message: "'p' should not be 0 ~ violates modulo being non-zero." })`.
 
 **However**, although we now know how to add and throw a custom error and the _Result_ type return, there is an important question raised and answered by the rust docs. Rust has a preference for `panic!` over using `Result` types. The "book" section [To `panic!` or Not to `panic!`](https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html), and the subsection [Encoding States and Behavior as Types](https://doc.rust-lang.org/book/ch17-03-oo-design-patterns.html#encoding-states-and-behavior-as-types) that covers **assertions** ([std::assert](https://doc.rust-lang.org/std/macro.assert.html)) offer a good reading on this. Yet it's still nuanced. So we'll say, we'll `panic!` in the parameterised but non-gmp module, but we'll use the custom error approach in the gmp based module.
+
+### Toolchains (and other `rustup` things)
+It's been a few months since I last picked this up, and a frustration at the time was that I had not set up sticky toolchains. `rustup` giving us version management OotB means that it's very easy to simply say "you should always anticipate just updating to the latest version with a `rustup update`". But it would be nice to know how to wield this _tool_ to get specifically the version(s) we know we've worked with before and that we've tested with before. For example, it would be silly to test on some version that is whatever `+stable` is right now, and rely on it being the same version under the hood whenever we next run the tests, and we don't want to set up tests and introduce flakiness. So we should invest some time into figuring out toolchains and see how they can make this process easier, and possible, alleviate the frustration from earlier regarding `rustfmt`.
+
+Now that we have a bit of a porject started and know some of the tools we'd like to use, let's browse [the rustup docs](https://rust-lang.github.io/rustup/index.html) to see what we can do. Firstly, we can do a `rustup show` to see which toolchains are installed and active.
