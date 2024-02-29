@@ -1,15 +1,11 @@
 {
   "recommendations": [
+    // Whole project
     "redhat.vscode-xml",
     "redhat.vscode-yaml",
-
-    "ms-dotnettools.csdevkit",
-      "ms-dotnettools.csharp",
-      "ms-dotnettools.vscodeintellicode-csharp",
-      "ms-dotnettools.vscode-dotnet-runtime",
-
+    // Go
     "golang.go",
-
+    // Java
     "vscjava.vscode-java-pack",
       "vscjava.vscode-maven",
       "vscjava.vscode-java-test",
@@ -18,6 +14,5 @@
       "redhat.java",
       "visualstudioexptteam.vscodeintellicode",
         "visualstudioexptteam.intellicode-api-usage-examples",
-
   ]
 }
