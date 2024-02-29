@@ -1,0 +1,49 @@
+{
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../"
+    },
+    {
+      "name": "C#",
+      "path": "../C#"
+    },
+    {
+      "name": "Go",
+      "path": "../go"
+    },
+    {
+      "name": "Java",
+      "path": "../java"
+    },
+    {
+      "name": "JavaScript",
+      "path": "../javascript"
+    },
+    {
+      "name": "Julia",
+      "path": "../julia"
+    },
+    {
+      "name": "LaTeX",
+      "path": "../LaTeX"
+    },
+    {
+      "name": "Python",
+      "path": "../python"
+    },
+    {
+      "name": "R",
+      "path": "../R"
+    },
+    {
+      "name": "Ruby",
+      "path": "../ruby"
+    },
+    {
+      "name": "Rust",
+      "path": "../rust"
+    },
+  ],
+  "settings": {}
+}

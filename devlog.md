@@ -11,7 +11,7 @@ The aim is to package as close to as the same functionality as possible across a
 * [R](https://github.com/Skenvy/Collatz/blob/main/R/devlog.md)
 * [Ruby](https://github.com/Skenvy/Collatz/blob/main/ruby/devlog.md)
 * [Rust](https://github.com/Skenvy/Collatz/blob/main/rust/devlog.md)
-## Motivation
+## Original Motivation
 I've always appreciated the "Rosetta Stone"-esque compilations of similar tasks across multiple languages, including but not limited to;
 * [Rosetta Code](http://www.rosettacode.org/wiki/Rosetta_Code)
 * [The OG "Hello World" Collection](http://helloworldcollection.de/)
@@ -25,7 +25,8 @@ I would also however, like to focus on languages that can be easily, or conseque
 I've chosen python to start with as it's very easy to script calculations with, and was the language I wrote some scripts in years ago when playing around with the concept of attacking the Collatz conjecture via repeatedly splitting modulo conjugacy classes and comparing the resulting sub-classes with the set of conjugacy classes that where split. I've also added R and Julia as intended languages to implement next, with their relevance to math/data making them obvious candidates. Go, Java, and JavaScript via NodeJS, all seem like good candidates for the purposes of highly distributable/packageable languages.
 
 Also worth targetting are the "GitHub packages" which supports Docker/OCI containers, Java Maven, C#/++ nuget, ruby gems, and npm.
-
+## Adhoc
+### [deps.dev](https://deps.dev/) and [OSSF's Scorecard](https://github.com/ossf/scorecard)
 Recently, I've been made aware of [deps.dev](https://deps.dev/), and it seems the implementations done so far for [python](https://deps.dev/pypi/collatz), [Java](https://deps.dev/maven/io.github.skenvy%3Acollatz), and [Go](https://deps.dev/go/github.com%2Fskenvy%2Fcollatz%2Fgo) are scoring low! The go package appears to have no score at all, because the go package site does not appear to allow tags to be provided to it in any way other than through tags on the repository that follow semver strict enough to not accept prefixes, as well as any suffix being considered a candidate, and not an actual release, so until I change how I'm tagging orthogonal releases, what's interesting is that the python and java score cards are the same, because it appears to not be scanning them on a per language basis but rather the "meta" health of the repository itself, which is, obviously for both of them, this one, that they and all the others will eventually share. For the health of the repository to get only `3.7/10` is a bit shocking, so it'll be worthwhile reading through the sorts of checks it does, and how to improve on whatever is seems must not be as good as it could be!
 
 [These are the checks it's doing](https://github.com/ossf/scorecard/blob/main/docs/checks.md). Which come from the [Open Source Security Foundation's Scorecard](https://github.com/ossf/scorecard). This is what the score is at the moment.
@@ -52,5 +53,10 @@ Recently, I've been made aware of [deps.dev](https://deps.dev/), and it seems th
     * Add a [`SECURITY.md`](https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository)
 * `Fuzzing` is `0/10` for "project is not fuzzed".
     * Use either [OSS-Fuzz](https://google.github.io/oss-fuzz/) or [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/).
-
+### Three emoji
 This might be a very silly thing to mention, but in my quest to assign 3 emojis to each implementation to make them visually easier to distinguish in the side panel, the ones I have chosen for C#, `🟢©#️⃣`, and for R, `®🔵®`, include the registered trademark and copyright symbols. Although, these don't seem to display as emoji in the browser which chunks the alignement horizontally, so I'm going to replace C# with the emojis that appear for "see" and "sharp" (there aren't any obvious "sea" ones, and the only "beach" one, 🏖, doesn't appear as an emoji in the text editor). I'm going to also make a dumb joke with "R" and replace borth "®" with pirate themed emoji.
+### VS Code Extensions
+Decided it would be a good idea to add the recommended vs code extensions to this, to record what I've used when developing it, initially for external reasons that prompted me to want to come back and sort out the 50 or 60 odd extensions I had. I had to split them, the result of `code --list-extensions`, between what was used for this, and what has been used for everything else. Regretfully the marketplace doesn't make it abundantly clear what the dependency graph between installed extensions looks like, so it's hard to know what the dependency graph should look like, but I've attempted to guess it as much as possible. Because json comments aren't a thing, but I want to separate the extensions into logical units, the top paragraph will be "generic" extensions applicable to the repo as a whole, and each subsequent paragraph will be the set of extensions per each implementation, in alphabetical order (ignoring case, unlike the github interface) ([multi-root-workspaces](https://code.visualstudio.com/docs/editor/multi-root-workspaces) is an interesting idea but probably overkill for us). Indeed, I just learnt while looking around some more after already writing the previous sentences, that VS Code supports a ["JSON with Comments" mode for its own config](https://code.visualstudio.com/docs/languages/json#_json-with-comments), which is crazy. I guess I've spent long enough on it now though that I may as well end up just making a multi-root-workspace. Re-enabling the R extenions `"REditorSupport.r"` ran into an issue with the command it was trying to use to install its language server, which can instead be installed on windows with an admin cmd window running:
+```
+Rterm --silent --slave --no-save --no-restore -e "install.packages('languageserver', repos='https://cran.r-project.org/')"
+```

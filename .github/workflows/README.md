@@ -98,6 +98,16 @@ We want different processes for the workflows across four essential categories.
         - '.github/workflows/some_lang-*'
     ```
     * Entire Scope CI
+
+It would also be nice to run each of the tests once a month. We're in an AEST+AEDT time zone, and the crons are UTC. It'd be nice to run a test workflow a day, in the morning, say around 9AM for the time it would be in AEST/AEDT. Daylight savings times take effect first Sunday in October and April, so if we are setting the crons to _some day in the month after the 7th_, then April won't be AEDT but October will be. Months `1,2,3,10,11,12` will be AEDT and months `4,5,6,7,8,9` will be AEST. To know what UTC time to set for, we subtract the `11` hours in AEDT, and `10` hours in AEST.
+So if we want 9AM tests spread across days, the crons would be something like [`0 22 14 1,2,3,10,11,12 *`](https://crontab.guru/#0_22_14_1,2,3,10,11,12_*) and [`0 23 14 4,5,6,7,8,9 *`](https://crontab.guru/#0_23_14_4,5,6,7,8,9_*) (as an example for the 15th day of the month).
+```yaml
+on:
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
+```
+
 ## Templates for workflows; `*-test.yaml` and `*-build.yaml`
 Can be search+replace'd on
 * `<Language>` + `<language>` + `<language-emojis>`
@@ -117,6 +127,7 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
   pull_request:
     branches:
@@ -124,7 +135,11 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
@@ -140,7 +155,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -168,7 +183,7 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language> ${{ matrix.version }}
       uses: <gh-action-setup-language@semver>
       with:
@@ -189,7 +204,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -218,7 +233,7 @@ jobs:
         working-directory: <language>/.demo
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -252,7 +267,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -272,6 +287,7 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
   workflow_dispatch:
 permissions: {}
@@ -301,7 +317,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -332,7 +348,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
@@ -354,7 +370,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     # - name: 🆒 Download dists
     #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
@@ -374,7 +390,7 @@ jobs:
     # Although the dists are built uses checkout to satisfy refs/tags existence
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     # - name: 🆒 Download dists
     #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
     #   with:
@@ -390,7 +406,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
