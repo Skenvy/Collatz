@@ -98,6 +98,16 @@ We want different processes for the workflows across four essential categories.
         - '.github/workflows/some_lang-*'
     ```
     * Entire Scope CI
+
+It would also be nice to run each of the tests once a month. We're in an AEST+AEDT time zone, and the crons are UTC. It'd be nice to run a test workflow a day, in the morning, say around 9AM for the time it would be in AEST/AEDT. Daylight savings times take effect first Sunday in October and April, so if we are setting the crons to _some day in the month after the 7th_, then April won't be AEDT but October will be. Months `1,2,3,10,11,12` will be AEDT and months `4,5,6,7,8,9` will be AEST. To know what UTC time to set for, we subtract the `11` hours in AEDT, and `10` hours in AEST.
+So if we want 9AM tests spread across days, the crons would be something like [`0 22 14 1,2,3,10,11,12 *`](https://crontab.guru/#0_22_14_1,2,3,10,11,12_*) and [`0 23 14 4,5,6,7,8,9 *`](https://crontab.guru/#0_23_14_4,5,6,7,8,9_*) (as an example for the 15th day of the month).
+```yaml
+on:
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
+```
+
 ## Templates for workflows; `*-test.yaml` and `*-build.yaml`
 Can be search+replace'd on
 * `<Language>` + `<language>` + `<language-emojis>`
@@ -127,6 +137,9 @@ on:
     - '!<language>/**.md'
     - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:

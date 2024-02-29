@@ -16,6 +16,9 @@ on:
     - '!C#/**.md'
     - '!C#/.vscode/**'
     - '.github/workflows/C#-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
