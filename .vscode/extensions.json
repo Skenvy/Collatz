@@ -1,18 +1,6 @@
 {
   "recommendations": [
-    // Whole project
     "redhat.vscode-xml",
     "redhat.vscode-yaml",
-    // Go
-    "golang.go",
-    // Java
-    "vscjava.vscode-java-pack",
-      "vscjava.vscode-maven",
-      "vscjava.vscode-java-test",
-      "vscjava.vscode-java-debug",
-      "vscjava.vscode-java-dependency",
-      "redhat.java",
-      "visualstudioexptteam.vscodeintellicode",
-        "visualstudioexptteam.intellicode-api-usage-examples",
   ]
 }
