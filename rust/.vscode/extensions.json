@@ -1,4 +1,5 @@
 {
+  // https://code.visualstudio.com/docs/languages/rust
   "recommendations": [
     "rust-lang.rust-analyzer",
   ]

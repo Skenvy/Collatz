@@ -1,5 +1,7 @@
 {
+  // https://code.visualstudio.com/docs/languages/julia
+  // 
   "recommendations": [
-    "",
+    "julialang.language-julia",
   ]
 }

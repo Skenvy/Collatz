@@ -1,4 +1,6 @@
 {
+  // https://code.visualstudio.com/docs/languages/java
+  // vscode:extension/vscjava.vscode-java-pack
   "recommendations": [
     "vscjava.vscode-java-pack",
       "vscjava.vscode-maven",

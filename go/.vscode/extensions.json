@@ -1,4 +1,5 @@
 {
+  // https://code.visualstudio.com/docs/languages/go
   "recommendations": [
     "golang.go",
   ]

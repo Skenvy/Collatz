@@ -1,4 +1,6 @@
 {
+  // https://code.visualstudio.com/docs/languages/csharp
+  // https://code.visualstudio.com/docs/languages/dotnet
   "recommendations": [
     "ms-dotnettools.csdevkit",
       "ms-dotnettools.csharp",

@@ -1,4 +1,7 @@
 {
+  // https://code.visualstudio.com/docs/languages/javascript
+  // Many things normally handled by extensions are already bundled in VS Code
+  // by default for JavaScript and TypeScript projects.
   "recommendations": [
     "dbaeumer.vscode-eslint",
   ]
