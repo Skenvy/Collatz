@@ -2,8 +2,8 @@
 % Please edit documentation in R/utils.R
 \docType{package}
 \name{collatz}
-\alias{collatz}
 \alias{collatz-package}
+\alias{collatz}
 \title{Collatz}
 \description{
 Functions related to the Collatz/Syracuse/3N+1 problem.
