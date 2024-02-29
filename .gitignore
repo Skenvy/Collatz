@@ -4,7 +4,7 @@
 
 .ve
 .vscode
-!.vscode/extension.json
+!.vscode/extensions.json
 .idea
 
 ################################################################################
