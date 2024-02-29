@@ -6,6 +6,7 @@ on:
     paths:
     - 'python/**'
     - '!python/**.md'
+    - '!python/.vscode/**'
     - '.github/workflows/python-*'
   workflow_dispatch:
 permissions: {}

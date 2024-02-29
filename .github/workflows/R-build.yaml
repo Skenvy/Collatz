@@ -6,6 +6,7 @@ on:
     paths:
     - 'R/**'
     - '!R/**.md'
+    - '!R/.vscode/**'
     - '.github/workflows/R-*'
   workflow_dispatch:
 permissions: {}

@@ -6,6 +6,7 @@ on:
     paths:
     - 'julia/**'
     - '!julia/**.md'
+    - '!julia/.vscode/**'
     - '.github/workflows/julia-*'
   pull_request:
     branches:
@@ -13,6 +14,7 @@ on:
     paths:
     - 'julia/**'
     - '!julia/**.md'
+    - '!julia/.vscode/**'
     - '.github/workflows/julia-*'
   workflow_call:
 permissions: {}

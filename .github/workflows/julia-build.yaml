@@ -6,6 +6,7 @@ on:
     paths:
     - 'julia/**'
     - '!julia/**.md'
+    - '!julia/.vscode/**'
     - '.github/workflows/julia-*'
   workflow_dispatch:
 permissions: {}

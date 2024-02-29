@@ -117,6 +117,7 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
   pull_request:
     branches:
@@ -124,6 +125,7 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
   workflow_call:
 permissions: {}
@@ -272,6 +274,7 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
   workflow_dispatch:
 permissions: {}

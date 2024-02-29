@@ -6,6 +6,7 @@ on:
     paths:
     - 'C#/**'
     - '!C#/**.md'
+    - '!C#/.vscode/**'
     - '.github/workflows/C#-*'
   pull_request:
     branches:
@@ -13,6 +14,7 @@ on:
     paths:
     - 'C#/**'
     - '!C#/**.md'
+    - '!C#/.vscode/**'
     - '.github/workflows/C#-*'
   workflow_call:
 permissions: {}

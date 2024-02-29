@@ -6,6 +6,7 @@ on:
     paths:
     - 'javascript/**'
     - '!javascript/**.md'
+    - '!javascript/.vscode/**'
     - '.github/workflows/javascript-*'
   workflow_dispatch:
 permissions: {}

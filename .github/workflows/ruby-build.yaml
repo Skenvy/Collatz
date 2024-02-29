@@ -6,6 +6,7 @@ on:
     paths:
     - 'ruby/**'
     - '!ruby/**.md'
+    - '!ruby/.vscode/**'
     - '.github/workflows/ruby-*'
   workflow_dispatch:
 permissions: {}
