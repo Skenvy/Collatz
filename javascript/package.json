@@ -1,6 +1,6 @@
 {
   "name": "@skenvy/collatz",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
   "keywords": [
     "Collatz",
@@ -64,8 +64,8 @@
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.1.0",
-    "@typescript-eslint/eslint-plugin": "^5.57.1",
-    "@typescript-eslint/parser": "^5.57.1",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
     "chai": "^4.3.7",
     "eslint": "^8.38.0",
     "eslint-config-airbnb": "^19.0.4",
@@ -83,6 +83,6 @@
     "typescript": "^5.0.4"
   },
   "engines": {
-    "node": "^14.17.0 || >=16.0.0"
+    "node": "^18.0.0 || >=20.0.0"
   }
 }
