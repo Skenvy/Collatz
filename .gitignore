@@ -2,10 +2,19 @@
 # Top level ignores are not language specific, just anti-inter-branch-clobbering
 ################################################################################
 
-.ve
-.vscode
-!.vscode/extensions.json
+# We use vs code, but all we want to commit for now is workspace + extensions.
+**/.vscode/*
+!.vscode/*.code-workspace
+!**/.vscode/extensions.json
+
+# Other IDEs settings
 .idea
+
+# Local package caches / virtual environments
+.ve
+
+# Builds
+java/target/
 
 ################################################################################
 # Jekyll's generated ignore list
@@ -16,5 +25,3 @@ _site
 vendor
 
 ################################################################################
-# https://github.com/Skenvy/Collatz/blob/main/java/.gitignore
-java/target/
