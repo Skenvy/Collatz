@@ -1,4 +1,9 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟦🟩🟥
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/_meta/banners/modifications/_transform.png">
+  <img alt="Text changing depending on mode. Light: 'So light!' Dark: 'So dark!'" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/_meta/banners/modifications/_transform.png" width=830 height=277>
+</picture>
+
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [JavaScript](https://tc39.es/ecma262/) (transpiled from [TypeScript](https://www.typescriptlang.org/)).
 ## Getting Started
 [To install the latest from npm](https://www.npmjs.com/package/@skenvy/collatz);
