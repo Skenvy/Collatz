@@ -6,11 +6,15 @@ import os
 from PIL import Image
 from math import floor
 
-from rgba_names import RGBA_NAMES_MAP as COLOURS
+from rgba_names import RGBA_NAMES_MAP as COLOURS, PALETTES
 from contiguities import CONTIGUITIES
 
 ORIGINAL_PATH = '../ORIGINAL.png'
 BLANK_PATH = './_blank.png'
+
+################################################################################
+#### Functions used to assess how close a partial colouring was to a target ####
+################################################################################
 
 def load_image(path):
     with Image.open(path) as src:
@@ -25,6 +29,12 @@ def pixel_type_counts(pixels, width, height):
             pixel_type[pixels[x,y]] = pixel_type.get(pixels[x,y], 0) + 1
     return pixel_type
 
+def alias_colour_names_keyed_dict(dict_whose_keys_are_colour_tuples, map_rgba_names=COLOURS):
+    for map_to, map_from in map_rgba_names.items():
+        if map_from in dict_whose_keys_are_colour_tuples.keys():
+            dict_whose_keys_are_colour_tuples[map_to] = dict_whose_keys_are_colour_tuples.pop(map_from)
+    return dict_whose_keys_are_colour_tuples
+
 def pixel_ratios(pixels, width, height, map_rgba_names={'Alpha Black': COLOURS['Alpha Black']},
                  disregard_colours=[COLOURS['Alpha Black'], COLOURS['Alpha White'], COLOURS['Full Black']]):
     pixel_types = pixel_type_counts(pixels, width, height)
@@ -32,9 +42,7 @@ def pixel_ratios(pixels, width, height, map_rgba_names={'Alpha Black': COLOURS['
     for colour in disregard_colours:
         if colour in pixel_types.keys():
             img_size -= pixel_types.pop(colour)
-    for map_to, map_from in map_rgba_names.items():
-        if map_from in pixel_types.keys():
-            pixel_types[map_to] = pixel_types.pop(map_from)
+    pixel_types = alias_colour_names_keyed_dict(pixel_types, map_rgba_names=map_rgba_names)
     for key in pixel_types.keys():
         pixel_types[key] = round(100*pixel_types[key]/img_size, 2)
     return {k: v for k, v in sorted(pixel_types.items(), key=lambda item: item[1], reverse=True)}
@@ -45,8 +53,9 @@ def report_pixel_ratios(image_path):
     for k, v in ratios.items():
         print(f'{k}: {v}')
 
+# Converts "meta ratios" into a single dict of ratios.
+# meta_ratios = [('outer ratio of this set', {'colour name xyz': 'inner ratio', ...}), ...]
 def totalise_percentage_meta_ratios(meta_ratios):
-    # meta_ratios = [('outer ratio of this set', {'colour name xyz': 'inner ratio', ...}), ...]
     total_ratios = {}
     # Normalise inner ratios first
     for (outer_ratio, inner_ratios) in meta_ratios:
@@ -65,7 +74,7 @@ def totalise_percentage_meta_ratios(meta_ratios):
 def how_to_reach_ratios(image_path, desired_ratios):
     (img, w, h) = load_image(image_path)
     actual_ratios = pixel_ratios(img, w, h, map_rgba_names=COLOURS)
-    total_percentages = totalise_percentage_meta_ratios(desired_ratios)
+    total_percentages = alias_colour_names_keyed_dict(totalise_percentage_meta_ratios(desired_ratios))
     for colour in [colour for colour in actual_ratios.keys() if colour not in total_percentages.keys()]:
         print(f'Found colour {colour} present that is not desired at all. Remove all {actual_ratios[colour]}% of it!')
     for colour, target_percent in total_percentages.items():
@@ -75,6 +84,10 @@ def how_to_reach_ratios(image_path, desired_ratios):
             print(f'Colour {colour} is LESS than its desired percentage {target_percent}% already. Add more of it.')
         else:
             print(f'Colour {colour} is MORE than its desired percentage {target_percent}% already. Remove some of it.')
+
+################################################################################
+## Functions for recreating the uncoloured blank image, and contiguities list ##
+################################################################################
 
 def recolour_image(path, new_path, recolour_map):
     with Image.open(path) as src:
@@ -103,7 +116,6 @@ def recreate_blank_image():
         img.save(BLANK_PATH)
 
 def generate_list_of_contiguous_areas(verbose=False):
-    recreate_blank_image()
     contiguities = {} # 'size' -> [one pixel on the interior of each contiguity of this size]
     contiguity_colour = COLOURS['Full White']
     redact_colour = COLOURS['Full Black']
@@ -136,6 +148,7 @@ def generate_list_of_contiguous_areas(verbose=False):
                     contiguities[len(pixels_in_contiguity)] = contiguities.get(len(pixels_in_contiguity), []) + [(x,y)]
     return {k: v for k, v in sorted(contiguities.items(), reverse=True)}
 
+# This just saves a few seconds from the start of each image generation.
 def recreate_contiguities_map_file(verbose=False):
     CONTIGUITIES_FILE = './contiguities.py'
     contiguities = generate_list_of_contiguous_areas(verbose=verbose)
@@ -153,7 +166,11 @@ def recreate_contiguities_map_file(verbose=False):
                 f.write(f'    ],\n')
         f.write('}\n')
 
-def fill_in_contiguities_with_desired_ratios(new_image_path, desired_ratios, verbose=False):
+################################################################################
+############# The actual "generate each coral per palette" function ############
+################################################################################
+
+def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=False):
     if os.path.exists(new_image_path):
         os.remove(new_image_path)
     contiguity_colour = COLOURS['Full White']
@@ -178,7 +195,7 @@ def fill_in_contiguities_with_desired_ratios(new_image_path, desired_ratios, ver
                         (zone_x, zone_y) = zones.pop()
                         print(f'FILLING IN AREA {size} @ ({zone_x}, {zone_y}), with {colour}, only {desired_pixelage[colour]-size} left to fill with {colour}')
                         pixels_to_search_around = [(zone_x, zone_y)]
-                        img.putpixel((zone_x, zone_y), COLOURS[colour])
+                        img.putpixel((zone_x, zone_y), colour)
                         while pixels_to_search_around != []:
                             (search_x, search_y) = pixels_to_search_around.pop()
                             for (condition, new_x, new_y) in [
@@ -189,7 +206,7 @@ def fill_in_contiguities_with_desired_ratios(new_image_path, desired_ratios, ver
                             ]:
                                 if condition and pixels[new_x, new_y] == contiguity_colour:
                                     pixels_to_search_around += [(new_x, new_y)]
-                                    img.putpixel((new_x, new_y), COLOURS[colour])
+                                    img.putpixel((new_x, new_y), colour)
                         desired_pixelage[colour] -= size
                         total_pixels -= size
                 if zones == []:
@@ -198,22 +215,18 @@ def fill_in_contiguities_with_desired_ratios(new_image_path, desired_ratios, ver
                 del(CONTIGUITIES[size])
         img.save(new_image_path)
 
+################################################################################
+# Space where stuff gets run idk lol.
+################################################################################
 
+## How to initialise / recreate the files.
 # recreate_blank_image()
 # recreate_contiguities_map_file()
 
-# While filling in the original image, run this to get a report on the percentage
-# of the image that is totally transparent, how much whitespace is left, and
-# how close we are to hitting 60:30:10 for the colours we're starting with.
-# image_path = BLANK_PATH
-# report_pixel_ratios(image_path)
+## Example run of `colour_in_blank_image_with_palette`
+# colour_in_blank_image_with_palette('_javascript.png', PALETTES['JavaScript'], verbose=True)
 
-# JavaScript meta ratios
-JS_METAS = [
-    (1, {'JavaScript Yellow': 6}),
-    (1, {'TypeScript Blue': 6, 'TypeScript Blue 2nd 1': 3, 'TypeScript Blue 2nd 2': 1}),
-    (1, {'NodeJS Green': 6, 'Pantone 360 C': 3, 'Pantone 357 C': 1}),
-    (1, {'NPM Red': 6})
-]
-print(totalise_percentage_meta_ratios(JS_METAS))
-fill_in_contiguities_with_desired_ratios('_javascript.png', JS_METAS, verbose=True)
+for lang in ['C_Sharp', 'Go', 'Java', 'JavaScript', 'Julia', 'LaTeX', 'Python', 'R', 'Ruby', 'Rust']:
+    if lang in PALETTES.keys():
+        print(f'CREATING {lang}')
+        colour_in_blank_image_with_palette(f'_{lang}.png', PALETTES[lang], verbose=True)

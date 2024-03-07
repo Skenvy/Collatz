@@ -18,7 +18,7 @@ We can then embed these images, stored in the wiki and accessed via `https://raw
 </picture>
 ```
 ## Generate the modifications
-
+The end of `modifications/img.py` shows both `recreate_blank_image()` and `recreate_contiguities_map_file()`, and how to use `colour_in_blank_image_with_palette(new_image_path, desired_ratios)`.
 ## Palettes
 ### JavaScript
 We want our palette to be "JavaScript Yellow", "TypeScript Blue", "Node Green", and "NPM Red". The last three are all easy, they have official branding guidelines via the organisations that operate them. [TypeScript's branding guide](https://www.typescriptlang.org/branding/) shows their blue is `#3178C6`. [NodeJS's branding guide](https://nodejs.org/static/documents/foundation-visual-guidelines.pdf) lists the primary colour as "Pantone 7741 C", or `#339933`. NPM don't seem to have a readily searchable "branding guide", instead presenting a [_logo usage guide_](https://docs.npmjs.com/policies/logos-and-usage), but they do have an archived [logo repo](https://github.com/npm/logos) with logos using the `#C12127` colour.
