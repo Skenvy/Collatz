@@ -19,7 +19,7 @@ We can then embed these images, stored in the wiki and accessed via `https://raw
 <figure>
   <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;"/>
   <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
-  <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a></a>
   </p></figcaption>
 </figure>
 <!-- For dark / light mode -->
@@ -29,7 +29,7 @@ We can then embed these images, stored in the wiki and accessed via `https://raw
     <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_light.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;"/>
   </picture>
   <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
-  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/EXAMPLES.md">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>
   </p></figcaption>
 </figure>
 ```
@@ -46,17 +46,20 @@ While the above would be ideal, it turns out that GitHub doesn't render a lot of
 
 <!-- For single image mode -->
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666/></p>
-
-<figure>
-  <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666 align="center">
-  <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
-  <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
-  </p></figcaption>
-</figure>
+<sub><p align="center"><i>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
+  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
+</i></p></sub>
 
 <!-- For dark / light mode -->
-<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_dark.png"/><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_light.png" width=830 height=666/></picture></p>
-
+<p align="center"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_dark.png"/>
+  <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_light.png" width=830 height=666/>
+</picture></p>
+<sub><p align="center"><i>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
+  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
+</i></p></sub>
 ```
 ## Palettes
 ### C#

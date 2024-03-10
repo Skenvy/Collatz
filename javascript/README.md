@@ -1,10 +1,8 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟦🟩🟥
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_JavaScript.png" width=830 height=666/></p>
 <sub><p align="center"><i>
-  <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_JavaScript.png">Colourised Collatz Coral</a>;
-  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>,
-  <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>,
-  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
+  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
 </i></p></sub>
 
 ---
