@@ -17,7 +17,7 @@ We can then embed these images, stored in the wiki and accessed via `https://raw
 ```html
 <!-- For single image mode -->
 <figure>
-  <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;">
+  <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;"/>
   <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
   <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
   </p></figcaption>
@@ -26,7 +26,7 @@ We can then embed these images, stored in the wiki and accessed via `https://raw
 <figure>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_dark.png">
-    <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_light.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;">
+    <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_light.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;"/>
   </picture>
   <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
   <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/EXAMPLES.md">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
@@ -35,6 +35,12 @@ We can then embed these images, stored in the wiki and accessed via `https://raw
 ```
 While the above would be ideal, it turns out that GitHub doesn't render a lot of this in markdown, only some, and it's a bit of effort to track down what they do or don't render, with [this 2012 blog post](https://github.blog/2012-11-27-html-pipeline-chainable-content-filters/) links to ["html-pipeline"](https://github.com/jch/html-pipeline) which has [this list of allowed elements and attributes](https://github.com/gjtorikian/html-pipeline/blob/main/lib/html_pipeline/sanitization_filter.rb). While we can't yet know without a lot of investigation or testing, it's also possible that any of the documentation generation tools wont render the html elements on the readme they include, or that package hosting sites that include the READMEs on the package's page will render them or not, is also a question. So for now, what we can work on that will render in vs code and GitHub;
 ```html
+<!-- Things that don't work: Align a p containing a figure -->
+<p align="center"><figure>...</figure></p>
+<!-- Things that don't work: Align the img -->
+<img align="center"/>
+<!-- Things that DO work: Align a p containing an img -->
+<p align="center"><img/></p>
 <!-- For single image mode -->
 <figure>
   <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666 align="center">
