@@ -2,7 +2,13 @@
 These banners are a series of modifications (by way of colouring in) of [this image](https://twitter.com/Gelada/status/846751901756653568), originally by Edmund Harriss.
 
 The original is included as well as scripts to generate the modifications, with the scripts and modifications placed under the adjacent [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/) license [[+](https://choosealicense.com/licenses/cc-by-sa-4.0/)] [[+](https://spdx.org/licenses/CC-BY-SA-4.0.html)].
+
+## Generate the modifications
+The end of `./.meta/banners/modifications/img.py` shows both `recreate_blank_image()` and `recreate_contiguities_map_file()`, and how to use `colour_in_blank_image_with_palette(new_image_path, desired_ratios)`.
+
 ## Where are the modifications?
+See them all [here](https://github.com/Skenvy/Collatz/blob/main/.meta/banners/EXAMPLES.md).
+
 To prevent committing too many large image files _here_, the generated images will be committed in this repository's wiki, and the links to the raw files hosted in the wiki will be used in `img` tags. You can clone the wiki as you would any other repo, with the `:owner/:repo` being `:owner/:<repo>.wiki`; either as `git clone git@github.com:Skenvy/Collatz.wiki.git` / `git clone https://github.com/Skenvy/Collatz.wiki.git`.
 
 However, when accessing the raw contents, to `src` the images hosted in the wiki, the url does not use the `:<repo>.wiki` name, nor does it take a branch. For files in the wiki at location `./a/b/c.xyz`, they would be accessed as `https://raw.githubusercontent.com/wiki/:owner/:repo/a/b/c.xyz` e.g. if we host the modifications as `./.meta/banners/modifications/*.png`, then we access them as `https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/*.png`
@@ -11,24 +17,32 @@ We can then embed these images, stored in the wiki and accessed via `https://raw
 ```html
 <!-- For single image mode -->
 <figure>
-  <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png">
-    <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666>
-  </a>
-  <figcaption>Colourised Collatz Coral; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a></figcaption>
+  <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;">
+  <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
+  <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
+  </p></figcaption>
 </figure>
 <!-- For dark / light mode -->
 <figure>
-  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/EXAMPLES.md">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_dark.png">
-      <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_light.png" width=830 height=666>
-    </picture>
-  </a>
-  <figcaption>Colourised Collatz Coral; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a></figcaption>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_dark.png">
+    <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ_light.png" width=830 height=666 style="display:block;margin-left:auto;margin-right:auto;">
+  </picture>
+  <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/EXAMPLES.md">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
+  </p></figcaption>
 </figure>
 ```
-## Generate the modifications
-The end of `modifications/img.py` shows both `recreate_blank_image()` and `recreate_contiguities_map_file()`, and how to use `colour_in_blank_image_with_palette(new_image_path, desired_ratios)`.
+While the above would be ideal, it turns out that GitHub doesn't render a lot of this in markdown, only some, and it's a bit of effort to track down what they do or don't render, with [this 2012 blog post](https://github.blog/2012-11-27-html-pipeline-chainable-content-filters/) links to ["html-pipeline"](https://github.com/jch/html-pipeline) which has [this list of allowed elements and attributes](https://github.com/gjtorikian/html-pipeline/blob/main/lib/html_pipeline/sanitization_filter.rb). While we can't yet know without a lot of investigation or testing, it's also possible that any of the documentation generation tools wont render the html elements on the readme they include, or that package hosting sites that include the READMEs on the package's page will render them or not, is also a question. So for now, what we can work on that will render in vs code and GitHub;
+```html
+<!-- For single image mode -->
+<figure>
+  <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666 align="center">
+  <figcaption><p style="color:grey;font-size:10px;font-style:italic;text-align:center">
+  <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png">Colourised Collatz Coral</a>; <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>, <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>, <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
+  </p></figcaption>
+</figure>
+```
 ## Palettes
 ### C#
 ### Go
