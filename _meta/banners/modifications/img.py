@@ -188,7 +188,6 @@ def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=F
         while CONTIGUITIES != {}:
             del_sizes = []
             for size, zones in CONTIGUITIES.items():
-                desired_pixelage = {k: v for k, v in sorted(desired_pixelage.items(), key=lambda item: item[1], reverse=True)}
                 for colour in desired_pixelage.keys():
                     if desired_pixelage[colour] >= size and len(zones) > 0:
                         # colour in one of the zones
@@ -209,6 +208,10 @@ def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=F
                                     img.putpixel((new_x, new_y), colour)
                         desired_pixelage[colour] -= size
                         total_pixels -= size
+                # We want to sort the colours by how many pixels are left to
+                # colour in each iteration, but not before the first iteration,
+                # so we put it here after looping through it
+                desired_pixelage = {k: v for k, v in sorted(desired_pixelage.items(), key=lambda item: item[1], reverse=True)}
                 if zones == []:
                     del_sizes += [size]
             for size in del_sizes:

@@ -7,6 +7,7 @@ RGBA_NAMES_MAP = {
     'Full White': (255, 255, 255, 255),
     'Original off black': (5, 7, 8, 255),
     'Yellow': (255, 255, 0, 255), # #FFFF00
+    'Red': (255, 0, 0, 255), # #FF0000
 
     'JavaScript Yellow': (241, 224, 90, 255), # #F1E05A
     'TypeScript Yellow': (241, 221, 53, 255), # #F1DD35
@@ -21,6 +22,7 @@ RGBA_NAMES_MAP = {
     'Pantone 357 C': (33, 87, 50, 255),
     # NPM Red https://github.com/npm/logos
     'NPM Red': (193, 33, 39, 255), # #C12127
+    'NPM Chrome Rasterisation': (181, 51, 21, 255), # #B53315
 }
 
 _ = RGBA_NAMES_MAP
@@ -31,9 +33,18 @@ _JAVASCRIPT_PALETTE = [
     (1, {_['JavaScript Yellow']: 6, _['ColourJS Yellow']: 3, _['TypeScript Yellow']: 1}),
     (1, {_['TypeScript Blue']: 6, _['TypeScript Blue 2nd 1']: 3, _['TypeScript Blue 2nd 2']: 1}),
     (1, {_['NodeJS Green']: 6, _['Pantone 360 C']: 3, _['Pantone 357 C']: 1}),
-    (1, {_['NPM Red']: 6})
+    (1, {_['NPM Red']: 6, _['NPM Chrome Rasterisation']: 3, _['Red']: 1})
 ]
 
 PALETTES = {
+    # 'C_Sharp': [],
+    # 'Go': [],
+    # 'Java': [],
     'JavaScript': _JAVASCRIPT_PALETTE,
+    # 'Julia': [],
+    # 'LaTeX': [],
+    # 'Python': [],
+    # 'R': [],
+    # 'Ruby': [],
+    # 'Rust': [],
 }
