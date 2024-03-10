@@ -229,7 +229,6 @@ def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=F
 ## Example run of `colour_in_blank_image_with_palette`
 # colour_in_blank_image_with_palette('_javascript.png', PALETTES['JavaScript'], verbose=True)
 
-for lang in ['C_Sharp', 'Go', 'Java', 'JavaScript', 'Julia', 'LaTeX', 'Python', 'R', 'Ruby', 'Rust']:
-    if lang in PALETTES.keys():
-        print(f'CREATING {lang}')
-        colour_in_blank_image_with_palette(f'_{lang}.png', PALETTES[lang], verbose=True)
+for lang in PALETTES.keys():
+    print(f'CREATING {lang}')
+    colour_in_blank_image_with_palette(f'_{lang}.png', PALETTES[lang], verbose=True)

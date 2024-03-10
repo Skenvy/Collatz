@@ -27,7 +27,20 @@ RGBA_NAMES_MAP = {
 
 _ = RGBA_NAMES_MAP
 
-# Palettes
+################################################################################
+# Palettes.
+
+_CSHARP_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_GO_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_JAVA_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
 
 _JAVASCRIPT_PALETTE = [
     (1, {_['JavaScript Yellow']: 6, _['ColourJS Yellow']: 3, _['TypeScript Yellow']: 1}),
@@ -36,15 +49,52 @@ _JAVASCRIPT_PALETTE = [
     (1, {_['NPM Red']: 6, _['NPM Chrome Rasterisation']: 3, _['Red']: 1})
 ]
 
+_JULIA_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_LATEX_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_PYTHON_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_R_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_RUBY_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_RUST_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_MAIN_DARK_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+_MAIN_LIGHT_PALETTE = [
+    (1, {_['COLOUR NAME']: 6}),
+]
+
+################################################################################
+# Group all palettes.
+
 PALETTES = {
-    # 'C_Sharp': [],
-    # 'Go': [],
-    # 'Java': [],
+    # 'CSharp': _CSHARP_PALETTE,
+    # 'Go': _GO_PALETTE,
+    # 'Java': _JAVA_PALETTE,
     'JavaScript': _JAVASCRIPT_PALETTE,
-    # 'Julia': [],
-    # 'LaTeX': [],
-    # 'Python': [],
-    # 'R': [],
-    # 'Ruby': [],
-    # 'Rust': [],
+    # 'Julia': _JULIA_PALETTE,
+    # 'LaTeX': _LATEX_PALETTE,
+    # 'Python': _PYTHON_PALETTE,
+    # 'R': _R_PALETTE,
+    # 'Ruby': _RUBY_PALETTE,
+    # 'Rust': _RUST_PALETTE,
+    # 'Main_dark': _MAIN_DARK_PALETTE,
+    # 'Main_light': _MAIN_LIGHT_PALETTE,
 }
