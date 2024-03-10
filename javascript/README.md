@@ -1,11 +1,8 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟦🟩🟥
-<p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_JavaScript.png" width=830 height=666/></p>
-<p align="center"><i>
-  <a href="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_JavaScript.png">Colourised Collatz Coral</a>;
-  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss, 2016</a>,
-  <a href="https://theexperimentpublishing.com/catalogs/fall-2016/visions-of-the-universe/">Visions of the Universe</a>,
-  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md#generate-the-modifications">Modified</a>
-</i></p>
+<p align="center"><a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_JavaScript.png" width=830 height=666/></a></p>
+<p align="center"><small><i>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">[1]</a>
+</i></small></p>
 
 ---
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [JavaScript](https://tc39.es/ecma262/) (transpiled from [TypeScript](https://www.typescriptlang.org/)).
