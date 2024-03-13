@@ -63,7 +63,10 @@ While the above would be ideal, it turns out that GitHub doesn't render a lot of
 ```
 ## Palettes
 ### C#
+\# TODO
 ### Go
+[Brand and Trademark Usage Guidelines](https://go.dev/brand) and [Go's New Brand](https://go.dev/blog/go-brand). A [go themed slide deck](https://go.dev/s/presentation-theme). And a [brand book](https://go.dev/s/brandbook).
+[Brand book v1.9.5](https://go.dev/assets/go-brand-book-v1.9.5.pdf) includes several colours; primary Gopher Blue `#00ADD8`, Light Blue `#5DC9E2`, Aqua `#00A29C`, and for a high contrast background black `#000000`. There are two "secondary colours" Fuchsia `#CE3262` and Yellow `#FDDD00`. There are several un-named "More colours"; a darker aqua `#00758D`, a grey `#555759`, a dark purple `#402B56`, and a light grey `#DBD9D6`.
 ### Java
 ### JavaScript
 We want our palette to be "JavaScript Yellow", "TypeScript Blue", "Node Green", and "NPM Red". The last three are all easy, they have official branding guidelines via the organisations that operate them. [TypeScript's branding guide](https://www.typescriptlang.org/branding/) shows their blue is `#3178C6`. [NodeJS's branding guide](https://nodejs.org/static/documents/foundation-visual-guidelines.pdf) lists the primary colour as "Pantone 7741 C", or `#339933`. NPM don't seem to have a readily searchable "branding guide", instead presenting a [_logo usage guide_](https://docs.npmjs.com/policies/logos-and-usage), but they do have an archived [logo repo](https://github.com/npm/logos) with logos using the `#C12127` colour.
@@ -74,3 +77,4 @@ We want our palette to be "JavaScript Yellow", "TypeScript Blue", "Node Green", 
 ### R
 ### Ruby
 ### Rust
+\# TODO
