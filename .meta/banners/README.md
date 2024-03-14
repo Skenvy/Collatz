@@ -82,7 +82,7 @@ A description of the julia logo and colours can be found at [JuliaLang/julia-log
 ### Python
 
 ### R
-
+A description of the [R logo](https://www.r-project.org/logo/). The svg file lists two greys, `(203, 206, 208)` and `(132, 131, 139)`, and two blues, `(39, 109, 195)` and `(22, 92, 170)`.
 ### Ruby
 
 ### Rust

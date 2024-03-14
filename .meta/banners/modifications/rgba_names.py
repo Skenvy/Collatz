@@ -21,6 +21,9 @@ RGBA_NAMES_MAP = {
     'Purple 2': (204, 0, 204, 255),
     'Red 2': (204, 0, 0, 255),
 
+    ##### C# #####
+    # TODO
+
     ##### Go #####
     # Primary
     'Gopher Blue': (1, 173, 216, 255), #00ADD8
@@ -77,6 +80,24 @@ RGBA_NAMES_MAP = {
     # Only two secondaries are sufficiently different
     'Julia Forest Green': (34, 139, 34, 255), #228B22
     'Julia Medium Orchid': (180, 82, 205, 255), #B452CD
+
+    ##### LaTeX #####
+    # TODO
+
+    ##### Python #####
+
+    ##### R #####
+    'R Blue Light': (39, 109, 195, 255),
+    'R Blue Mid': (30, 100, 182, 255),
+    'R Blue Dark': (22, 92, 170, 255),
+    'R Grey Light': (203, 206, 208, 255),
+    'R Grey Mid': (167, 168, 173, 255),
+    'R Grey Dark': (132, 131, 139, 255),
+
+    ##### Ruby #####
+
+    ##### Rust #####
+    # TODO
 }
 
 _ = RGBA_NAMES_MAP
@@ -123,9 +144,10 @@ _JULIA_PALETTE = [
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
-# _R_PALETTE = [
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+_R_PALETTE = [
+    (1, {_['R Blue Light']: 2, _['R Blue Mid']: 6, _['R Blue Dark']: 2}),
+    (1, {_['R Grey Light']: 2, _['R Grey Mid']: 6, _['R Grey Dark']: 2}),
+]
 
 # _RUBY_PALETTE = [
 #     (1, {_['COLOUR NAME']: 6}),
@@ -154,7 +176,7 @@ PALETTES = {
     'Julia': _JULIA_PALETTE,
     # 'LaTeX': _LATEX_PALETTE, # TODO
     # 'Python': _PYTHON_PALETTE,
-    # 'R': _R_PALETTE,
+    'R': _R_PALETTE,
     # 'Ruby': _RUBY_PALETTE,
     # 'Rust': _RUST_PALETTE, # TODO
     # 'Main_dark': _MAIN_DARK_PALETTE, # TODO
