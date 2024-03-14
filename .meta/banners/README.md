@@ -76,9 +76,14 @@ This rather deep-fried pdf on [Oracle brand guidlines](https://www.oracle.com/a/
 We want our palette to be "JavaScript Yellow", "TypeScript Blue", "Node Green", and "NPM Red". The last three are all easy, they have official branding guidelines via the organisations that operate them. [TypeScript's branding guide](https://www.typescriptlang.org/branding/) shows their blue is `#3178C6`. [NodeJS's branding guide](https://nodejs.org/static/documents/foundation-visual-guidelines.pdf) lists the primary colour as "Pantone 7741 C", or `#339933`. NPM don't seem to have a readily searchable "branding guide", instead presenting a [_logo usage guide_](https://docs.npmjs.com/policies/logos-and-usage), but they do have an archived [logo repo](https://github.com/npm/logos) with logos using the `#C12127` colour.
 "JavaScript Yellow" is the challenge, as [there is no "official" logo for JS](https://ux.stackexchange.com/questions/25558/what-is-the-official-javascript-logo-icon) but any icon from googling will be a similar shade of yellow, Wikipedia's (which claim to be the original unofficial logos from JSConf) [`F0DB4F`](https://commons.wikimedia.org/wiki/File:JavaScript-logo.png) and [`F0E14D`](https://commons.wikimedia.org/wiki/File:Unofficial_JavaScript_logo_2.svg), or `colorjs`'s [`F7DF1E`](https://github.com/colorjs/javascript-yellow), or per github's `linguist` [`F1E05A`](https://github.com/github-linguist/linguist/blob/559a6426942abcae16b6d6b328147476432bf6cb/lib/linguist/languages.yml#L3329).
 ### Julia
+A description of the julia logo and colours can be found at [JuliaLang/julia-logo-graphics](https://github.com/JuliaLang/julia-logo-graphics), or [just the colours graphic](https://raw.githubusercontent.com/JuliaLang/julia-logo-graphics/master/images/julia-colors.svg) which lists "Julia" "Blue" `#4063D8`, "Green" `#389826`, "Purple" `#9558B2`, and "Red" `#CB3C33`, as well as "Royal Blue" `#4169E0`, "Forest Green" `#228B22`, "Medium Orchid" `#B452CD`, and "Brown" (but it's red?) `#CD3333`.
 ### LaTeX
+\# TODO
 ### Python
+
 ### R
+
 ### Ruby
+
 ### Rust
 \# TODO

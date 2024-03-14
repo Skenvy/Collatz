@@ -1,13 +1,25 @@
 # Under the CC-BY-SA-4.0, https://creativecommons.org/licenses/by-sa/4.0/
 
 RGBA_NAMES_MAP = {
+    ##### Generic #####
+    # Meta
     'Alpha Black': (0, 0, 0, 0),
     'Full Black': (0, 0, 0, 255),
     'Alpha White': (255, 255, 255, 0),
     'Full White': (255, 255, 255, 255),
     'Original off black': (5, 7, 8, 255),
-    'Yellow': (255, 255, 0, 255), # #FFFF00
-    'Red': (255, 0, 0, 255), # #FF0000
+    # Primary
+    'Blue': (0, 0, 255, 255),
+    'Green': (0, 255, 0, 255),
+    'Purple': (255, 0, 255, 255),
+    'Red': (255, 0, 0, 255),
+    'Yellow': (255, 255, 0, 255),
+    # Secondary
+    'Blue 2': (0, 0, 204, 255),
+    'Green 2': (0, 204, 0, 255),
+    'Green 3': (0, 153, 0, 255),
+    'Purple 2': (204, 0, 204, 255),
+    'Red 2': (204, 0, 0, 255),
 
     ##### Go #####
     # Primary
@@ -55,6 +67,16 @@ RGBA_NAMES_MAP = {
     # NPM Red https://github.com/npm/logos
     'NPM Red': (193, 33, 39, 255), #C12127
     'NPM Chrome Rasterisation': (181, 51, 21, 255), #B53315
+
+    ##### Julia #####
+    # Primary
+    'Julia Blue': (64, 99, 216, 255), #4063D8
+    'Julia Green': (56, 152, 38, 255), #389826
+    'Julia Purple': (148, 88, 178, 255), #9558B2
+    'Julia Red': (203, 60, 51, 255), #CB3C33
+    # Only two secondaries are sufficiently different
+    'Julia Forest Green': (34, 139, 34, 255), #228B22
+    'Julia Medium Orchid': (180, 82, 205, 255), #B452CD
 }
 
 _ = RGBA_NAMES_MAP
@@ -86,9 +108,12 @@ _JAVASCRIPT_PALETTE = [
     (1, {_['NPM Red']: 6, _['NPM Chrome Rasterisation']: 3, _['Red']: 1})
 ]
 
-# _JULIA_PALETTE = [
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+_JULIA_PALETTE = [
+    (1, {_['Julia Purple']: 6, _['Julia Medium Orchid']: 3, _['Purple 2']: 1}),
+    (1, {_['Julia Green']: 6, _['Julia Forest Green']: 3, _['Green 3']: 1}),
+    (1, {_['Julia Red']: 6, _['Red']: 3, _['Red 2']: 1}),
+    (1, {_['Julia Blue']: 6, _['Blue']: 3, _['Blue 2']: 1}),
+]
 
 # _LATEX_PALETTE = [ # TODO
 #     (1, {_['COLOUR NAME']: 6}),
@@ -126,7 +151,7 @@ PALETTES = {
     'Go': _GO_PALETTE,
     'Java': _JAVA_PALETTE,
     'JavaScript': _JAVASCRIPT_PALETTE,
-    # 'Julia': _JULIA_PALETTE,
+    'Julia': _JULIA_PALETTE,
     # 'LaTeX': _LATEX_PALETTE, # TODO
     # 'Python': _PYTHON_PALETTE,
     # 'R': _R_PALETTE,
