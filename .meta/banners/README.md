@@ -63,7 +63,7 @@ While the above would be ideal, it turns out that GitHub doesn't render a lot of
 ```
 ## Palettes
 ### C#
-\# TODO
+\#TODO
 ### Go
 [Brand and Trademark Usage Guidelines](https://go.dev/brand) and [Go's New Brand](https://go.dev/blog/go-brand). A [go themed slide deck](https://go.dev/s/presentation-theme). And a [brand book](https://go.dev/s/brandbook).
 [Brand book v1.9.5](https://go.dev/assets/go-brand-book-v1.9.5.pdf) includes several colours; primary Gopher Blue `#00ADD8`, Light Blue `#5DC9E2`, Aqua `#00A29C`, and for a high contrast background black `#000000`. There are two "secondary colours" Fuchsia `#CE3262` and Yellow `#FDDD00`. There are several un-named "More colours"; a darker aqua `#00758D`, a grey `#555759`, a dark purple `#402B56`, and a light grey `#DBD9D6`.
@@ -78,12 +78,12 @@ We want our palette to be "JavaScript Yellow", "TypeScript Blue", "Node Green", 
 ### Julia
 A description of the julia logo and colours can be found at [JuliaLang/julia-logo-graphics](https://github.com/JuliaLang/julia-logo-graphics), or [just the colours graphic](https://raw.githubusercontent.com/JuliaLang/julia-logo-graphics/master/images/julia-colors.svg) which lists "Julia" "Blue" `#4063D8`, "Green" `#389826`, "Purple" `#9558B2`, and "Red" `#CB3C33`, as well as "Royal Blue" `#4169E0`, "Forest Green" `#228B22`, "Medium Orchid" `#B452CD`, and "Brown" (but it's red?) `#CD3333`.
 ### LaTeX
-\# TODO
+\#TODO
 ### Python
-
+[The python logo](https://www.python.org/community/logos/). We can download one of the svg's and see the yellows, dark `#ffd43b` and light `#ffe873`, and the blues, light `#5a9fd4` and dark `#306998`. There are also 5 greys, from darkest to lightest `#7f7f7f`, `#b2b2b2`, `#b3b3b3`, `#b8b8b8`, `#f4f4f4` (almost white).
 ### R
 A description of the [R logo](https://www.r-project.org/logo/). The svg file lists two greys, `(203, 206, 208)` and `(132, 131, 139)`, and two blues, `(39, 109, 195)` and `(22, 92, 170)`.
 ### Ruby
-
+There are official examples of the [ruby logo](https://www.ruby-lang.org/en/about/logo/), but the only format that appears readable is an Adobe Illustrator vector `.ai`.
 ### Rust
-\# TODO
+\#TODO

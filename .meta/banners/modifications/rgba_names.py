@@ -85,6 +85,12 @@ RGBA_NAMES_MAP = {
     # TODO
 
     ##### Python #####
+    'Python Blue Light': (90, 159, 212, 255), #5a9fd4
+    'Python Blue Mid': (69, 132, 182, 255),
+    'Python Blue Dark': (48, 105, 152, 255), #306998
+    'Python Yellow Light': (255, 232, 115, 255), #ffe873
+    'Python Yellow Mid': (255, 222, 87, 255),
+    'Python Yellow Dark': (255, 212, 59, 255), #ffd43b
 
     ##### R #####
     'R Blue Light': (39, 109, 195, 255),
@@ -140,9 +146,10 @@ _JULIA_PALETTE = [
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
-# _PYTHON_PALETTE = [
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+_PYTHON_PALETTE = [
+    (1, {_['Python Yellow Light']: 2, _['Python Yellow Mid']: 6, _['Python Yellow Dark']: 2}),
+    (1, {_['Python Blue Light']: 2, _['Python Blue Mid']: 6, _['Python Blue Dark']: 2}),
+]
 
 _R_PALETTE = [
     (1, {_['R Blue Light']: 2, _['R Blue Mid']: 6, _['R Blue Dark']: 2}),
@@ -175,7 +182,7 @@ PALETTES = {
     'JavaScript': _JAVASCRIPT_PALETTE,
     'Julia': _JULIA_PALETTE,
     # 'LaTeX': _LATEX_PALETTE, # TODO
-    # 'Python': _PYTHON_PALETTE,
+    'Python': _PYTHON_PALETTE,
     'R': _R_PALETTE,
     # 'Ruby': _RUBY_PALETTE,
     # 'Rust': _RUST_PALETTE, # TODO
