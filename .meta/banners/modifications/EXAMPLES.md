@@ -1,10 +1,8 @@
 ## "Main"
-``` # TODO
 <p align="center"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Main_dark.png"/>
   <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Main_light.png" width=830 height=666/>
 </picture></p>
-```
 
 ## Attribution
 <sub><p align="center"><i>

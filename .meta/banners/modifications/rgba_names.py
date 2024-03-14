@@ -225,9 +225,18 @@ _MAIN_DARK_PALETTE = [
     (1, {_['JavaScript Yellow']: 1, _['TypeScript Blue']: 1, _['NodeJS Green']: 1, _['NPM Red']: 1}),
 ]
 
-# _MAIN_LIGHT_PALETTE = [ # TODO
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+# In the inverse of the order they were implemented in
+_MAIN_LIGHT_PALETTE = [
+    (1, {_['JavaScript Yellow']: 1, _['TypeScript Blue']: 1, _['NodeJS Green']: 1, _['NPM Red']: 1}),
+    (1, {_['Ruby Light Orange 1']: 1, _['Ruby Lightest Red 1']: 1, _['Ruby Light Red 1']: 1,
+         _['Ruby Regular Lighter 1']: 1, _['Ruby Regular Mid 1']: 1, _['Ruby Regular Darker 1']: 1,
+         _['Ruby "Red 3" 1']: 1, _['Ruby Dark Red 3']: 1, _['Ruby Darkest Red 1']: 1}),
+    (1, {_['R Blue Mid']: 1, _['R Grey Mid']: 1}),
+    (1, {_['Gopher Blue']: 6, _['Go Light Blue']: 3, _['Go Aqua']: 1}),
+    (1, {_['Java Blue']: 2, _['Java Orange']: 2, _['Java Duke Red']: 1}),
+    (1, {_['Julia Purple']: 1, _['Julia Green']: 1, _['Julia Red']: 1, _['Julia Blue']: 1}),
+    (1, {_['Python Yellow Mid']: 1, _['Python Blue Mid']: 1}),
+]
 
 ################################################################################
 # Group all palettes.
@@ -244,5 +253,5 @@ PALETTES = {
     'Ruby': _RUBY_PALETTE,
     # 'Rust': _RUST_PALETTE, # TODO
     'Main_dark': _MAIN_DARK_PALETTE,
-    # 'Main_light': _MAIN_LIGHT_PALETTE, # TODO
+    'Main_light': _MAIN_LIGHT_PALETTE,
 }
