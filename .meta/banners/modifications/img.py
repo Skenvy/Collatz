@@ -189,6 +189,9 @@ def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=F
         pixels = img.load()
         while CONTIGUITIES != {}:
             del_sizes = []
+            # Atm, nothing checks that a size _must_ have been filled in, so it's
+            # possible with a hundred colours equally sharing the landscape, that
+            # none of them will have the budget to fill in the large contiguities
             for size, zones in CONTIGUITIES.items():
                 for colour in desired_pixelage.keys():
                     if desired_pixelage[colour] >= size and len(zones) > 0:
