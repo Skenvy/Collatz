@@ -1,4 +1,11 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) 🟨🟦🟩🟥
+<p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_JavaScript.png" width=830 height=666/></p>
+<sub><p align="center"><i>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
+  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
+</i></p></sub>
+
+---
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [JavaScript](https://tc39.es/ecma262/) (transpiled from [TypeScript](https://www.typescriptlang.org/)).
 ## Getting Started
 [To install the latest from npm](https://www.npmjs.com/package/@skenvy/collatz);
