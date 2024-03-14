@@ -73,10 +73,10 @@ _GO_PALETTE = [
 ]
 
 _JAVA_PALETTE = [
-    (3, {_['Java Blue']: 6}, _['Java Blue (Older)']: 3, _['Java Blue (Uncoated)']: 1),
-    (3, {_['Java Orange']: 6}, _['Java Orange (Older)']: 3, _['Java Orange (Uncoated)']: 1),
-    (2, {_['Java Duke Red']: 6}, _['Oracle Red']: 3, _['Red']: 1),
-    (1, {_['Linguist Kotlin']: 1}, _['Linguist Scala']: 1, _['Linguist Groovy']: 1, _['Linguist Clojure']: 1),
+    (3, {_['Java Blue']: 6, _['Java Blue (Older)']: 3, _['Java Blue (Uncoated)']: 1}),
+    (3, {_['Java Orange']: 6, _['Java Orange (Older)']: 3, _['Java Orange (Uncoated)']: 1}),
+    (2, {_['Java Duke Red']: 6, _['Oracle Red']: 3, _['Red']: 1}),
+    (1, {_['Linguist Kotlin']: 1, _['Linguist Scala']: 1, _['Linguist Groovy']: 1, _['Linguist Clojure']: 1}),
 ]
 
 _JAVASCRIPT_PALETTE = [
