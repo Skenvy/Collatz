@@ -21,6 +21,24 @@ RGBA_NAMES_MAP = {
     'Go Darker Aqua': (0, 117, 141, 255), #00758D
     'Go Indigo': (64, 43, 86, 255), #402B56
 
+    ##### Java #####
+    # Primary Blue and Orange
+    'Java Blue': (0, 115, 150, 255),
+    'Java Blue (Older)': (83, 130, 161, 255), #5382A1
+    'Java Blue (Uncoated)': (84, 138, 153, 255),
+    'Java Orange': (237, 139, 0, 255),
+    'Java Orange (Older)': (255, 165, 24, 255), #FFA518
+    'Java Orange (Uncoated)': (255, 163, 0, 255),
+    # Oracle / Duke Reds
+    'Oracle Red': (199, 70, 52, 255), #C74634
+    'Java Duke Red': (179, 8, 56, 255), #B30838
+    # Other top JVM's linguist colours for accents
+    'Linguist Java': (176, 114, 25, 255),
+    'Linguist Kotlin': (169, 123, 255, 255), #A97BFF
+    'Linguist Scala': (194, 45, 64, 255), #C22D40
+    'Linguist Groovy': (66, 152, 184, 255), #4298B8
+    'Linguist Clojure': (219, 88, 85, 255), #DB5855
+
     ##### JavaScript #####
     # JavaScript Colours
     'JavaScript Yellow': (241, 224, 90, 255), #F1E05A
@@ -54,9 +72,12 @@ _GO_PALETTE = [
     (1, {_['Go Darker Aqua']: 5, _['Go Indigo']: 5}),
 ]
 
-# _JAVA_PALETTE = [
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+_JAVA_PALETTE = [
+    (3, {_['Java Blue']: 6}, _['Java Blue (Older)']: 3, _['Java Blue (Uncoated)']: 1),
+    (3, {_['Java Orange']: 6}, _['Java Orange (Older)']: 3, _['Java Orange (Uncoated)']: 1),
+    (2, {_['Java Duke Red']: 6}, _['Oracle Red']: 3, _['Red']: 1),
+    (1, {_['Linguist Kotlin']: 1}, _['Linguist Scala']: 1, _['Linguist Groovy']: 1, _['Linguist Clojure']: 1),
+]
 
 _JAVASCRIPT_PALETTE = [
     (1, {_['JavaScript Yellow']: 6, _['ColourJS Yellow']: 3, _['TypeScript Yellow']: 1}),
@@ -103,7 +124,7 @@ _JAVASCRIPT_PALETTE = [
 PALETTES = {
     # 'CSharp': _CSHARP_PALETTE, # TODO
     'Go': _GO_PALETTE,
-    # 'Java': _JAVA_PALETTE,
+    'Java': _JAVA_PALETTE,
     'JavaScript': _JAVASCRIPT_PALETTE,
     # 'Julia': _JULIA_PALETTE,
     # 'LaTeX': _LATEX_PALETTE,

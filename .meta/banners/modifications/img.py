@@ -7,7 +7,8 @@ from PIL import Image
 from math import floor
 
 from rgba_names import RGBA_NAMES_MAP as COLOURS, PALETTES
-from contiguities import CONTIGUITIES
+from contiguities import CONTIGUITIES as _CONTIGUITIES
+from copy import deepcopy
 
 ORIGINAL_PATH = '../ORIGINAL.png'
 BLANK_PATH = './_blank.png'
@@ -171,6 +172,7 @@ def recreate_contiguities_map_file(verbose=False):
 ################################################################################
 
 def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=False):
+    CONTIGUITIES = deepcopy(_CONTIGUITIES)
     if os.path.exists(new_image_path):
         os.remove(new_image_path)
     contiguity_colour = COLOURS['Full White']
@@ -192,7 +194,8 @@ def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=F
                     if desired_pixelage[colour] >= size and len(zones) > 0:
                         # colour in one of the zones
                         (zone_x, zone_y) = zones.pop()
-                        print(f'FILLING IN AREA {size} @ ({zone_x}, {zone_y}), with {colour}, only {desired_pixelage[colour]-size} left to fill with {colour}')
+                        if verbose:
+                            print(f'FILLING IN AREA {size} @ ({zone_x}, {zone_y}), with {colour}, only {desired_pixelage[colour]-size} left to fill with {colour}')
                         pixels_to_search_around = [(zone_x, zone_y)]
                         img.putpixel((zone_x, zone_y), colour)
                         while pixels_to_search_around != []:
@@ -231,4 +234,4 @@ def colour_in_blank_image_with_palette(new_image_path, desired_ratios, verbose=F
 
 for lang in PALETTES.keys():
     print(f'CREATING {lang}')
-    colour_in_blank_image_with_palette(f'_{lang}.png', PALETTES[lang], verbose=True)
+    colour_in_blank_image_with_palette(f'_{lang}.png', PALETTES[lang], verbose=False)
