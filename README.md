@@ -1,4 +1,14 @@
 # [Collatz](https://github.com/Skenvy/Collatz)
+<p align="center"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Main_dark.png"/>
+  <img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Main_light.png" width=830 height=666/>
+</picture></p>
+<sub><p align="center"><i>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
+  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
+</i></p></sub>
+
+---
 Of all the [open problems in mathematics](https://en.wikipedia.org/wiki/List_of_unsolved_problems_in_mathematics), the [Collatz Conjecture / 3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture) [[*](https://mathworld.wolfram.com/CollatzProblem.html)] is infamously probably the most disproportionately difficult to solve compared to how incredibly simple it is to state.
 The simplest form of the question is, for every positive integer, if we recursively halve any even integer, and alternatively multiply by 3 and add 1 for any odd integer, are we guaranteed to eventually end up with a value of 1.
 
