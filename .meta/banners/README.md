@@ -84,6 +84,6 @@ A description of the julia logo and colours can be found at [JuliaLang/julia-log
 ### R
 A description of the [R logo](https://www.r-project.org/logo/). The svg file lists two greys, `(203, 206, 208)` and `(132, 131, 139)`, and two blues, `(39, 109, 195)` and `(22, 92, 170)`.
 ### Ruby
-There are official examples of the [ruby logo](https://www.ruby-lang.org/en/about/logo/), but the only format that appears readable is an Adobe Illustrator vector `.ai`.
+There are official examples of the [ruby logo](https://www.ruby-lang.org/en/about/logo/), but the only format that appears readable is an Adobe Illustrator vector `.ai`. The ruby discord helpfully provided a svg file. With a little bit of magic, `grep -Eio '#[a-fA-F0-9]{6}' Ruby_logo.svg | tr '[a-z]' '[A-Z]' | awk '!seen[$0]++' | sort`, we can get a mutually exclusive list of the colour codes present in it. There're **42** colours; `#666666`, `#79130D`, `#791C12`, `#7E0E08`, `#7E110B`, `#800E08`, `#820C01`, `#871101`, `#8B2114`, `#8C0C01`, `#910F08`, `#911209`, `#990000`, `#990C00`, `#9E0C00`, `#9E100A`, `#9E1209`, `#9E120B`, `#A30C00`, `#A31601`, `#A60003`, `#A80D00`, `#A80D0E`, `#B31000`, `#B3100C`, `#B31301`, `#BD0012`, `#BE1A0D`, `#BF0905`, `#BF190B`, `#C81F11`, `#C82410`, `#C82F1C`, `#DE3B20`, `#DE4024`, `#E42B1E`, `#E46342`, `#E4714E`, `#E57252`, `#E82609`, `#FB7655`, `#FFFFFF`.
 ### Rust
 \#TODO

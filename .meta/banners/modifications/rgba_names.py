@@ -101,6 +101,46 @@ RGBA_NAMES_MAP = {
     'R Grey Dark': (132, 131, 139, 255),
 
     ##### Ruby #####
+    'Ruby Darkest Red 1': (121, 19, 13), #79130D <
+    'Ruby Darkest Red 2': (121, 28, 18), #791C12
+    'Ruby Darkest Red 3': (126, 14, 8), #7E0E08
+    'Ruby Darkest Red 4': (126, 17, 11), #7E110B
+    'Ruby Darkest Red 5': (128, 14, 8), #800E08
+    'Ruby Darkest Red 6': (130, 12, 1), #820C01
+    'Ruby Dark Red 1': (135, 17, 1), #871101
+    'Ruby Dark Red 2': (139, 33, 20), #8B2114
+    'Ruby Dark Red 3': (140, 12, 1), #8C0C01 <
+    'Ruby Dark Red 4': (145, 15, 8), #910F08
+    'Ruby Dark Red 5': (145, 18, 9), #911209
+    'Ruby "Red 3" 1': (153, 0, 0), #990000 = "Red 3"
+    'Ruby "Red 3" 2': (153, 12, 0), #990C00
+    'Ruby "Red 3" 3': (158, 12, 0), #9E0C00
+    'Ruby "Red 3" 4': (158, 16, 10), #9E100A
+    'Ruby "Red 3" 5': (158, 18, 9), #9E1209
+    'Ruby "Red 3" 6': (158, 18, 11), #9E120B
+    'Ruby Regular Darker 1': (163, 12, 0), #A30C00
+    'Ruby Regular Darker 2': (163, 22, 1), #A31601
+    'Ruby Regular Darker 3': (166, 0, 3), #A60003
+    'Ruby Regular Darker 4': (168, 13, 0), #A80D00
+    'Ruby Regular Darker 5': (168, 13, 14), #A80D0E
+    'Ruby Regular Mid 1': (179, 16, 0), #B31000
+    'Ruby Regular Mid 2': (179, 19, 1), #B31301
+    'Ruby Regular Mid 3': (179, 16, 12), #B3100C
+    'Ruby Regular Lighter 1': (189, 0, 18), #BD0012 <
+    'Ruby Regular Lighter 2': (191, 9, 5), #BF0905
+    'Ruby Regular Lighter 3': (191, 25, 11), #BF190B
+    'Ruby Regular Lighter 4': (190, 26, 13), #BE1A0D
+    'Ruby Light Red 1': (200, 31, 17), #C81F11
+    'Ruby Light Red 2': (200, 36, 16), #C82410
+    'Ruby Light Red 3': (200, 47, 28), #C82F1C
+    'Ruby Lightest Red 1': (232, 38, 9), #E82609 <
+    'Ruby Lightest Red 2': (228, 43, 30), #E42B1E
+    'Ruby Lightest Red 3': (222, 59, 32), #DE3B20
+    'Ruby Lightest Red 4': (222, 64, 36), #DE4024
+    'Ruby Light Orange 1': (228, 99, 66), #E46342
+    'Ruby Light Orange 2': (228, 113, 78), #E4714E
+    'Ruby Light Orange 3': (229, 114, 82), #E57252
+    'Ruby Light Orange 4': (251, 118, 85), #FB7655
 
     ##### Rust #####
     # TODO
@@ -156,9 +196,17 @@ _R_PALETTE = [
     (1, {_['R Grey Light']: 2, _['R Grey Mid']: 6, _['R Grey Dark']: 2}),
 ]
 
-# _RUBY_PALETTE = [
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+_RUBY_PALETTE = [
+    (1, {_['Ruby Darkest Red 1']: 5, _['Ruby Darkest Red 2']: 1, _['Ruby Darkest Red 3']: 1, _['Ruby Darkest Red 4']: 1, _['Ruby Darkest Red 5']: 1, _['Ruby Darkest Red 6']: 1}),
+    (1, {_['Ruby Dark Red 1']: 1, _['Ruby Dark Red 2']: 1, _['Ruby Dark Red 3']: 6, _['Ruby Dark Red 4']: 1, _['Ruby Dark Red 5']: 1}),
+    (1, {_['Ruby "Red 3" 1']: 5, _['Ruby "Red 3" 2']: 1, _['Ruby "Red 3" 3']: 1, _['Ruby "Red 3" 4']: 1, _['Ruby "Red 3" 5']: 1, _['Ruby "Red 3" 6']: 1}),
+    (1, {_['Ruby Regular Darker 1']: 6, _['Ruby Regular Darker 2']: 1, _['Ruby Regular Darker 3']: 1, _['Ruby Regular Darker 4']: 1, _['Ruby Regular Darker 5']: 1}),
+    (1, {_['Ruby Regular Mid 1']: 1, _['Ruby Regular Mid 2']: 1, _['Ruby Regular Mid 3']: 1}),
+    (1, {_['Ruby Regular Lighter 1']: 7, _['Ruby Regular Lighter 2']: 1, _['Ruby Regular Lighter 3']: 1, _['Ruby Regular Lighter 4']: 1}),
+    (1, {_['Ruby Light Red 1']: 1, _['Ruby Light Red 2']: 1, _['Ruby Light Red 3']: 1}),
+    (1, {_['Ruby Lightest Red 1']: 7, _['Ruby Lightest Red 2']: 1, _['Ruby Lightest Red 3']: 1, _['Ruby Lightest Red 4']: 1}),
+    (1, {_['Ruby Light Orange 1']: 1, _['Ruby Light Orange 2']: 1, _['Ruby Light Orange 3']: 1, _['Ruby Light Orange 4']: 1}),
+]
 
 # _RUST_PALETTE = [ # TODO
 #     (1, {_['COLOUR NAME']: 6}),
@@ -184,7 +232,7 @@ PALETTES = {
     # 'LaTeX': _LATEX_PALETTE, # TODO
     'Python': _PYTHON_PALETTE,
     'R': _R_PALETTE,
-    # 'Ruby': _RUBY_PALETTE,
+    'Ruby': _RUBY_PALETTE,
     # 'Rust': _RUST_PALETTE, # TODO
     # 'Main_dark': _MAIN_DARK_PALETTE, # TODO
     # 'Main_light': _MAIN_LIGHT_PALETTE, # TODO
