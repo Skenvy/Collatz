@@ -7,12 +7,12 @@ The original is included as well as scripts to generate the modifications, with 
 The end of `./.meta/banners/modifications/img.py` shows both `recreate_blank_image()` and `recreate_contiguities_map_file()`, and how to use `colour_in_blank_image_with_palette(new_image_path, desired_ratios)`.
 
 ## Where are the modifications?
-See them all [here](https://github.com/Skenvy/Collatz/blob/main/.meta/banners/EXAMPLES.md).
+See them all [here](https://github.com/Skenvy/Collatz/blob/main/.meta/banners/modifications/EXAMPLES.md).
 
 To prevent committing too many large image files _here_, the generated images will be committed in this repository's wiki, and the links to the raw files hosted in the wiki will be used in `img` tags. You can clone the wiki as you would any other repo, with the `:owner/:repo` being `:owner/:<repo>.wiki`; either as `git clone git@github.com:Skenvy/Collatz.wiki.git` / `git clone https://github.com/Skenvy/Collatz.wiki.git`.
 
 However, when accessing the raw contents, to `src` the images hosted in the wiki, the url does not use the `:<repo>.wiki` name, nor does it take a branch. For files in the wiki at location `./a/b/c.xyz`, they would be accessed as `https://raw.githubusercontent.com/wiki/:owner/:repo/a/b/c.xyz` e.g. if we host the modifications as `./.meta/banners/modifications/*.png`, then we access them as `https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/*.png`
-
+## Html for including the images in READMEs
 We can then embed these images, stored in the wiki and accessed via `https://raw.githubusercontent.com/wiki/:owner/:repo/:filepath`, into the main repo's READMEs, with [this html embedding of a `<picture>`](https://github.com/stefanjudis/github-light-dark-image-example), combined with [`<figcaption>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figcaption), for example (with `<picture>` nested inside `<figure>`);
 ```html
 <!-- For single image mode -->
