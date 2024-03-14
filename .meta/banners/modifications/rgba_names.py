@@ -90,7 +90,7 @@ _JAVASCRIPT_PALETTE = [
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
-# _LATEX_PALETTE = [
+# _LATEX_PALETTE = [ # TODO
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
@@ -110,11 +110,11 @@ _JAVASCRIPT_PALETTE = [
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
-# _MAIN_DARK_PALETTE = [
+# _MAIN_DARK_PALETTE = [ # TODO
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
-# _MAIN_LIGHT_PALETTE = [
+# _MAIN_LIGHT_PALETTE = [ # TODO
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
@@ -127,11 +127,11 @@ PALETTES = {
     'Java': _JAVA_PALETTE,
     'JavaScript': _JAVASCRIPT_PALETTE,
     # 'Julia': _JULIA_PALETTE,
-    # 'LaTeX': _LATEX_PALETTE,
+    # 'LaTeX': _LATEX_PALETTE, # TODO
     # 'Python': _PYTHON_PALETTE,
     # 'R': _R_PALETTE,
     # 'Ruby': _RUBY_PALETTE,
     # 'Rust': _RUST_PALETTE, # TODO
-    # 'Main_dark': _MAIN_DARK_PALETTE,
-    # 'Main_light': _MAIN_LIGHT_PALETTE,
+    # 'Main_dark': _MAIN_DARK_PALETTE, # TODO
+    # 'Main_light': _MAIN_LIGHT_PALETTE, # TODO
 }
