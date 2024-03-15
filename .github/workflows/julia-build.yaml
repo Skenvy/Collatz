@@ -6,6 +6,7 @@ on:
     paths:
     - 'julia/**'
     - '!julia/**.md'
+    - '!julia/.vscode/**'
     - '.github/workflows/julia-*'
   workflow_dispatch:
 permissions: {}
@@ -28,7 +29,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -37,7 +38,7 @@ jobs:
       # a logical update to the project which semantically _should_ include a version update.
       run: |
         export VERSION_FILE="julia/Project.toml"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "version-file-changed=${{toJSON(true)}}" >> $GITHUB_OUTPUT || echo "version-file-changed=${{toJSON(false)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
     - name: Check if version specified in version file has not released.
@@ -45,7 +46,7 @@ jobs:
       run: |
         git fetch --tags
         export VER=$(grep Project.toml -e "^version = " | cut -d \" -f 2)
-        [ -z "$(git tag -l "julia-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+        [ -z "$(git tag -l "julia-v$VER")" ] && echo "version-tag-exists=${{toJSON(false)}}" >> $GITHUB_OUTPUT || echo "version-tag-exists=${{toJSON(true)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
   # Now any step that should only run on the version change can use
@@ -65,11 +66,11 @@ jobs:
       new_version: ${{ steps.release_step.outputs.new_version }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
         fetch-depth: 0
     - name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
-      uses: Skenvy/julia-release@8531021313f6e5dcb445f3188b366ebcd48417ff # v1.1.0
+      uses: Skenvy/julia-release@d2eb655e0245b102ac84d1169da8a1c097e6d110 # v1.2.0
       id: release_step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -102,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:
@@ -118,6 +119,8 @@ jobs:
     needs: [docs]
     permissions:
       contents: write
+      pages: write
+      id-token: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-julia'

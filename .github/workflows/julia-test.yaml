@@ -6,6 +6,7 @@ on:
     paths:
     - 'julia/**'
     - '!julia/**.md'
+    - '!julia/.vscode/**'
     - '.github/workflows/julia-*'
   pull_request:
     branches:
@@ -13,7 +14,11 @@ on:
     paths:
     - 'julia/**'
     - '!julia/**.md'
+    - '!julia/.vscode/**'
     - '.github/workflows/julia-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
@@ -27,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:
@@ -52,14 +57,14 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔴🟢🟣 Set up Julia ${{ matrix.version }}
       uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:
         version: ${{ matrix.version }}
         arch: ${{ matrix.arch }}
     - name: 🧰 Cache
-      uses: actions/cache@56461b9eb0f8438fd15c7a9968e3c9ebb18ceff1 # v3.0.10
+      uses: actions/cache@9b0c1fce7a93df8e3bb8926b0d6e9d89e92f20a7 # v3.0.11
       env:
         cache-name: cache-artifacts
       with:
@@ -78,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@5113fd16e9c6c3a86d6ae9bc9155c40ce05e3acc # v1.8.1
       with:

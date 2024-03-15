@@ -1,4 +1,11 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [Ruby](https://github.com/Skenvy/Collatz/tree/main/ruby) 🔻💎🔻
+<p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Ruby.png" width=830 height=666/></p>
+<sub><p align="center"><i>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
+  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
+</i></p></sub>
+
+---
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Ruby](https://www.ruby-lang.org/).
 ## Getting Started
 [To install the latest from RubyGems](https://rubygems.org/gems/collatz);

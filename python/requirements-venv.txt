@@ -1,15 +1,24 @@
-# https://packaging.python.org/en/latest/guides/making-a-pypi-friendly-readme/
-
+################################################################################
+################### Development Virtual Environment Requires ###################
+################################################################################
 # The version of build should be major version locked but minor version
 # permissive. The most recent verified working for `make build` is 0.7.0
-build>=0.7.0,<1
+build>=0.7.0,<2
 # Twine in general, for uploading to pypi, with minimum version lock by the PyPi
 # friendly README doc above, although the current tip used is 3.8.0
 twine>=1.11.0
 # pytest breaks heavily between minor versions, so only allow patch drift.
 pytest>=7.1.0,<7.2
+# Lint
+pylint>=2.17.4
+flake8>=6.0.0
 # Allow patch drift for tox as well.
-tox>=3.24.5,<3.27
+tox>=3.24.5,<4.12
+tox-gh-actions>=3.1.3,<4
 # Other version mins specd by the PyPi friendly README doc.
 setuptools>=38.6.0
 wheel>=0.31.0
+# Documentation with pydoc and;
+sphinx>=7.1.0,<7.2
+furo>=2023.7.26
+myst-parser>=2.0.0,<3

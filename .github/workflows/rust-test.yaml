@@ -2,18 +2,23 @@ name: Rust ❤️🦀❤️ Tests 🦂
 on:
   push:
     branches-ignore:
-      - "main"
+    - "main"
     paths:
-      - "rust/**"
-      - "!rust/**.md"
-      - ".github/workflows/rust-*"
+    - "rust/**"
+    - "!rust/**.md"
+    - '!rust/.vscode/**'
+    - ".github/workflows/rust-*"
   pull_request:
     branches:
-      - "main"
+    - "main"
     paths:
-      - "rust/**"
-      - "!rust/**.md"
-      - ".github/workflows/rust-*"
+    - "rust/**"
+    - "!rust/**.md"
+    - '!rust/.vscode/**'
+    - ".github/workflows/rust-*"
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
@@ -26,5 +31,5 @@ jobs:
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
-      - name: 🏁 Checkout
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+    - name: 🏁 Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1

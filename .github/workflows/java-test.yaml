@@ -6,6 +6,7 @@ on:
     paths:
     - 'java/**'
     - '!java/**.md'
+    - '!java/.vscode/**'
     - '.github/workflows/java-*'
   pull_request:
     branches:
@@ -13,7 +14,11 @@ on:
     paths:
     - 'java/**'
     - '!java/**.md'
+    - '!java/.vscode/**'
     - '.github/workflows/java-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
@@ -21,15 +26,31 @@ defaults:
     shell: bash
     working-directory: java
 jobs:
+  lint:
+    name: 🧹 Lint
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: ☕🦆🌞 Set up Java
+      uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc # v3.6.0
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        architecture: x64
+        cache: maven
+    - name: 🧹 Lint
+      run: make lint_noninteractive
   quick-test:
     name: Java ☕🦆🌞 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
+      uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc # v3.6.0
       with:
         distribution: 'adopt'
         java-version: '11'
@@ -52,9 +73,9 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: ☕🦆🌞 Set up Java ${{ matrix.version }}
-      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
+      uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc # v3.6.0
       with:
         distribution: ${{ matrix.java-distribution }}
         java-version: ${{ matrix.java-version }}
@@ -79,13 +100,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: ☕🦆🌞 Set up Java
-      uses: actions/setup-java@a18c333f3f14249953dab3e186e5e21bf3390f1d # v3.5.1
+      uses: actions/setup-java@de1bb2b0c5634f0fc4438d7aa9944e68f9bf86cc # v3.6.0
       with:
         distribution: 'adopt'
         java-version: '11'
         architecture: x64
         cache: maven
     - name: 📄 Docs
-      run: make docs_noninteractive SHORTSHA=$(git rev-parse --short HEAD) PASSWORD=NA
+      run: make docs_noninteractive SHORTSHA=$(git rev-parse --short HEAD)

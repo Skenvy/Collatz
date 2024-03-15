@@ -1,0 +1,88 @@
+{
+  "name": "@skenvy/collatz",
+  "version": "1.1.0",
+  "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
+  "keywords": [
+    "Collatz",
+    "Ulam",
+    "Kakutani's",
+    "Thwaites",
+    "Hasse's",
+    "Syracuse"
+  ],
+  "homepage": "https://github.com/Skenvy/Collatz/tree/main/javascript",
+  "bugs": {
+    "url": "https://github.com/Skenvy/Collatz/issues/new/choose",
+    "email": "nathan.a.z.levett@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "author": "Nathan Levett <nathan.a.z.levett@gmail.com> (https://github.com/Skenvy)",
+  "contributors": [],
+  "funding": [
+    {
+      "type": "GitHub Sponsors",
+      "url": "https://github.com/sponsors/Skenvy"
+    }
+  ],
+  "files": [
+    "./lib/**/*"
+  ],
+  "main": "./lib/cjs/index.js",
+  "types": "./lib/cjs/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/esm/types/index.d.ts",
+        "default": "./lib/esm/index.mjs"
+      },
+      "require": {
+        "types": "./lib/cjs/types/index.d.ts",
+        "default": "./lib/cjs/index.js"
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Skenvy/Collatz.git",
+    "directory": "javascript"
+  },
+  "scripts": {
+    "clean": "rm -rf ./lib",
+    "test": "nyc mocha",
+    "lint": "eslint src --ext .ts",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "docs": "npm run docs:clean && npm run docs:tsdoc && npm run docs:coverage",
+    "docs:clean": "rm -rf ./docs",
+    "docs:tsdoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.cjs.json",
+    "docs:coverage": "mkdir -p docs/coverage && nyc --reporter=html --report-dir=./docs/coverage --preserve-comments=true --produce-source-map=true mocha",
+    "docs:server": "http-server",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.1.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "chai": "^4.3.7",
+    "eslint": "^8.38.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-tsdoc": "^0.2.17",
+    "http-server": "^14.1.1",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.25.1",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": "^18.0.0 || >=20.0.0"
+  }
+}

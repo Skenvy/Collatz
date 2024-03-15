@@ -1,7 +1,27 @@
 ################################################################################
-
+# Top level ignores are not language specific, just anti-inter-branch-clobbering
 ################################################################################
 
-.ve
-.vscode
+# We use vs code, but all we want to commit for now is workspace + extensions.
+**/.vscode/*
+!.vscode/*.code-workspace
+!**/.vscode/extensions.json
+
+# Other IDEs settings
 .idea
+
+# Local package caches / virtual environments
+.ve
+
+# Builds
+java/target/
+
+################################################################################
+# Jekyll's generated ignore list
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+
+################################################################################
