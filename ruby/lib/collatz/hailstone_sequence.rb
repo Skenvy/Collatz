@@ -115,9 +115,9 @@ module Collatz # rubocop:disable Style/Documentation
       if total_stop
         lambda { |x| x == 1 }
       elsif n >= 0
-        lambda { |x| (x < n && x.positive?) }
+        lambda { |x| x < n && x.positive? }
       else
-        lambda { |x| (x > n && x.negative?) }
+        lambda { |x| x > n && x.negative? }
       end
     end
   end

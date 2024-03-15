@@ -1,4 +1,11 @@
 # [Collatz](https://github.com/Skenvy/Collatz): [Java](https://github.com/Skenvy/Collatz/tree/main/java) ☕🦆🌞
+<p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Java.png" width=830 height=666/></p>
+<sub><p align="center"><i>
+  <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
+  <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
+</i></p></sub>
+
+---
 Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.org/wiki/Collatz_conjecture), implemented in [Java](https://www.java.com/) ([OpenJDK](https://openjdk.org/)).
 ## Getting Started
 [To install the latest from Maven Central](https://repo1.maven.org/maven2/io/github/skenvy/collatz/) ([sonatype.org source mirror](https://s01.oss.sonatype.org/content/repositories/releases/io/github/skenvy/collatz/)) (also see [mvnrepository](https://mvnrepository.com/artifact/io.github.skenvy/collatz) or the [sonatype package index](https://search.maven.org/artifact/io.github.skenvy/collatz));

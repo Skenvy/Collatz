@@ -6,6 +6,7 @@ on:
     paths:
     - 'ruby/**'
     - '!ruby/**.md'
+    - '!ruby/.vscode/**'
     - '.github/workflows/ruby-*'
   pull_request:
     branches:
@@ -13,7 +14,11 @@ on:
     paths:
     - 'ruby/**'
     - '!ruby/**.md'
+    - '!ruby/.vscode/**'
     - '.github/workflows/ruby-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
@@ -27,9 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@8ddb7b3348b3951590db24c346e94ebafdabc926 # v1.121.0
+      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
       with:
         ruby-version: '2.7'
         bundler-cache: true
@@ -50,9 +55,9 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest] #  # < maybe.
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔻💎🔻 Set up Ruby ${{ matrix.version }}
-      uses: ruby/setup-ruby@8ddb7b3348b3951590db24c346e94ebafdabc926 # v1.121.0
+      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
       with:
         ruby-version: ${{ matrix.version }}
         bundler-cache: true
@@ -77,9 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@8ddb7b3348b3951590db24c346e94ebafdabc926 # v1.121.0
+      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
       with:
         ruby-version: '2.7'
         bundler-cache: true

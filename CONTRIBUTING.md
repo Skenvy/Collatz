@@ -26,3 +26,6 @@ Any fix or new feature should include an appropriate set of testing. This can va
 The existing CICD attempts to verify the tests as well as the documentation, but the documentation test should be verified by running the local server provided for in the make recipes, to confirm nothing has altered how it will visually present this, as it is possible to pass the documentation producibility test with changes that would break the visual styling and readability, e.g. misplacing the CSS has happened. Any reviewer for a significant change should also confirm that they also run the documentation server similarly.
 ## Version bumping
 Versions for respective projects updated from external PR's will be updated after the corresponding PR that would otherwise introducing the change that deserves a new release / version.
+## Specific Contributing Tasks
+Check `.meta/contributing/` for possible guides on specific contributing tasks such as;
+- [Adding a new languge](https://github.com/Skenvy/Collatz/blob/main/.meta/contributing/Adding_a_new_languge.md)
