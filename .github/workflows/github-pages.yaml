@@ -1,29 +1,56 @@
-name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+name: GitHub 🐱‍👤 Pages 📄
 on:
-  # The input in the call event is required so pushes don't actually trigger this.
-  push:
-    branches:
-    - 'gh-pages-*'
-  # But pushes from other workflows that use the GITHUB_TOKEN wont
-  # trigger this workflow, so it will need to be manually called.
+  # Ideologically, this is what will run on a push to any 'gh-pages-*' branch;
+  # but this was set up at a time that pushes from other workflows that use the
+  # GITHUB_TOKEN wouldn't trigger another, downstream, workflow, so it was
+  # necessary at the time to invoke it with a call.
+  #
+  # Subsequent to that, we then needed to also include sphinx generated sites in
+  # the gh-pages build, that was already set up to make use of being built with
+  # jekyll, we need to maintain the "merge" functionality, and introduce a pages
+  # build and deploy.
+  #
+  # We don't want pushes to the gh-pages branch to build this every time, as if
+  # we are manually editting the branch, we don't want it to build WIP changes,
+  # but we it'd be reasonable to couple manually editting with manually running
+  # a workflow_dispatch.
   workflow_call:
     inputs:
       merge_from:
         description: 'The gh-pages-* branch to merge from into gh-pages.'
         required: true
         type: string
-permissions:
-  contents: write
+  workflow_dispatch:
+    inputs:
+      merge_from:
+        description: 'The gh-pages-* branch to merge from into gh-pages.'
+        required: false
+        type: string
+        default: ''
+permissions: {}
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 defaults:
   run:
     shell: bash
+env:
+  development_ruby_version: 3.1.0
+  development_rubygems_version: 3.4.14
 jobs:
   merge:
     name: GitHub 🐱‍👤 Pages 📄 Merger 🧬
+    permissions:
+      contents: write
+    # We can't rely on conditionalising from the workflow call event type.
+    # if: ${{ github.event_name == 'workflow_call' }} -- will never be true
+    # see https://github.com/github/docs/issues/16515 for more details.
+    # Instead, duplicate the input with a default empty string in dispatch.
+    if: ${{ inputs.merge_from != '' }}
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: Merge 🧬${{ inputs.merge_from }}🧬 into 🐱‍👤 gh-pages 📄
       run: |
         git config --local user.email "actions@github.com"
@@ -35,3 +62,60 @@ jobs:
         git merge --squash origin/${{ inputs.merge_from }} --allow-unrelated-histories -X theirs
         git commit -m "Auto-merge ${{ inputs.merge_from }}@($FROM_SHA) to gh-pages@($TO_SHA)" --allow-empty
         git push
+  build:
+    name: GitHub 🐱‍👤 Pages 📄 Build 👷
+    needs: merge
+    permissions:
+      contents: read
+    if: ${{ always() && (needs.merge.result == 'success' || needs.merge.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      with:
+        ref: gh-pages
+    # https://github.com/actions/configure-pages
+    - name: 📄 Setup Pages
+      uses: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382 # v3.0.6
+    # # https://github.com/actions/jekyll-build-pages -- default config would be ~
+    # - name: 🛠️ Build 🐕 Jekyll
+    #   uses: actions/jekyll-build-pages@058068233b22675635bdf8dfa178d6ae77f12694 # v1.0.8
+    #   with:
+    #     source: ./
+    #     destination: ./_site
+    - name: 🔻💎🔻 Set up Ruby
+      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      with:
+        ruby-version: ${{ env.development_ruby_version }}
+        rubygems: ${{ env.development_rubygems_version }}
+        bundler-cache: true
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🙊 Monkey-patch config 🚫🐕 Honour `./**/.nojekyll`'s
+      run: make nojekyll
+    - name: 🛠️ Build 🐕 Jekyll
+      run: make build
+    # https://github.com/actions/upload-pages-artifact
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@a753861a5debcf57bf8b404356158c8e1e33150c # v2.0.0
+      with:
+        name: jekyll-tar
+        path: _site/
+  deploy:
+    name: GitHub 🐱‍👤 Pages 📄 Deploy 🚀
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    if: ${{ always() && needs.build.result == 'success' }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    # https://github.com/actions/deploy-pages
+    - name: 🚀 Deploy to GitHub 🐱‍👤 Pages 📄
+      id: deployment
+      uses: actions/deploy-pages@12ab2b16cf43a7a061fe99da74b6f8f11fb77f5b # v2.0.3
+      with:
+        artifact_name: jekyll-tar

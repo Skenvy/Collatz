@@ -6,6 +6,7 @@ on:
     paths:
     - 'javascript/**'
     - '!javascript/**.md'
+    - '!javascript/.vscode/**'
     - '.github/workflows/javascript-*'
   pull_request:
     branches:
@@ -13,15 +14,17 @@ on:
     paths:
     - 'javascript/**'
     - '!javascript/**.md'
+    - '!javascript/.vscode/**'
     - '.github/workflows/javascript-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
   run:
     shell: bash
     working-directory: javascript
-env:
-  development_node_version: 16.20.0
 jobs:
   quick-test:
     name: JavaScript 🟨🟦🟩🟥 Quick Test 🦂
@@ -29,11 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
@@ -53,22 +56,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['14', '16', '18'] # See package.json's "engines"
+        version: ['18', '20', '21'] # See package.json's "engines"
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        include:
-        - os: ubuntu-latest
-          version: 17
-        - os: ubuntu-latest
-          version: 19
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node ${{ matrix.version }}
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
         node-version: '${{ matrix.version }}'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
+    - name: ✍️ Overwrite .nvmrc
+      run: node -v > ./.nvmrc && cat ./.nvmrc
     - name: 🧱 Install build dependencies
       run: make setup
     - name: 🦂 Test
@@ -87,11 +87,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
@@ -117,11 +117,11 @@ jobs:
         working-directory: javascript/.demo
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
     - name: 🆒 Download dists
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
@@ -150,11 +150,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies

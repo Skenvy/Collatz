@@ -1,0 +1,16 @@
+{
+  // https://code.visualstudio.com/docs/languages/java
+  // vscode:extension/vscjava.vscode-java-pack
+  "recommendations": [
+    "vscjava.vscode-java-pack",
+      "vscjava.vscode-maven",
+      //"vscjava.vscode-gradle",
+      "vscjava.vscode-java-test",
+      "vscjava.vscode-java-debug",
+      "vscjava.vscode-java-dependency",
+      "redhat.java",
+        "redhat.fabric8-analytics",
+      "visualstudioexptteam.vscodeintellicode",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+  ]
+}

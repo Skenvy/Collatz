@@ -68,5 +68,5 @@ hailstone_sequence(-56)
 # And can be parameterised;
 hailstone_sequence(3, -1, 3, 1)
 # The hailstone sequence can run on `bigz`;
-hailstone_sequence(27+as.bigz("576460752303423488"))
+hailstone_sequence(27+gmp::as.bigz("576460752303423488"))
 }

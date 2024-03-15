@@ -6,6 +6,7 @@ on:
     paths:
     - 'javascript/**'
     - '!javascript/**.md'
+    - '!javascript/.vscode/**'
     - '.github/workflows/javascript-*'
   workflow_dispatch:
 permissions: {}
@@ -13,8 +14,6 @@ defaults:
   run:
     shell: bash
     working-directory: javascript
-env:
-  development_node_version: 16.20.0
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -34,7 +33,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -65,11 +64,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
@@ -90,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🆒 Download dists
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
@@ -110,7 +109,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🆒 Download dists
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
@@ -119,11 +118,13 @@ jobs:
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
         registry-url: 'https://npm.pkg.github.com'
         scope: '@skenvy'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
+    - name: 🧱 Install nvm+npm
+      run: make install_npm
     - name: 📦 Publish
       run: make publish
       env:
@@ -134,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🆒 Download dists
       uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
       with:
@@ -143,11 +144,13 @@ jobs:
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
         registry-url: 'https://registry.npmjs.org'
         scope: '@skenvy'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
+    - name: 🧱 Install nvm+npm
+      run: make install_npm
     - name: 📦 Publish
       run: make publish
       env:
@@ -160,11 +163,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
       uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
       with:
-        node-version: ${{ env.development_node_version }}
+        node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
         cache-dependency-path: javascript/package-lock.json
     - name: 🧱 Install build dependencies
@@ -193,6 +196,8 @@ jobs:
     needs: [docs]
     permissions:
       contents: write
+      pages: write
+      id-token: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-javascript'
