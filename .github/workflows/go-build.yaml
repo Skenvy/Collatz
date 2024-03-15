@@ -66,7 +66,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@c4a742cab115ed795e34d4513e2cf7d472deb55f # v3.3.1
+      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
       with:
         go-version: '1.18'
     - name: 🧱 Install build dependencies
@@ -112,7 +112,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@c4a742cab115ed795e34d4513e2cf7d472deb55f # v3.3.1
+      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
       with:
         go-version: '1.13'
     - name: 📄 Docs
