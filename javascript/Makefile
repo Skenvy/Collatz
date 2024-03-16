@@ -11,7 +11,7 @@ NPM=$(_) npm
 INSTALL_NODE=$(NVM) install $$(cat ./.nvmrc)
 INSTALL_NPM=$(NPM) i -g npm@$$(cat ./.npm-version)
 endif
-.PHONY: bump_major bump_minor bump_patch install_node install_npm setup update clean docs docs_server test lint verify_transpiled_checkin build publish g
+.PHONY: bump_major bump_minor bump_patch install_node install_npm setup update clean docs docs_server test lint verify_transpiled_checkin build publish
 SHELL:=/bin/bash
 
 # Versions can be manually changed where they appear in the package json and
