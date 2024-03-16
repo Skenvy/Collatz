@@ -8,11 +8,12 @@
     "@skenvy/collatz": "file:./skenvy-collatz.tgz"
   },
   "scripts": {
-    "clean": "rm **/*.js",
+    "clean": "rm -f _/**.js",
     "strip-version": "[ -f skenvy-collatz.tgz ] || mv skenvy-collatz-*.tgz skenvy-collatz.tgz",
-    "build": "tsc --module CommonJS --target ES2020 --lib ES2020 --types node ./_/*.ts",
+    "build:cjs": "tsc --module CommonJS --target ES2020 --lib ES2020 --types node ./_/*.ts",
+    "build:ems": "tsc --module ESNext --target ES2020 --lib ES2020 --types node ./_/*.ts",
     "demo": "find ./_/*.js -maxdepth 1 -type f | xargs -L1 node",
-    "everything": "npm run clean && npm run strip-version && npm i && npm run build && npm run demo"
+    "everything": "npm run clean && npm run strip-version && npm i && npm run build:cjs && npm run demo && npm run clean && npm run build:ems && npm run demo"
   },
   "devDependencies": {
     "@types/node": "^20.3.2",
