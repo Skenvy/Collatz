@@ -12,23 +12,6 @@ const function_1 = require("./function");
  * terminal states possible however include the cycle state and cycle length (end) states.
  */
 class TreeGraphNode {
-    /** The value of this node in the tree. */
-    nodeValue;
-    /** The terminal state; null if not a terminal node, MAX_STOP_OUT_OF_BOUNDS if the maxOrbitDistance
-     *  has been reached, CYCLE_LENGTH if the node's value is found to have occured previously, or
-     *  CYCLE_INIT, retroactively applied when a CYCLE_LENGTH state node is found. */
-    // The only variable of TreeGraphNode to not be "final" as it must be possible to update retroactively.
-    terminalSequenceState = null;
-    /** The "Pre N/P" child of this node that is always
-     *  present if this is not a terminal node. */
-    preNDivPNode;
-    /** The "Pre aN+b" child of this node that is present
-     *  if it exists and this is not a terminal node. */
-    preANplusBNode;
-    /** A map of previous graph nodes which maps instances of
-     *  TreeGraphNode to themselves, to enable cycle detection. */
-    cycleCheck;
-    static emptyMap = new Map();
     /**
      * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
      * This is used internally by itself and the public constructor to pass the cycle checking map,
@@ -51,6 +34,11 @@ class TreeGraphNode {
      * Thrown if either P or a are 0.
      */
     constructor(nodeValue, maxOrbitDistance, P, a, b, cycleCheck, createManually, terminalSequenceState, preNDivPNode, preANplusBNode) {
+        /** The terminal state; null if not a terminal node, MAX_STOP_OUT_OF_BOUNDS if the maxOrbitDistance
+         *  has been reached, CYCLE_LENGTH if the node's value is found to have occured previously, or
+         *  CYCLE_INIT, retroactively applied when a CYCLE_LENGTH state node is found. */
+        // The only variable of TreeGraphNode to not be "final" as it must be possible to update retroactively.
+        this.terminalSequenceState = null;
         this.nodeValue = nodeValue;
         this.cycleCheck = cycleCheck;
         if (createManually) {
@@ -160,6 +148,7 @@ class TreeGraphNode {
     }
 }
 exports.TreeGraphNode = TreeGraphNode;
+TreeGraphNode.emptyMap = new Map();
 exports.default = {
     TreeGraphNode,
 };

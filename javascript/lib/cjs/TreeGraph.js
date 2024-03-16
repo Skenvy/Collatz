@@ -7,8 +7,6 @@ const TreeGraphNode_1 = require("./TreeGraphNode");
  * Contains the root node of a tree of TreeGraphNode's.
  */
 class TreeGraph {
-    /** The root node of the tree of TreeGraphNode's. */
-    root;
     /**
      * Create a new TreeGraph with the root node defined by the inputs.
      * @param nodeValue - The value for which to find the tree graph node reversal.

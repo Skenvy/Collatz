@@ -5,20 +5,6 @@ const utilities_1 = require("./utilities");
 const function_1 = require("./function");
 /** Contains the results of computing a hailstone sequence. */
 class HailstoneSequence {
-    /** The set of values that comprise the hailstone sequence. */
-    values;
-    /** The stopping time terminal condition */
-    terminate;
-    /** A terminal condition that reflects the final state of the hailstone sequencing,
-     *  whether than be that it succeeded at determining the stopping time, the total
-     *  stopping time, found a cycle, or got stuck on zero (or surpassed the max total). */
-    terminalCondition;
-    /** A status value that has different meanings depending on what the terminal condition
-     *  was. If the sequence completed either via reaching the stopping or total stopping time,
-     *  or getting stuck on zero, then this value is the stopping/terminal time. If the sequence
-     *  got stuck on a cycle, then this value is the cycle length. If the sequencing passes the
-     *  maximum stopping time then this is the value that was provided as that maximum. */
-    terminalStatus;
     /**
      * Initialise and compute a new Hailstone Sequence.
      * @param initialValue - The value to begin the hailstone sequence from.
