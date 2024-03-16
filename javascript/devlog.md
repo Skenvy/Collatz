@@ -246,4 +246,27 @@ Yet again, a tumble down a rabbit-worm-hole has transpired from very little shak
 
 After deciding it would probably just be best to give up on it and say we're sticking with chai v4, I had a look in to the compiled "esm" output that changed last year when setting the `esm` `tsconfig`'s `module` and `moduleResolution` to `nodenext` last year to let through a typescript update. But it would appear now that I should have looked closer at the change in the compiled "esm" code back then, as this change to "nodenext" also changed the output of the "esm" build to "cjs". So the output at the moment is just _two copies of cjs_.
 
-We definitely want to support esm, as the primary target.
+We definitely want to support esm, as the primary target. We might be able to support it optionally, and getting back to that would be a priority (as well as adding a check for this working in the demo, which was only checking that the cjs result was valid), but it would be nice if we could jump straight to esm as our default. We can edit the `package.json` to include the changes;
+```diff
+@@ -27,8 +27,9 @@
+   "files": [
+     "./lib/**/*"
+   ],
+-  "main": "./lib/cjs/index.js",
+-  "types": "./lib/cjs/types/index.d.ts",
++  "main": "./lib/esm/index.mjs",
++  "types": "./lib/esm/types/index.d.ts",
++  "type": "module",
+   "exports": {
+     ".": {
+       "import": {
+@@ -48,7 +49,7 @@
+   },
+   "scripts": {
+     "clean": "rm -rf ./lib",
+-    "test": "nyc mocha",
++    "test": "TS_NODE_PROJECT='./tsconfig.esm.json' nyc mocha",
+     "lint": "eslint src --ext .ts",
+     "build": "npm run clean && npm run build:esm && npm run build:cjs",
+     "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+```

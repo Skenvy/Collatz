@@ -3,7 +3,7 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import defaultExport from '../src/index.ts';
+import defaultExport from '../src/index';
 
 describe('NPM Package', () => {
   it('should be an object', () => {

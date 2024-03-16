@@ -3,7 +3,7 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import * as Collatz from '../src/index.ts';
+import * as Collatz from '../src/index';
 
 describe('stoppingTime', () => {
   it('should be a function', () => {

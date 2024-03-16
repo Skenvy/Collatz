@@ -1,4 +1,4 @@
-import { assertSaneParameterisation } from './FailedSaneParameterCheck.ts';
+import { assertSaneParameterisation } from './FailedSaneParameterCheck';
 
 /**
  * Parameterised inputs

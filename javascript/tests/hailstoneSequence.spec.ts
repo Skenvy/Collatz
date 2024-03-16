@@ -3,7 +3,7 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import * as Collatz from '../src/index.ts';
+import * as Collatz from '../src/index';
 
 function assertHailstoneSequence(hail: Collatz.HailstoneSequence, expected: {values: bigint[], terminalCondition: Collatz.SequenceState, terminalStatus: number}): void {
   assert.deepEqual(hail.values, expected.values);
