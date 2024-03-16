@@ -3,7 +3,7 @@
 import 'mocha';
 import { assert } from 'chai';
 
-import * as Collatz from '../src/index';
+import * as Collatz from '../src/index.ts';
 
 /**
  * Create a "terminal" graph node with null children and the terminal

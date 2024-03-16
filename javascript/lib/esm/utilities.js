@@ -1,20 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.stoppingTimeTerminus = exports.SequenceState = exports.VERIFIED_MINIMUM = exports.VERIFIED_MAXIMUM = exports.KNOWN_CYCLES = void 0;
 /** The four known cycles (besides 0 cycling to itself), for the default parameterisation. */
-exports.KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
+export const KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
     [-17n, -50n, -25n, -74n, -37n, -110n, -55n, -164n, -82n, -41n, -122n, -61n, -182n, -91n, -272n, -136n, -68n, -34n]];
 /** The current value up to which has been proven numerically, for the default parameterisation. */
-exports.VERIFIED_MAXIMUM = 295147905179352825856n;
+export const VERIFIED_MAXIMUM = 295147905179352825856n;
 /** The current value down to which has been proven numerically, for the default parameterisation. */
-exports.VERIFIED_MINIMUM = -272n; // TODO: Check the actual lowest bound.
+export const VERIFIED_MINIMUM = -272n; // TODO: Check the actual lowest bound.
 /**
  * SequenceState for Cycle Control
  * @remarks
  * Descriptive flags to indicate when some event occurs in the hailstone sequences
  * or tree graph reversal, when set to verbose, or stopping time check.
  */
-var SequenceState;
+export var SequenceState;
 (function (SequenceState) {
     /** A Hailstone sequence state that indicates the stopping
      *  time, a value less than the initial, has been reached. */
@@ -34,7 +31,7 @@ var SequenceState;
     /** A Hailstone sequence state that indicates the sequence terminated
      *  by reaching "0", a special type of "stopping time". */
     SequenceState["ZERO_STOP"] = "ZERO_STOP";
-})(SequenceState || (exports.SequenceState = SequenceState = {}));
+})(SequenceState || (SequenceState = {}));
 /**
  * Provides the appropriate lambda to use to check if iterations on an initial
  * value have reached either the stopping time, or total stopping time.
@@ -44,7 +41,7 @@ var SequenceState;
  *     If true, the lambda will simply check equality to 1.
  * @returns the lambda (arrow function expression) to check for the stopping time.
  */
-function stoppingTimeTerminus(n, totalStop) {
+export function stoppingTimeTerminus(n, totalStop) {
     if (totalStop) {
         return (x) => { return x === 1n; };
     }
@@ -55,4 +52,3 @@ function stoppingTimeTerminus(n, totalStop) {
         return (x) => { return x > n && x < 0; };
     }
 }
-exports.stoppingTimeTerminus = stoppingTimeTerminus;

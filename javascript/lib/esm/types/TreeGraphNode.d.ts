@@ -1,4 +1,4 @@
-import { SequenceState } from './utilities';
+import { SequenceState } from './utilities.ts';
 /**
  * Nodes that form a "tree graph", structured as a tree, with their own node's value,
  * as well as references to either possible child node, where a node can only ever have

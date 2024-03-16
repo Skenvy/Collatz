@@ -1,4 +1,4 @@
-import { TreeGraphNode } from './TreeGraphNode';
+import { TreeGraphNode } from './TreeGraphNode.ts';
 /**
  * Parameterised inputs
  * @remarks

@@ -1,4 +1,4 @@
-import { SequenceState } from './utilities';
+import { SequenceState } from './utilities.ts';
 /**
  * Parameterised inputs
  * @remarks
