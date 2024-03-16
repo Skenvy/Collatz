@@ -49,7 +49,7 @@
   },
   "scripts": {
     "clean": "rm -rf ./lib",
-    "test": "TS_NODE_PROJECT='./tsconfig.esm.json' nyc mocha",
+    "test": "nyc mocha",
     "lint": "eslint src --ext .ts",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",

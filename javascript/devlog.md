@@ -260,6 +260,9 @@ We definitely want to support esm, as the primary target. We might be able to su
    "exports": {
      ".": {
        "import": {
+```
+
+```diff
 @@ -48,7 +49,7 @@
    },
    "scripts": {
