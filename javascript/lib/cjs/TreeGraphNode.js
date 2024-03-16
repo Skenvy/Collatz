@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TreeGraphNode = void 0;
-const utilities_1 = require("./utilities");
-const function_1 = require("./function");
+const utilities_js_1 = require("./utilities.js");
+const function_js_1 = require("./function.js");
 /**
  * Nodes that form a "tree graph", structured as a tree, with their own node's value,
  * as well as references to either possible child node, where a node can only ever have
@@ -51,21 +51,21 @@ class TreeGraphNode {
             if (this.cycleCheck.has(this.nodeValue)) {
                 const cycleInitNode = this.cycleCheck.get(this.nodeValue);
                 if (cycleInitNode != null) {
-                    cycleInitNode.terminalSequenceState = utilities_1.SequenceState.CYCLE_INIT;
+                    cycleInitNode.terminalSequenceState = utilities_js_1.SequenceState.CYCLE_INIT;
                 }
-                this.terminalSequenceState = utilities_1.SequenceState.CYCLE_LENGTH;
+                this.terminalSequenceState = utilities_js_1.SequenceState.CYCLE_LENGTH;
                 this.preNDivPNode = null;
                 this.preANplusBNode = null;
             }
             else if (Math.max(0, maxOrbitDistance) === 0) {
-                this.terminalSequenceState = utilities_1.SequenceState.MAX_STOP_OUT_OF_BOUNDS;
+                this.terminalSequenceState = utilities_js_1.SequenceState.MAX_STOP_OUT_OF_BOUNDS;
                 this.preNDivPNode = null;
                 this.preANplusBNode = null;
             }
             else {
                 this.cycleCheck.set(this.nodeValue, this);
                 this.terminalSequenceState = null;
-                const reverses = (0, function_1.reverseFunction)({ n: nodeValue, P: P, a: a, b: b });
+                const reverses = (0, function_js_1.reverseFunction)({ n: nodeValue, P: P, a: a, b: b });
                 this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);
                 if (reverses.length === 2) {
                     this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);

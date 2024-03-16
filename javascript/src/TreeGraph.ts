@@ -1,4 +1,4 @@
-import { TreeGraphNode } from './TreeGraphNode';
+import { TreeGraphNode } from './TreeGraphNode.js';
 
 /**
  * Parameterised inputs

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.reverseFunction = exports.collatzFunction = void 0;
-const FailedSaneParameterCheck_1 = require("./FailedSaneParameterCheck");
+const FailedSaneParameterCheck_js_1 = require("./FailedSaneParameterCheck.js");
 /**
  * Parameterised Collatz Function
  * @param parameterisedInputs - Allows non-default (P,a,b)
@@ -10,7 +10,7 @@ const FailedSaneParameterCheck_1 = require("./FailedSaneParameterCheck");
  * Thrown if either P or a are 0.
  */
 function collatzFunction({ n, P = 2n, a = 3n, b = 1n }) {
-    (0, FailedSaneParameterCheck_1.assertSaneParameterisation)(P, a, b);
+    (0, FailedSaneParameterCheck_js_1.assertSaneParameterisation)(P, a, b);
     return n % P === 0n ? n / P : (a * n + b);
 }
 exports.collatzFunction = collatzFunction;
@@ -22,7 +22,7 @@ exports.collatzFunction = collatzFunction;
  * Thrown if either P or a are 0.
  */
 function reverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
-    (0, FailedSaneParameterCheck_1.assertSaneParameterisation)(P, a, b);
+    (0, FailedSaneParameterCheck_js_1.assertSaneParameterisation)(P, a, b);
     // Every input can be reversed as the result of "n/P" division, which yields
     // "Pn"... {f(n) = an + b}≡{(f(n) - b)/a = n} ~ if n was such that the
     // muliplication step was taken instead of the division by the modulus, then

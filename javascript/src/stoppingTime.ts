@@ -1,5 +1,5 @@
-import { SequenceState } from './utilities';
-import { hailstoneSequence } from './HailstoneSequence';
+import { SequenceState } from './utilities.js';
+import { hailstoneSequence } from './HailstoneSequence.js';
 
 /**
  * Parameterised inputs

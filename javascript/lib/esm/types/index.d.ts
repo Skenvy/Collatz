@@ -1,10 +1,10 @@
-import { KNOWN_CYCLES, VERIFIED_MAXIMUM, VERIFIED_MINIMUM, SequenceState } from './utilities';
-import { SaneParameterErrMsg, FailedSaneParameterCheck, assertSaneParameterisation } from './FailedSaneParameterCheck';
-import { CollatzFunctionParameters, collatzFunction, reverseFunction } from './function';
-import { CollatzHailstoneParameters, HailstoneSequence, hailstoneSequence } from './HailstoneSequence';
-import { CollatzStoppingTimeParameters, stoppingTime } from './stoppingTime';
-import { TreeGraphNode } from './TreeGraphNode';
-import { CollatzTreeGraphParameters, TreeGraph, treeGraph } from './TreeGraph';
+import { KNOWN_CYCLES, VERIFIED_MAXIMUM, VERIFIED_MINIMUM, SequenceState } from './utilities.js';
+import { SaneParameterErrMsg, FailedSaneParameterCheck, assertSaneParameterisation } from './FailedSaneParameterCheck.js';
+import { CollatzFunctionParameters, collatzFunction, reverseFunction } from './function.js';
+import { CollatzHailstoneParameters, HailstoneSequence, hailstoneSequence } from './HailstoneSequence.js';
+import { CollatzStoppingTimeParameters, stoppingTime } from './stoppingTime.js';
+import { TreeGraphNode } from './TreeGraphNode.js';
+import { CollatzTreeGraphParameters, TreeGraph, treeGraph } from './TreeGraph.js';
 export { KNOWN_CYCLES, VERIFIED_MAXIMUM, VERIFIED_MINIMUM, SequenceState };
 export { SaneParameterErrMsg, FailedSaneParameterCheck, assertSaneParameterisation };
 export { CollatzFunctionParameters, collatzFunction, reverseFunction };

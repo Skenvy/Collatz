@@ -1,5 +1,5 @@
-import { SequenceState } from './utilities';
-import { reverseFunction } from './function';
+import { SequenceState } from './utilities.js';
+import { reverseFunction } from './function.js';
 
 /**
  * Nodes that form a "tree graph", structured as a tree, with their own node's value,

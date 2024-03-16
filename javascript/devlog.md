@@ -261,15 +261,16 @@ We definitely want to support esm, as the primary target. We might be able to su
      ".": {
        "import": {
 ```
-
+But this still yeilds a `TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for /<>/Collatz/javascript/tests/collatzFunction.spec.ts` during the `nyc mocha` execution. Following up with specifying `TS_NODE_PROJECT='./tsconfig.esm.json'` before the `nyc mocha` gets the same error. If we go ahead and add the `.mocharc.json` differences recommended by [a comment at the end of this](https://github.com/mochajs/mocha/issues/4900);
 ```diff
-@@ -48,7 +49,7 @@
-   },
-   "scripts": {
-     "clean": "rm -rf ./lib",
--    "test": "nyc mocha",
-+    "test": "TS_NODE_PROJECT='./tsconfig.esm.json' nyc mocha",
-     "lint": "eslint src --ext .ts",
-     "build": "npm run clean && npm run build:esm && npm run build:cjs",
-     "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
+@@ -1,7 +1,5 @@
+ {
+   "extension": ["ts"],
+   "spec": "./**/*.spec.ts",
+-  "require": "ts-node/register"
++  "require": "ts-node/register",
++  "loader": "ts-node/esm",
++  "es-module-specifier-resolution": "node"
+ }
 ```
+We get the error `TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../src/index.js'`. Addressing this by adding `.ts` in all relative imports in the tests yields a different error `TS5097: An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled.`. Adding the requested `"allowImportingTsExtensions": true` to our base `tsconfig` now yields another 10 or so `TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './XYZ.js'?`. Doing the same thing with all relative imports in the src yields passing tests, but the subsequent `tsc` gives us `npm ERR! error TS5096: Option 'allowImportingTsExtensions' can only be used when either 'noEmit' or 'emitDeclarationOnly' is set.`.
