@@ -79,4 +79,4 @@ All entries into lists are in alphabetical order.
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_<Language>.png" width=830 height=666/></p>
 ```
 - Run `.meta/banners/modifications/img.py` to generate the new image (and or regenerate older ones if they have changed).
-- All changesto `.meta/banners`, including the new image, should be copied (except the `.gitignore`) across to the `Collatz.wiki` repo and pushed there, before the PR for the new language is ready.
+- All changes to `.meta/banners`, including the new image, should be copied (except the `.gitignore`) across to the `Collatz.wiki` repo and pushed there, before the PR for the new language is ready.
