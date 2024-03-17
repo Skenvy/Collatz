@@ -11,6 +11,8 @@ updates:
   directory: "/C#"
   schedule:
     interval: monthly
+# Gleam has no supported ecosystem _itself_ but might be alerted via a mix/hex
+# setup, as mix for elixir is supported, and gleam uses the same hex pkg host.
 - package-ecosystem: gomod
   directory: "/go"
   schedule:

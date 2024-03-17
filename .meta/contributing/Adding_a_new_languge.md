@@ -17,7 +17,7 @@ touch <language>/README.md
 * Add a `* [<Language>](https://github.com/Skenvy/Collatz/blob/main/<language>/devlog.md)` to the main [devlog's devlog list](https://github.com/Skenvy/Collatz/blob/main/devlog.md#devlogs).
 * Add a `- <Language>` to each input with `label: Implementation Language` under the [ISSUE_TEMPLATE](https://github.com/Skenvy/Collatz/tree/main/.github/ISSUE_TEMPLATE) folder.
 ---
-## Add to the `<language>/readme`
+## Add to the `<language>/README.md`
 Any section can be reasonably extended with more example, but this represents the prefered minimum. Can be search+replace'd on:
 * `<Language>` (case dependent)
 * `<language>` (case dependent)
