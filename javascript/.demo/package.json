@@ -10,19 +10,19 @@
   "scripts": {
     "clean:modules": "rm -rf node_modules",
     "clean:cjs": "rm -f _/**.cjs",
-    "clean:ems": "rm -f _/**.mjs",
-    "clean": "npm run clean:modules && npm run clean:cjs && npm run clean:ems",
+    "clean:esm": "rm -f _/**.mjs",
+    "clean": "npm run clean:modules && npm run clean:cjs && npm run clean:esm",
     "strip-version": "[ -f skenvy-collatz.tgz ] || mv skenvy-collatz-*.tgz skenvy-collatz.tgz",
     "build:cjs": "tsc --module CommonJS --moduleResolution node --target ES2020 --lib ES2020 --types node ./_/*.ts",
-    "build:ems": "tsc --module ESNext   --moduleResolution node --target ES2022 --lib ES2022 --types node ./_/*.ts",
+    "build:esm": "tsc --module ESNext   --moduleResolution node --target ES2022 --lib ES2022 --types node ./_/*.ts",
     "ftype:cjs": "for f in `find ./_ -iname '*.js' -type f -print`;do mv \"$f\" ${f%.js}.cjs; done",
-    "ftype:ems": "for f in `find ./_ -iname '*.js' -type f -print`;do mv \"$f\" ${f%.js}.mjs; done",
+    "ftype:esm": "for f in `find ./_ -iname '*.js' -type f -print`;do mv \"$f\" ${f%.js}.mjs; done",
     "demo:cjs": "find ./_/*.cjs -maxdepth 1 -type f | xargs -L1 node",
-    "demo:ems": "find ./_/*.mjs -maxdepth 1 -type f | xargs -L1 node",
+    "demo:esm": "find ./_/*.mjs -maxdepth 1 -type f | xargs -L1 node",
     "setup": "npm run clean && npm run strip-version && npm i -f && npm i file:skenvy-collatz.tgz",
     "everything:cjs": "npm run build:cjs && npm run ftype:cjs && npm run demo:cjs && npm run clean:cjs",
-    "everything:ems": "npm run build:ems && npm run ftype:ems && npm run demo:ems && npm run clean:ems",
-    "everything": "npm run setup && npm run everything:cjs && npm run everything:ems"
+    "everything:esm": "npm run build:esm && npm run ftype:esm && npm run demo:esm && npm run clean:esm",
+    "everything": "npm run setup && npm run everything:cjs && npm run everything:esm"
   },
   "devDependencies": {
     "@types/node": "^20.11.28",
