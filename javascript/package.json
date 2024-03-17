@@ -49,7 +49,7 @@
   },
   "scripts": {
     "clean": "rm -rf ./lib",
-    "test": "TS_NODE_PROJECT='./tsconfig.mocha.json' nyc mocha",
+    "test": "cross-env TS_NODE_PROJECT='./tsconfig.mocha.json' nyc mocha",
     "lint": "eslint src --ext .ts",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "npm run build:esm:tsc && npm run build:esm:one && npm run build:esm:type",
@@ -85,6 +85,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tsdoc": "^0.2.17",
     "http-server": "^14.1.1",
+    "cross-env": "^7.0.3",
     "mocha": "^10.3.0",
     "nyc": "^15.1.0",
     "ts-node": "^10.9.2",
