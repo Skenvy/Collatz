@@ -6,4 +6,4 @@
 *.ts text eol=lf
 *.cjs text eol=lf
 *.mjs text eol=lf
-package.json text=auto
+package.json text eol=lf
