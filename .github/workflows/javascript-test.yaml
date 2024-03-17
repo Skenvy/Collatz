@@ -128,11 +128,11 @@ jobs:
         name: Package
         path: javascript/.demo
     - name: 🦛 Install this package
-      run: npm run strip-version && npm install
-    - name: 🦏 Transpile demo
-      run: npm run build
-    - name: 🦏 Run usage demonstration
-      run: npm run demo
+      run: npm run setup
+    - name: 🦏 Transpile and run demonstration; 🦑 CJS
+      run: npm run everything:cjs
+    - name: 🦏 Transpile and run demonstration; 🐙 ESM
+      run: npm run everything:esm
   codeql:
     name: JavaScript 🟨🟦🟩🟥 CodeQL 🛡👨‍💻🛡
     if: >- 
