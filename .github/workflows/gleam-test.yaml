@@ -1,4 +1,4 @@
-name: Gleam 🩷⭐🩷 Tests 🦂
+name: Gleam 💖⭐💖 Tests 🦂
 on:
   push:
     branches-ignore:
@@ -29,7 +29,7 @@ env:
   development_gleam_version: 1
 jobs:
   quick-test:
-    name: Gleam 🩷⭐🩷 Quick Test 🦂
+    name: Gleam 💖⭐💖 Quick Test 🦂
     if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
