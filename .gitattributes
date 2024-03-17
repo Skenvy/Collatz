@@ -4,3 +4,6 @@
 # our GitHub Actions, which would otherwise change the line ending and fail.
 *.js text eol=lf
 *.ts text eol=lf
+*.cjs text eol=lf
+*.mjs text eol=lf
+package.json text eol=lf
