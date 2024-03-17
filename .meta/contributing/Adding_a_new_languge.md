@@ -34,7 +34,7 @@ Any section can be reasonably extended with more example, but this represents th
 * `<deps-dev-link>` (link on [deps.dev](https://deps.dev/)) -- which is not relevant to all languages
 ````md
 # [Collatz](https://github.com/Skenvy/Collatz): [<Language>](https://github.com/Skenvy/Collatz/tree/main/<language>) <language-emojis>
-<p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/XYZ.png" width=830 height=666/></p>
+<p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_<Language>.png" width=830 height=666/></p>
 <sub><p align="center"><i>
   <a href="https://github.com/Skenvy/Collatz/blob/main/.meta/banners/README.md">Colourised Collatz Coral</a>; derived from this
   <a href="https://twitter.com/Gelada/status/846751901756653568">original by Edmund Harriss</a>
