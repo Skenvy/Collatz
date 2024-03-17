@@ -7,6 +7,8 @@ touch <language>/.gitignore
 touch <language>/Makefile
 touch <language>/.demo/.gitignore
 touch <language>/.demo/Makefile
+mkdir -p <language>/.vscode
+touch <language>/.vscode/extensions.json
 cp LICENSE <language>/LICENSE
 echo "# Devlog" > <language>/devlog.md
 touch <language>/README.md
