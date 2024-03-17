@@ -24,6 +24,17 @@ RGBA_NAMES_MAP = {
     ##### C# #####
     # TODO
 
+    ##### Gleam #####
+    'Gleam Faff Pink': (255, 175, 243, 255), #ffaff3
+    'Gleam White': (254, 254, 252, 255), #fefefc
+    'Gleam Unnamed Blue': (166, 240, 252, 255), #a6f0fc
+    'Gleam Aged Plastic Yellow': (255, 251, 232, 255), #fffbe8
+    'Gleam Unexpected Aubergine': (88, 67, 85, 255), #584355
+    'Gleam Underwater Blue': (41, 45, 62, 255), #292d3e
+    'Gleam Charcoal': (47, 47, 47, 255), #2f2f2f
+    'Gleam Black': (30, 30, 30, 255), #1e1e1e
+    'Gleam Blacker': (21, 21, 21, 255), #151515
+
     ##### Go #####
     # Primary
     'Gopher Blue': (1, 173, 216, 255), #00ADD8
@@ -155,6 +166,12 @@ _ = RGBA_NAMES_MAP
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
+_GLEAM_PALETTE = [
+    (6, {_['Gleam Faff Pink']: 8, _['Gleam White']: 1, _['Gleam Charcoal']: 1}),
+    (3, {_['Gleam Unnamed Blue']: 1, _['Gleam Underwater Blue']: 1, _['Gleam Unexpected Aubergine']: 1}),
+    (1, {_['Gleam Black']: 4, _['Gleam Blacker']: 2, _['Gleam Aged Plastic Yellow']: 4}),
+]
+
 _GO_PALETTE = [
     (6, {_['Gopher Blue']: 6, _['Go Light Blue']: 3, _['Go Aqua']: 1}),
     (3, {_['Go Fuchsia']: 5, _['Go Yellow']: 5}),
@@ -243,6 +260,7 @@ _MAIN_LIGHT_PALETTE = [
 
 PALETTES = {
     # 'CSharp': _CSHARP_PALETTE, # TODO
+    'Gleam': _GLEAM_PALETTE,
     'Go': _GO_PALETTE,
     'Java': _JAVA_PALETTE,
     'JavaScript': _JAVASCRIPT_PALETTE,
