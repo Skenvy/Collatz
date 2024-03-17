@@ -11,7 +11,8 @@ NPM=$(_) npm
 INSTALL_NODE=$(NVM) install $$(cat ./.nvmrc)
 INSTALL_NPM=$(NPM) i -g npm@$$(cat ./.npm-version)
 endif
-.PHONY: bump_major bump_minor bump_patch install_node install_npm setup update clean docs docs_server test lint verify_transpiled_checkin build publish
+PKG_NAME=skenvy-collatz
+.PHONY: bump_major bump_minor bump_patch install_node install_npm setup update clean docs docs_server test lint verify_transpiled_checkin build publish demo _demo
 SHELL:=/bin/bash
 
 # Versions can be manually changed where they appear in the package json and
@@ -52,7 +53,7 @@ update:
 	$(NPM) install
 
 clean:
-	rm -f skenvy-collatz-*.tgz
+	rm -f $(PKG_NAME)-*.tgz
 	rm -rf docs
 	rm -rf .nyc_output
 	$(NPM) run clean
@@ -87,4 +88,11 @@ build: clean test lint verify_transpiled_checkin
 
 # https://docs.npmjs.com/cli/v8/commands/npm-publish
 publish:
-	$(NPM) publish --access=public skenvy-collatz-*.tgz
+	$(NPM) publish --access=public $(PKG_NAME)-*.tgz
+
+demo: build
+	mv $(PKG_NAME)-*.tgz .demo/$(PKG_NAME).tgz
+	cd .demo && npm run everything
+
+_demo: # packless demo to rerun it while manually tweaking it
+	cd .demo && npm run everything

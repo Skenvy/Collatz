@@ -38,7 +38,7 @@
       },
       "require": {
         "types": "./lib/cjs/types/index.d.ts",
-        "default": "./lib/cjs/index.js"
+        "default": "./lib/cjs/index.cjs"
       }
     }
   },
@@ -52,8 +52,9 @@
     "test": "TS_NODE_PROJECT='./tsconfig.mocha.json' nyc mocha",
     "lint": "eslint src --ext .ts",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "build:esm": "tsc -p ./tsconfig.esm.json && for f in `find ./lib/esm -iname '*.js' -type f -print`;do  mv \"$f\" ${f%.js}.mjs; done",
+    "build:esm:abc": "",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json && for f in `find ./lib/cjs -iname '*.js' -type f -print`;do  mv \"$f\" ${f%.js}.cjs; done",
     "docs": "npm run docs:clean && npm run docs:tsdoc && npm run docs:coverage",
     "docs:clean": "rm -rf ./docs",
     "docs:tsdoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.cjs.json",
