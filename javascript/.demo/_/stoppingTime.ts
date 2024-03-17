@@ -1,6 +1,5 @@
 import * as Collatz from '@skenvy/collatz';
 
-
 // Default (P,a,b); 0 trap [as b is not a multiple of a]
 // 'should return the Default (P,a,b); 0 trap'
 // // Test 0's immediated termination.

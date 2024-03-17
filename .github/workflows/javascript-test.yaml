@@ -34,7 +34,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
@@ -62,7 +62,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node ${{ matrix.version }}
-      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         node-version: '${{ matrix.version }}'
         cache: 'npm'
@@ -75,10 +75,9 @@ jobs:
       run: make test
     - name: 🧹 Lint
       run: make lint
-    # I'm not sure what benefit there is to doing this check in the whole matrix
-    # but it'd be interesting if it shook something loose I didn't expect!
-    - name: ⚖ Does the checked in JS match the transpiled TS? 
-      run: make verify_transpiled_checkin
+    # We probably don't need to do this on all runners, and the windows CRLF echos are annoying
+    # - name: ⚖ Does the checked in JS match the transpiled TS? 
+    #   run: make verify_transpiled_checkin
   built-example:
     name: JavaScript 🟨🟦🟩🟥 Build Example 🦛
     if: >-
@@ -89,7 +88,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
@@ -119,7 +118,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         node-version-file: 'javascript/.nvmrc'
     - name: 🆒 Download dists
@@ -128,11 +127,11 @@ jobs:
         name: Package
         path: javascript/.demo
     - name: 🦛 Install this package
-      run: npm run strip-version && npm install
-    - name: 🦏 Transpile demo
-      run: npm run build
-    - name: 🦏 Run usage demonstration
-      run: npm run demo
+      run: npm run setup
+    - name: 🦏 Transpile and run demonstration; 🦑 CJS
+      run: npm run everything:cjs
+    - name: 🦏 Transpile and run demonstration; 🐙 ESM
+      run: npm run everything:esm
   codeql:
     name: JavaScript 🟨🟦🟩🟥 CodeQL 🛡👨‍💻🛡
     if: >- 
@@ -152,7 +151,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # v3.5.1
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         node-version-file: 'javascript/.nvmrc'
         cache: 'npm'

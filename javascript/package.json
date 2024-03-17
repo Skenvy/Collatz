@@ -1,6 +1,6 @@
 {
   "name": "@skenvy/collatz",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Functions related to the Collatz/Syracuse/3N+1 problem, implemented in JavaScript.",
   "keywords": [
     "Collatz",
@@ -27,8 +27,9 @@
   "files": [
     "./lib/**/*"
   ],
-  "main": "./lib/cjs/index.js",
-  "types": "./lib/cjs/types/index.d.ts",
+  "main": "./lib/esm/index.mjs",
+  "types": "./lib/esm/types/index.d.ts",
+  "type": "module",
   "exports": {
     ".": {
       "import": {
@@ -37,7 +38,7 @@
       },
       "require": {
         "types": "./lib/cjs/types/index.d.ts",
-        "default": "./lib/cjs/index.js"
+        "default": "./lib/cjs/index.cjs"
       }
     }
   },
@@ -48,15 +49,23 @@
   },
   "scripts": {
     "clean": "rm -rf ./lib",
-    "test": "nyc mocha",
+    "test": "cross-env TS_NODE_PROJECT='./tsconfig.mocha.json' nyc mocha",
     "lint": "eslint src --ext .ts",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
-    "build:esm": "tsc -p ./tsconfig.esm.json && mv lib/esm/index.js lib/esm/index.mjs",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json",
+    "build:esm": "npm run build:esm:tsc && npm run build:esm:one && npm run build:esm:type",
+    "build:esm:tsc": "tsc -p ./tsconfig.esm.json",
+    "build:esm:one": "mv lib/esm/index.js lib/esm/index.mjs",
+    "build:esm:type": "echo '{\"type\":\"module\"}' > lib/esm/package.json",
+    "build:esm:ftype::wip": "for f in `find ./lib/esm -iname '*.js' -type f -print`;do mv \"$f\" ${f%.js}.mjs; done",
+    "build:cjs": "npm run build:cjs:tsc && npm run build:cjs:one && npm run build:cjs:type",
+    "build:cjs:tsc": "tsc -p ./tsconfig.cjs.json",
+    "build:cjs:one": "mv lib/cjs/index.js lib/cjs/index.cjs",
+    "build:cjs:type": "echo '{\"type\":\"commonjs\"}' > lib/cjs/package.json",
+    "build:cjs:ftype::wip": "for f in `find ./lib/cjs -iname '*.js' -type f -print`;do mv \"$f\" ${f%.js}.cjs; done",
     "docs": "npm run docs:clean && npm run docs:tsdoc && npm run docs:coverage",
     "docs:clean": "rm -rf ./docs",
-    "docs:tsdoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.cjs.json",
-    "docs:coverage": "mkdir -p docs/coverage && nyc --reporter=html --report-dir=./docs/coverage --preserve-comments=true --produce-source-map=true mocha",
+    "docs:tsdoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.esm.json",
+    "docs:coverage": "mkdir -p docs/coverage && TS_NODE_PROJECT='./tsconfig.mocha.json' nyc --reporter=html --report-dir=./docs/coverage --preserve-comments=true --produce-source-map=true mocha",
     "docs:server": "http-server",
     "prepack": "npm run build"
   },
@@ -76,6 +85,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tsdoc": "^0.2.17",
     "http-server": "^14.1.1",
+    "cross-env": "^7.0.3",
     "mocha": "^10.3.0",
     "nyc": "^15.1.0",
     "ts-node": "^10.9.2",

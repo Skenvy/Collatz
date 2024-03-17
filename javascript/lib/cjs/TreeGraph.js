@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.treeGraph = exports.TreeGraph = void 0;
-const TreeGraphNode_1 = require("./TreeGraphNode");
+const TreeGraphNode_js_1 = require("./TreeGraphNode.js");
 /**
  * Contains the results of computing the Tree Graph via Collatz.treeGraph(~).
  * Contains the root node of a tree of TreeGraphNode's.
@@ -19,7 +19,7 @@ class TreeGraph {
      * Thrown if either P or a are 0.
      */
     constructor(nodeValue, maxOrbitDistance, P, a, b) {
-        this.root = TreeGraphNode_1.TreeGraphNode.new(nodeValue, maxOrbitDistance, P, a, b);
+        this.root = TreeGraphNode_js_1.TreeGraphNode.new(nodeValue, maxOrbitDistance, P, a, b);
     }
 }
 exports.TreeGraph = TreeGraph;

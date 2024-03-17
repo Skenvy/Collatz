@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TreeGraphNode = void 0;
-const utilities_1 = require("./utilities");
-const function_1 = require("./function");
+import { SequenceState } from './utilities.js';
+import { reverseFunction } from './function.js';
 /**
  * Nodes that form a "tree graph", structured as a tree, with their own node's value,
  * as well as references to either possible child node, where a node can only ever have
@@ -11,7 +8,7 @@ const function_1 = require("./function");
  * as an "out of bounds" stop, which is the regularly expected terminal state. Other
  * terminal states possible however include the cycle state and cycle length (end) states.
  */
-class TreeGraphNode {
+export class TreeGraphNode {
     /** The value of this node in the tree. */
     nodeValue;
     /** The terminal state; null if not a terminal node, MAX_STOP_OUT_OF_BOUNDS if the maxOrbitDistance
@@ -63,21 +60,21 @@ class TreeGraphNode {
             if (this.cycleCheck.has(this.nodeValue)) {
                 const cycleInitNode = this.cycleCheck.get(this.nodeValue);
                 if (cycleInitNode != null) {
-                    cycleInitNode.terminalSequenceState = utilities_1.SequenceState.CYCLE_INIT;
+                    cycleInitNode.terminalSequenceState = SequenceState.CYCLE_INIT;
                 }
-                this.terminalSequenceState = utilities_1.SequenceState.CYCLE_LENGTH;
+                this.terminalSequenceState = SequenceState.CYCLE_LENGTH;
                 this.preNDivPNode = null;
                 this.preANplusBNode = null;
             }
             else if (Math.max(0, maxOrbitDistance) === 0) {
-                this.terminalSequenceState = utilities_1.SequenceState.MAX_STOP_OUT_OF_BOUNDS;
+                this.terminalSequenceState = SequenceState.MAX_STOP_OUT_OF_BOUNDS;
                 this.preNDivPNode = null;
                 this.preANplusBNode = null;
             }
             else {
                 this.cycleCheck.set(this.nodeValue, this);
                 this.terminalSequenceState = null;
-                const reverses = (0, function_1.reverseFunction)({ n: nodeValue, P: P, a: a, b: b });
+                const reverses = reverseFunction({ n: nodeValue, P: P, a: a, b: b });
                 this.preNDivPNode = new TreeGraphNode(reverses[0], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);
                 if (reverses.length === 2) {
                     this.preANplusBNode = new TreeGraphNode(reverses[1], maxOrbitDistance - 1, P, a, b, this.cycleCheck, false, null, null, null);
@@ -159,7 +156,6 @@ class TreeGraphNode {
         }
     }
 }
-exports.TreeGraphNode = TreeGraphNode;
-exports.default = {
+export default {
     TreeGraphNode,
 };
