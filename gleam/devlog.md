@@ -48,4 +48,4 @@ And on windows, adding the `rebar3.cmd` file adjacent to the `rebar3` with the c
 ### Install Editor Plugin
 A quick search on the vsc marketplace yields an official [VS Code Plugin](https://github.com/gleam-lang/vscode-gleam).
 ### "Writing Gleam"
-[Writing Gleam](https://gleam.run/writing-gleam/) is an example of how to create a new gleam project. `gleam new <project-name>`. We'll run `gleam new howdy`.
+[Writing Gleam](https://gleam.run/writing-gleam/) is an example of how to create a new gleam project. `gleam new <project-name>`. We'll run `gleam new collatz`, and mesh together what it produces with `here`.

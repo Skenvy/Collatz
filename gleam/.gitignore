@@ -33,3 +33,11 @@ erl_crash.dump
 *.beam
 /config/*.secret.exs
 .elixir_ls/
+
+################################################################################
+# Created by `gleam new <project-name>`
+################################################################################
+*.beam
+*.ez
+/build
+erl_crash.dump

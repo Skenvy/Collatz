@@ -23,6 +23,8 @@ The list of implementations, where the externally hosted package lives, where th
 [![Go Reference](https://pkg.go.dev/badge/github.com/Skenvy/Collatz/go.svg)](https://pkg.go.dev/github.com/Skenvy/Collatz/go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Skenvy/Collatz/go)](https://goreportcard.com/report/github.com/Skenvy/Collatz/go)
 [![CRAN Version](https://www.r-pkg.org/badges/version/collatz)](https://cran.r-project.org/package=collatz)
+[![Package Version](https://img.shields.io/hexpm/v/collatz)](https://hex.pm/packages/collatz)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/collatz/)
 ## Implementations
 | Code | External Pkg | GitHub Pages | Internal Pkg |
 | :--- | :---         | :---         | :---         |
