@@ -122,7 +122,7 @@ jobs:
       with:
         node-version-file: 'javascript/.nvmrc'
     - name: 🆒 Download dists
-      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      uses: actions/download-artifact@c850b930e6ba138125429b7e5c93fc707a7f8427 # v4.1.4
       with:
         name: Package
         path: javascript/.demo
