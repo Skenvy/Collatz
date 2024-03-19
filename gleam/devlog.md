@@ -48,4 +48,8 @@ And on windows, adding the `rebar3.cmd` file adjacent to the `rebar3` with the c
 ### Install Editor Plugin
 A quick search on the vsc marketplace yields an official [VS Code Plugin](https://github.com/gleam-lang/vscode-gleam).
 ### "Writing Gleam"
-[Writing Gleam](https://gleam.run/writing-gleam/) is an example of how to create a new gleam project. `gleam new <project-name>`. We'll run `gleam new collatz`, and mesh together what it produces with `here`.
+[Writing Gleam](https://gleam.run/writing-gleam/) is an example of how to create a new gleam project; `gleam new <project-name>`. We'll run `gleam new collatz`, and mesh together what it produces with `here`.
+### Packaging for Hex
+We'll need to take a look at [`gleam.toml` config](https://gleam.run/writing-gleam/gleam-toml/), [gleam's cli](https://gleam.run/writing-gleam/command-line-reference/), [Hex Sign up](https://hex.pm/signup), [Hex Publishing a package](https://hex.pm/docs/publish), and [HexDocs](https://hexdocs.pm/).
+Signing up at [Hex Sign up](https://hex.pm/signup) is very simple. After verifying our email, it's a good idea to setup [2fa](https://hex.pm/dashboard/security).
+We can publish packages with `gleam publish`, which at the moment requires `HEXPM_USER` (Hex username) and `HEXPM_PASS` (Hex password).

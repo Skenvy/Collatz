@@ -1,19 +1,49 @@
 name = "collatz"
 version = "0.0.1"
 
-# Fill out these fields if you intend to generate HTML documentation or publish
-# your project to the Hex package manager.
-#
-# description = ""
-# licences = ["Apache-2.0"]
-# repository = { type = "github", user = "username", repo = "project" }
-# links = [{ title = "Website", href = "https://gleam.run" }]
-#
-# For a full reference of all the available options, you can have a look at
-# https://gleam.run/writing-gleam/gleam-toml/. 
+licences = ["Apache-2.0"]
+description = "Functions Related to the Collatz/Syracuse/3n+1 Problem"
+repository = { type = "github", user = "Skenvy", repo = "Collatz" }
+links = [
+    { title = "README", href = "https://github.com/Skenvy/Collatz/blob/main/README.md" },
+    { title = "Source", href = "https://github.com/Skenvy/Collatz/tree/main/gleam" },
+    { title = "GitHub Pages", href = "https://skenvy.github.io/Collatz/gleam/" },
+    { title = "Issues", href = "https://github.com/Skenvy/Collatz/issues" },
+    { title = "Bug Report", href = "https://github.com/Skenvy/Collatz/issues/new?assignees=&labels=bug&projects=&template=bug-report.yaml" },
+    { title = "Feature Request", href = "https://github.com/Skenvy/Collatz/issues/new?assignees=&labels=enhancement&projects=&template=feature-request.yaml" },
+    { title = "Security Vulnerability", href = "https://github.com/Skenvy/Collatz/issues/new?assignees=&labels=security&projects=&template=security-vulnerability.yaml" },
+]
+
+gleam = ">= 1.0.0"
+target = "erlang"
+internal_modules = [
+  "collatz/internal",
+  "collatz/internal/*",
+]
 
 [dependencies]
 gleam_stdlib = "~> 0.34 or ~> 1.0"
+envoy = "~> 1.0"
+argv = "~> 1.0"
 
 [dev-dependencies]
 gleeunit = "~> 1.0"
+gleescript = "~> 1.0"
+
+[documentation]
+pages = [
+  { title = "README", path = "readme.html", source = "./README.md" },
+  { title = "DEVLOG", path = "devlog.html", source = "./devlog.md" },
+]
+
+[erlang]
+# application_start_module = ""
+# extra_applications = []
+
+[javascript]
+typescript_declarations = true
+runtime = "node"
+
+################################################################################
+################## https://gleam.run/writing-gleam/gleam-toml/ #################
+################################################################################

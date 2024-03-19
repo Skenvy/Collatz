@@ -41,3 +41,7 @@ erl_crash.dump
 *.ez
 /build
 erl_crash.dump
+
+################################################################################
+# gleam run -m gleescript -- -- generates the <pkg-name> executable escript.
+/collatz
