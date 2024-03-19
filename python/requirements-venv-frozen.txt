@@ -20,7 +20,7 @@ furo==2024.1.29
 idna==3.6
 imagesize==1.4.1
 importlib_metadata==7.0.2
-importlib_resources==6.3.0
+importlib_resources==6.3.1
 iniconfig==2.0.0
 isort==5.13.2
 jaraco.classes==3.3.1
