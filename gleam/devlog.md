@@ -1,1 +1,12 @@
 # Devlog
+[Gleam](https://gleam.run/) [[gh](https://github.com/gleam-lang)|[core](https://github.com/gleam-lang/gleam)] is a _recent_ addition to the BEAM ecosystem (see [[Erlang](https://www.erlang.org/)] [[Elixir](https://elixir-lang.org/)] [[Hex](https://hex.pm/)]). Being [FLOSS](https://github.com/gleam-lang/gleam/blob/32ba73ff5401e5a976b6d250de7248b416ca9c43/LICENCE) from the [beginning](https://github.com/gleam-lang/gleam/blob/4d791cbf8e7ef93f9174103e4a547f1262cb7ace/LICENSE), maintained by nice, friendly people, and not being afraid to be immediately prescriptivist about its tooling, it should make for hopefully a gentle experience.
+Recently spiked in popularity after [its v1 release](https://gleam.run/news/gleam-version-1/), especially in the land of "Streamer Driven Development" [[@t3dotgg](https://www.youtube.com/watch?v=_I-CSgoCgsk)] [[@ThePrimeTimeagen](https://www.youtube.com/watch?v=9mfO821E7sE)], it's the new hype.
+This project does not yet have an implementation from the BEAM family. I figured I'd eventually think about maybe considering doing it in Elixir, which I've heard good things about, but it'd be fun to battle-test gleam's tools.
+## Setup Environment / Tools
+### Install Gleam
+Funnily enough, the [gleam home page](https://gleam.run/) doesn't link directly to downloads. The first big button is [Try Gleam](https://tour.gleam.run/) [[1](https://tour.gleam.run/table-of-contents/)], and it's good to see a fancy in-browser tour, but I am surprised that there is still yet to be a prominent "download here" button.
+The top panel though links the the [**docs**](https://gleam.run/documentation/), and the third link in here is where we see [Installing Gleam](https://gleam.run/getting-started/installing/). There are three parts to this. We'll be setting it up in Ubuntu WSL and Windows. First, it will have us go to [the releases page](https://github.com/gleam-lang/gleam/releases), unless you want to use one of the package managers it's available in. But there is no `apt` install of it, so to the release page we go. It's not written anywhere there I can see, but we can put together;
+```
+curl -s -L https://github.com/gleam-lang/gleam/releases/download/v1.0.0/gleam-v1.0.0-x86_64-unknown-linux-musl.tar.gz | tar xvz -C /tmp && mv /tmp/gleam ~/.local/bin/gleam
+```
+A quick search on the vsc marketplace yields an official [VS Code Plugin](https://github.com/gleam-lang/vscode-gleam).
