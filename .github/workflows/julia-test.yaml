@@ -34,7 +34,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
     - name: 🔴🟢🟣 Set up Julia
-      uses: julia-actions/setup-julia@ac0d62164df5a47de404f4e96ce86a1a28a28d56 # v1.9.6
+      uses: julia-actions/setup-julia@f2258781c657ad9b4b88072c5eeaf9ec8c370874 # v2.0.0
       with:
         version: '1.7.2' # The current local version -- to use the same recipes as local
         arch: 'x64'
@@ -59,7 +59,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
     - name: 🔴🟢🟣 Set up Julia ${{ matrix.version }}
-      uses: julia-actions/setup-julia@ac0d62164df5a47de404f4e96ce86a1a28a28d56 # v1.9.6
+      uses: julia-actions/setup-julia@f2258781c657ad9b4b88072c5eeaf9ec8c370874 # v2.0.0
       with:
         version: ${{ matrix.version }}
         arch: ${{ matrix.arch }}
@@ -85,7 +85,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
     - name: 🔴🟢🟣 Set up Julia
-      uses: julia-actions/setup-julia@ac0d62164df5a47de404f4e96ce86a1a28a28d56 # v1.9.6
+      uses: julia-actions/setup-julia@f2258781c657ad9b4b88072c5eeaf9ec8c370874 # v2.0.0
       with:
         version: '1.7.2'
     - name: 📄 Docs
