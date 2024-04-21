@@ -53,3 +53,7 @@ A quick search on the vsc marketplace yields an official [VS Code Plugin](https:
 We'll need to take a look at [`gleam.toml` config](https://gleam.run/writing-gleam/gleam-toml/), [gleam's cli](https://gleam.run/writing-gleam/command-line-reference/), [Hex Sign up](https://hex.pm/signup), [Hex Publishing a package](https://hex.pm/docs/publish), and [HexDocs](https://hexdocs.pm/).
 Signing up at [Hex Sign up](https://hex.pm/signup) is very simple. After verifying our email, it's a good idea to setup [2fa](https://hex.pm/dashboard/security).
 We can publish packages with `gleam publish`, which at the moment requires `HEXPM_USER` (Hex username) and `HEXPM_PASS` (Hex password).
+### Adding a `HEXPM_API_KEY` to `gleam publish` 💖
+I took a detour at this point to go and raise an [issue](https://github.com/gleam-lang/gleam/issues/2844) requesting a way to use a long lived API key to publish to hex, and then [implement it](https://github.com/gleam-lang/gleam/pull/2856). After this, the nightly builds until the next version should allow setting an environment variable `HEXPM_API_KEY` and it will be read by `gleam publish`.
+## Start working on verson 1
+We'll start by taking the [tour](https://tour.gleam.run/).

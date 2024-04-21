@@ -41,11 +41,11 @@ jobs:
         gleam-version: "1.0.0"
         rebar3-version: "3"
         # elixir-version: "1.15.4"
-    - run: gleam format --check src test
-    - run: gleam deps download
-    - run: gleam test
-    - run: gleam test --target javascript
-    - run: gleam publish -y
-      env:
-        HEXPM_USER: ${{ secrets.HEXPM_USER }}
-        HEXPM_PASS: ${{ secrets.HEXPM_PASS }}
+    - run: make format
+    - run: make setup
+    - run: make test
+    - run: make test_js
+    # - run: make publish
+    #   env:
+    #     HEXPM_USER: ${{ secrets.HEXPM_USER }}
+    #     HEXPM_PASS: ${{ secrets.HEXPM_PASS }}

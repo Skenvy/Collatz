@@ -1,5 +1,5 @@
 name = "collatz"
-version = "0.0.1"
+version = "0.0.5"
 
 licences = ["Apache-2.0"]
 description = "Functions Related to the Collatz/Syracuse/3n+1 Problem"
