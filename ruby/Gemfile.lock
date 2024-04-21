@@ -18,7 +18,7 @@ GEM
       stringio
     racc (1.7.3)
     rainbow (3.1.1)
-    rake (13.1.0)
+    rake (13.2.1)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
@@ -59,7 +59,7 @@ PLATFORMS
 
 DEPENDENCIES
   collatz!
-  rake (~> 13.1)
+  rake (~> 13.2)
   rdoc (~> 6.6)
   rspec (~> 3.13)
   rubocop (~> 1.62)
