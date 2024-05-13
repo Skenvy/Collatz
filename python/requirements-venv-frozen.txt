@@ -16,7 +16,7 @@ distlib==0.3.8
 docutils==0.20.1
 filelock==3.13.3
 flake8==7.0.0
-furo==2024.1.29
+furo==2024.5.6
 idna==3.6
 imagesize==1.4.1
 importlib_metadata==7.1.0
@@ -33,7 +33,7 @@ mccabe==0.7.0
 mdit-py-plugins==0.4.0
 mdurl==0.1.2
 more-itertools==10.2.0
-myst-parser==2.0.0
+myst-parser==3.0.1
 nh3==0.2.17
 packaging==24.0
 pkginfo==1.10.0
