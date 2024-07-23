@@ -15,7 +15,7 @@ dill==0.3.8
 distlib==0.3.8
 docutils==0.20.1
 filelock==3.13.3
-flake8==7.0.0
+flake8==7.1.0
 furo==2024.7.18
 idna==3.6
 imagesize==1.4.1
@@ -40,7 +40,7 @@ pkginfo==1.10.0
 platformdirs==4.2.0
 pluggy==1.4.0
 py==1.11.0
-pycodestyle==2.11.1
+pycodestyle==2.12.0
 pycparser==2.22
 pyflakes==3.2.0
 Pygments==2.17.2
