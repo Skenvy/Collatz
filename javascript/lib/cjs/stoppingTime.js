@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stoppingTime = void 0;
+exports.stoppingTime = stoppingTime;
 const utilities_js_1 = require("./utilities.js");
 const HailstoneSequence_js_1 = require("./HailstoneSequence.js");
 /**
@@ -41,7 +41,6 @@ function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStoppingTime = 
             return null;
     }
 }
-exports.stoppingTime = stoppingTime;
 exports.default = {
     stoppingTime,
 };

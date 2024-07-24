@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.treeGraph = exports.TreeGraph = void 0;
+exports.TreeGraph = void 0;
+exports.treeGraph = treeGraph;
 const TreeGraphNode_js_1 = require("./TreeGraphNode.js");
 /**
  * Contains the results of computing the Tree Graph via Collatz.treeGraph(~).
@@ -34,4 +35,3 @@ exports.TreeGraph = TreeGraph;
 function treeGraph({ initialValue, maxOrbitDistance, P = 2n, a = 3n, b = 1n }) {
     return new TreeGraph(initialValue, maxOrbitDistance, P, a, b);
 }
-exports.treeGraph = treeGraph;

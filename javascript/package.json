@@ -76,21 +76,21 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "chai": "^5.1.0",
-    "eslint": "^8.57.0",
+    "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-tsdoc": "^0.2.17",
+    "eslint-plugin-tsdoc": "^0.3.0",
     "http-server": "^14.1.1",
     "cross-env": "^7.0.3",
     "mocha": "^10.3.0",
-    "nyc": "^15.1.0",
+    "nyc": "^17.0.0",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.25.12",
-    "typescript": "^5.4.2"
+    "typedoc": "^0.26.5",
+    "typescript": "^5.5.4"
   },
   "engines": {
     "node": "^18.0.0 || >=20.0.0"
