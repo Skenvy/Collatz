@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reverseFunction = exports.collatzFunction = void 0;
+exports.collatzFunction = collatzFunction;
+exports.reverseFunction = reverseFunction;
 const FailedSaneParameterCheck_js_1 = require("./FailedSaneParameterCheck.js");
 /**
  * Parameterised Collatz Function
@@ -13,7 +14,6 @@ function collatzFunction({ n, P = 2n, a = 3n, b = 1n }) {
     (0, FailedSaneParameterCheck_js_1.assertSaneParameterisation)(P, a, b);
     return n % P === 0n ? n / P : (a * n + b);
 }
-exports.collatzFunction = collatzFunction;
 /**
  * Parameterised Collatz Inverse Function
  * @param parameterisedInputs - Allows non-default (P,a,b)
@@ -37,4 +37,3 @@ function reverseFunction({ n, P = 2n, a = 3n, b = 1n }) {
         return [P * n];
     }
 }
-exports.reverseFunction = reverseFunction;
