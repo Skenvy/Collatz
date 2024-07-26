@@ -121,14 +121,14 @@ jobs:
         name: built-dists
         path: python/dist
     - name: 📦 Publish to Test PyPI
-      uses: pypa/gh-action-pypi-publish@81e9d935c883d0b210363ab89cf05f3894778450 # v1.8.14
+      uses: pypa/gh-action-pypi-publish@ec4db0b4ddc65acdf4bff5fa45ac92d78b56bdf0 # v1.9.0
       with:
         packages_dir: python/dist
         skip_existing: true
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
     - name: 📦 Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@81e9d935c883d0b210363ab89cf05f3894778450 # v1.8.14
+      uses: pypa/gh-action-pypi-publish@ec4db0b4ddc65acdf4bff5fa45ac92d78b56bdf0 # v1.9.0
       with:
         packages_dir: python/dist
         password: ${{ secrets.PYPI_API_TOKEN }}
