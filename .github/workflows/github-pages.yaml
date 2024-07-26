@@ -116,6 +116,6 @@ jobs:
     # https://github.com/actions/deploy-pages
     - name: 🚀 Deploy to GitHub 🐱‍👤 Pages 📄
       id: deployment
-      uses: actions/deploy-pages@12ab2b16cf43a7a061fe99da74b6f8f11fb77f5b # v2.0.3
+      uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
       with:
         artifact_name: jekyll-tar
