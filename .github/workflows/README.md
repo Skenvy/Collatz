@@ -215,7 +215,7 @@ jobs:
     - name: 🧱 Build
       run: make build
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+      uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4.3.4
       with:
         name: Package
         path: <language>/some-artefacts/path-to-one-file.pkg
@@ -357,7 +357,7 @@ jobs:
       run: make <make-environment-dependencies>
     # Some step that uses `make build`
     # - name: 🆙 Upload dists
-    #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+    #   uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4.3.4
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts/
