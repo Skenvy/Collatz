@@ -76,7 +76,7 @@ jobs:
         ref: gh-pages
     # https://github.com/actions/configure-pages
     - name: 📄 Setup Pages
-      uses: actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d # v4.0.0
+      uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
     # # https://github.com/actions/jekyll-build-pages -- default config would be ~
     # - name: 🛠️ Build 🐕 Jekyll
     #   uses: actions/jekyll-build-pages@058068233b22675635bdf8dfa178d6ae77f12694 # v1.0.8
