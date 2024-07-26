@@ -240,7 +240,7 @@ jobs:
         version: ${{ env.development_<language>_version }}
         arch: 'x64'
     - name: 🆒 Download dists
-      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
       with:
         name: Package
         path: <language>/.demo
@@ -372,7 +372,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+    #   uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -392,7 +392,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+    #   uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
