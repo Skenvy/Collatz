@@ -70,7 +70,7 @@ jobs:
       image: rocker/tidyverse:4.2.1
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: 🧱 Dependencies - GMP version
       run: |-
         make setup_debian_gmp
@@ -94,7 +94,7 @@ jobs:
         version: ['3.5.0', '4.0.0', '4.2.0', 'devel']
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     # https://lists.debian.org/debian-devel-announce/2023/03/msg00006.html
     # Tidyverse images are pretty old. 3.5 is like a million years old so needs this.
     - name: Tidyverse:3.5 Image - Stretch Archive
@@ -133,7 +133,7 @@ jobs:
         version: ['4.0.0', '4.2.1'] 
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: 🏴‍☠️🔵🦜 Set up R
       uses: r-lib/actions/setup-r@929c772977a3a13c8733b363bf5a2f685c25dd91 # v2.9.0
       with:
@@ -170,7 +170,7 @@ jobs:
         version: ['4.2.1', 'devel']
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: 🏴‍☠️🔵🦜 Set up R
       uses: r-lib/actions/setup-r@929c772977a3a13c8733b363bf5a2f685c25dd91 # v2.9.0
       with:
@@ -196,7 +196,7 @@ jobs:
       image: rocker/tidyverse:4.2.1
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633 # v4.1.2
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: 🥔 Setup
       run: make setup_everything
     - name: Add the repo as a safe repo inside the job container
