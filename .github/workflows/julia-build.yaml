@@ -105,7 +105,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: 🔴🟢🟣 Set up Julia
-      uses: julia-actions/setup-julia@f2258781c657ad9b4b88072c5eeaf9ec8c370874 # v2.0.0
+      uses: julia-actions/setup-julia@780022b48dfc0c2c6b94cfee6a9284850107d037 # v2.3.0
       with:
         version: '1.7.2'
     - name: 📄 Docs
