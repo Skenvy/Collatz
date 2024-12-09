@@ -86,7 +86,7 @@
     "eslint-plugin-tsdoc": "^0.3.0",
     "http-server": "^14.1.1",
     "cross-env": "^7.0.3",
-    "mocha": "^10.3.0",
+    "mocha": "^11.0.1",
     "nyc": "^17.0.0",
     "ts-node": "^10.9.2",
     "typedoc": "^0.27.2",
