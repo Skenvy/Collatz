@@ -1,11 +1,11 @@
 alabaster==0.7.16
-astroid==3.3.5
+astroid==3.3.6
 Babel==2.16.0
 backports.tarfile==1.2.0
 beautifulsoup4==4.12.3
 build==1.2.2.post1
 cachetools==5.5.0
-certifi==2024.8.30
+certifi==2024.12.14
 cffi==1.17.1
 chardet==5.2.0
 charset-normalizer==3.4.0
@@ -38,7 +38,7 @@ more-itertools==10.5.0
 myst-parser==4.0.0
 nh3==0.2.19
 packaging==24.2
-pkginfo==1.11.2
+pkginfo==1.12.0
 platformdirs==4.3.6
 pluggy==1.5.0
 pycodestyle==2.12.1
