@@ -185,13 +185,28 @@ If we say that a residue class $\left ( a\:\mathrm{mod}\:b \right )$ is a (super
 
 In particular, in this section we rely on the following partitioning; 
 
-\begin{Ex}[Partitioning $\left ( 4\:\mathrm{mod}\:6 \right )$ into 4 sub residue classes]
+\begin{Rem}[Partitioning $\left ( 4\:\mathrm{mod}\:6 \right )$ into 4 sub residue classes]
 \begin{equation}
 \left ( 4\:\mathrm{mod}\:6 \right ) \equiv \left (\bigcup_{d=0}^{3} \left \{ \left (4+d*6  \right )\:\mathrm{mod}\:24 \right \}  \right )
 \end{equation}
-\end{Ex}
+\end{Rem}
 
-Such that we can demonstrate the following for each of the residue classes $4$, $10$, $16$, and $22$, mod $24$.
+Such that we can demonstrate the following for each of the residue classes $4$, $10$, $16$, and $22$, mod $24$. We are interested in how to determine how far a value in one of these residue classes will travel before reaching another value that happens to be in the super residue class $\left ( 4\:\mathrm{mod}\:6 \right )$. Indeed, we can demonstrate this for both $10$ and $22$ mod $24$, as a super residue of $\left ( 10\:\mathrm{mod}\:12 \right )$.
+
+\begin{Rem}[Solving $f \left ( x \in \left ( 10\:\mathrm{mod}\:12 \right ) \right )$]
+Begin by actualising a value from the residue class $\left ( 10\:\mathrm{mod}\:12 \right )$ as a value $K = 10 + 12B$ for $B$ as some integer. $10 + 12B$ is even, so we halve to get $5 + 6B$, which is odd, so we $3n+1$ to get $16+18B$
+\begin{equation}
+\forall B \in \mathbb{N}^{1} \rightarrow \left \{  \begin{matrix}
+f^{1}_{\frac{x}{2}} \left ( 10+12B \right ) = \left ( 5+6B \right ) \\ 
+f^{2} \left ( 10+12B \right ) = f^{1}_{3x+1} \left ( 5+6B \right ) =  \left ( 16+18B \right )
+\end{matrix} \right.
+\end{equation}
+Here we observe that $16+18B$ is an actualisation of the residue class  $\left ( 16\:\mathrm{mod}\:18 \right )$ which is a sub residue class of  $\left ( 4\:\mathrm{mod}\:6 \right )$ (with it's other two partitions being $4$ and $10$ mod $18$). Further, if we take the resulting value of $16+18B$ and subtract the starting value $10+12B$ to get $6+6B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 10\:\mathrm{mod}\:12 \right )$) the resulting $B+1$ (where $B$ is symbolic for $\frac{x-10}{12}$) of the previous division indicates that the starting value of $x \in \left ( 10\:\mathrm{mod}\:12 \right )$ will yield a jump of $\left ( \frac{x-10}{12} + 1 \right )$ multiples of $6$;
+\begin{equation}
+f^{2} \left ( x \in \left ( 10\:\mathrm{mod}\:12 \right ) \right ) = x+6*\left ( \frac{x-10}{12} + 1 \right )
+\end{equation}
+\end{Rem}
+
 
 
 \end{document}
