@@ -2,10 +2,10 @@
 SHELL:=/bin/bash
 
 clean:
-	rm *.aux
-	rm *.log
-	rm *.toc
-	rm *.pdf
+	rm -f *.aux
+	rm -f *.log
+	rm -f *.toc
+	rm -f *.pdf
 
 .DEFAULT_GOAL :=
 pdf: clean
