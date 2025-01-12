@@ -111,15 +111,29 @@ If every starting value must eventually reach 1, no starting value can cause an 
 
 In the above $C$ is the set of values that form the cycle that includes 1 (noting that this does not preclude the possibility of a length 1 cycle; i.e. $f^{1} \left  ( 1 \right ) = 1$ is still a valid cycle of length 1).
 
+\subsection{What happens when $h$ is a multiple of $P_2$.} \hfill\\
+
+
+
 \subsection{Values of n that preempt descent.} \hfill\\
 
-We first ask "what values of n will cause an immediate downward trend?"; what values of $n$ that are not already satisfying $n \in \left ( 0\:\mathrm{mod}\:P_{1} \right )$ will yield a result of $f^{1} \left ( n \right ) = P^{z}_{1}, z \in \mathbb{Z}$, such that the following $z$ iterations of $f$ will be the division step? This question is motivated by the observation that in the standard Collatz tree, no value $n \neq 2^{z}, z \in \mathbb{Z}$ yields $f \left ( n \right ) = 2^{2z+1}$ i.e. only the even powers of the $P_1$ parameter $2$ have values of $n$ that aren't themselves powers of the $P_1$ parameter $2$ that can produce them (and subsequent values of $n$ that yield even powers of 2 under $f$ can be obtained by a procedure of taking the previous preemptive $n$, multiplying by $4$ and adding $1$). For example, no $n \neq 2^{z}, z \in \mathbb{Z}$ yields $f \left ( n \right ) \in \left \{ 2, 8, 32, 128, ... \right \}$, and the values $5, 21, 85, ...$ under $f$ yields the even powers of 2.
+We first ask "what values of n will cause an immediate downward trend?"; what values of $n$ that are not already satisfying $n \in \left ( 0\:\mathrm{mod}\:P_{1} \right )$ will yield a result of $f^{1} \left ( n \right ) = P^{z}_{1}, z \in \mathbb{Z}$, such that the following $z$ iterations of $f$ will be the division step? This question is motivated by the observation that in the standard Collatz tree, no value $n \neq 2^{z_1}, z \in \mathbb{Z}$ yields $f \left ( n \right ) = 2^{2z_2+1}$ i.e. only the even powers of the $P_1$ parameter $2$ have values of $n$ that aren't themselves powers of the $P_1$ parameter $2$ that can produce them (and subsequent values of $n$ that yield even powers of 2 under $f$ can be obtained by a procedure of taking the previous preemptive $n$, multiplying by $4$ and adding $1$). For example, no $n \neq 2^{z}, z \in \mathbb{Z}$ yields $f \left ( n \right ) \in \left \{ 2, 8, 32, 128, ... \right \}$, and the values $5, 21, 85, ...$ under $f$ yields the even powers of 2.
 
-This is all in the attempt to classify what values act as gateways onto the ladder of powers of the $P_1$ parameter that finally takes us down to 1.
+This is all in the attempt to classify what values act as gateways onto the ladder of powers of the $P_1$ parameter that finally takes us down to 1. Or, in other words, which values of n "preempt descent" without already being "in the descent".
 
 If some power $k$ of the $P_1$ parameter has a value that preempts it via $P^{k}_{1} = P_{2}n_{a} + h$ and the next power of $P_1$ that is preemptable is $k+j$ via $P^{k+j}_{1} = P_{2}n_{a+1} + h$, can we draw conclusions from $P^{k+j}_{1}$?
 
- Well, we'd get $P^{\left ( k+j \right )}_{1} = P^{k}_{1}P^{j}_{1} = P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h = P_{2}n_{a+1} + h$ which would imply that $n_{a+1} = \left ( P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h - h\right )/P_{2}$. Because $n_{a+1}$ is required to be the next valid integer after $n_a$, we therefore require $\left ( P^{j}_{1}h - h \right )/P_2$ to be an integer. In other words, to find the smallest $j$ that satisfies this, we need to find the smallest $j$ that satifies $h \left ( P^{j}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$.
+ Well, we'd get $P^{\left ( k+j \right )}_{1} = P^{k}_{1}P^{j}_{1} = P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h = P_{2}n_{a+1} + h$ which would imply that $n_{a+1} = \left ( P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h - h\right )/P_{2}$. Because $n_{a+1}$ is required to be the next valid integer after $n_a$, we therefore require $\left ( P^{j}_{1}h - h \right )/P_2$ to be an integer (ignoring $P^{j}_{1}P_{2}n_{a}$ because it already has a factor of $P_{2}$). In other words, to find the smallest $j$ that satisfies this, we need to find the smallest $j$ that satifies $h \left ( P^{j}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$. 
+
+Here there are a few possibilities. If $h$ is coprime to $P_2$ and $P_1$ is not divisible by $P_2$ we can use an extension of Fermat's little theorem which would make the solution to this $\left (  P^{P_2 - 1}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$, or, $j = P_2 - 1$. This is the nicest case. 
+
+Of course, a more generic split/test-condition would be whether $P_1$ and $P_2$ are coprime or not. If they are coprime, then some power of $P_1$ will be $\in1\:\mathrm{mod}\:P_{2}$, and any value of $h$ can be used alongside the $P_1$ value that would eventually yield $P^{z}_1\in1\:\mathrm{mod}\:P_{2}$ for some $z\in\mathbb{Z}$. However, if $P_1$ is NOT coprime with $P_2$, then powers of $P_1$ won't attain $\in1\:\mathrm{mod}\:P_{2}$, and the only $h$ that would yield a $0$ in  $h \left ( P^{j}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$ would be $h$ that is either $0$, a multiple of $P_2$, or some power of the factors of $P_2$ to complete a result of $\left ( P^{j}_{1} - 1 \right )$ that is also only powers of factors of $P_2$.
+
+For example, if $P_2 = 15$, $P_1 = 3$ we have $j=4$ yield $\left ( P^{j}_{1} - 1 \right ) = 5$, for which a value of $h$ could be $0$, a multiple of $15$, or, in this case, $3$. Alternatively, still for $P_2 = 15$, if $P_1 = 10$, we have $j=1$ yield $\left ( P^{j}_{1} - 1 \right ) = 9$, for which a value of $h$ could be $0$, a multiple of $15$, or, in this case, $25$. 
+
+(Next step is to complete the above section, and comment here why it is impractical for $h$ to be a multiple of $P_2$).
+
+(Can we find anywhere that supports the suggestion that in the cycle of modulo's only one value will be solely powers of the factors of the modulus? It certainly seems to be the case, say, when $P_2 = 15$ and $\left (3^{j=4z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (6^{j=1z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$,  $\left (9^{j=2z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (12^{j=4z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (5^{j=2z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (10^{j=1z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$).
 
 ~ Below lines to be edited more ~
 
