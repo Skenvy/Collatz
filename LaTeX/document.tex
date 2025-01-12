@@ -65,7 +65,7 @@ f\left ( f^{k-1}\left ( n \right ) \right ) & k \geq 1 )
 \end{equation}
 \end{Def}
 
-We can generalise this by parameterising it in the following way, maintaining that the function's deciding factor will be that the input is either $k \in \left ( 0\:\mathrm{mod}\:X \right )$ or $k \notin \left ( 0\:\mathrm{mod}\:X \right )$, and that the resulting behaviour is either a division (by the whatever $X$ happens to be), or a multiplication plus addition.
+We can generalise this by parameterising it in the following way, maintaining that the function's deciding factor will be that the input is either $k \in \left ( 0\:\mathrm{mod}\:X \right )$ or $k \notin \left ( 0\:\mathrm{mod}\:X \right )$, and that the resulting behaviour is either a division (by whatever $X$ happens to be), or a multiplication plus addition.
 
 \begin{Def}[The Parameterised Collatz function]
 \begin{equation}
@@ -111,9 +111,17 @@ If every starting value must eventually reach 1, no starting value can cause an 
 
 In the above $C$ is the set of values that form the cycle that includes 1 (noting that this does not preclude the possibility of a length 1 cycle; i.e. $f^{1} \left  ( 1 \right ) = 1$ is still a valid cycle of length 1).
 
-\subsection{Values of n that preempt descent} \hfill\\
+\subsection{Values of n that preempt descent.} \hfill\\
 
-A
+We first ask "what values of n will cause an immediate downward trend?"; what values of $n$ that are not already satisfying $n \in \left ( 0\:\mathrm{mod}\:P_{1} \right )$ will yield a result of $f^{1} \left ( n \right ) = P^{z}_{1}, z \in \mathbb{Z}$, such that the following $z$ iterations of $f$ will be the division step? This question is motivated by the observation that in the standard Collatz tree, no value $n \neq 2^{z}, z \in \mathbb{Z}$ yields $f \left ( n \right ) = 2^{2z+1}$ i.e. only the even powers of the $P_1$ parameter $2$ have values of $n$ that aren't themselves powers of the $P_1$ parameter $2$ that can produce them (and subsequent values of $n$ that yield even powers of 2 under $f$ can be obtained by a procedure of taking the previous preemptive $n$, multiplying by $4$ and adding $1$). For example, no $n \neq 2^{z}, z \in \mathbb{Z}$ yields $f \left ( n \right ) \in \left \{ 2, 8, 32, 128, ... \right \}$, and the values $5, 21, 85, ...$ under $f$ yields the even powers of 2.
+
+This is all in the attempt to classify what values act as gateways onto the ladder of powers of the $P_1$ parameter that finally takes us down to 1.
+
+If some power $k$ of the $P_1$ parameter has a value that preempts it via $P^{k}_{1} = P_{2}n_{k} + h$ and $P^{k+j}_{1} = P_{2}n_{j} + h$, can we draw conclusions from $P^{k+j}_{1}$?
+
+Well, we'd get $P^{\left ( k+j \right )}_{1} = P^{k}_{1}*P^{j}_{1} = P_{2}n_{\left ( k+j \right )} + h = \left ( P_{2}n_{k} + h \right )*\left ( P_{2}n_{j} + h \right )$.
+~ $P^{\left ( k+j \right )}_{1} = P_{2}n_{\left ( k+j \right )} + h = \left ( P^{2}_{2}n_{k}n_{j} + P_{2}h\left ( n_{k} + n_{j} \right ) + h^{2} \right )$.
+~ $n_{\left ( k+j \right )} = \left ( P^{2}_{2}n_{k}n_{j} + P_{2}h\left ( n_{k} + n_{j} \right ) + h^{2} - h \right ) / P_{2}$
 
 \subsection{Cycle starting from 1} \hfill\\
 
