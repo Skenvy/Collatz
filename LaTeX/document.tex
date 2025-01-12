@@ -132,6 +132,44 @@ f^{-1} \left ( n \right )=\left\{\begin{matrix}
 
 Every number can be reached simply by a previous iteration of the function halving whatever is double that value. Thus no matter the value, the inverse Collatz function would include double the starting value. To figure out which values of $n$ could be the result of the previous iteration taking the $3n+1$ route is a little more involved. To have taken the $3n+1$ route, the value $n$ (in the previous iteration) must have been odd ($n \in \left ( 1\:\mathrm{mod}\:2 \right )$) thus making the resulting value of $3n+1$ an even number. Therefore it is not enough to simply require (in the current iteration) ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$), but also that $n$ is even ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$ (for if $n$ were odd instead and the result of applying $3n+1$, then the previous iteration's $n$ would have had to be even, thus would not have taken the $3n+1$ route). We can take the intersection these requirements ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$) and ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$) to get the requirement ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) for isolating values of $n$ that could have resulted from the previous iteration applying the $3n+1$ rule. Hence, when ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$), the inverse Collatz function must include the $\frac{n-1}{3}$ value.
 
+\begin{Def}[Equivalent statement of the conjecture]
+It is equivalent to the originally stated Collatz Conjecture to conjecture that all values in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$ will eventually reach the value $4$
+\end{Def}
+
+Starting from any number, consecutive iterations of the Collatz function will repeatedly remove multiplicities of $2$ until the result is no longer integer divisible by $2$, at which point it will apply the $3n+1$ step, resulting in a number $n$ that is ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$). This number will then follow the same pattern of iteratively removing multiplicites of $2$ until it again is no longer even, at which point it will once again go through the $3n+1$ step ang yield another $n$ that satisfies ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$). Knowing that every starting number will eventually, or immediately, yield a number that is ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) means we can instead focus on how values in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$ traverse from one to the next, while treating $4$ as their final destination as $4$ is the $3n+1$ result of starting from 1!
+
+While there are many ways to reduce the effort of "proof" for the Collatz conjecture by presenting equivalent statements to the conjecture to minify the set of numbers to "prove" something for, there are two we will use here. The first is simply reducing the conjecture to instead be;
+
+\begin{Conj}[The Minified Collatz Conjecture]
+\begin{equation}
+\forall n \in \mathbb{N}^{1} \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n
+\end{equation}
+\end{Conj}
+
+Which has yet another possible reduction (by observing that this is already true for any starting even number, we can restrict the necessity of the conjecture to only stating it for odd number;
+
+\begin{Conj}[The 2*Minified Collatz Conjecture]
+\begin{equation}
+\forall n>1\mathrm{,}\:n \in \left ( 1\:\mathrm{mod}\:2 \right ) \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n
+\end{equation}
+\end{Conj}
+
+Here is where we can apply the next reduction that observes the result of the function on an odd number will be ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$)
+
+\begin{Conj}[The 3*Minified Collatz Conjecture]
+\begin{equation}
+\forall n\geq4\mathrm{,}\:n \in \left ( 4\:\mathrm{mod}\:6 \right ) \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n
+\end{equation}
+\end{Conj}
+
+While this is as far as we "need" to minify the conjecture at this point, we will go one step further to fully embrace that we are anchoring the jumps between values after multiple iterations to the ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) values of $n$.
+
+\begin{Conj}[The 4*Minified Collatz Conjecture]
+\begin{equation}
+\forall n>4\mathrm{,}\:n \in \left ( 4\:\mathrm{mod}\:6 \right ) \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n\mathrm{,}\:f^{m}\left ( n \right ) \in \left ( 4\:\mathrm{mod}\:6 \right )
+\end{equation}
+\end{Conj}
+
 A.
 
 \end{document}
