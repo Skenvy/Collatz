@@ -172,7 +172,7 @@ While this is as far as we "need" to minify the conjecture at this point, we wil
 \end{equation}
 \end{Conj}
 
-\subsection{Jumps between ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$)} \hfill\\
+\subsection{Sub residue classes of ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$)} \hfill\\
 
 We will now explore how we can expand the numbers in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$ to sub residue classes that partition their super residue classes. For example, and pertinent to the next section this is;
 
@@ -201,12 +201,62 @@ f^{1}_{\frac{x}{2}} \left ( 10+12B \right ) = \left ( 5+6B \right ) \\
 f^{2} \left ( 10+12B \right ) = f^{1}_{3x+1} \left ( 5+6B \right ) =  \left ( 16+18B \right )
 \end{matrix} \right.
 \end{equation}
-Here we observe that $16+18B$ is an actualisation of the residue class  $\left ( 16\:\mathrm{mod}\:18 \right )$ which is a sub residue class of  $\left ( 4\:\mathrm{mod}\:6 \right )$ (with it's other two partitions being $4$ and $10$ mod $18$). Further, if we take the resulting value of $16+18B$ and subtract the starting value $10+12B$ to get $6+6B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 10\:\mathrm{mod}\:12 \right )$) the resulting $B+1$ (where $B$ is symbolic for $\frac{x-10}{12}$) of the previous division indicates that the starting value of $x \in \left ( 10\:\mathrm{mod}\:12 \right )$ will yield a jump of $\left ( \frac{x-10}{12} + 1 \right )$ multiples of $6$;
+Here we observe that $16+18B$ is an actualisation of the residue class  $\left ( 16\:\mathrm{mod}\:18 \right )$ which is a sub residue class of  $\left ( 4\:\mathrm{mod}\:6 \right )$ (with its other two partitions being $4$ and $10$ mod $18$). Further, if we take the resulting value of $16+18B$ and subtract the starting value $10+12B$ to get $6+6B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 10\:\mathrm{mod}\:12 \right )$) the resulting $B+1$ (where $B$ is symbolic for $\frac{x-10}{12}$) of the previous division indicates that the starting value of $x \in \left ( 10\:\mathrm{mod}\:12 \right )$ will yield a jump of $\left ( \frac{x-10}{12} + 1 \right )$ multiples of $6$;
 \begin{equation}
 f^{2} \left ( x \in \left ( 10\:\mathrm{mod}\:12 \right ) \right ) = x+6*\left ( \frac{x-10}{12} + 1 \right )
 \end{equation}
 \end{Rem}
 
+We can now do a similar thing for $4$ and $16$ mod $24$;
 
+\begin{Rem}[Solving $f \left ( x \in \left ( 4\:\mathrm{mod}\:24 \right ) \right )$]
+Begin by actualising a value from the residue class $\left ( 4\:\mathrm{mod}\:24 \right )$ as a value $K = 4 + 24B$ for $B$ as some integer. $4 + 24B$ is even, so we halve to get $2 + 12B$, which is still even, so we again halve it to get $1+6B$ which is odd, so we $3n+1$ to get $4+18B$.
+\begin{equation}
+\forall B \in \mathbb{N}^{1} \rightarrow \left \{  \begin{matrix}
+f^{1}_{\frac{x}{2}} \left ( 4+24B \right ) = \left ( 2+12B \right ) \\ 
+f^{2} \left ( 4+24B \right ) = f^{1}_{\frac{x}{2}} \left ( 2+12B \right ) =  \left ( 1+6B \right ) \\
+f^{3} \left ( 4+24B \right ) = f^{1}_{3x+1} \left ( 1+6B \right ) =  \left ( 4+18B \right ) 
+\end{matrix} \right.
+\end{equation}
+Observe that $4+18B$ is an actualisation of the residue class  $\left ( 4\:\mathrm{mod}\:18 \right )$ which is a sub residue class of  $\left ( 4\:\mathrm{mod}\:6 \right )$ (with its other two partitions being $10$ and $16$ mod $18$). Further, if we take the resulting value of $4+18B$ and subtract the starting value $4+24B$ to get $-6B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 4\:\mathrm{mod}\:24 \right )$) the resulting $-B$ (where $B$ is symbolic for $\frac{x-4}{24}$) of the previous division indicates that the starting value of $x \in \left ( 4\:\mathrm{mod}\:24 \right )$ will yield a jump of $\left ( -\frac{x-4}{24} \right )$ multiples of $6$;
+\begin{equation}
+f^{3} \left ( x \in \left ( 4\:\mathrm{mod}\:24 \right ) \right ) = x-6*\left ( \frac{x-4}{24} \right )
+\end{equation}
+\end{Rem}
+
+\begin{Rem}[Solving $f \left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right )$]
+Begin by actualising a value from the residue class $\left ( 16\:\mathrm{mod}\:24 \right )$ as a value $K = 16 + 24B$ for $B$ as some integer. $16 + 24B$ is even, so we halve to get $8 + 12B$, which is still even, so we again halve it to get $4+6B$!
+\begin{equation}
+\forall B \in \mathbb{N}^{1} \rightarrow \left \{  \begin{matrix}
+f^{1}_{\frac{x}{2}} \left ( 16+24B \right ) = \left ( 8+12B \right ) \\ 
+f^{2} \left ( 16+24B \right ) = f^{1}_{\frac{x}{2}} \left ( 8+12B \right ) =  \left ( 4+6B \right )
+\end{matrix} \right.
+\end{equation}
+Observe that we have directly resulted in the residue class  $\left ( 4\:\mathrm{mod}\:6 \right )$. If we take the resulting value of $4+6B$ and subtract the starting value $16+24B$ to get $-12-18B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 16\:\mathrm{mod}\:24 \right )$) the resulting $-3B-2$ (where $B$ is symbolic for $\frac{x-16}{24}$) of the previous division indicates that the starting value of $x \in \left ( 16\:\mathrm{mod}\:24 \right )$ will yield a jump of $\left ( -3*\frac{x-16}{24} - 2 \right )$ multiples of $6$;
+\begin{equation}
+f^{2} \left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right ) = x-6*\left ( 3*\left (\frac{x-16}{24}  \right ) + 2 \right )
+\end{equation}
+\end{Rem}
+
+\subsection{Jumps between ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$)} \hfill\\
+
+Based on the previous remarks, we can combine the three/four sub residue classes of $\left ( 4\:\mathrm{mod}\:6 \right )$, ($\left ( 4\:\mathrm{mod}\:24 \right )$, $\left ( 10\:\mathrm{mod}\:12 \right )$ and $\left ( 16\:\mathrm{mod}\:24 \right )$) into a speedier way of navigating the iterates of a starting value. It is simpler to see if we continue to use actualisations of the residue classes as well as their respective steps to the next value that is $\left ( 4\:\mathrm{mod}\:6 \right )$ in terms of their $B$ steps calculated int he last section. We will also have to expand the $\left ( 10\:\mathrm{mod}\:12 \right )$ result to make it applicable to mod $24$. We had;
+\begin{equation}
+\begin{matrix}
+\left ( x \in \left (  4\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -B \\ 
+\left ( x \in \left ( 10\:\mathrm{mod}\:12 \right ) \right ) & \rightarrow  & B+1 \\ 
+\left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -3B-2
+\end{matrix}
+\end{equation}
+As the residue classes we investigated and their resulting steps per their own use of $B$. We can extend the $10$ mod $12$ case to give us;
+\begin{equation}
+\begin{matrix}
+\left ( x \in \left (  4\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -B \\ 
+\left ( x \in \left ( 10\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & 2B+1 \\ 
+\left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -3B-2 \\
+\left ( x \in \left ( 22\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & 2B+2
+\end{matrix}
+\end{equation}
+We can use this to change the way we represent the iterations of the function that take us between values that are in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$. We can minify the representation to instead simply represent the values of the residue calss $\left ( 4\:\mathrm{mod}\:6 \right )$ by their ordinal value (were we are only counting the positive integers). For example, say we have a function that takes an ordinal and results in its corresponding member of the residue class $H\left( x \in \mathbb{N}^{0}  \right ) = 4+6x$ and its inverse $H^{-1}\left ( x \in \left ( 4\:\mathrm{mod}\:6 \right ) \right ) = \left ( \frac{x-4}{6} \right )$, then we are now concerning ourselves with the ordinal representation mainly to minify the representation.
 
 \end{document}
