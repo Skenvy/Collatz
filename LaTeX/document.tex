@@ -43,7 +43,7 @@
 \tableofcontents
 
 \section{Preface}
-	Yeet
+	A collection of observations on the Collatz conjecture, with no aim to "solve" it so much as to waste time on a seemingly unsolvable problem. There are two main directions that this goes in. First is a look at what can be said about a generalised/parameterised function, secondly on a minified/new representation of the problem.
 
 \section{Parameterised Function}
 
@@ -76,6 +76,7 @@ P_{2}n+h & n \notin \left ( 0\:\mathrm{mod}\:P_{1} \right )
 \end{Def}
 
 The primary goal of having a parameterised version of the Collatz function is to evaluate what constraints can be placed on the parameters such that they cannot be demonstrated to break the requirements of;
+
 \begin{Conj}[The Collatz Conjecture]
 \begin{equation}
 \forall n \in \mathbb{N}^{1} \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=1
@@ -83,7 +84,8 @@ The primary goal of having a parameterised version of the Collatz function is to
 \end{Conj}
 
 To evaluate which parameters fail to adhere to the conjecture, there are some specific behaviours of the function we can check against. The first and most obvious is whether or not some parameters will void the intent of the conjecture (that all starting values will eventually result in 1) by trapping specific, or all, starting values in an infinite growth. The other behaviour is an emergent property of;
-\begin{Conj}[The uniqueness of the cycle $ \left ( 1\rightarrow 2\rightarrow 4\rightarrow * \right ) $.]
+
+\begin{Conj}[The uniqueness of the cycle $ \left ( 1\rightarrow 4\rightarrow 2\rightarrow 1\rightarrow * \right ) $.]
 \begin{equation}
 \forall n \in \left\{\begin{matrix}
 \left ( \mathbb{N}^{1}/\left \{ 1,2,4 \right \} \right ) \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=n \\ 
@@ -91,7 +93,22 @@ To evaluate which parameters fail to adhere to the conjecture, there are some sp
 \end{matrix} \right.
 \end{equation}
 \end{Conj}
-If every starting value must eventually reach 1, no starting value can cause an iteration of the function to enter a loop until the iteration has reached 1, at which point it will enter the looping iteration of what is conjectured to be the unique cycle of $ \left ( 1\rightarrow 2\rightarrow 4\rightarrow * \right ) $.
+
+If every starting value must eventually reach 1, no starting value can cause an iteration of the function to enter a cycle until the iteration has reached 1, at which point it will enter the looping iteration of what is conjectured to be the unique cycle of $ \left ( 1\rightarrow 4\rightarrow 2\rightarrow 1\rightarrow * \right ) $. Whilst the generic statement of the conjecture does not need any reworking for the now generalised form of the equation, obviously the "uniqueness of the cycle" does!
+
+\begin{Conj}[The uniqueness of the cycle starting from 1]
+\begin{equation}
+\begin{matrix}
+\mathrm{C}_{b} = \left \{ f^{a} \left ( 1 \right ) | 1 \leq a \leq b | f^{b} \left ( 1 \right ) = 1 | 0 \neq c < b \rightarrow f^{c} \left ( 1 \right ) \neq 1 \right \} \\
+\forall n \in \left\{\begin{matrix}
+\left ( \mathbb{N}^{1}/\mathrm{C}_{b} \right ) \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{b}\left ( n \right )=n \\ 
+\mathrm{C}_{b} \rightarrow f^{b}\left ( n \right )=n
+\end{matrix} \right.
+\end{matrix}
+\end{equation}
+\end{Conj}
+
+
 
 \section{A new representation}
 Our motivation is to try to find some way to "speed up" travelling from any $n$ to $1$. Can we identify certain numbers that act as hotspots for more extended branches in the Collatz graph? Every number can be reached simply by a previous iteration of the function halving whatever is double that value. To figure out which values could be the result of the previous iteration taking the $3n+1$ route is a little more involved. To have taken the $3n+1$ route, the value $n$ (in the previous iteration) must have been odd ($n \in \left ( 1\:\mathrm{mod}\:2 \right )$) thus making the resulting value of $3n+1$ an even number. Therefore it is not enough to simply require (in the current iteration) ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$), but also that $n$ is even ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$ (for if $n$ were odd instead and the result of applying $3n+1$, then the previous iteration's $n$ would have had to be even, thus would not have taken the $3n+1$ route). We can take the intersection these requirements ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$) and ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$) to get the requirement ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) for isolating values of $n$ that could have resulted from the previous iteration applying the $3n+1$ rule.
