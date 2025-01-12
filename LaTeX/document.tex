@@ -3,6 +3,7 @@
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amscd}
+\usepackage{amssymb}
 \usepackage[latin2]{inputenc}
 \usepackage{t1enc}
 \usepackage[mathscr]{eucal}
@@ -48,18 +49,24 @@
 
 The Collatz function can be parameterised in such a way as; (with the interchangable use of $k \in \left ( a\:\mathrm{mod}\:b \right )$ and $k \equiv a \left ( \mathrm{mod}\:b \right )$) 
 
-\begin{Def} The Collatz function
+\begin{Def}[The Collatz function]
 \begin{equation}
 f\left ( n \right )=\left\{\begin{matrix}
 n/2  & n \in \left ( 0\:\mathrm{mod}\:2 \right ) \\ 
 3n+1 & n \in \left ( 1\:\mathrm{mod}\:2 \right )
 \end{matrix}\right.
 \end{equation}
+\begin{equation}
+f^{k}\left ( n \right )=\left\{\begin{matrix}
+n & k=0 \\ 
+f\left ( f^{k-1}\left ( n \right ) \right ) & k \geq 1 )
+\end{matrix}\right.
+\end{equation}
 \end{Def}
 
-We can generalise this by parameterising it in the following way, maintaining that the function's deciding factor will be that the input is either $k \in \left ( 0\:\mathrm{mod}\:X \right )$ or $k \notin \left ( 0\:\mathrm{mod}\:X \right )$, and that the resulting behaviour is either a division, or a multiplication plus addition.
+We can generalise this by parameterising it in the following way, maintaining that the function's deciding factor will be that the input is either $k \in \left ( 0\:\mathrm{mod}\:X \right )$ or $k \notin \left ( 0\:\mathrm{mod}\:X \right )$, and that the resulting behaviour is either a division (by the whatever $X$ happens to be), or a multiplication plus addition.
 
-\begin{Def} The Parameterised Collatz function
+\begin{Def}[The Parameterised Collatz function]
 \begin{equation}
 f_{\left (P_{1},P_{2},h\right )}\left ( n \right )=\left\{\begin{matrix}
 n/P_{1}  & n \in \left ( 0\:\mathrm{mod}\:P_{1} \right ) \\ 
@@ -68,6 +75,23 @@ P_{2}n+h & n \notin \left ( 0\:\mathrm{mod}\:P_{1} \right )
 \end{equation}
 \end{Def}
 
+The primary goal of having a parameterised version of the Collatz function is to evaluate what constraints can be placed on the parameters such that they cannot be demonstrated to break the requirements of;
+\begin{Conj}[The Collatz Conjecture]
+\begin{equation}
+\forall n \in \mathbb{N}^{1} \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=1
+\end{equation}
+\end{Conj}
+
+To evaluate which parameters fail to adhere to the conjecture, there are some specific behaviours of the function we can check against. The first and most obvious is whether or not some parameters will void the intent of the conjecture (that all starting values will eventually result in 1) by trapping specific, or all, starting values in an infinite growth. The other behaviour is an emergent property of;
+\begin{Conj}[The uniqueness of the cycle $ \left ( 1\rightarrow 2\rightarrow 4\rightarrow * \right ) $.]
+\begin{equation}
+\forall n \in \left\{\begin{matrix}
+\left ( \mathbb{N}^{1}/\left \{ 1,2,4 \right \} \right ) \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=n \\ 
+\left \{ 1,2,4 \right \} \rightarrow f^{3}\left ( n \right )=n
+\end{matrix} \right.
+\end{equation}
+\end{Conj}
+If every starting value must eventually reach 1, no starting value can cause an iteration of the function to enter a loop until the iteration has reached 1, at which point it will enter the looping iteration of what is conjectured to be the unique cycle of $ \left ( 1\rightarrow 2\rightarrow 4\rightarrow * \right ) $.
 
 \section{A new representation}
 	Yeet
