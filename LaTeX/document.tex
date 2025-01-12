@@ -43,8 +43,32 @@
 
 \section{Preface}
 	Yeet
-\section{Generalised Function}
-	Yeet
+
+\section{Parameterised Function}
+
+The Collatz function can be parameterised in such a way as; (with the interchangable use of $k \in \left ( a\:\mathrm{mod}\:b \right )$ and $k \equiv a \left ( \mathrm{mod}\:b \right )$) 
+
+\begin{Def} The Collatz function
+\begin{equation}
+f\left ( n \right )=\left\{\begin{matrix}
+n/2  & n \in \left ( 0\:\mathrm{mod}\:2 \right ) \\ 
+3n+1 & n \in \left ( 1\:\mathrm{mod}\:2 \right )
+\end{matrix}\right.
+\end{equation}
+\end{Def}
+
+We can generalise this by parameterising it in the following way, maintaining that the function's deciding factor will be that the input is either $k \in \left ( 0\:\mathrm{mod}\:X \right )$ or $k \notin \left ( 0\:\mathrm{mod}\:X \right )$, and that the resulting behaviour is either a division, or a multiplication plus addition.
+
+\begin{Def} The Parameterised Collatz function
+\begin{equation}
+f_{\left (P_{1},P_{2},h\right )}\left ( n \right )=\left\{\begin{matrix}
+n/P_{1}  & n \in \left ( 0\:\mathrm{mod}\:P_{1} \right ) \\ 
+P_{2}n+h & n \notin \left ( 0\:\mathrm{mod}\:P_{1} \right )
+\end{matrix}\right.
+\end{equation}
+\end{Def}
+
+
 \section{A new representation}
 	Yeet
 
