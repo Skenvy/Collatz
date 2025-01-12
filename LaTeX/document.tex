@@ -89,8 +89,8 @@ To evaluate which parameters fail to adhere to the conjecture, there are some sp
 \begin{Conj}[The uniqueness of the cycle $ \left ( 1\rightarrow 4\rightarrow 2\rightarrow 1\rightarrow * \right ) $.]
 \begin{equation}
 \forall n \in \left\{\begin{matrix}
-\left ( \mathbb{N}^{1}/\left \{ 1,2,4 \right \} \right ) \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=n \\ 
-\left \{ 1,2,4 \right \} \rightarrow f^{3}\left ( n \right )=n
+\left ( \mathbb{N}^{1}/\left \{ 1,2,4 \right \} \right ) \rightarrow \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=n \\ 
+\left \{ 1,2,4 \right \} \rightarrow f^{3z}\left ( n \right )=n, \forall z \in \mathbb{Z}
 \end{matrix} \right.
 \end{equation}
 \end{Conj}
@@ -100,14 +100,16 @@ If every starting value must eventually reach 1, no starting value can cause an 
 \begin{Conj}[The uniqueness of the cycle starting from 1]
 \begin{equation}
 \begin{matrix}
-\mathrm{C}_{b} = \left \{ f^{a} \left ( 1 \right ) | 1 \leq a \leq b | f^{b} \left ( 1 \right ) = 1 | 0 \neq c < b \rightarrow f^{c} \left ( 1 \right ) \neq 1 \right \} \\
+\mathrm{C} = \left \{ f^{a} \left ( 1 \right ) | 0 \leq a < b | f^{b} \left ( 1 \right ) = 1 | a \neq 0 \rightarrow f^{a} \left ( 1 \right ) \neq 1 \right \} \\
 \forall n \in \left\{\begin{matrix}
-\left ( \mathbb{N}^{1}/\mathrm{C}_{b} \right ) \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{b}\left ( n \right )=n \\ 
-\mathrm{C}_{b} \rightarrow f^{b}\left ( n \right )=n
+\left ( \mathbb{N}^{1}/\mathrm{C} \right ) \rightarrow \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=n \\ 
+\mathrm{C} \rightarrow f^{|C|z}\left ( n \right )=n, \forall z \in \mathbb{Z}
 \end{matrix} \right.
 \end{matrix}
 \end{equation}
 \end{Conj}
+
+In the above $C$ is the set of values that form the cycle that includes 1 (noting that this does not preclude the possibility of a length 1 cycle; i.e. $f^{1} \left  ( 1 \right ) = 1$ is still a valid cycle of length 1).
 
 \subsection{Values of n that preempt descent} \hfill\\
 
