@@ -119,6 +119,19 @@ A
 
 \section{A new representation}
 
-Our motivation is to try to find some way to "speed up" travelling from any $n$ to $1$. Can we identify certain numbers that act as hotspots for more extended branches in the Collatz graph? Every number can be reached simply by a previous iteration of the function halving whatever is double that value. To figure out which values could be the result of the previous iteration taking the $3n+1$ route is a little more involved. To have taken the $3n+1$ route, the value $n$ (in the previous iteration) must have been odd ($n \in \left ( 1\:\mathrm{mod}\:2 \right )$) thus making the resulting value of $3n+1$ an even number. Therefore it is not enough to simply require (in the current iteration) ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$), but also that $n$ is even ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$ (for if $n$ were odd instead and the result of applying $3n+1$, then the previous iteration's $n$ would have had to be even, thus would not have taken the $3n+1$ route). We can take the intersection these requirements ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$) and ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$) to get the requirement ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) for isolating values of $n$ that could have resulted from the previous iteration applying the $3n+1$ rule.
+Our motivation is to try to find some way to "speed up" travelling from any $n$ to $1$. Can we identify certain numbers that act as hotspots for more extended branches in the Collatz graph? While not the main focus of this, we begin by looking at;
+
+\begin{Def}[The Inverse Collatz function]
+\begin{equation}
+f^{-1} \left ( n \right )=\left\{\begin{matrix}
+\left \{ 2n \right \} & n \notin \left ( 4\:\mathrm{mod}\:6 \right ) \\ 
+\left \{ 2n, \frac{n-1}{3} \right \} & n \in \left ( 4\:\mathrm{mod}\:6 \right )
+\end{matrix}\right.
+\end{equation}
+\end{Def}
+
+Every number can be reached simply by a previous iteration of the function halving whatever is double that value. Thus no matter the value, the inverse Collatz function would include double the starting value. To figure out which values of $n$ could be the result of the previous iteration taking the $3n+1$ route is a little more involved. To have taken the $3n+1$ route, the value $n$ (in the previous iteration) must have been odd ($n \in \left ( 1\:\mathrm{mod}\:2 \right )$) thus making the resulting value of $3n+1$ an even number. Therefore it is not enough to simply require (in the current iteration) ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$), but also that $n$ is even ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$ (for if $n$ were odd instead and the result of applying $3n+1$, then the previous iteration's $n$ would have had to be even, thus would not have taken the $3n+1$ route). We can take the intersection these requirements ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$) and ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$) to get the requirement ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) for isolating values of $n$ that could have resulted from the previous iteration applying the $3n+1$ rule. Hence, when ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$), the inverse Collatz function must include the $\frac{n-1}{3}$ value.
+
+A.
 
 \end{document}
