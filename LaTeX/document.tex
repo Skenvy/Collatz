@@ -117,10 +117,16 @@ We first ask "what values of n will cause an immediate downward trend?"; what va
 
 This is all in the attempt to classify what values act as gateways onto the ladder of powers of the $P_1$ parameter that finally takes us down to 1.
 
-If some power $k$ of the $P_1$ parameter has a value that preempts it via $P^{k}_{1} = P_{2}n_{k} + h$ and $P^{k+j}_{1} = P_{2}n_{j} + h$, can we draw conclusions from $P^{k+j}_{1}$?
+If some power $k$ of the $P_1$ parameter has a value that preempts it via $P^{k}_{1} = P_{2}n_{a} + h$ and the next power of $P_1$ that is preemptable is $k+j$ via $P^{k+j}_{1} = P_{2}n_{a+1} + h$, can we draw conclusions from $P^{k+j}_{1}$?
 
-Well, we'd get $P^{\left ( k+j \right )}_{1} = P^{k}_{1}*P^{j}_{1} = P_{2}n_{\left ( k+j \right )} + h = \left ( P_{2}n_{k} + h \right )*\left ( P_{2}n_{j} + h \right )$.
+ Well, we'd get $P^{\left ( k+j \right )}_{1} = P^{k}_{1}P^{j}_{1} = P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h = P_{2}n_{a+1} + h$ which would imply that $n_{a+1} = \left ( P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h - h\right )/P_{2}$. Because $n_{a+1}$ is required to be the next valid integer after $n_a$, we therefore require $\left ( P^{j}_{1}h - h \right )/P_2$ to be an integer. In other words, to find the smallest $j$ that satisfies this, we need to find the smallest $j$ that satifies $h \left ( P^{j}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$.
+
+~ Below lines to be edited more ~
+
+~ $P_{2}n_{\left ( k+j \right )} + h = \left ( P_{2}n_{k} + h \right )*\left ( P_{2}n_{j} + h \right )$.
+
 ~ $P^{\left ( k+j \right )}_{1} = P_{2}n_{\left ( k+j \right )} + h = \left ( P^{2}_{2}n_{k}n_{j} + P_{2}h\left ( n_{k} + n_{j} \right ) + h^{2} \right )$.
+
 ~ $n_{\left ( k+j \right )} = \left ( P^{2}_{2}n_{k}n_{j} + P_{2}h\left ( n_{k} + n_{j} \right ) + h^{2} - h \right ) / P_{2}$
 
 \subsection{Cycle starting from 1} \hfill\\
