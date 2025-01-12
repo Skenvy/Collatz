@@ -1,0 +1,38 @@
+name: LaTeX 🟢🎶🐦 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - 'LaTeX/**'
+    - '!LaTeX/**.md'
+    - '!LaTeX/.vscode/**'
+    - '.github/workflows/LaTeX-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'LaTeX/**'
+    - '!LaTeX/**.md'
+    - '!LaTeX/.vscode/**'
+    - '.github/workflows/LaTeX-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
+  workflow_call:
+permissions: {}
+defaults:
+  run:
+    shell: bash
+    working-directory: LaTeX
+jobs:
+  pdf:
+    name: LaTeX 🟢🎶🐦 PDF 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - name: 🟢🎶🐦 Set up LaTeX
+      run: apt install texlive-latex-base
+    - name: 📄 Docs
+      run: make pdf
