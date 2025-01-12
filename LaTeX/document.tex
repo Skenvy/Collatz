@@ -43,7 +43,8 @@
 \tableofcontents
 
 \section{Preface}
-	A collection of observations on the Collatz conjecture, with no aim to "solve" it so much as to waste time on a seemingly unsolvable problem. There are two main directions that this goes in. First is a look at what can be said about a generalised/parameterised function, secondly on a minified/new representation of the problem.
+
+A collection of observations on the Collatz conjecture, with no aim to "solve" it so much as to waste time on a seemingly unsolvable problem. There are two main directions that this goes in. First is a look at what can be said about a generalised/parameterised function, secondly on a minified/new representation of the problem.
 
 \section{Parameterised Function}
 
@@ -108,9 +109,16 @@ If every starting value must eventually reach 1, no starting value can cause an 
 \end{equation}
 \end{Conj}
 
+\subsection{Values of n that preempt descent}
 
+A
+
+\subsection{Cycle starting from 1}
+
+A
 
 \section{A new representation}
+
 Our motivation is to try to find some way to "speed up" travelling from any $n$ to $1$. Can we identify certain numbers that act as hotspots for more extended branches in the Collatz graph? Every number can be reached simply by a previous iteration of the function halving whatever is double that value. To figure out which values could be the result of the previous iteration taking the $3n+1$ route is a little more involved. To have taken the $3n+1$ route, the value $n$ (in the previous iteration) must have been odd ($n \in \left ( 1\:\mathrm{mod}\:2 \right )$) thus making the resulting value of $3n+1$ an even number. Therefore it is not enough to simply require (in the current iteration) ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$), but also that $n$ is even ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$ (for if $n$ were odd instead and the result of applying $3n+1$, then the previous iteration's $n$ would have had to be even, thus would not have taken the $3n+1$ route). We can take the intersection these requirements ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$) and ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$) to get the requirement ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) for isolating values of $n$ that could have resulted from the previous iteration applying the $3n+1$ rule.
 
 \end{document}
