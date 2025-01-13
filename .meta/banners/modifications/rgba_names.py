@@ -93,7 +93,14 @@ RGBA_NAMES_MAP = {
     'Julia Medium Orchid': (180, 82, 205, 255), #B452CD
 
     ##### LaTeX #####
-    # TODO
+    # The two colours used in the hummingbird logo
+    'LaTeX Teal': (0, 128, 128, 255), #008080
+    'LaTeX Green': (55, 200, 113, 255), #37C871
+    # Slight variations of the main teal that aren't in the logo
+    'LaTeX Teal Light': (0, 160, 160, 255), #00A0A0
+    'LaTeX Teal Dark': (0, 96, 96, 255), #006060
+    'LaTeX Teal Light-Off': (96, 176, 176, 255), #60B0B0
+    'LaTeX Teal Dark-Off': (32, 80, 80, 255), #205050
 
     ##### Python #####
     'Python Blue Light': (90, 159, 212, 255), #5a9fd4
@@ -199,9 +206,11 @@ _JULIA_PALETTE = [
     (1, {_['Julia Blue']: 6, _['Blue']: 3, _['Blue 2']: 1}),
 ]
 
-# _LATEX_PALETTE = [ # TODO
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+_LATEX_PALETTE = [
+    (6, {_['LaTeX Teal']: 4, _['LaTeX Green']: 1, }),
+    (3, {_['LaTeX Teal Light']: 1, _['LaTeX Teal Dark']: 1}),
+    (1, {_['LaTeX Teal Light-Off']: 1, _['LaTeX Teal Dark-Off']: 1}),
+]
 
 _PYTHON_PALETTE = [
     (1, {_['Python Yellow Light']: 2, _['Python Yellow Mid']: 6, _['Python Yellow Dark']: 2}),
@@ -265,7 +274,7 @@ PALETTES = {
     'Java': _JAVA_PALETTE,
     'JavaScript': _JAVASCRIPT_PALETTE,
     'Julia': _JULIA_PALETTE,
-    # 'LaTeX': _LATEX_PALETTE, # TODO
+    'LaTeX': _LATEX_PALETTE,
     'Python': _PYTHON_PALETTE,
     'R': _R_PALETTE,
     'Ruby': _RUBY_PALETTE,
