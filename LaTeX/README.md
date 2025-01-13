@@ -23,7 +23,7 @@ https://arxiv.org/ but that's really the only place this section would be useful
 > These are not very well organised notes, reading them probably won't be a lot of fun.
 > The formatting isn't even good yet, and many sections are just stubs.
 > The writing of the notes is a TODO.
-> The current state is just the way that things were years ago.
+> The current state is just the way that things were years ago when I started on this project.
 <!--
 This would only be relevant if I was uploading the results to arxiv and added a landing page on this's gh-pages.
 ## [LaTeX generated pdf](https://skenvy.github.io/Collatz/LaTeX)
