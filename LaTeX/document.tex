@@ -16,6 +16,8 @@
 \usepackage[margin=2.9cm]{geometry}
 \usepackage{epstopdf}
 
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=red]{hyperref}
+
 \def\numset#1{{\\mathbb #1}}
 
 \theoremstyle{plain}
@@ -41,12 +43,19 @@
 \title{Collatz musings}
 
 \begin{document}
-	
+
+\maketitle
 \tableofcontents
 
 \section{Preface}
 
-A collection of observations on the Collatz conjecture, with no aim to "solve" it so much as to waste time on a seemingly unsolvable problem. There are two main directions that this goes in. First is a look at what can be said about a generalised/parameterised function, secondly on a minified/new representation of the problem.
+This document is produced as part of my \href{https://github.com/Skenvy/Collatz}{Collatz} mono-repository on GitHub.
+The LaTeX specific component of it is \href{https://github.com/Skenvy/Collatz/tree/main/LaTeX}{here}.
+The primary document that this is built from is \href{https://github.com/Skenvy/Collatz/blob/main/LaTeX/document.tex}{this document.tex}.
+
+\subsection{What content this contains} \hfill\\
+A collection of observations on the Collatz conjecture, with no aim to "solve" it so much as to waste time on a seemingly unsolvable problem.
+There are two main directions that this goes in. First is a look at what can be said about a generalised/parameterised function, secondly on a minified/new representation of the problem.
 
 \section{Parameterised Function}
 

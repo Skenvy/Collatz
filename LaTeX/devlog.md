@@ -32,6 +32,16 @@ sudo apt-get install texlive-latex-base
 ```
 This is all we _need_ to `make pdf` and get the generated pdf, but it's worth knowing that searching around for how to build pdf's, sites often also cite `texlive-latex-recommended` and `texlive-latex-extra` as suggested for install alongside `texlive-latex-base` but they amount to several additional GB of space, so I'd like to avoid them until necessary.
 
+## Adding additional LaTeX components
+I would like to add hyperlinks to the output of the pdf. I added the `\usepackage{hyperref}` but now trying to rebuild the pdf yields the error ``! LaTeX Error: File `etoolbox.sty' not found.``. [This Q&A on tex stackexchange](https://tex.stackexchange.com/questions/73016/how-do-i-install-an-individual-package-on-a-linux-system/73017) addresses common ways of solving this issue. One of them is `tlmgr`.
+On our version of ubuntu, `texlive-latex-base` gave us `tlmgr`. We can try `tlmgr install etoolbox` but we get an error about not initiating user mode. To do so we can `tlmgr init-usertree`. We can now retry `tlmgr install etoolbox` but get an error that `tlmgr: Local TeX Live (2023) is older than remote repository (2024).`. [The tlmgr page](https://www.tug.org/texlive/tlmgr.html) includes mention of the `update-tlmgr-latest(.sh/.exe) --update` that the previous error suggests using. So we can download that script and use it to update tlmgr. Of course, this produces another error. Firstly, that the script doesn't understand the `--update` flag. Secondly, that it can't find the TeX live root or any TeX paths that are set.
+
+At this point, it's worth knowing that if we wanted to install "just" "TeX Live" that the [quickinstall](https://www.tug.org/texlive/quickinstall.html) mentions that it defaults to including around 7GB of content, which feels absurd. I'll just give up trying to understand acquiring a specific version of LaTeX or TeX and accept whatever the default version is for my version of ubuntu, because accepting that `sudo apt-get install texlive-latex-extra` wants to use a few GB is easier than chasing a thousand errors in trying to update just one component for a thing that might need the same amount of space to install the stuff to manage updating just one component anyway..
+```bash
+sudo apt-get install texlive-latex-extra
+```
+And I can rebuild the pdf with links.
+
 ## Sources to read
 [Jeffrey C. Lagarias @ arxiv](https://arxiv.org/search/math?searchtype=author&query=Lagarias,+J+C) has several important reads, including these aggregate papers;
 1. [An annotated bibliography (1963--1999)](https://arxiv.org/abs/math/0309224)
