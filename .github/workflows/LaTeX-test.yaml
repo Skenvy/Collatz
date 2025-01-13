@@ -1,0 +1,45 @@
+name: LaTeX 🟢🎶🐦 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - 'LaTeX/**'
+    - '!LaTeX/**.md'
+    - '!LaTeX/.vscode/**'
+    - '.github/workflows/LaTeX-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'LaTeX/**'
+    - '!LaTeX/**.md'
+    - '!LaTeX/.vscode/**'
+    - '.github/workflows/LaTeX-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
+  workflow_call:
+permissions: {}
+defaults:
+  run:
+    shell: bash
+    working-directory: LaTeX
+jobs:
+  pdf:
+    name: LaTeX 🟢🎶🐦 PDF 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - name: 📄 Docs
+      uses: ./LaTeX/container
+      with:
+        make: pdf
+        subdirectory: LaTeX
+    - name: 🆙 Upload pdf
+      uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
+      with:
+        name: pdf
+        path: LaTeX/document.pdf
+        if-no-files-found: error

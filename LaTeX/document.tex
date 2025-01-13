@@ -1,0 +1,340 @@
+% version 0.0.1
+% This is the release gating version specifier.
+% Version specified here is acquired in CI with
+% head -1 document.tex | cut -d ' ' -f 3
+
+\documentclass[12pt,a4paper]{amsart}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amscd}
+\usepackage{amssymb}
+\usepackage[latin2]{inputenc}
+\usepackage{t1enc}
+\usepackage[mathscr]{eucal}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{graphics}
+\numberwithin{equation}{section}
+\usepackage[margin=2.9cm]{geometry}
+\usepackage{epstopdf}
+
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=red]{hyperref}
+
+\def\numset#1{{\\mathbb #1}}
+
+\theoremstyle{plain}
+\newtheorem{Th}{Theorem}[section]
+\newtheorem{Lemma}[Th]{Lemma}
+\newtheorem{Cor}[Th]{Corollary}
+\newtheorem{Prop}[Th]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{Def}[Th]{Definition}
+\newtheorem{Conj}[Th]{Conjecture}
+\newtheorem{Rem}[Th]{Remark}
+\newtheorem{?}[Th]{Problem}
+\newtheorem{Ex}[Th]{Example}
+
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\Hom}{{\rm{Hom}}}
+\newcommand{\diam}{{\rm{diam}}}
+\newcommand{\ovl}{\overline}
+%\newcommand{\M}{\mathbb{M}}
+
+\author{Nathan Levett}
+\title{Collatz musings}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Preface}
+
+This document is produced as part of my \href{https://github.com/Skenvy/Collatz}{Collatz} mono-repository on GitHub.
+The LaTeX specific component of it is \href{https://github.com/Skenvy/Collatz/tree/main/LaTeX}{here}.
+The primary document that this is built from is \href{https://github.com/Skenvy/Collatz/blob/main/LaTeX/document.tex}{this document.tex}.
+
+\subsection{What content this contains} \hfill\\
+A collection of observations on the Collatz conjecture, with no aim to "solve" it so much as to waste time on a seemingly unsolvable problem.
+There are two main directions that this goes in. First is a look at what can be said about a generalised/parameterised function, secondly on a minified/new representation of the problem.
+
+\section{Parameterised Function}
+
+The Collatz function can be parameterised in such a way as; (with the interchangable use of $k \in \left ( a\:\mathrm{mod}\:b \right )$ and $k \equiv a \left ( \mathrm{mod}\:b \right )$) 
+
+\begin{Def}[The Collatz function]
+\begin{equation}
+f\left ( n \right )=\left\{\begin{matrix}
+n/2  & n \in \left ( 0\:\mathrm{mod}\:2 \right ) \\ 
+3n+1 & n \in \left ( 1\:\mathrm{mod}\:2 \right )
+\end{matrix}\right.
+\end{equation}
+\begin{equation}
+f^{k}\left ( n \right )=\left\{\begin{matrix}
+n & k=0 \\ 
+f\left ( f^{k-1}\left ( n \right ) \right ) & k \geq 1 )
+\end{matrix}\right.
+\end{equation}
+\end{Def}
+
+We can generalise this by parameterising it in the following way, maintaining that the function's deciding factor will be that the input is either $k \in \left ( 0\:\mathrm{mod}\:X \right )$ or $k \notin \left ( 0\:\mathrm{mod}\:X \right )$, and that the resulting behaviour is either a division (by whatever $X$ happens to be), or a multiplication plus addition.
+
+\begin{Def}[The Parameterised Collatz function]
+\begin{equation}
+f_{\left (P_{1},P_{2},h\right )}\left ( n \right )=\left\{\begin{matrix}
+n/P_{1}  & n \in \left ( 0\:\mathrm{mod}\:P_{1} \right ) \\ 
+P_{2}n+h & n \notin \left ( 0\:\mathrm{mod}\:P_{1} \right )
+\end{matrix}\right.
+\end{equation}
+\end{Def}
+
+The primary goal of having a parameterised version of the Collatz function is to evaluate what constraints can be placed on the parameters such that they cannot be demonstrated to break the requirements of;
+
+\begin{Conj}[The Collatz Conjecture]
+\begin{equation}
+\forall n \in \mathbb{N}^{1} \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=1
+\end{equation}
+\end{Conj}
+
+To evaluate which parameters fail to adhere to the conjecture, there are some specific behaviours of the function we can check against. The first and most obvious is whether or not some parameters will void the intent of the conjecture (that all starting values will eventually result in 1) by trapping specific, or all, starting values in an infinite growth. The other behaviour is an emergent property of;
+
+\begin{Conj}[The uniqueness of the cycle $ \left ( 1\rightarrow 4\rightarrow 2\rightarrow 1\rightarrow * \right ) $.]
+\begin{equation}
+\forall n \in \left\{\begin{matrix}
+\left ( \mathbb{N}^{1}/\left \{ 1,2,4 \right \} \right ) \rightarrow \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=n \\ 
+\left \{ 1,2,4 \right \} \rightarrow f^{3z}\left ( n \right )=n, \forall z \in \mathbb{Z}
+\end{matrix} \right.
+\end{equation}
+\end{Conj}
+
+If every starting value must eventually reach 1, no starting value can cause an iteration of the function to enter a cycle until the iteration has reached 1, at which point it will enter the looping iteration of what is conjectured to be the unique cycle of $ \left ( 1\rightarrow 4\rightarrow 2\rightarrow 1\rightarrow * \right ) $. Whilst the generic statement of the conjecture does not need any reworking for the now generalised form of the equation, obviously the "uniqueness of the cycle" does!
+
+\begin{Conj}[The uniqueness of the cycle starting from 1]
+\begin{equation}
+\begin{matrix}
+\mathrm{C} = \left \{ f^{a} \left ( 1 \right ) | 0 \leq a < b | f^{b} \left ( 1 \right ) = 1 | a \neq 0 \rightarrow f^{a} \left ( 1 \right ) \neq 1 \right \} \\
+\forall n \in \left\{\begin{matrix}
+\left ( \mathbb{N}^{1}/\mathrm{C} \right ) \rightarrow \nexists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )=n \\ 
+\mathrm{C} \rightarrow f^{|C|z}\left ( n \right )=n, \forall z \in \mathbb{Z}
+\end{matrix} \right.
+\end{matrix}
+\end{equation}
+\end{Conj}
+
+In the above $C$ is the set of values that form the cycle that includes 1 (noting that this does not preclude the possibility of a length 1 cycle; i.e. $f^{1} \left  ( 1 \right ) = 1$ is still a valid cycle of length 1).
+
+\subsection{What happens when $h$ is a multiple of $P_2$.} \hfill\\
+
+
+
+\subsection{Values of n that preempt descent.} \hfill\\
+
+We first ask "what values of n will cause an immediate downward trend?"; what values of $n$ that are not already satisfying $n \in \left ( 0\:\mathrm{mod}\:P_{1} \right )$ will yield a result of $f^{1} \left ( n \right ) = P^{z}_{1}, z \in \mathbb{Z}$, such that the following $z$ iterations of $f$ will be the division step? This question is motivated by the observation that in the standard Collatz tree, no value $n \neq 2^{z_1}, z \in \mathbb{Z}$ yields $f \left ( n \right ) = 2^{2z_2+1}$ i.e. only the even powers of the $P_1$ parameter $2$ have values of $n$ that aren't themselves powers of the $P_1$ parameter $2$ that can produce them (and subsequent values of $n$ that yield even powers of 2 under $f$ can be obtained by a procedure of taking the previous preemptive $n$, multiplying by $4$ and adding $1$). For example, no $n \neq 2^{z}, z \in \mathbb{Z}$ yields $f \left ( n \right ) \in \left \{ 2, 8, 32, 128, ... \right \}$, and the values $5, 21, 85, ...$ under $f$ yields the even powers of 2.
+
+This is all in the attempt to classify what values act as gateways onto the ladder of powers of the $P_1$ parameter that finally takes us down to 1. Or, in other words, which values of n "preempt descent" without already being "in the descent".
+
+If some power $k$ of the $P_1$ parameter has a value that preempts it via $P^{k}_{1} = P_{2}n_{a} + h$ and the next power of $P_1$ that is preemptable is $k+j$ via $P^{k+j}_{1} = P_{2}n_{a+1} + h$, can we draw conclusions from $P^{k+j}_{1}$?
+
+ Well, we'd get $P^{\left ( k+j \right )}_{1} = P^{k}_{1}P^{j}_{1} = P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h = P_{2}n_{a+1} + h$ which would imply that $n_{a+1} = \left ( P^{j}_{1}P_{2}n_{a} + P^{j}_{1}h - h\right )/P_{2}$. Because $n_{a+1}$ is required to be the next valid integer after $n_a$, we therefore require $\left ( P^{j}_{1}h - h \right )/P_2$ to be an integer (ignoring $P^{j}_{1}P_{2}n_{a}$ because it already has a factor of $P_{2}$). In other words, to find the smallest $j$ that satisfies this, we need to find the smallest $j$ that satifies $h \left ( P^{j}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$. 
+
+Here there are a few possibilities. If $h$ is coprime to $P_2$ and $P_1$ is not divisible by $P_2$ we can use an extension of Fermat's little theorem which would make the solution to this $\left (  P^{P_2 - 1}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$, or, $j = P_2 - 1$. This is the nicest case. 
+
+Of course, a more generic split/test-condition would be whether $P_1$ and $P_2$ are coprime or not. If they are coprime, then some power of $P_1$ will be $\in1\:\mathrm{mod}\:P_{2}$, and any value of $h$ can be used alongside the $P_1$ value that would eventually yield $P^{z}_1\in1\:\mathrm{mod}\:P_{2}$ for some $z\in\mathbb{Z}$. However, if $P_1$ is NOT coprime with $P_2$, then powers of $P_1$ won't attain $\in1\:\mathrm{mod}\:P_{2}$, and the only $h$ that would yield a $0$ in  $h \left ( P^{j}_{1} - 1 \right )\:\mathrm{mod}\:P_{2} = 0$ would be $h$ that is either $0$, a multiple of $P_2$, or some power of the factors of $P_2$ to complete a result of $\left ( P^{j}_{1} - 1 \right )$ that is also only powers of factors of $P_2$.
+
+For example, if $P_2 = 15$, $P_1 = 3$ we have $j=4$ yield $\left ( P^{j}_{1} - 1 \right ) = 5$, for which a value of $h$ could be $0$, a multiple of $15$, or, in this case, $3$. Alternatively, still for $P_2 = 15$, if $P_1 = 10$, we have $j=1$ yield $\left ( P^{j}_{1} - 1 \right ) = 9$, for which a value of $h$ could be $0$, a multiple of $15$, or, in this case, $25$. 
+
+(Next step is to complete the above section, and comment here why it is impractical for $h$ to be a multiple of $P_2$).
+
+(Can we find anywhere that supports the suggestion that in the cycle of modulo's only one value will be solely powers of the factors of the modulus? It certainly seems to be the case, say, when $P_2 = 15$ and $\left (3^{j=4z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (6^{j=1z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$,  $\left (9^{j=2z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (12^{j=4z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (5^{j=2z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$, $\left (10^{j=1z\forall z \in \mathbb{Z}}-1 \right ) \:\mathrm{mod}\:15 = 5$).
+
+~ Below lines to be edited more ~
+
+~ $P_{2}n_{\left ( k+j \right )} + h = \left ( P_{2}n_{k} + h \right )*\left ( P_{2}n_{j} + h \right )$.
+
+~ $P^{\left ( k+j \right )}_{1} = P_{2}n_{\left ( k+j \right )} + h = \left ( P^{2}_{2}n_{k}n_{j} + P_{2}h\left ( n_{k} + n_{j} \right ) + h^{2} \right )$.
+
+~ $n_{\left ( k+j \right )} = \left ( P^{2}_{2}n_{k}n_{j} + P_{2}h\left ( n_{k} + n_{j} \right ) + h^{2} - h \right ) / P_{2}$
+
+\subsection{Cycle starting from 1} \hfill\\
+
+A
+
+\section{A new representation}
+
+\subsection{Reducing the conjecture to values that are in (4 mod 6)} \hfill\\
+
+Our motivation is to try to find some way to "speed up" travelling from any $n$ to $1$. Can we identify certain numbers that act as hotspots for more extended branches in the Collatz graph? While not the main focus of this, we begin by looking at;
+
+\begin{Def}[The Inverse Collatz function]
+\begin{equation}
+f^{-1} \left ( n \right )=\left\{\begin{matrix}
+\left \{ 2n \right \} & n \notin \left ( 4\:\mathrm{mod}\:6 \right ) \\ 
+\left \{ 2n, \frac{n-1}{3} \right \} & n \in \left ( 4\:\mathrm{mod}\:6 \right )
+\end{matrix}\right.
+\end{equation}
+\end{Def}
+
+Every number can be reached simply by a previous iteration of the function halving whatever is double that value. Thus no matter the value, the inverse Collatz function would include double the starting value. To figure out which values of $n$ could be the result of the previous iteration taking the $3n+1$ route is a little more involved. To have taken the $3n+1$ route, the value $n$ (in the previous iteration) must have been odd ($n \in \left ( 1\:\mathrm{mod}\:2 \right )$) thus making the resulting value of $3n+1$ an even number. Therefore it is not enough to simply require (in the current iteration) ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$), but also that $n$ is even ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$ (for if $n$ were odd instead and the result of applying $3n+1$, then the previous iteration's $n$ would have had to be even, thus would not have taken the $3n+1$ route). We can take the intersection these requirements ($n \in \left ( 0\:\mathrm{mod}\:2 \right )$) and ($n \in \left ( 1\:\mathrm{mod}\:3 \right )$) to get the requirement ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) for isolating values of $n$ that could have resulted from the previous iteration applying the $3n+1$ rule. Hence, when ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$), the inverse Collatz function must include the $\frac{n-1}{3}$ value.
+
+\begin{Def}[Equivalent statement of the conjecture]
+It is equivalent to the originally stated Collatz Conjecture to conjecture that all values in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$ will eventually reach the value $4$
+\end{Def}
+
+Starting from any number, consecutive iterations of the Collatz function will repeatedly remove multiplicities of $2$ until the result is no longer integer divisible by $2$, at which point it will apply the $3n+1$ step, resulting in a number $n$ that is ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$). This number will then follow the same pattern of iteratively removing multiplicites of $2$ until it again is no longer even, at which point it will once again go through the $3n+1$ step ang yield another $n$ that satisfies ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$). Knowing that every starting number will eventually, or immediately, yield a number that is ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) means we can instead focus on how values in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$ traverse from one to the next, while treating $4$ as their final destination as $4$ is the $3n+1$ result of starting from 1!
+
+While there are many ways to reduce the effort of "proof" for the Collatz conjecture by presenting equivalent statements to the conjecture to minify the set of numbers to "prove" something for, there are two we will use here. The first is simply reducing the conjecture to instead be;
+
+\begin{Conj}[The Minified Collatz Conjecture]
+\begin{equation}
+\forall n \in \mathbb{N}^{1} \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n
+\end{equation}
+\end{Conj}
+
+Which has yet another possible reduction (by observing that this is already true for any starting even number, we can restrict the necessity of the conjecture to only stating it for odd number;
+
+\begin{Conj}[The 2*Minified Collatz Conjecture]
+\begin{equation}
+\forall n>1\mathrm{,}\:n \in \left ( 1\:\mathrm{mod}\:2 \right ) \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n
+\end{equation}
+\end{Conj}
+
+Here is where we can apply the next reduction that observes the result of the function on an odd number will be ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$)
+
+\begin{Conj}[The 3*Minified Collatz Conjecture]
+\begin{equation}
+\forall n\geq4\mathrm{,}\:n \in \left ( 4\:\mathrm{mod}\:6 \right ) \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n
+\end{equation}
+\end{Conj}
+
+While this is as far as we "need" to minify the conjecture at this point, we will go one step further to fully embrace that we are anchoring the jumps between values after multiple iterations to the ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$) values of $n$.
+
+\begin{Conj}[The 4*Minified Collatz Conjecture]
+\begin{equation}
+\forall n>4\mathrm{,}\:n \in \left ( 4\:\mathrm{mod}\:6 \right ) \exists \: m \in \mathbb{N}^{1} \rightarrow f^{m}\left ( n \right )<n\mathrm{,}\:f^{m}\left ( n \right ) \in \left ( 4\:\mathrm{mod}\:6 \right )
+\end{equation}
+\end{Conj}
+
+\subsection{Sub residue classes of ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$)} \hfill\\
+
+We will now explore how we can expand the numbers in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$ to sub residue classes that partition their super residue classes. For example, and pertinent to the next section this is;
+
+\begin{Def}[Residue classes and their equivalent partitioning]
+If we say that a residue class $\left ( a\:\mathrm{mod}\:b \right )$ is a (super)* residue class, we refer to it's capacity to be partitioned into the (sub)* residue classes $\left ( \left (a+db  \right )\:\mathrm{mod}\:\left (cb  \right ) \right )$ such that;
+\begin{equation}
+\forall \:a\mathrm{,}\:b\mathrm{,}\:c \in \mathbb{N}^{1} \rightarrow \left ( a\:\mathrm{mod}\:b \right ) \equiv \left (\bigcup_{d=0}^{c-1} \left \{ \left (a+db  \right )\:\mathrm{mod}\:\left (cb  \right ) \right \}  \right )
+\end{equation}
+\end{Def}
+
+In particular, in this section we rely on the following partitioning; 
+
+\begin{Rem}[Partitioning $\left ( 4\:\mathrm{mod}\:6 \right )$ into 4 sub residue classes]
+\begin{equation}
+\left ( 4\:\mathrm{mod}\:6 \right ) \equiv \left (\bigcup_{d=0}^{3} \left \{ \left (4+d*6  \right )\:\mathrm{mod}\:24 \right \}  \right )
+\end{equation}
+\end{Rem}
+
+Such that we can demonstrate the following for each of the residue classes $4$, $10$, $16$, and $22$, mod $24$. We are interested in how to determine how far a value in one of these residue classes will travel before reaching another value that happens to be in the super residue class $\left ( 4\:\mathrm{mod}\:6 \right )$. Indeed, we can demonstrate this for both $10$ and $22$ mod $24$, as a super residue of $\left ( 10\:\mathrm{mod}\:12 \right )$.
+
+\begin{Rem}[Solving $f \left ( x \in \left ( 10\:\mathrm{mod}\:12 \right ) \right )$]
+Begin by actualising a value from the residue class $\left ( 10\:\mathrm{mod}\:12 \right )$ as a value $K = 10 + 12B$ for $B$ as some integer. $10 + 12B$ is even, so we halve to get $5 + 6B$, which is odd, so we $3n+1$ to get $16+18B$
+\begin{equation}
+\forall B \in \mathbb{N}^{1} \rightarrow \left \{  \begin{matrix}
+f^{1}_{\frac{x}{2}} \left ( 10+12B \right ) = \left ( 5+6B \right ) \\ 
+f^{2} \left ( 10+12B \right ) = f^{1}_{3x+1} \left ( 5+6B \right ) =  \left ( 16+18B \right )
+\end{matrix} \right.
+\end{equation}
+Here we observe that $16+18B$ is an actualisation of the residue class  $\left ( 16\:\mathrm{mod}\:18 \right )$ which is a sub residue class of  $\left ( 4\:\mathrm{mod}\:6 \right )$ (with its other two partitions being $4$ and $10$ mod $18$). Further, if we take the resulting value of $16+18B$ and subtract the starting value $10+12B$ to get $6+6B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 10\:\mathrm{mod}\:12 \right )$) the resulting $B+1$ (where $B$ is symbolic for $\frac{x-10}{12}$) of the previous division indicates that the starting value of $x \in \left ( 10\:\mathrm{mod}\:12 \right )$ will yield a jump of $\left ( \frac{x-10}{12} + 1 \right )$ multiples of $6$;
+\begin{equation}
+f^{2} \left ( x \in \left ( 10\:\mathrm{mod}\:12 \right ) \right ) = x+6*\left ( \frac{x-10}{12} + 1 \right )
+\end{equation}
+\end{Rem}
+
+We can now do a similar thing for $4$ and $16$ mod $24$;
+
+\begin{Rem}[Solving $f \left ( x \in \left ( 4\:\mathrm{mod}\:24 \right ) \right )$]
+Begin by actualising a value from the residue class $\left ( 4\:\mathrm{mod}\:24 \right )$ as a value $K = 4 + 24B$ for $B$ as some integer. $4 + 24B$ is even, so we halve to get $2 + 12B$, which is still even, so we again halve it to get $1+6B$ which is odd, so we $3n+1$ to get $4+18B$.
+\begin{equation}
+\forall B \in \mathbb{N}^{1} \rightarrow \left \{  \begin{matrix}
+f^{1}_{\frac{x}{2}} \left ( 4+24B \right ) = \left ( 2+12B \right ) \\ 
+f^{2} \left ( 4+24B \right ) = f^{1}_{\frac{x}{2}} \left ( 2+12B \right ) =  \left ( 1+6B \right ) \\
+f^{3} \left ( 4+24B \right ) = f^{1}_{3x+1} \left ( 1+6B \right ) =  \left ( 4+18B \right ) 
+\end{matrix} \right.
+\end{equation}
+Observe that $4+18B$ is an actualisation of the residue class  $\left ( 4\:\mathrm{mod}\:18 \right )$ which is a sub residue class of  $\left ( 4\:\mathrm{mod}\:6 \right )$ (with its other two partitions being $10$ and $16$ mod $18$). Further, if we take the resulting value of $4+18B$ and subtract the starting value $4+24B$ to get $-6B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 4\:\mathrm{mod}\:24 \right )$) the resulting $-B$ (where $B$ is symbolic for $\frac{x-4}{24}$) of the previous division indicates that the starting value of $x \in \left ( 4\:\mathrm{mod}\:24 \right )$ will yield a jump of $\left ( -\frac{x-4}{24} \right )$ multiples of $6$;
+\begin{equation}
+f^{3} \left ( x \in \left ( 4\:\mathrm{mod}\:24 \right ) \right ) = x-6*\left ( \frac{x-4}{24} \right )
+\end{equation}
+\end{Rem}
+
+\begin{Rem}[Solving $f \left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right )$]
+Begin by actualising a value from the residue class $\left ( 16\:\mathrm{mod}\:24 \right )$ as a value $K = 16 + 24B$ for $B$ as some integer. $16 + 24B$ is even, so we halve to get $8 + 12B$, which is still even, so we again halve it to get $4+6B$!
+\begin{equation}
+\forall B \in \mathbb{N}^{1} \rightarrow \left \{  \begin{matrix}
+f^{1}_{\frac{x}{2}} \left ( 16+24B \right ) = \left ( 8+12B \right ) \\ 
+f^{2} \left ( 16+24B \right ) = f^{1}_{\frac{x}{2}} \left ( 8+12B \right ) =  \left ( 4+6B \right )
+\end{matrix} \right.
+\end{equation}
+Observe that we have directly resulted in the residue class  $\left ( 4\:\mathrm{mod}\:6 \right )$. If we take the resulting value of $4+6B$ and subtract the starting value $16+24B$ to get $-12-18B$ and divide by $6$ we can see that for some starting value ($x \in \left ( 16\:\mathrm{mod}\:24 \right )$) the resulting $-3B-2$ (where $B$ is symbolic for $\frac{x-16}{24}$) of the previous division indicates that the starting value of $x \in \left ( 16\:\mathrm{mod}\:24 \right )$ will yield a jump of $\left ( -3*\frac{x-16}{24} - 2 \right )$ multiples of $6$;
+\begin{equation}
+f^{2} \left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right ) = x-6*\left ( 3*\left (\frac{x-16}{24}  \right ) + 2 \right )
+\end{equation}
+\end{Rem}
+
+\subsection{Jumps between ($n \in \left ( 4\:\mathrm{mod}\:6 \right )$)} \hfill\\
+
+Based on the previous remarks, we can combine the three/four sub residue classes of $\left ( 4\:\mathrm{mod}\:6 \right )$, ($\left ( 4\:\mathrm{mod}\:24 \right )$, $\left ( 10\:\mathrm{mod}\:12 \right )$ and $\left ( 16\:\mathrm{mod}\:24 \right )$) into a speedier way of navigating the iterates of a starting value. It is simpler to see if we continue to use actualisations of the residue classes as well as their respective steps to the next value that is $\left ( 4\:\mathrm{mod}\:6 \right )$ in terms of their $B$ steps calculated int he last section. We will also have to expand the $\left ( 10\:\mathrm{mod}\:12 \right )$ result to make it applicable to mod $24$. We had;
+\begin{equation}
+\begin{matrix}
+\left ( x \in \left (  4\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -B \\ 
+\left ( x \in \left ( 10\:\mathrm{mod}\:12 \right ) \right ) & \rightarrow  & B+1 \\ 
+\left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -3B-2
+\end{matrix}
+\end{equation}
+As the residue classes we investigated and their resulting steps per their own use of $B$. We can extend the $10$ mod $12$ case to give us;
+\begin{equation}
+\begin{matrix}
+\left ( x \in \left (  4\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -B \\ 
+\left ( x \in \left ( 10\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & 2B+1 \\ 
+\left ( x \in \left ( 16\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & -3B-2 \\
+\left ( x \in \left ( 22\:\mathrm{mod}\:24 \right ) \right ) & \rightarrow  & 2B+2
+\end{matrix}
+\end{equation}
+We can use this to change the way we represent the iterations of the function that take us between values that are in the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$. We can minify the representation to instead simply represent the values of the residue calss $\left ( 4\:\mathrm{mod}\:6 \right )$ by their ordinal value (were we are only counting the positive integers). For example, say we have a function that takes an ordinal and results in its corresponding member of the residue class $H\left( x \in \mathbb{N}^{0}  \right ) = 4+6x$ and its inverse $H^{-1}\left ( x \in \left ( 4\:\mathrm{mod}\:6 \right ) \right ) = \left ( \frac{x-4}{6} \right )$, then we are now concerning ourselves with the ordinal representation mainly to minify the representation.
+
+For example, we can populate a table to demonstrate the output of a function we will soon define that summarises this process, where the function will output "steps from an ordinal to the next ordinal in iterations of the Collatz function"
+
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+x mod 24 & Steps by B $\rightarrow$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\ \hline
+4 & $-B$ & 0 & -1 & -2 & -3 & -4 & -5 & -6 & -7 & -8 & -9 & -10 & -11 \\ \hline
+10 & $2B+1$ &  1  & 3  & 5  & 7 & 9 & 11 & 13 & 15 & 17 & 19 & 21 & 23  \\ \hline
+16 & $-3B-2$ &  -2 & -5 & -8 & -11 & -14 & -17 & -20 & -23 & -26 & -29 & -32 & -35 \\ \hline
+22 & $2B+2$ &  2  & 4  & 6  & 8 & 10 & 12 & 14 & 16 & 18 & 20 & 22 & 24 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{Def}[Stepping function from an ordinal to the next based on 4 mod 6]
+Say we have some $M\left ( \omega \right )$ that takes $\omega$, the ordinal representing the member of the residue class $\left ( 4\:\mathrm{mod}\:6 \right )$, where;
+\begin{equation}
+\omega \rightarrow \left ( \left ( v = \frac{\omega - u}{4} \right ), \left ( u = \omega\:\mathrm{mod}\:4 \right ) \right )
+\end{equation}
+\begin{equation}
+M\left ( \omega \right ) = \left \{ \begin{matrix}
+u=0 & -v \\ 
+u=1 & 2v+1 \\ 
+u=2 & -3v-2 \\ 
+u=3 & 2v+2
+\end{matrix} \right.
+\end{equation}
+\begin{equation}
+M^{0}\left( \omega \right ) = \omega
+\end{equation}
+\begin{equation}
+M^{\gamma} \left ( \omega \right ) = M\left ( \sum_{\kappa=0}^{\gamma-1} \left ( M^{\kappa} \left ( \omega \right ) \right ) \right )
+\end{equation}
+\end{Def}
+
+\end{document}

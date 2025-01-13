@@ -1,0 +1,20 @@
+name: 'Skenvy/Collatz internal action -- LaTeX build container'
+description: 'Skenvy/Collatz INTERNAL action -- Run a make recipe in a LaTeX build container'
+author: 'Nathan Levett'
+branding:
+  icon: 'sunrise'  
+  color: 'purple'
+inputs:
+  make:
+    description: 'Makefile recipe name'
+    required: true
+  subdirectory:
+    description: "The path to the folder/subdirectory containing the Makefile"
+    required: false
+    default: '.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.make }}
+    - ${{ inputs.subdirectory }}
