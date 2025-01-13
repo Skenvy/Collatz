@@ -34,7 +34,8 @@ jobs:
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-    # - name: 🟢🎶🐦 Set up LaTeX
-    #   run: sudo apt install texlive-latex-base
     - name: 📄 Docs
-      run: make pdf
+      uses: ./LaTeX/container
+      with:
+        make: pdf
+        subdirectory: LaTeX

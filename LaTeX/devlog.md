@@ -42,6 +42,9 @@ sudo apt-get install texlive-latex-extra
 ```
 And I can rebuild the pdf with links.
 
+## Getting it to run in gha
+The gh runners don't come with any `*tex*` installed. Installing with apt in a job is problematic as the freshly installed packages aren't properly initialised. Using the [pandoc/latex](https://hub.docker.com/r/pandoc/latex) images appear to not have `make` installed in them. There is a popular latex/tex building action [xu-cheng/latex-action](https://github.com/xu-cheng/latex-action) which uses their latex image [xu-cheng/latex-docker](https://github.com/xu-cheng/latex-docker). Using their [ghcr.io/xu-cheng/texlive-full](https://github.com/xu-cheng/latex-docker/pkgs/container/texlive-full) image, the pipeline runs. But it's a hefty download.
+
 ## Sources to read
 [Jeffrey C. Lagarias @ arxiv](https://arxiv.org/search/math?searchtype=author&query=Lagarias,+J+C) has several important reads, including these aggregate papers;
 1. [An annotated bibliography (1963--1999)](https://arxiv.org/abs/math/0309224)
