@@ -84,7 +84,7 @@ jobs:
     #     source: ./
     #     destination: ./_site
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc # v1.202.0
+      uses: ruby/setup-ruby@28c4deda893d5a96a6b2d958c5b47fc18d65c9d3 # v1.213.0
       with:
         ruby-version: ${{ env.development_ruby_version }}
         rubygems: ${{ env.development_rubygems_version }}
