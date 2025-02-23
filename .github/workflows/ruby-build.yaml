@@ -130,6 +130,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        mkdir -p ~/.gem
         echo -e "---\n:github: Bearer $GITHUB_TOKEN" > ~/.gem/credentials
         chmod 0600 ~/.gem/credentials
         make push_github ${{ env.disable_rvm_proctoring }}
@@ -138,6 +139,7 @@ jobs:
       env:
         RUBYGEMS_API_KEY_BASE64: ${{ secrets.RUBYGEMS_API_KEY_BASE64 }}
       run: |
+        mkdir -p ~/.gem
         echo -n "$RUBYGEMS_API_KEY_BASE64" | base64 --decode > ~/.gem/credentials
         chmod 0600 ~/.gem/credentials
         make push_rubygems ${{ env.disable_rvm_proctoring }}
