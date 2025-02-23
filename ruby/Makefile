@@ -6,7 +6,7 @@ DEVELOPMENT_RUBY_VERSION=ruby-3.3.6
 # https://rubygems.org/gems/bundler
 DEVELOPMENT_BUNDLER_VERSION=2.5.23
 # https://rubygems.org/gems/rubygems-update
-DEVELOPMENT_GEMSYS_VERSION=3.6.5
+DEVELOPMENT_GEMSYS_VERSION=3.5.23
 
 RVM=source "$$RVM_DIR/scripts/rvm" && rvm
 INSTALL_RUBY=$(RVM) install "$(DEVELOPMENT_RUBY_VERSION)"
