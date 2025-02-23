@@ -14,6 +14,8 @@ defaults:
   run:
     shell: bash
     working-directory: go
+env:
+  development_go_version: 1.18
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -66,9 +68,9 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
+      uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
       with:
-        go-version: '1.18'
+        go-version: ${{ env.development_go_version }}
     - name: 🧱 Install build dependencies
       run: make build
     # Some step that uses `make build`
@@ -112,7 +114,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
+      uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
       with:
         go-version: '1.13'
     - name: 📄 Docs
