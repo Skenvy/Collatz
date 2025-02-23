@@ -45,6 +45,8 @@ jobs:
       run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 🦂 Test
       run: make test ${{ env.disable_rvm_proctoring }}
+    - name: 🧹 Lint
+      run: make lint ${{ env.disable_rvm_proctoring }}
   full-test:
     name: Ruby 🔻💎🔻 Full Test 🦂
     if: >- 
@@ -68,6 +70,8 @@ jobs:
       run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 🦂 Test
       run: make test ${{ env.disable_rvm_proctoring }}
+    - name: 🧹 Lint
+      run: make lint ${{ env.disable_rvm_proctoring }}
   codeql:
     name: Ruby 🔻💎🔻 CodeQL 🛡👨‍💻🛡
     if: >- 

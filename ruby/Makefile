@@ -45,6 +45,8 @@ docs: clean
 # default (just `rake`) is spec + rubocop, but be pedantic in case this changes.
 test: clean
 	$(RAKE) spec
+
+lint: clean
 	$(RAKE) rubocop
 
 # We can choose from `gem build collatz.gemspec` or `bundle exec rake build`.
