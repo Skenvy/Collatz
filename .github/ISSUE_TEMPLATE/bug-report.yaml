@@ -9,6 +9,7 @@ body:
     description: Which Language's Implementation was the bug found in?
     options:
       - C#
+      - Gleam
       - Go
       - Java
       - JavaScript

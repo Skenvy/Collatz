@@ -1,5 +1,5 @@
-import { SequenceState, stoppingTimeTerminus } from './utilities';
-import { collatzFunction } from './function';
+import { SequenceState, stoppingTimeTerminus } from './utilities.js';
+import { collatzFunction } from './function.js';
 
 /**
  * Parameterised inputs

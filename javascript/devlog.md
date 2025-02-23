@@ -241,3 +241,38 @@ Well, at least the webhook worked, and it should deploy to deno on the next tag.
 # NVM
 [NVM](https://github.com/nvm-sh/nvm), "Node version manager", is an extremely useful tool for managing multiple versions of node installed at the same time.
 Coming back in here to say that, while updating the supported engines to remove 14 and 16 and add 20, that I'm surprised I hadn't mentioned nvm in here before.
+## Another exercise in absurdity.
+Yet again, a tumble down a rabbit-worm-hole has transpired from very little shaking the node tree. A dependabot PR to suggest upgrading `chai` from `v4` to `v5` led to quite a while trying to investigate why it was difficult to run `mocha` tests with it, to learn that [chai v5 dropped cjs support](https://github.com/chaijs/chai/issues/1597), and that [mocha's support for esm is still expiremental](https://github.com/mochajs/mocha/issues/4900) [[2:GH](https://github.com/mochajs/mocha-examples/issues/47)] [[3:SO](https://stackoverflow.com/questions/40635956/overriding-tsconfig-json-for-ts-node-in-mocha)]. Also see [this SO RE 'TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts"'](https://stackoverflow.com/questions/71893906/run-mocha-with-typescript-throws-typeerror-err-unknown-file-extension-unknow). The rabbit-worm-hole also involved trying to figure out if our use of `nyc` had any influence / impact on this error, see [[1](https://github.com/istanbuljs/nyc/issues/1287)] [[2](https://github.com/istanbuljs/esm-loader-hook#readme)].
+
+After deciding it would probably just be best to give up on it and say we're sticking with chai v4, I had a look in to the compiled "esm" output that changed last year when setting the `esm` `tsconfig`'s `module` and `moduleResolution` to `nodenext` last year to let through a typescript update. But it would appear now that I should have looked closer at the change in the compiled "esm" code back then, as this change to "nodenext" also changed the output of the "esm" build to "cjs". So the output at the moment is just _two copies of cjs_.
+
+We definitely want to support esm, as the primary target. We might be able to support it optionally, and getting back to that would be a priority (as well as adding a check for this working in the demo, which was only checking that the cjs result was valid), but it would be nice if we could jump straight to esm as our default. We can edit the `package.json` to include the changes;
+```diff
+@@ -27,8 +27,9 @@
+   "files": [
+     "./lib/**/*"
+   ],
+-  "main": "./lib/cjs/index.js",
+-  "types": "./lib/cjs/types/index.d.ts",
++  "main": "./lib/esm/index.mjs",
++  "types": "./lib/esm/types/index.d.ts",
++  "type": "module",
+   "exports": {
+     ".": {
+       "import": {
+```
+But this still yeilds a `TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".ts" for /<>/Collatz/javascript/tests/collatzFunction.spec.ts` during the `nyc mocha` execution. Following up with specifying `TS_NODE_PROJECT='./tsconfig.esm.json'` before the `nyc mocha` gets the same error. If we go ahead and add the `.mocharc.json` differences recommended by [a comment at the end of this](https://github.com/mochajs/mocha/issues/4900);
+```diff
+@@ -1,7 +1,5 @@
+ {
+   "extension": ["ts"],
+   "spec": "./**/*.spec.ts",
+-  "require": "ts-node/register"
++  "require": "ts-node/register",
++  "loader": "ts-node/esm",
++  "es-module-specifier-resolution": "node"
+ }
+```
+We get the error `TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean '../src/index.js'`. Addressing this by adding `.ts` in all relative imports in the tests yields a different error `TS5097: An import path can only end with a '.ts' extension when 'allowImportingTsExtensions' is enabled.`. Adding the requested `"allowImportingTsExtensions": true` to our base `tsconfig` now yields another 10 or so `TS2835: Relative import paths need explicit file extensions in ECMAScript imports when '--moduleResolution' is 'node16' or 'nodenext'. Did you mean './XYZ.js'?`. Doing the same thing with all relative imports in the src yields passing tests, but the subsequent `tsc` gives us `npm ERR! error TS5096: Option 'allowImportingTsExtensions' can only be used when either 'noEmit' or 'emitDeclarationOnly' is set.`.
+
+Whilst googling to try and solve this often yielded very thoroughly answered SO posts such as [this one about modules and moduleResolution](https://stackoverflow.com/questions/71463698/why-we-need-nodenext-typescript-compiler-option-when-we-have-esnext), the overall wholistic answer came from [here](https://dev.to/ayc0/typescript-50-new-mode-bundler-esm-1jic). The gist being that typescript wont ever change the name of a module, which includes not renaming a relative import of a `.ts` file to a `.js` file, but the relative link will only have any meaning in the context of having already been transpiled, so the suggestion to rename things to `.js` is not as misleading as it seemed initially, which did a lot of heavy lifting the bury the lead. But yes, relative imports with `.js`, for what they will be when they are transpiled, lets it work! However we still need the relative links to `.ts` files in our mocha spec files. So we can get around both of these by having a new tsconfig that extends our ems set of options, and add the necessary `allowImportingTsExtensions` setting to that one, so that mocha sees it's allowed to import `.ts`, our `tsc` can still emit `ems` code, and wont complain that it can't emit anything with `allowImportingTsExtensions` set. Now it's just a matter of getting the demo to be happy with both import and require.

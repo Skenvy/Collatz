@@ -1,4 +1,4 @@
-import { SequenceState } from './utilities';
+import { SequenceState } from './utilities.js';
 /**
  * Parameterised inputs
  * @remarks

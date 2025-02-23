@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stoppingTime = void 0;
-const utilities_1 = require("./utilities");
-const HailstoneSequence_1 = require("./HailstoneSequence");
+exports.stoppingTime = stoppingTime;
+const utilities_js_1 = require("./utilities.js");
+const HailstoneSequence_js_1 = require("./HailstoneSequence.js");
 /**
  * Returns the stopping time, the amount of iterations required to reach a
  * value less than the initial value, or null if maxStoppingTime is exceeded.
@@ -22,26 +22,25 @@ function stoppingTime({ initialValue, P = 2n, a = 3n, b = 1n, maxStoppingTime = 
      * "stopping time" function is _not_ "total", they are handled the same way, as
      * the default for "totalStoppingTime" for hailstones is true, but for this, is
      * false. Thus the naming difference. */
-    const hail = (0, HailstoneSequence_1.hailstoneSequence)({ initialValue: initialValue, P: P, a: a, b: b, maxTotalStoppingTime: maxStoppingTime, totalStoppingTime: totalStoppingTime });
+    const hail = (0, HailstoneSequence_js_1.hailstoneSequence)({ initialValue: initialValue, P: P, a: a, b: b, maxTotalStoppingTime: maxStoppingTime, totalStoppingTime: totalStoppingTime });
     // For total/regular/zero stopping time, the value is already the same as
     // that present, for cycles we report infinity instead of the cycle length,
     // and for max stop out of bounds, we report null instead of the max stop cap
     switch (hail.terminalCondition) {
-        case utilities_1.SequenceState.TOTAL_STOPPING_TIME:
+        case utilities_js_1.SequenceState.TOTAL_STOPPING_TIME:
             return hail.terminalStatus;
-        case utilities_1.SequenceState.STOPPING_TIME:
+        case utilities_js_1.SequenceState.STOPPING_TIME:
             return hail.terminalStatus;
-        case utilities_1.SequenceState.CYCLE_LENGTH:
+        case utilities_js_1.SequenceState.CYCLE_LENGTH:
             return Number.POSITIVE_INFINITY; // Also just "Infinity"
-        case utilities_1.SequenceState.ZERO_STOP:
+        case utilities_js_1.SequenceState.ZERO_STOP:
             return hail.terminalStatus;
-        case utilities_1.SequenceState.MAX_STOP_OUT_OF_BOUNDS:
+        case utilities_js_1.SequenceState.MAX_STOP_OUT_OF_BOUNDS:
             return null;
         default:
             return null;
     }
 }
-exports.stoppingTime = stoppingTime;
 exports.default = {
     stoppingTime,
 };

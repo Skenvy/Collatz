@@ -14,6 +14,8 @@
 ``` # TODO
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_CSharp.png" width=830 height=666/></p>
 ```
+## Gleam
+<p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Gleam.png" width=830 height=666/></p>
 
 ## Go
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Go.png" width=830 height=666/></p>
@@ -28,9 +30,7 @@
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Julia.png" width=830 height=666/></p>
 
 ## LaTeX
-``` # TODO
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_LaTeX.png" width=830 height=666/></p>
-```
 
 ## Python
 <p align="center"><img alt="Banner Image, Collatz Coral" src="https://raw.githubusercontent.com/wiki/Skenvy/Collatz/.meta/banners/modifications/_Python.png" width=830 height=666/></p>

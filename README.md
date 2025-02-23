@@ -27,6 +27,7 @@ The list of implementations, where the externally hosted package lives, where th
 | Code | External Pkg | GitHub Pages | Internal Pkg |
 | :--- | :---         | :---         | :---         |
 | [C#](https://github.com/Skenvy/Collatz/tree/main/C%23) | **#TODO** | **#TODO** | **#TODO** |
+| [Gleam](https://github.com/Skenvy/Collatz/tree/main/gleam) | **#TODO** | **#TODO** | _N/A_ |
 | [Go](https://github.com/Skenvy/Collatz/tree/main/go) | [pkg.go.dev](https://pkg.go.dev/github.com/Skenvy/Collatz/go) | [GoDoc](https://skenvy.github.io/Collatz/go/)+[Cover](https://skenvy.github.io/Collatz/go/coverage.html) | _N/A_ |
 | [Java](https://github.com/Skenvy/Collatz/tree/main/java) | [mvn-central](https://search.maven.org/artifact/io.github.skenvy/collatz) | [Site](https://skenvy.github.io/Collatz/java/)+[JavaDoc](https://skenvy.github.io/Collatz/java/apidocs/io/github/skenvy/package-summary.html) | [mvn-gh](https://github.com/Skenvy/Collatz/packages/1445255) |
 | [JavaScript](https://github.com/Skenvy/Collatz/tree/main/javascript) | [npm](https://www.npmjs.com/package/@skenvy/collatz) | [TSDoc+TypeDoc](https://skenvy.github.io/Collatz/javascript) | [npm-gh](https://github.com/Skenvy/Collatz/pkgs/npm/collatz) |

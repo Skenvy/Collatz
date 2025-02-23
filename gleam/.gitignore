@@ -1,0 +1,35 @@
+################################################################################
+# https://github.com/github/gitignore/blob/main/Erlang.gitignore
+# < there is no "gleam" ignore file present, so take common beam ones for now.
+################################################################################
+.eunit
+*.o
+*.beam
+*.plt
+erl_crash.dump
+.concrete/DEV_MODE
+
+# rebar 2.x
+.rebar
+rel/example_project
+ebin/*.beam
+deps
+
+# rebar 3
+.rebar3
+_build/
+_checkouts/
+
+################################################################################
+# https://github.com/github/gitignore/blob/main/Elixir.gitignore
+################################################################################
+/_build
+/cover
+/deps
+/doc
+/.fetch
+erl_crash.dump
+*.ez
+*.beam
+/config/*.secret.exs
+.elixir_ls/
