@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hailstoneSequence = exports.HailstoneSequence = void 0;
+exports.HailstoneSequence = void 0;
+exports.hailstoneSequence = hailstoneSequence;
 const utilities_js_1 = require("./utilities.js");
 const function_js_1 = require("./function.js");
 /** Contains the results of computing a hailstone sequence. */
@@ -100,4 +101,3 @@ function hailstoneSequence({ initialValue, P = 2n, a = 3n, b = 1n, maxTotalStopp
     // Return the hailstone sequence.
     return new HailstoneSequence(initialValue, P, a, b, maxTotalStoppingTime, totalStoppingTime);
 }
-exports.hailstoneSequence = hailstoneSequence;

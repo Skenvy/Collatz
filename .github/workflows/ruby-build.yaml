@@ -14,6 +14,9 @@ defaults:
   run:
     shell: bash
     working-directory: ruby
+env:
+  development_ruby_version: 3.3.6
+  disable_rvm_proctoring: INSTALL_RUBY='' _=''
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -33,7 +36,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -64,18 +67,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 💎 Build gem
-      run: make build
+      run: make build ${{ env.disable_rvm_proctoring }}
     - name: 🆙 Upload dists
-      uses: actions/upload-artifact@83fd05a356d7e2593de66fc9913b3002723633cb # v3.1.1
+      uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
       with:
         name: Gem
         path: ruby/pkg/collatz-*.gem
@@ -88,9 +91,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🆒 Download dists
-      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
       with:
         name: Gem
         path: ruby/pkg
@@ -110,16 +113,16 @@ jobs:
     # Although the dists are built uses checkout to satisfy refs/tags existence
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🔑 Keycutter for GitHub
-      run: make setup_github
+      run: make setup_github ${{ env.disable_rvm_proctoring }}
     - name: 🆒 Download dists
-      uses: actions/download-artifact@9782bd6a9848b53b110e712e20e42d89988822b7 # v3.0.1
+      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
       with:
         name: Gem
         path: ruby/pkg
@@ -127,17 +130,19 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        mkdir -p ~/.gem
         echo -e "---\n:github: Bearer $GITHUB_TOKEN" > ~/.gem/credentials
         chmod 0600 ~/.gem/credentials
-        make push_github
+        make push_github ${{ env.disable_rvm_proctoring }}
         rm ~/.gem/credentials
     - name: 📦 Publish to RubyGems
       env:
         RUBYGEMS_API_KEY_BASE64: ${{ secrets.RUBYGEMS_API_KEY_BASE64 }}
       run: |
+        mkdir -p ~/.gem
         echo -n "$RUBYGEMS_API_KEY_BASE64" | base64 --decode > ~/.gem/credentials
         chmod 0600 ~/.gem/credentials
-        make push_rubygems
+        make push_rubygems ${{ env.disable_rvm_proctoring }}
         rm ~/.gem/credentials
   docs:
     name: Ruby 🔻💎🔻 Docs 📄
@@ -147,16 +152,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 📄 Docs Generation
-      run: make docs
+      run: make docs ${{ env.disable_rvm_proctoring }}
     - name: 📄 Docs Publishing
       run: |
         git config --local user.email "actions@github.com"

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.assertSaneParameterisation = exports.FailedSaneParameterCheck = exports.SaneParameterErrMsg = void 0;
+exports.FailedSaneParameterCheck = exports.SaneParameterErrMsg = void 0;
+exports.assertSaneParameterisation = assertSaneParameterisation;
 /**
  * Error message constants.
  * @remarks
@@ -60,4 +61,3 @@ function assertSaneParameterisation(P, a, _b) {
         throw new FailedSaneParameterCheck(SaneParameterErrMsg.SANE_PARAMS_A);
     }
 }
-exports.assertSaneParameterisation = assertSaneParameterisation;

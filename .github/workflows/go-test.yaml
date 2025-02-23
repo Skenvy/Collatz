@@ -25,6 +25,8 @@ defaults:
   run:
     shell: bash
     working-directory: go
+env:
+  development_go_version: 1.18
 jobs:
   quick-test:
     name: Go 🔷🐀🔷 Quick Test 🦂
@@ -32,11 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
+      uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
       with:
-        go-version: '1.18'
+        go-version: ${{ env.development_go_version }}
     - name: 🦂 Test
       run: make test
   full-test:
@@ -50,11 +52,18 @@ jobs:
       matrix:
         go-version: ['1.13', '1.14', '1.15', '1.16', '1.17', '1.18']
         os: [ubuntu-latest, macOS-latest, windows-latest]
+        exclude:
+        - go-version: '1.13'
+          os: macOS-latest
+        - go-version: '1.14'
+          os: macOS-latest
+        - go-version: '1.15'
+          os: macOS-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔷🐀🔷 Set up Go ${{ matrix.version }}
-      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
+      uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
       with:
         go-version: ${{ matrix.go-version }}
     - name: 🦂 Test
@@ -76,11 +85,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
+      uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
       with:
-        go-version: '1.18'
+        go-version: ${{ env.development_go_version }}
     - name: 🚱➡🚰 Format
       run: make format
   # Docs step is optional depending on language
@@ -89,9 +98,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔷🐀🔷 Set up Go
-      uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
+      uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
       with:
         go-version: '1.13'
     - name: 📄 Docs

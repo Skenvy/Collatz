@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: Merge 🧬${{ inputs.merge_from }}🧬 into 🐱‍👤 gh-pages 📄
       run: |
         git config --local user.email "actions@github.com"
@@ -71,12 +71,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       with:
         ref: gh-pages
     # https://github.com/actions/configure-pages
     - name: 📄 Setup Pages
-      uses: actions/configure-pages@1f0c5cde4bc74cd7e1254d0cb4de8d49e9068c7d # v4.0.0
+      uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
     # # https://github.com/actions/jekyll-build-pages -- default config would be ~
     # - name: 🛠️ Build 🐕 Jekyll
     #   uses: actions/jekyll-build-pages@058068233b22675635bdf8dfa178d6ae77f12694 # v1.0.8
@@ -84,7 +84,7 @@ jobs:
     #     source: ./
     #     destination: ./_site
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
       with:
         ruby-version: ${{ env.development_ruby_version }}
         rubygems: ${{ env.development_rubygems_version }}
@@ -97,7 +97,7 @@ jobs:
       run: make build
     # https://github.com/actions/upload-pages-artifact
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@a753861a5debcf57bf8b404356158c8e1e33150c # v2.0.0
+      uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
       with:
         name: jekyll-tar
         path: _site/
@@ -116,6 +116,6 @@ jobs:
     # https://github.com/actions/deploy-pages
     - name: 🚀 Deploy to GitHub 🐱‍👤 Pages 📄
       id: deployment
-      uses: actions/deploy-pages@12ab2b16cf43a7a061fe99da74b6f8f11fb77f5b # v2.0.3
+      uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
       with:
         artifact_name: jekyll-tar

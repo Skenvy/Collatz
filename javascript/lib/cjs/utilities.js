@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stoppingTimeTerminus = exports.SequenceState = exports.VERIFIED_MINIMUM = exports.VERIFIED_MAXIMUM = exports.KNOWN_CYCLES = void 0;
+exports.SequenceState = exports.VERIFIED_MINIMUM = exports.VERIFIED_MAXIMUM = exports.KNOWN_CYCLES = void 0;
+exports.stoppingTimeTerminus = stoppingTimeTerminus;
 /** The four known cycles (besides 0 cycling to itself), for the default parameterisation. */
 exports.KNOWN_CYCLES = [[1n, 4n, 2n], [-1n, -2n], [-5n, -14n, -7n, -20n, -10n],
     [-17n, -50n, -25n, -74n, -37n, -110n, -55n, -164n, -82n, -41n, -122n, -61n, -182n, -91n, -272n, -136n, -68n, -34n]];
@@ -55,4 +56,3 @@ function stoppingTimeTerminus(n, totalStop) {
         return (x) => { return x > n && x < 0; };
     }
 }
-exports.stoppingTimeTerminus = stoppingTimeTerminus;

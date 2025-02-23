@@ -25,6 +25,9 @@ defaults:
   run:
     shell: bash
     working-directory: ruby
+env:
+  development_ruby_version: 3.3.6
+  disable_rvm_proctoring: INSTALL_RUBY='' _=''
 jobs:
   quick-test:
     name: Ruby 🔻💎🔻 Quick Test 🦂
@@ -32,16 +35,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 🦂 Test
-      run: make test
+      run: make test ${{ env.disable_rvm_proctoring }}
+    - name: 🧹 Lint
+      run: make lint ${{ env.disable_rvm_proctoring }}
   full-test:
     name: Ruby 🔻💎🔻 Full Test 🦂
     if: >- 
@@ -51,20 +56,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['2.7.0', '3.0', '3.1']
-        os: [ubuntu-latest, macOS-latest, windows-latest] #  # < maybe.
+        version: ['3.0', '3.1', '3.2', '3.3']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔻💎🔻 Set up Ruby ${{ matrix.version }}
-      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
       with:
         ruby-version: ${{ matrix.version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 🦂 Test
-      run: make test
+      run: make test ${{ env.disable_rvm_proctoring }}
+    - name: 🧹 Lint
+      run: make lint ${{ env.disable_rvm_proctoring }}
   codeql:
     name: Ruby 🔻💎🔻 CodeQL 🛡👨‍💻🛡
     if: >- 
@@ -82,13 +89,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@d4526a55538b775af234ba4af27118ed6f8f6677 # v1.172.0
+      uses: ruby/setup-ruby@32110d4e311bd8996b2a82bf2a43b714ccc91777 # v1.221.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 📄 Docs
-      run: make docs
+      run: make docs ${{ env.disable_rvm_proctoring }}

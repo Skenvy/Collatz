@@ -24,6 +24,17 @@ RGBA_NAMES_MAP = {
     ##### C# #####
     # TODO
 
+    ##### Gleam #####
+    'Gleam Faff Pink': (255, 175, 243, 255), #ffaff3
+    'Gleam White': (254, 254, 252, 255), #fefefc
+    'Gleam Unnamed Blue': (166, 240, 252, 255), #a6f0fc
+    'Gleam Aged Plastic Yellow': (255, 251, 232, 255), #fffbe8
+    'Gleam Unexpected Aubergine': (88, 67, 85, 255), #584355
+    'Gleam Underwater Blue': (41, 45, 62, 255), #292d3e
+    'Gleam Charcoal': (47, 47, 47, 255), #2f2f2f
+    'Gleam Black': (30, 30, 30, 255), #1e1e1e
+    'Gleam Blacker': (21, 21, 21, 255), #151515
+
     ##### Go #####
     # Primary
     'Gopher Blue': (1, 173, 216, 255), #00ADD8
@@ -82,7 +93,14 @@ RGBA_NAMES_MAP = {
     'Julia Medium Orchid': (180, 82, 205, 255), #B452CD
 
     ##### LaTeX #####
-    # TODO
+    # The two colours used in the hummingbird logo
+    'LaTeX Teal': (0, 128, 128, 255), #008080
+    'LaTeX Green': (55, 200, 113, 255), #37C871
+    # Slight variations of the main teal that aren't in the logo
+    'LaTeX Teal Light': (0, 160, 160, 255), #00A0A0
+    'LaTeX Teal Dark': (0, 96, 96, 255), #006060
+    'LaTeX Teal Light-Off': (96, 176, 176, 255), #60B0B0
+    'LaTeX Teal Dark-Off': (32, 80, 80, 255), #205050
 
     ##### Python #####
     'Python Blue Light': (90, 159, 212, 255), #5a9fd4
@@ -155,6 +173,12 @@ _ = RGBA_NAMES_MAP
 #     (1, {_['COLOUR NAME']: 6}),
 # ]
 
+_GLEAM_PALETTE = [
+    (6, {_['Gleam Faff Pink']: 8, _['Gleam White']: 1, _['Gleam Charcoal']: 1}),
+    (3, {_['Gleam Unnamed Blue']: 1, _['Gleam Underwater Blue']: 1, _['Gleam Unexpected Aubergine']: 1}),
+    (1, {_['Gleam Black']: 4, _['Gleam Blacker']: 2, _['Gleam Aged Plastic Yellow']: 4}),
+]
+
 _GO_PALETTE = [
     (6, {_['Gopher Blue']: 6, _['Go Light Blue']: 3, _['Go Aqua']: 1}),
     (3, {_['Go Fuchsia']: 5, _['Go Yellow']: 5}),
@@ -182,9 +206,11 @@ _JULIA_PALETTE = [
     (1, {_['Julia Blue']: 6, _['Blue']: 3, _['Blue 2']: 1}),
 ]
 
-# _LATEX_PALETTE = [ # TODO
-#     (1, {_['COLOUR NAME']: 6}),
-# ]
+_LATEX_PALETTE = [
+    (6, {_['LaTeX Teal']: 4, _['LaTeX Green']: 1, }),
+    (3, {_['LaTeX Teal Light']: 1, _['LaTeX Teal Dark']: 1}),
+    (1, {_['LaTeX Teal Light-Off']: 1, _['LaTeX Teal Dark-Off']: 1}),
+]
 
 _PYTHON_PALETTE = [
     (1, {_['Python Yellow Light']: 2, _['Python Yellow Mid']: 6, _['Python Yellow Dark']: 2}),
@@ -243,11 +269,12 @@ _MAIN_LIGHT_PALETTE = [
 
 PALETTES = {
     # 'CSharp': _CSHARP_PALETTE, # TODO
+    'Gleam': _GLEAM_PALETTE,
     'Go': _GO_PALETTE,
     'Java': _JAVA_PALETTE,
     'JavaScript': _JAVASCRIPT_PALETTE,
     'Julia': _JULIA_PALETTE,
-    # 'LaTeX': _LATEX_PALETTE, # TODO
+    'LaTeX': _LATEX_PALETTE,
     'Python': _PYTHON_PALETTE,
     'R': _R_PALETTE,
     'Ruby': _RUBY_PALETTE,

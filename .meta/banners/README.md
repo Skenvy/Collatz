@@ -5,6 +5,7 @@ The original is included as well as scripts to generate the modifications, with 
 
 ## Generate the modifications
 The end of `./.meta/banners/modifications/img.py` shows both `recreate_blank_image()` and `recreate_contiguities_map_file()`, and how to use `colour_in_blank_image_with_palette(new_image_path, desired_ratios)`.
+Make a venv (I use [these aliases](https://github.com/Skenvy/dotfiles/blob/57638c35a0eb097e3b2a8dc9509b45986ebbc671/.bash_aliases#L34-L35)) and `pip install pillow` then you can `python3 img.py`.
 
 ## Where are the modifications?
 See them all [here](https://github.com/Skenvy/Collatz/blob/main/.meta/banners/modifications/EXAMPLES.md).
@@ -64,6 +65,9 @@ While the above would be ideal, it turns out that GitHub doesn't render a lot of
 ## Palettes
 ### C#
 \#TODO
+### Gleam
+[Gleam's Branding](https://gleam.run/branding/) "All pretty and pink 💖". They list "Gleam's favourite colours":
+`#ffaff3` Faff Pink, `#fefefc` White, `#a6f0fc` Unnamed Blue, `#fffbe8` Aged Plastic Yellow, `#584355` Unexpected Aubergine, `#292d3e` Underwater Blue, `#2f2f2f` Charcoal, `#1e1e1e` Black, `#151515` Blacker.
 ### Go
 [Brand and Trademark Usage Guidelines](https://go.dev/brand) and [Go's New Brand](https://go.dev/blog/go-brand). A [go themed slide deck](https://go.dev/s/presentation-theme). And a [brand book](https://go.dev/s/brandbook).
 [Brand book v1.9.5](https://go.dev/assets/go-brand-book-v1.9.5.pdf) includes several colours; primary Gopher Blue `#00ADD8`, Light Blue `#5DC9E2`, Aqua `#00A29C`, and for a high contrast background black `#000000`. There are two "secondary colours" Fuchsia `#CE3262` and Yellow `#FDDD00`. There are several un-named "More colours"; a darker aqua `#00758D`, a grey `#555759`, a dark purple `#402B56`, and a light grey `#DBD9D6`.
@@ -78,7 +82,7 @@ We want our palette to be "JavaScript Yellow", "TypeScript Blue", "Node Green", 
 ### Julia
 A description of the julia logo and colours can be found at [JuliaLang/julia-logo-graphics](https://github.com/JuliaLang/julia-logo-graphics), or [just the colours graphic](https://raw.githubusercontent.com/JuliaLang/julia-logo-graphics/master/images/julia-colors.svg) which lists "Julia" "Blue" `#4063D8`, "Green" `#389826`, "Purple" `#9558B2`, and "Red" `#CB3C33`, as well as "Royal Blue" `#4169E0`, "Forest Green" `#228B22`, "Medium Orchid" `#B452CD`, and "Brown" (but it's red?) `#CD3333`.
 ### LaTeX
-\#TODO
+The [LaTeX Logos Usage](https://www.latex-project.org/about/logos/) site includes the [LaTeX hummingbird logo](https://www.latex-project.org/about/logos/latex-project-logo_288x288.svg). We can download this svg and see the only two non-black / non-white colours are the green of the eye `#37c871` and the teal of the body `#008080`.
 ### Python
 [The python logo](https://www.python.org/community/logos/). We can download one of the svg's and see the yellows, dark `#ffd43b` and light `#ffe873`, and the blues, light `#5a9fd4` and dark `#306998`. There are also 5 greys, from darkest to lightest `#7f7f7f`, `#b2b2b2`, `#b3b3b3`, `#b8b8b8`, `#f4f4f4` (almost white).
 ### R
