@@ -98,6 +98,16 @@ We want different processes for the workflows across four essential categories.
         - '.github/workflows/some_lang-*'
     ```
     * Entire Scope CI
+
+It would also be nice to run each of the tests once a month. We're in an AEST+AEDT time zone, and the crons are UTC. It'd be nice to run a test workflow a day, in the morning, say around 9AM for the time it would be in AEST/AEDT. Daylight savings times take effect first Sunday in October and April, so if we are setting the crons to _some day in the month after the 7th_, then April won't be AEDT but October will be. Months `1,2,3,10,11,12` will be AEDT and months `4,5,6,7,8,9` will be AEST. To know what UTC time to set for, we subtract the `11` hours in AEDT, and `10` hours in AEST.
+So if we want 9AM tests spread across days, the crons would be something like [`0 22 14 1,2,3,10,11,12 *`](https://crontab.guru/#0_22_14_1,2,3,10,11,12_*) and [`0 23 14 4,5,6,7,8,9 *`](https://crontab.guru/#0_23_14_4,5,6,7,8,9_*) (as an example for the 15th day of the month).
+```yaml
+on:
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
+```
+
 ## Templates for workflows; `*-test.yaml` and `*-build.yaml`
 Can be search+replace'd on
 * `<Language>` + `<language>` + `<language-emojis>`
@@ -117,6 +127,7 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
   pull_request:
     branches:
@@ -124,13 +135,19 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
   run:
     shell: bash
     working-directory: <language>
+env:
+  development_<language>_version: <language-version>
 jobs:
   quick-test:
     name: <Language> <language-emojis> Quick Test 🦂
@@ -138,16 +155,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
         arch: 'x64'
     - name: 🧱 Install build dependencies
       run: make <make-environment-dependencies>
     - name: 🦂 Test
       run: make test
+    - name: 🧹 Lint
+      run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
   full-test:
     name: <Language> <language-emojis> Full Test 🦂
     if: >- 
@@ -162,7 +183,7 @@ jobs:
         arch: [x64]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language> ${{ matrix.version }}
       uses: <gh-action-setup-language@semver>
       with:
@@ -171,32 +192,90 @@ jobs:
     # TODO: Maybe another step to install test dependencies
     - name: 🦂 Test
     # TODO: run: or uses: something depending on the languges
+    - name: 🧹 Lint
+      run: make lint
+    - name: ⚖ Does the checked source match the built result? 
+      run: make verify_built_checkin
+  built-example:
+    name: <Language> <language-emojis> Build Example 🦛
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+        arch: 'x64'
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 🧱 Build
+      run: make build
+    - name: 🆙 Upload dists
+      uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4.3.4
+      with:
+        name: Package
+        path: <language>/some-artefacts/path-to-one-file.pkg
+        if-no-files-found: error
+        retention-days: 1
+  usage-demonstration:
+    name: <Language> <language-emojis> Usage Demonstration 🦏
+    needs: [built-example]
+    if: >-
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: <language>/.demo
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+        arch: 'x64'
+    - name: 🆒 Download dists
+      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      with:
+        name: Package
+        path: <language>/.demo
+    - name: 🦛 Install this package
+      run: make install
+    - name: 🦏 Run usage demonstration
+      run: make demo
   # # CodeQL step is dependent on https://aka.ms/codeql-docs/language-support
-  # codeql:
-  #   name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
-  #   if: >- 
-  #     ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
-  #     (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
-  #   permissions:
-  #     actions: read
-  #     contents: read
-  #     security-events: write
-  #   uses: ./.github/workflows/github-codeql.yaml
-  #   with:
-  #     language: 'lLanguage>'
-  # # Docs step is optional depending on language
-  # docs:
-  #   name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: 🏁 Checkout
-  #     uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
-  #   - name: <language-emojis> Set up <Language>
-  #     uses: <gh-action-setup-language@semver>
-  #     with:
-  #       version: <language-version>
-  #   - name: 📄 Docs
-  #     run: make docs
+  codeql:
+    name: <Language> <language-emojis> CodeQL 🛡👨‍💻🛡
+    if: >- 
+      ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.event.ref == 'refs/heads/main') }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    uses: ./.github/workflows/github-codeql.yaml
+    with:
+      language: '<Language>'
+  # Docs step is optional depending on language
+  docs:
+    name: <Language> <language-emojis> Docs 📄 Quick Test 🦂
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+    - name: <language-emojis> Set up <Language>
+      uses: <gh-action-setup-language@semver>
+      with:
+        version: ${{ env.development_<language>_version }}
+    - name: 🧱 Install build dependencies
+      run: make setup
+    - name: 📄 Docs
+      run: make docs
 ```
 ## `<language>-build.yaml`
 ```yaml
@@ -208,6 +287,7 @@ on:
     paths:
     - '<language>/**'
     - '!<language>/**.md'
+    - '!<language>/.vscode/**'
     - '.github/workflows/<language>-*'
   workflow_dispatch:
 permissions: {}
@@ -215,12 +295,19 @@ defaults:
   run:
     shell: bash
     working-directory: <language>
+env:
+  development_<language>_version: <language-version>
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
     uses: ./.github/workflows/github-context.yaml
   test:
     name: <Language> <language-emojis> Test 🦂
+    # Needs these permissions if the test workflow runs a CodeQL step
+    # permissions:
+    #   actions: read
+    #   contents: read
+    #   security-events: write
     uses: ./.github/workflows/<language>-test.yaml
   workflow-conditions:
     name: 🛑🛑🛑 Stop builds that didn't change the release version 🛑🛑🛑
@@ -230,14 +317,14 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
       with:
         fetch-depth: 2
     - name: Check if version files changed
       id: version-file-check
       run: |
         export VERSION_FILE="<language>/<version-file>"
-        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "::set-output name=version-file-changed::${{toJSON(true)}}" || echo "::set-output name=version-file-changed::${{toJSON(false)}}"
+        [ "$(git diff HEAD^1.. --name-only | grep -e "^$VERSION_FILE$")" == "$VERSION_FILE" ] && echo "version-file-changed=${{toJSON(true)}}" >> $GITHUB_OUTPUT || echo "version-file-changed=${{toJSON(false)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-file-check
       run: echo "::Notice::version-file-changed is ${{ fromJSON(steps.version-file-check.outputs.version-file-changed) }}"
     - name: Check if version specified in version file has not released.
@@ -245,7 +332,7 @@ jobs:
       run: |
         git fetch --tags
         export VER=$(<version-extracting-command>)
-        [ -z "$(git tag -l "<language>-v$VER")" ] && echo "::set-output name=version-tag-exists::${{toJSON(false)}}" || echo "::set-output name=version-tag-exists::${{toJSON(true)}}"
+        [ -z "$(git tag -l "<language>-v$VER")" ] && echo "version-tag-exists=${{toJSON(false)}}" >> $GITHUB_OUTPUT || echo "version-tag-exists=${{toJSON(true)}}" >> $GITHUB_OUTPUT
     - name: Notify on version-tag-exists
       run: echo "::Notice::version-tag-exists is ${{ fromJSON(steps.version-tag-exists.outputs.version-tag-exists) }}"
   # Now any step that should only run on the version change can use
@@ -261,16 +348,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
     - name: 🧱 Install build dependencies
       run: make <make-environment-dependencies>
     # Some step that uses `make build`
     # - name: 🆙 Upload dists
-    #   uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8 # v3.1.0
+    #   uses: actions/upload-artifact@0b2256b8c012f0828dc542b3febcab082c67f72b # v4.3.4
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts/
@@ -283,9 +370,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+    #   uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -303,9 +390,9 @@ jobs:
     # Although the dists are built uses checkout to satisfy refs/tags existence
     # which were created by the release, prior to uploading to pypi.
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     # - name: 🆒 Download dists
-    #   uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+    #   uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
     #   with:
     #     name: some-artefacts
     #     path: <language>/some-artefacts
@@ -319,14 +406,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
     - name: <language-emojis> Set up <Language>
       uses: <gh-action-setup-language@semver>
       with:
-        version: <language-version>
+        version: ${{ env.development_<language>_version }}
+    # Run the following first to create the empty orphan
+    # git checkout --orphan gh-pages-<language>
+    # rm .git/index ; git clean -fdx
+    # git commit -m "Initial empty orphan" --allow-empty
+    # git push --set-upstream origin gh-pages-<language>
     - name: 📄 Docs
-      run: |
-        # make docs_deploy <<< should be a recipe that pushes docs to 'gh-pages-<language>'
+      run: |-
+        git config --local user.email "actions@github.com"
+        git config --local user.name "Github Actions"
+        export SHORTSHA=$(git rev-parse --short HEAD)
+        git fetch origin gh-pages-<language>:gh-pages-<language>
+        git symbolic-ref HEAD refs/heads/gh-pages-<language>
+        # What gets copied and where might vary but generally;
+        cd .. && mv <language>/<built-docs-path> ../MERGE_TARGET
+        git rm -rf . && git clean -fxd && git reset
+        shopt -s dotglob && mkdir <language> && mv ../MERGE_TARGET/* <language>/
+        # Then back to normal;
+        git add .
+        git commit -m "Build based on $SHORTSHA" --allow-empty
+        git push --set-upstream origin gh-pages-<language>
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   docs-merge:
@@ -334,6 +438,8 @@ jobs:
     needs: [docs]
     permissions:
       contents: write
+      pages: write
+      id-token: write
     uses: ./.github/workflows/github-pages.yaml
     with:
       merge_from: 'gh-pages-<language>'

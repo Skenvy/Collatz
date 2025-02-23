@@ -42,17 +42,17 @@ NULL
 #' # overflowing integers by default. To venture into the world of arbitrary
 #' # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
 #' stopping_time(99999999999999999999)
-#' stopping_time(as.bigz("99999999999999999999"))
+#' stopping_time(gmp::as.bigz("99999999999999999999"))
 #' # As an extra note, the original motivation for creating a range of Collatz
 #' # themed packages came from some earlier scripts for calculating the stopping
 #' # distances under certain parameterisations. An inconsequential result of
 #' # which was observing that all of the following, for however high `k` goes,
 #' # should equal `96`!
 #' stopping_time(27)
-#' stopping_time(27+as.bigz("576460752303423488"))
-#' stopping_time(27+(2*as.bigz("576460752303423488")))
-#' stopping_time(27+(3*as.bigz("576460752303423488")))
-#' stopping_time(27+(4*as.bigz("576460752303423488")))
+#' stopping_time(27+gmp::as.bigz("576460752303423488"))
+#' stopping_time(27+(2*gmp::as.bigz("576460752303423488")))
+#' stopping_time(27+(3*gmp::as.bigz("576460752303423488")))
+#' stopping_time(27+(4*gmp::as.bigz("576460752303423488")))
 #' @export
 stopping_time <- function(initial_value, P=2, a=3, b=1,
     max_stopping_time=1000, total_stopping_time=FALSE){

@@ -30,7 +30,7 @@ NULL
 #' # overflowing integers by default. To venture into the world of arbitrary
 #' # integer inputs we can use an `as.bigz` from `gmp`. Compare the two;
 #' collatz_function(99999999999999999999)
-#' collatz_function(as.bigz("99999999999999999999"))
+#' collatz_function(gmp::as.bigz("99999999999999999999"))
 #' @export
 collatz_function <- function(n, P=2, a=3, b=1){
     assert_sane_parameterication(P,a,b)

@@ -11,7 +11,7 @@
 #' @docType package
 #' @name collatz
 #' @import gmp
-NULL
+"_PACKAGE"
 
 library(gmp)
 

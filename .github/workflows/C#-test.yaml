@@ -6,6 +6,7 @@ on:
     paths:
     - 'C#/**'
     - '!C#/**.md'
+    - '!C#/.vscode/**'
     - '.github/workflows/C#-*'
   pull_request:
     branches:
@@ -13,7 +14,11 @@ on:
     paths:
     - 'C#/**'
     - '!C#/**.md'
+    - '!C#/.vscode/**'
     - '.github/workflows/C#-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
   workflow_call:
 permissions: {}
 defaults:
@@ -27,4 +32,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # v3.1.0
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7

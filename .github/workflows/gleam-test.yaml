@@ -1,0 +1,37 @@
+name: Gleam 💖⭐💖 Tests 🦂
+on:
+  push:
+    branches-ignore:
+    - 'main'
+    paths:
+    - 'gleam/**'
+    - '!gleam/**.md'
+    - '!gleam/.vscode/**'
+    - '.github/workflows/gleam-*'
+  pull_request:
+    branches:
+    - 'main'
+    paths:
+    - 'gleam/**'
+    - '!gleam/**.md'
+    - '!gleam/.vscode/**'
+    - '.github/workflows/gleam-*'
+  schedule: # 9AM on the 15th
+  - cron: 0 22 14 1,2,3,10,11,12 * # AEDT Months
+  - cron: 0 23 14 4,5,6,7,8,9 *    # AEST Months
+  workflow_call:
+permissions: {}
+defaults:
+  run:
+    shell: bash
+    working-directory: gleam
+env:
+  development_gleam_version: 1
+jobs:
+  quick-test:
+    name: Gleam 💖⭐💖 Quick Test 🦂
+    if: ${{ github.event_name == 'push' && !(github.event.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🏁 Checkout
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7

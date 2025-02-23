@@ -27,7 +27,7 @@ module Collatz # rubocop:disable Style/Documentation
     #
     # @param +Integer+ initial_value The value to begin the hailstone sequence from.
     #
-    # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+    # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
     #
     # @param +Integer+ *a:* Factor by which to multiply n.
     #
@@ -115,9 +115,9 @@ module Collatz # rubocop:disable Style/Documentation
       if total_stop
         lambda { |x| x == 1 }
       elsif n >= 0
-        lambda { |x| (x < n && x.positive?) }
+        lambda { |x| x < n && x.positive? }
       else
-        lambda { |x| (x > n && x.negative?) }
+        lambda { |x| x > n && x.negative? }
       end
     end
   end
@@ -135,7 +135,7 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @param +Integer+ *initial_value:* The value to begin the hailstone sequence from.
   #
-  # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+  # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
   #
   # @param +Integer+ *a:* Factor by which to multiply n.
   #
@@ -170,7 +170,7 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @param +Integer+ *initial_value:* The value for which to find the stopping time.
   #
-  # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+  # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
   #
   # @param +Integer+ *a:* Factor by which to multiply n.
   #

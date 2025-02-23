@@ -11,6 +11,8 @@ updates:
   directory: "/C#"
   schedule:
     interval: monthly
+# Gleam has no supported ecosystem _itself_ but might be alerted via a mix/hex
+# setup, as mix for elixir is supported, and gleam uses the same hex pkg host.
 - package-ecosystem: gomod
   directory: "/go"
   schedule:
@@ -19,16 +21,58 @@ updates:
   directory: "/java"
   schedule:
     interval: weekly
-# Julia has no supported ecosystem
-# https://github.com/dependabot/dependabot-core/issues/2105
 - package-ecosystem: npm
   directory: "/javascript"
   schedule:
-    interval: monthly
+    interval: weekly
+  groups:
+    eslint:
+      patterns:
+      - "eslint"
+      - "eslint-config-*"
+      - "eslint-plugin-*"
+      - "@typescript-eslint/*"
+    mocha-chai:
+      patterns:
+      - "mocha"
+      - "chai"
+      - "@types/mocha"
+      - "@types/chai"
+# Julia has no supported ecosystem
+# https://github.com/dependabot/dependabot-core/issues/2105
 - package-ecosystem: pip
   directory: "/python"
   schedule:
     interval: weekly
+  ignore:
+  # until we drop py 3.8
+  - dependency-name: "alabaster"
+  # https://github.com/sphinx-doc/sphinx/pull/11511 -- until we drop py 3.8
+  - dependency-name: "sphinx"
+    versions: [">=7.2"]
+  - dependency-name: "sphinx-*"
+  - dependency-name: "sphinxcontrib-*"
+  groups:
+    flake8:
+      patterns:
+      - "flake8"
+      - "pyflakes"
+      - "pycodestyle"
+    sphinx:
+      patterns:
+      - "sphinx*"
+      - "furo"
+      - "myst-parser"
+    everything-else:
+      patterns:
+      - "*"
+      exclude-patterns:
+      - "flake8"
+      - "pyflakes"
+      - "pycodestyle"
+      - "sphinx*"
+      - "furo"
+      - "myst-parser"
 # R has no supported ecosystem
 # https://github.com/dependabot/dependabot-core/issues/2042
 - package-ecosystem: bundler

@@ -35,7 +35,7 @@ module Collatz # rubocop:disable Style/Documentation
     #
     # @param +Integer+ *max_orbit_distance:* The maximum distance/orbit/branch length to travel.
     #
-    # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+    # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
     #
     # @param +Integer+ *a:* Factor by which to multiply n.
     #
@@ -120,7 +120,7 @@ module Collatz # rubocop:disable Style/Documentation
     #
     # @param +Integer+ *max_orbit_distance:* The maximum distance/orbit/branch length to travel.
     #
-    # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+    # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
     #
     # @param +Integer+ *a:* Factor by which to multiply n.
     #
@@ -167,7 +167,7 @@ module Collatz # rubocop:disable Style/Documentation
   # an optional argument like max_stopping_time / max_total_stopping_time, as it is the
   # intended target of orbits to obtain, rather than a limit to avoid uncapped computation.
   #
-  # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+  # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
   #
   # @param +Integer+ *a:* Factor by which to multiply n.
   #

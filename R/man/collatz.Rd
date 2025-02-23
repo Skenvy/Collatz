@@ -2,6 +2,7 @@
 % Please edit documentation in R/utils.R
 \docType{package}
 \name{collatz}
+\alias{collatz-package}
 \alias{collatz}
 \title{Collatz}
 \description{
@@ -13,4 +14,19 @@ The parameterisation uses the same (P,a,b) notation as Conway's generalisations.
 Besides the function and reverse function, there is also functionality to retrieve
 the hailstone sequence, the "stopping time"/"total stopping time", or tree-graph.
 The only restriction placed on parameters is that both P and a can't be 0.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/Skenvy/Collatz}
+  \item \url{https://github.com/Skenvy/Collatz/tree/main/R}
+  \item \url{https://skenvy.github.io/Collatz/R/}
+  \item \url{https://skenvy.github.io/Collatz/R/pdf/}
+  \item Report bugs at \url{https://github.com/Skenvy/Collatz/issues/new/choose}
+}
+
+}
+\author{
+\strong{Maintainer}: Nathan Levett \email{nathan.a.z.levett@gmail.com}
+
 }

@@ -1,0 +1,9 @@
+##### This attr is necessitated by the javascript implementation.
+# Per this eslint rule https://eslint.org/docs/latest/rules/linebreak-style we
+# need to prevent line endings from being finessed by the windows runners in
+# our GitHub Actions, which would otherwise change the line ending and fail.
+*.js text eol=lf
+*.ts text eol=lf
+*.cjs text eol=lf
+*.mjs text eol=lf
+package.json text eol=lf

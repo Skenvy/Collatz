@@ -1,0 +1,6 @@
+{
+  // https://code.visualstudio.com/docs/languages/ruby
+  "recommendations": [
+    "Shopify.ruby-lsp",
+  ]
+}
