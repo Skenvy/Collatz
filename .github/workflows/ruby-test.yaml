@@ -27,6 +27,7 @@ defaults:
     working-directory: ruby
 env:
   development_ruby_version: 3.3.6
+  disable_rvm_proctoring: INSTALL_RUBY='' _=''
 jobs:
   quick-test:
     name: Ruby 🔻💎🔻 Quick Test 🦂
@@ -41,9 +42,9 @@ jobs:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 🦂 Test
-      run: make test
+      run: make test ${{ env.disable_rvm_proctoring }}
   full-test:
     name: Ruby 🔻💎🔻 Full Test 🦂
     if: >- 
@@ -64,9 +65,9 @@ jobs:
         ruby-version: ${{ matrix.version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 🦂 Test
-      run: make test
+      run: make test ${{ env.disable_rvm_proctoring }}
   codeql:
     name: Ruby 🔻💎🔻 CodeQL 🛡👨‍💻🛡
     if: >- 
@@ -91,6 +92,6 @@ jobs:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 📄 Docs
-      run: make docs
+      run: make docs ${{ env.disable_rvm_proctoring }}

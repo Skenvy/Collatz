@@ -16,6 +16,7 @@ defaults:
     working-directory: ruby
 env:
   development_ruby_version: 3.3.6
+  disable_rvm_proctoring: INSTALL_RUBY='' _=''
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -73,9 +74,9 @@ jobs:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 💎 Build gem
-      run: make build
+      run: make build ${{ env.disable_rvm_proctoring }}
     - name: 🆙 Upload dists
       uses: actions/upload-artifact@50769540e7f4bd5e21e526ee35c689e35e0d6874 # v4.4.0
       with:
@@ -119,7 +120,7 @@ jobs:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🔑 Keycutter for GitHub
-      run: make setup_github
+      run: make setup_github ${{ env.disable_rvm_proctoring }}
     - name: 🆒 Download dists
       uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
       with:
@@ -131,7 +132,7 @@ jobs:
       run: |
         echo -e "---\n:github: Bearer $GITHUB_TOKEN" > ~/.gem/credentials
         chmod 0600 ~/.gem/credentials
-        make push_github
+        make push_github ${{ env.disable_rvm_proctoring }}
         rm ~/.gem/credentials
     - name: 📦 Publish to RubyGems
       env:
@@ -139,7 +140,7 @@ jobs:
       run: |
         echo -n "$RUBYGEMS_API_KEY_BASE64" | base64 --decode > ~/.gem/credentials
         chmod 0600 ~/.gem/credentials
-        make push_rubygems
+        make push_rubygems ${{ env.disable_rvm_proctoring }}
         rm ~/.gem/credentials
   docs:
     name: Ruby 🔻💎🔻 Docs 📄
@@ -156,9 +157,9 @@ jobs:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
-      run: make setup
+      run: make setup ${{ env.disable_rvm_proctoring }}
     - name: 📄 Docs Generation
-      run: make docs
+      run: make docs ${{ env.disable_rvm_proctoring }}
     - name: 📄 Docs Publishing
       run: |
         git config --local user.email "actions@github.com"
