@@ -19,12 +19,12 @@ gem install collatz --source "https://rubygems.pkg.github.com/skenvy"
 ### Add to the Gemfile
 [Add the RubyGems hosted gem](https://rubygems.org/gems/collatz);
 ```ruby
-gem "collatz", ">= 0.1.0
+gem "collatz", ">= 1.0.0
 ```
 [Add the GitHub hosted gem](https://github.com/Skenvy/Collatz/packages/1636643);
 ```ruby
 source "https://rubygems.pkg.github.com/skenvy" do
-  gem "collatz", ">= 0.1.0"
+  gem "collatz", ">= 1.0.0"
 end
 ```
 ## Usage
@@ -48,4 +48,5 @@ git clone https://github.com/Skenvy/Collatz.git && cd Collatz/ruby && make setup
 ### Iterative development
 The majority of `make` recipes for this are just wrapping a `bundle` invocation of `rake`.
 * `make docs` will recreate the RDoc docs
-* `make test` will run both the RSpec tests and the RuboCop linter.
+* `make test` will run the RSpec tests.
+* `make lint` will run the RuboCop linter.
