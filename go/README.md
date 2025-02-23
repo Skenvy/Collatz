@@ -20,6 +20,7 @@ The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ## [GoDoc generated docs](https://skenvy.github.io/Collatz/go)
 ## [Generated Coverage](https://skenvy.github.io/Collatz/go/coverage.html)
 ## Developing
+Install [go](https://go.dev/doc/install). The latest version should be fine, because you can [download other versions](https://go.dev/doc/manage-install) once you have installed whatever the latest is. See the list of releases that can be downloaded [here](https://go.dev/dl/). See the [release history](https://go.dev/doc/devel/release).
 ### The first time setup
 ```
 git clone https://github.com/Skenvy/Collatz.git && cd Collatz/go && make godoc

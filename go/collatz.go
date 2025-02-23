@@ -195,7 +195,7 @@ func (ss SequenceState) String() (StateString string) {
 //  FailedSaneParameterCheck(SANE_PARAMS_P)
 //  FailedSaneParameterCheck(SANE_PARAMS_A)
 // Has arguments;
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 func assertSaneParameterication(P *big.Int, a *big.Int, b *big.Int) error {
@@ -223,7 +223,7 @@ func assertSaneParameterication(P *big.Int, a *big.Int, b *big.Int) error {
 
 // Returns the result of a single application of a Collatz-esque function.
 //  - n: The value on which to perform the Collatz-esque function
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 func ParameterisedFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (result *big.Int, sanity error) {
@@ -252,7 +252,7 @@ func Function(n *big.Int) (result *big.Int) {
 // If there is no error in the parameters, then the value of preNDivP will always
 // be an actual result, while preANplusB may either be a result, or nil.
 //  - n: The value on which to perform the reverse Collatz function
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P)
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P)
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 func ParameterisedReverseFunction(n *big.Int, P *big.Int, a *big.Int, b *big.Int) (preNDivP *big.Int, preANplusB *big.Int, sanity error) {
@@ -333,7 +333,7 @@ type HailstoneSequence struct {
 
 // Initialise and compute a new Hailstone Sequence.
 //  - initialValue: The value to begin the hailstone sequence from.
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 //  - maxTotalStoppingTime: Maximum amount of times to iterate the function, if 1 is not reached.
@@ -413,7 +413,7 @@ func ParameterisedHailstoneSequence(initialValue *big.Int, P *big.Int, a *big.In
 
 // Initialise and compute a new Hailstone Sequence.
 //  - initialValue: The value to begin the hailstone sequence from.
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 //  - maxTotalStoppingTime: Maximum amount of times to iterate the function, if 1 is not reached.
@@ -435,7 +435,7 @@ func NewHailstoneSequence(initialValue *big.Int, maxTotalStoppingTime int) *Hail
 // to reach 1, where 0 is considered a "total stop" that should not occur as
 // it does form a cycle of length 1.
 //  - initialValue: The value for which to find the stopping time.
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 //  - maxStoppingTime: Maximum amount of times to iterate the function,
@@ -513,7 +513,7 @@ type TreeGraphNode struct {
 // Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.
 //  - nodeValue: The value for which to find the tree graph node reversal.
 //  - maxOrbitDistance: The maximum distance/orbit/branch length to travel.
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 func newTreeGraphRootNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int, a *big.Int, b *big.Int) (*TreeGraphNode, error) {
@@ -554,7 +554,7 @@ func newTreeGraphRootNode(nodeValue *big.Int, maxOrbitDistance int, P *big.Int, 
 // recursively determining subsequent child nodes.
 //  - nodeValue: The value for which to find the tree graph node reversal.
 //  - maxOrbitDistance: The maximum distance/orbit/branch length to travel.
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 //  - cycleCheck: Checks if this node's value already occurred.
@@ -658,7 +658,7 @@ type TreeGraph struct {
 //    stopping time attempts, so this is not an optional argument like
 //    maxStoppingTime / maxTotalStoppingTime, as it is the intended target
 //    of orbits to obtain, rather than a limit to avoid uncapped computation.
-//  - P: Modulus used to devide n, iff n is equivalent to (0 mod P).
+//  - P: Modulus used to divide n, iff n is equivalent to (0 mod P).
 //  - a: Factor by which to multiply n.
 //  - b: Value to add to the scaled value of n.
 func ParameterisedTreeGraph(initialValue *big.Int, maxOrbitDistance int, P *big.Int, a *big.Int, b *big.Int) (*TreeGraph, error) {
