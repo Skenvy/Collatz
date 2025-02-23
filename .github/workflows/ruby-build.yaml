@@ -14,6 +14,8 @@ defaults:
   run:
     shell: bash
     working-directory: ruby
+env:
+  development_ruby_version: 3.3.6
 jobs:
   context:
     name: GitHub 🐱‍👤 Context 📑
@@ -68,7 +70,7 @@ jobs:
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc # v1.202.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
       run: make setup
@@ -114,7 +116,7 @@ jobs:
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc # v1.202.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🔑 Keycutter for GitHub
       run: make setup_github
@@ -151,7 +153,7 @@ jobs:
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc # v1.202.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
       run: make setup

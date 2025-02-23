@@ -25,6 +25,8 @@ defaults:
   run:
     shell: bash
     working-directory: ruby
+env:
+  development_ruby_version: 3.3.6
 jobs:
   quick-test:
     name: Ruby 🔻💎🔻 Quick Test 🦂
@@ -36,7 +38,7 @@ jobs:
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc # v1.202.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
       run: make setup
@@ -51,8 +53,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: ['2.7.0', '3.0', '3.1']
-        os: [ubuntu-latest, macOS-12, windows-latest] #  # < maybe.
+        version: ['3.0', '3.1', '3.2', '3.3']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -86,7 +88,7 @@ jobs:
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@a2bbe5b1b236842c1cb7dd11e8e3b51e0a616acc # v1.202.0
       with:
-        ruby-version: '2.7'
+        ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
     - name: 🧱 Install build dependencies
       run: make setup
