@@ -67,7 +67,9 @@
     "docs:tsdoc": "typedoc src/index.ts --out docs/tsdoc --tsconfig tsconfig.esm.json",
     "docs:coverage": "mkdir -p docs/coverage && TS_NODE_PROJECT='./tsconfig.mocha.json' nyc --reporter=html --report-dir=./docs/coverage --preserve-comments=true --produce-source-map=true mocha",
     "docs:server": "http-server",
-    "publish:jsr": "jsr publish --dry-run",
+    "publish:jsr:dry-and-dirty": "jsr publish --dry-run --allow-dirty",
+    "publish:jsr:dry": "jsr publish --dry-run",
+    "publish:jsr": "jsr publish",
     "prepack": "npm run build"
   },
   "devDependencies": {
