@@ -10,7 +10,7 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @raise FailedSaneParameterCheck If p or a are 0.
   #
-  # @param +Integer+ p Modulus used to devide n, iff n is equivalent to (0 mod p)
+  # @param +Integer+ p Modulus used to divide n, iff n is equivalent to (0 mod p)
   #
   # @param +Integer+ a Factor by which to multiply n.
   #
@@ -39,7 +39,7 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @param +Integer+ *n:* The value on which to perform the Collatz-esque function.
   #
-  # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+  # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
   #
   # @param +Integer+ *a:* Factor by which to multiply n.
   #
@@ -60,7 +60,7 @@ module Collatz # rubocop:disable Style/Documentation
   #
   # @param +Integer+ *n:* The value on which to perform the reverse Collatz function.
   #
-  # @param +Integer+ *p:* Modulus used to devide n, iff n is equivalent to (0 mod p).
+  # @param +Integer+ *p:* Modulus used to divide n, iff n is equivalent to (0 mod p).
   #
   # @param +Integer+ *a:* Factor by which to multiply n.
   #

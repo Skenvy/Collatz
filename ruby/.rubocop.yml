@@ -1,10 +1,12 @@
 AllCops:
-  TargetRubyVersion: 2.7.0
+  TargetRubyVersion: 3.0.0
   UseCache: false
   SuggestExtensions: false
   # NewCops: enable # would silence the recommendation
   # # to enable new, but would hide which ones were run
 
+Gemspec/AddRuntimeDependency: # new in 1.65
+  Enabled: true
 Gemspec/DeprecatedAttributeAssignment:
   Enabled: true
 Gemspec/DevelopmentDependencies: # new in 1.44
@@ -62,7 +64,13 @@ Lint/AmbiguousOperatorPrecedence:
   Enabled: true
 Lint/AmbiguousRange:
   Enabled: true
+Lint/ArrayLiteralInRegexp: # new in 1.71
+  Enabled: true
 Lint/ConstantOverwrittenInRescue:
+  Enabled: true
+Lint/ConstantReassignment: # new in 1.70
+  Enabled: true
+Lint/CopDirectiveSyntax: # new in 1.72
   Enabled: true
 Lint/DeprecatedConstants:
   Enabled: true
@@ -74,11 +82,15 @@ Lint/DuplicateMatchPattern: # new in 1.50
   Enabled: true
 Lint/DuplicateRegexpCharacterClassElement:
   Enabled: true
+Lint/DuplicateSetElement: # new in 1.67
+  Enabled: true
 Lint/EmptyBlock:
   Enabled: true
 Lint/EmptyClass:
   Enabled: true
 Lint/EmptyInPattern:
+  Enabled: true
+Lint/HashNewWithKeywordArgumentsAsDefault: # new in 1.69
   Enabled: true
 Lint/IncompatibleIoSelectWithFiberScheduler:
   Enabled: true
@@ -96,11 +108,15 @@ Lint/NonAtomicFileOperation:
   Enabled: true
 Lint/NumberedParameterAssignment:
   Enabled: true
+Lint/NumericOperationWithConstantResult: # new in 1.69
+  Enabled: true
 Lint/OrAssignmentToConstant:
   Enabled: true
 Lint/RedundantDirGlobSort:
   Enabled: true
 Lint/RedundantRegexpQuantifiers: # new in 1.53
+  Enabled: true
+Lint/RedundantTypeConversion: # new in 1.72
   Enabled: true
 Lint/RefinementImportMethods:
   Enabled: true
@@ -110,6 +126,10 @@ Lint/RequireRelativeSelfPath:
   Enabled: true
 Lint/ScriptPermission:
   Enabled: false
+Lint/SharedMutableDefault: # new in 1.70
+  Enabled: true
+Lint/SuppressedExceptionInNumberConversion: # new in 1.72
+  Enabled: true
 Lint/SymbolConversion:
   Enabled: true
 Lint/ToEnumArguments:
@@ -118,7 +138,15 @@ Lint/TripleQuotes:
   Enabled: true
 Lint/UnexpectedBlockArity:
   Enabled: true
+Lint/UnescapedBracketInRegexp: # new in 1.68
+  Enabled: true
 Lint/UnmodifiedReduceAccumulator:
+  Enabled: true
+Lint/UselessConstantScoping: # new in 1.72
+  Enabled: true
+Lint/UselessDefined: # new in 1.69
+  Enabled: true
+Lint/UselessNumericOperation: # new in 1.66
   Enabled: true
 Lint/UselessRescue: # new in 1.43
   Enabled: true
@@ -128,11 +156,17 @@ Lint/UselessRuby2Keywords:
 Style/AccessModifierDeclarations:
   EnforcedStyle: inline
   AllowModifiersOnSymbols: false
+Style/AmbiguousEndlessMethodDefinition: # new in 1.68
+  Enabled: true
 Style/ArgumentsForwarding:
   Enabled: true
 Style/ArrayIntersect: # new in 1.40
   Enabled: true
+Style/BitwisePredicate: # new in 1.68
+  Enabled: true
 Style/CollectionCompact:
+  Enabled: true
+Style/CombinableDefined: # new in 1.68
   Enabled: true
 Style/ComparableClamp: # new in 1.44
   Enabled: true
@@ -141,6 +175,8 @@ Style/ConcatArrayLiterals: # new in 1.41
 Style/ConditionalAssignment:
   Enabled: false
 Style/DataInheritance: # new in 1.49
+  Enabled: true
+Style/DigChain: # new in 1.69
   Enabled: true
 Style/DirEmpty: # new in 1.48
   Enabled: true
@@ -158,7 +194,11 @@ Style/FetchEnvVar:
   Enabled: true
 Style/FileEmpty: # new in 1.48
   Enabled: true
+Style/FileNull: # new in 1.69
+  Enabled: true
 Style/FileRead:
+  Enabled: true
+Style/FileTouch: # new in 1.69
   Enabled: true
 Style/FileWrite:
   Enabled: true
@@ -168,15 +208,23 @@ Style/HashConversion:
   Enabled: true
 Style/HashExcept:
   Enabled: true
+Style/HashSlice: # new in 1.71
+  Enabled: true
 Style/IfWithBooleanLiteralBranches:
   Enabled: true
 Style/InPatternThen:
+  Enabled: true
+Style/ItAssignment: # new in 1.70
+  Enabled: true
+Style/KeywordArgumentsMerging: # new in 1.68
   Enabled: true
 Style/Lambda:
   EnforcedStyle: lambda
 Style/MagicCommentFormat:
   Enabled: true
 Style/MapCompactWithConditionalBlock:
+  Enabled: true
+Style/MapIntoArray: # new in 1.63
   Enabled: true
 Style/MapToHash:
   Enabled: true
@@ -222,9 +270,13 @@ Style/RedundantEach: # new in 1.38
   Enabled: true
 Style/RedundantFilterChain: # new in 1.52
   Enabled: true
+Style/RedundantFormat: # new in 1.72
+  Enabled: true
 Style/RedundantHeredocDelimiterQuotes: # new in 1.45
   Enabled: true
 Style/RedundantInitialize:
+  Enabled: true
+Style/RedundantInterpolationUnfreeze: # new in 1.66
   Enabled: true
 Style/RedundantLineContinuation: # new in 1.49
   Enabled: true
@@ -242,7 +294,11 @@ Style/RedundantStringEscape: # new in 1.37
   Enabled: true
 Style/ReturnNilInPredicateMethodDefinition: # new in 1.53
   Enabled: true
+Style/SafeNavigationChainLength: # new in 1.68
+  Enabled: true
 Style/SelectByRegexp:
+  Enabled: true
+Style/SendWithLiteralMethodName: # new in 1.64
   Enabled: true
 Style/SingleLineDoEndBlock: # new in 1.57
   Enabled: true
@@ -254,6 +310,8 @@ Style/StringLiterals:
 Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
+Style/SuperArguments: # new in 1.64
+  Enabled: true
 Style/SuperWithArgsParentheses: # new in 1.58
   Enabled: true
 Style/SwapValues:

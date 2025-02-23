@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   the hailstone sequence, the \"stopping time\"/\"total stopping time\", or tree-graph.
   The only restriction placed on parameters is that both P and a can't be 0."
   spec.homepage = "https://skenvy.github.io/Collatz/ruby/"
-  spec.required_ruby_version = ">= 2.7.0"
+  spec.required_ruby_version = ">= 3.0.0"
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/Skenvy/Collatz/tree/main/ruby"
   # Specify which files should be added to the gem when it is released.
