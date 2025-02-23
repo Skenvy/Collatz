@@ -31,7 +31,7 @@ export class TreeGraphNode {
    *  TreeGraphNode to themselves, to enable cycle detection. */
   private cycleCheck: Map<bigint, TreeGraphNode>;
 
-  static readonly emptyMap = new Map<bigint, TreeGraphNode>();
+  static readonly emptyMap: Map<bigint, TreeGraphNode> = new Map<bigint, TreeGraphNode>();
 
   /**
    * Create an instance of TreeGraphNode which will yield its entire sub-tree of all child nodes.

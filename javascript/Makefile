@@ -12,7 +12,7 @@ INSTALL_NODE=$(NVM) install $$(cat ./.nvmrc)
 INSTALL_NPM=$(NPM) i -g npm@$$(cat ./.npm-version)
 endif
 PKG_NAME=skenvy-collatz
-.PHONY: bump_major bump_minor bump_patch install_node install_npm setup update clean docs docs_server test lint verify_transpiled_checkin build publish demo _demo
+.PHONY: bump_major bump_minor bump_patch install_node install_npm setup outdated update install clean docs docs_server test lint verify_transpiled_checkin build publish demo _demo
 SHELL:=/bin/bash
 
 # Versions can be manually changed where they appear in the package json and
@@ -44,12 +44,18 @@ setup: install_npm
 	$(NPM) ci
 	$(NPM) list
 
+# If outdated fails, try install. If outdated still fails, try update
+
 # https://docs.npmjs.com/cli/v8/commands/npm-outdated
-# https://docs.npmjs.com/cli/v8/commands/npm-update
-# https://docs.npmjs.com/cli/v8/commands/npm-install
-# If outdated fails, try install. If outdated still fails, manually run `npm up`
-update:
+outdated:
 	$(NPM) outdated
+
+# https://docs.npmjs.com/cli/v8/commands/npm-update
+update:
+	$(NPM) update
+
+# https://docs.npmjs.com/cli/v8/commands/npm-install
+install:
 	$(NPM) install
 
 clean:

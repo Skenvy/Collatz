@@ -47,6 +47,8 @@ jobs:
       run: make lint
     - name: ⚖ Does the checked in JS match the transpiled TS? 
       run: make verify_transpiled_checkin
+    - name: ⭐ JSR dry-run
+      run: npm run publish:jsr:dry
   full-test:
     name: JavaScript 🟨🟦🟩🟥 Full Test 🦂
     if: >-
