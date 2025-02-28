@@ -25,13 +25,13 @@ updates:
   directory: "/javascript"
   schedule:
     interval: weekly
+  ignore:
+    # https://github.com/iamturns/eslint-config-airbnb-typescript has been archived so we can't updated the eslint plugin it depends on so we can't update eslint
+    - dependency-name: "eslint"
+    - dependency-name: "eslint-config-*"
+    - dependency-name: "eslint-plugin-*"
+    - dependency-name: "@typescript-eslint/*"
   groups:
-    eslint:
-      patterns:
-      - "eslint"
-      - "eslint-config-*"
-      - "eslint-plugin-*"
-      - "@typescript-eslint/*"
     mocha-chai:
       patterns:
       - "mocha"

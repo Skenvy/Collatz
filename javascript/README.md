@@ -12,7 +12,7 @@ Functions related to [the Collatz/Syracuse/3N+1 problem](https://en.wikipedia.or
 ```sh
 npm i @skenvy/collatz
 ```
-[Also available on deno](https://deno.land/x/collatz). See the [typescript import](https://deno.land/x/collatz/src/index.ts), the [CommonJS import](https://deno.land/x/collatz/lib/cjs/index.js), or the [ECMAScript import](https://deno.land/x/collatz/lib/esm/index.mjs).
+Also available on [deno](https://deno.land/x/collatz) and on [jsr](https://jsr.io/@skenvy/collatz).
 ## Usage
 Provides the basic functionality to interact with the Collatz conjecture.
 The parameterisation uses the same `(P,a,b)` notation as Conway's generalisations.
@@ -24,10 +24,11 @@ The only restriction placed on parameters is that both `P` and `a` can't be `0`.
 ## Developing
 ### The first time setup
 ```sh
-git clone https://github.com/Skenvy/Collatz.git && cd Collatz/javascript && make install_npm && make setup
+git clone https://github.com/Skenvy/Collatz.git && cd Collatz/javascript && make setup
 ```
 ### Iterative development
 The majority of `make` recipes for this are just wrapping an invocation of `npm run ...` on one of the `package.json`'s `"scripts"`.
+If you want to run these with a version of node installed outside of `nvm` and you're sure you've got the right `node` and `npm` versions, you can append `_=""` to your `make` invocations to circumvent `nvm` proctoring.
 * `make docs` will recreate the [TypeDoc](https://typedoc.org/) docs, based on [TSDoc](https://tsdoc.org/) comments.
 * `make test` will run the [mocha](https://mochajs.org/) tests and attempt a dry run of the publishing.
 * `make lint` will run [eslint](https://eslint.org/).
