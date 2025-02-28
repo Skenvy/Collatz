@@ -106,6 +106,7 @@ jobs:
     needs: [release]
     permissions:
       packages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
@@ -132,6 +133,8 @@ jobs:
   publish-npm:
     name: JavaScript 🟨🟦🟩🟥 Publish 📦 NPM 🟥
     needs: [release]
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout

@@ -38,7 +38,7 @@ install_node:
 install_npm: install_node
 	$(INSTALL_NPM)
 
-# https://docs.npmjs.com/cli/v8/commands/npm-ci
+# https://docs.npmjs.com/cli/v11/commands/npm-ci
 setup: install_npm
 	$(NPM) list -g --depth 0
 	$(NPM) ci
@@ -46,15 +46,15 @@ setup: install_npm
 
 # If outdated fails, try install. If outdated still fails, try update
 
-# https://docs.npmjs.com/cli/v8/commands/npm-outdated
+# https://docs.npmjs.com/cli/v11/commands/npm-outdated
 outdated:
 	$(NPM) outdated
 
-# https://docs.npmjs.com/cli/v8/commands/npm-update
+# https://docs.npmjs.com/cli/v11/commands/npm-update
 update:
 	$(NPM) update
 
-# https://docs.npmjs.com/cli/v8/commands/npm-install
+# https://docs.npmjs.com/cli/v11/commands/npm-install
 install:
 	$(NPM) install
 
@@ -72,11 +72,16 @@ docs:
 docs_server: docs
 	$(NPM) run docs:server
 
-# https://docs.npmjs.com/cli/v8/commands/npm-test
-# https://docs.npmjs.com/cli/v8/commands/npm-publish
+# https://docs.npmjs.com/cli/v11/commands/npm-test
+# https://docs.npmjs.com/cli/v11/commands/npm-publish
+# https://docs.npmjs.com/cli/v11/commands/npm-pkg
+# --dry-run will fail if the version already exists. We want this to be runnable
+# on intermediate states that don't update the version -- so magic it a lil bit.
 test: clean
 	$(NPM) test
-	$(NPM) publish --dry-run
+	$(NPM) pkg set tempVersion=$$(npm pkg get version | tr -d '"') && npm pkg set version=$$(npm pkg get version | tr -d '"' | awk '{print $$1"-dryrun"}')
+	$(NPM) publish --provenance --access public --dry-run --tag 'dryrun'
+	$(NPM) pkg set version=$$(npm pkg get tempVersion | tr -d '"') && npm pkg delete tempVersion
 
 lint:
 	$(_) TIMING=1 npm run lint
@@ -88,13 +93,13 @@ verify_transpiled_checkin: clean
 	echo "Exit if a change to the transpiled JavaScript is not committed"
 	git add lib && git diff --exit-code --cached --stat -- lib/
 
-# https://docs.npmjs.com/cli/v8/commands/npm-pack
+# https://docs.npmjs.com/cli/v11/commands/npm-pack
 build: clean test lint verify_transpiled_checkin
 	$(NPM) pack
 
-# https://docs.npmjs.com/cli/v8/commands/npm-publish
+# https://docs.npmjs.com/cli/v11/commands/npm-publish
 publish:
-	$(NPM) publish --access=public $(PKG_NAME)-*.tgz
+	$(NPM) publish --provenance --access public $(PKG_NAME)-*.tgz
 
 demo: build
 	mv $(PKG_NAME)-*.tgz .demo/$(PKG_NAME).tgz
