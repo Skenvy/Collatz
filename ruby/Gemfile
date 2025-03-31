@@ -11,4 +11,4 @@ gem "rdoc", "~> 6.13"
 
 gem "rspec", "~> 3.13"
 
-gem "rubocop", "~> 1.74"
+gem "rubocop", "~> 1.75"
