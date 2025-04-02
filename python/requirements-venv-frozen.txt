@@ -16,7 +16,7 @@ distlib==0.3.9
 docutils==0.21.2
 exceptiongroup==1.2.2
 filelock==3.18.0
-flake8==7.1.2
+flake8==7.2.0
 furo==2024.8.6
 idna==3.10
 imagesize==1.4.1
@@ -41,9 +41,9 @@ packaging==24.2
 pkginfo==1.12.1.2
 platformdirs==4.3.7
 pluggy==1.5.0
-pycodestyle==2.12.1
+pycodestyle==2.13.0
 pycparser==2.22
-pyflakes==3.2.0
+pyflakes==3.3.1
 Pygments==2.19.1
 pylint==3.3.6
 pyproject-api==1.9.0
