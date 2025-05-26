@@ -7,8 +7,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.3)
+    cgi (0.4.2)
     date (3.4.1)
     diff-lcs (1.6.0)
+    erb (4.0.4)
+      cgi (>= 0.3.3)
     json (2.11.3)
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
@@ -17,13 +20,14 @@ GEM
       ast (~> 2.4.1)
       racc
     prism (1.4.0)
-    psych (5.2.3)
+    psych (5.2.6)
       date
       stringio
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.2.1)
-    rdoc (6.13.1)
+    rdoc (6.14.0)
+      erb
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
     rspec (3.13.0)
@@ -54,7 +58,7 @@ GEM
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
-    stringio (3.1.6)
+    stringio (3.1.7)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
@@ -66,7 +70,7 @@ PLATFORMS
 DEPENDENCIES
   collatz!
   rake (~> 13.2)
-  rdoc (~> 6.13)
+  rdoc (~> 6.14)
   rspec (~> 3.13)
   rubocop (~> 1.75)
 
