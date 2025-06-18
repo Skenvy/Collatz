@@ -5,12 +5,12 @@ backports.tarfile==1.2.0
 beautifulsoup4==4.13.4
 build==1.2.2.post1
 cachetools==6.0.0
-certifi==2025.4.26
+certifi==2025.6.15
 cffi==1.17.1
 chardet==5.2.0
 charset-normalizer==3.4.2
 colorama==0.4.6
-cryptography==45.0.3
+cryptography==45.0.4
 dill==0.4.0
 distlib==0.3.9
 docutils==0.21.2
@@ -51,7 +51,7 @@ pyproject_hooks==1.2.0
 pytest==8.3.2
 PyYAML==6.0.2
 readme_renderer==44.0
-requests==2.32.3
+requests==2.32.4
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==14.0.0
@@ -71,7 +71,7 @@ tomlkit==0.13.3
 tox==4.26.0
 tox-gh-actions==3.3.0
 twine==6.1.0
-typing_extensions==4.13.2
+typing_extensions==4.14.0
 urllib3==2.4.0
 virtualenv==20.31.2
 zipp==3.23.0
