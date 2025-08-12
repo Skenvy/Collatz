@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@472790540115ce5bd69d399a020189a8c87d641f # v1.247.0
       with:
@@ -60,7 +60,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: 🔻💎🔻 Set up Ruby ${{ matrix.version }}
       uses: ruby/setup-ruby@472790540115ce5bd69d399a020189a8c87d641f # v1.247.0
       with:
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: 🔻💎🔻 Set up Ruby
       uses: ruby/setup-ruby@472790540115ce5bd69d399a020189a8c87d641f # v1.247.0
       with:
