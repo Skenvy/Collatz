@@ -29,7 +29,7 @@ jobs:
       version-tag-exists: ${{ steps.version-tag-exists.outputs.version-tag-exists }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       with:
         fetch-depth: 2
     - name: Check if version files changed
@@ -66,7 +66,7 @@ jobs:
       new_version: ${{ steps.release_step.outputs.new_version }}
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       with:
         fetch-depth: 0
     - name: Julia 🔴🟢🟣 Release 🚰 and Register 📦
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🏁 Checkout
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: 🔴🟢🟣 Set up Julia
       uses: julia-actions/setup-julia@5c9647d97b78a5debe5164e9eec09d653d29bd71 # v2.6.1
       with:
