@@ -66,7 +66,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+      uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
       with:
         node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
@@ -117,7 +117,7 @@ jobs:
         name: Package
         path: javascript/
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+      uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
       with:
         node-version-file: 'javascript/.nvmrc'
         registry-url: 'https://npm.pkg.github.com'
@@ -145,7 +145,7 @@ jobs:
         name: Package
         path: javascript/
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+      uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
       with:
         node-version-file: 'javascript/.nvmrc'
         registry-url: 'https://registry.npmjs.org'
@@ -182,7 +182,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
     - name: 🟨🟦🟩🟥 Set up Node
-      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
+      uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
       with:
         node-version-file: 'javascript/.nvmrc'
         cache: 'npm'
