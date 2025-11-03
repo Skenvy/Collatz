@@ -70,7 +70,7 @@ jobs:
     - name: 🧱 Build and Check
       run: make cran_check
     - name: 🆙 Upload tarball
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
       with:
         name: Tarball
         path: R/collatz_*.tar.gz
@@ -115,7 +115,7 @@ jobs:
     - name: 📄 Docs Generation
       run: make docs
     - name: 🆙 Upload docs
-      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
       with:
         name: Docs
         path: R/docs/
