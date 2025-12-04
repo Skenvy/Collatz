@@ -75,7 +75,7 @@ jobs:
           ${{ runner.os }}-test-
           ${{ runner.os }}-
     - name: 🦂 Test
-      uses: julia-actions/julia-runtest@678da69444cd5f13d7e674a90cb4f534639a14f9 # v1.11.2
+      uses: julia-actions/julia-runtest@b67f25cc97aa716a662fc9586ea6d5d7bf6c2da3 # v1.11.3
       with:
         project: julia
   docs:
