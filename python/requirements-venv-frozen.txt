@@ -35,7 +35,7 @@ mccabe==0.7.0
 mdit-py-plugins==0.4.2
 mdurl==0.1.2
 more-itertools==10.7.0
-myst-parser==4.0.1
+myst-parser==5.0.0
 nh3==0.2.21
 packaging==25.0
 pkginfo==1.12.1.2
