@@ -89,7 +89,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tsdoc": "^0.3.0",
     "http-server": "^14.1.1",
-    "jsr": "^0.13.3",
+    "jsr": "^0.14.1",
     "mocha": "^11.0.1",
     "nyc": "^17.0.0",
     "ts-node": "^10.9.2",
