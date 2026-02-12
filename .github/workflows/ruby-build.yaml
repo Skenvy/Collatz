@@ -69,7 +69,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
+      uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd # v1.288.0
       with:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
@@ -115,7 +115,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
+      uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd # v1.288.0
       with:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
@@ -154,7 +154,7 @@ jobs:
     - name: 🏁 Checkout
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
     - name: 🔻💎🔻 Set up Ruby
-      uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
+      uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd # v1.288.0
       with:
         ruby-version: ${{ env.development_ruby_version }}
         bundler-cache: true
