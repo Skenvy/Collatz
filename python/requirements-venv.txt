@@ -2,21 +2,21 @@
 ################### Development Virtual Environment Requires ###################
 ################################################################################
 # Build should be major version locked but minor version permissive.
-build>=1.2.1
+build>=1.5.0
 # Twine in general, for uploading to pypi, with minimum version lock by the PyPi
 # friendly README doc above, although the current tip used is 3.8.0
-twine>=5.1.1
+twine>=6.2.0
 # pytest breaks heavily between minor versions, so only allow patch drift.
 pytest>=8.3.2
 # Lint
-pylint>=3.2.6
+pylint>=4.0.6
 flake8>=7.1.0
 # Allow patch drift for tox as well.
-tox>=4.16.0
-tox-gh-actions>=3.2.0
+tox>=4.56.1
+tox-gh-actions>=3.5.0
 # Other version mins specd by the PyPi friendly README doc.
-setuptools>=71.1.0
-wheel>=0.43.0
+setuptools>=83.0.0
+wheel>=0.47.0
 # Documentation with pydoc and;
 Sphinx>=7.4.7
 furo>=2024.7.18
