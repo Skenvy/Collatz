@@ -20,4 +20,4 @@ wheel>=0.43.0
 # Documentation with pydoc and;
 Sphinx>=7.4.7
 furo>=2024.7.18
-myst-parser>=3.0.1
+myst-parser>=5.1.0
