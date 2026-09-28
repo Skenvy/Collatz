@@ -10,7 +10,7 @@ twine>=5.1.1
 pytest>=8.3.2
 # Lint
 pylint>=3.2.6
-flake8>=7.1.0
+flake8>=7.4.1
 # Allow patch drift for tox as well.
 tox>=4.16.0
 tox-gh-actions>=3.2.0
