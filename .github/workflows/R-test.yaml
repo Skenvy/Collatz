@@ -143,7 +143,7 @@ jobs:
       with:
         pandoc-version: '2.17.1'
     - name: TinyTex
-      uses: r-lib/actions/setup-tinytex@bd49c52ffe281809afa6f0fecbf37483c5dd0b93 # v2.11.3
+      uses: r-lib/actions/setup-tinytex@d3c5be51b12e724e68f33216ca3c148b66d5f0b6 # v2.12.1
     - name: TinyTex MakeIndex
       run: tlmgr install makeindex
     - name: 🧱 Dependencies
